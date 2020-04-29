@@ -4,7 +4,7 @@ import Auth from './auth';
 export default class Api {
     static getKey(key, defaultValue = null) {
         const environment =
-            this.environment() === "development" ? prod : dev;
+            this.environment() === "production" ? prod : dev;
 
         if (key in environment) {
             return environment[key];
