@@ -1,7 +1,3 @@
-export const dev = {
-    base_url: 'http://localhost:3001/api/v1',    
-}
+export const dev = 'http://localhost:3001/api/v1';
 
-export const prod = {
-    base_url: 'https://pro-lierno-backend.herokuapp.com/api/v1/'
-}
+export const prod = 'https://pro-lierno-backend.herokuapp.com/api/v1/';

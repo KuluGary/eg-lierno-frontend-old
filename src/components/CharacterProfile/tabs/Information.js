@@ -11,7 +11,6 @@ import SavingThrows from '../components/SavingThrows';
 import Skills from '../components/Skills';
 
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles({
     root: {
@@ -46,39 +45,41 @@ export default function Information(props) {
                                 <Grid item xs={12} sm={12} md={6} container direction="row">
                                     <Grid item xs={12}>
                                         <Stats
-                                            stats={character["abilities_bonuses"][0]} />
+                                            character={true}
+                                            stats={character["stats"]["abilityScores"]} />
                                     </Grid>
                                     <Grid item xs={12} sm={4} md={2}>
                                         <Proficiency
-                                            proficiency={character["proficiency_bonus"]} />
+                                            proficiency={character["stats"]["proficiencyBonus"]} />
                                     </Grid>
                                     <Grid item xs={12} sm={4} md={2}>
                                         <Speed
-                                            speed={character["characteristics"][0]['speed']} />
+                                            speed={character["stats"]['speed']} />
                                     </Grid>
                                     <Grid item xs={12} sm={4} md={2}>
                                         <Armor
-                                            ac={character["ac"]} />
+                                            ac={character["stats"]["armorClass"]} />
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={6}>
                                         <HitPoints
-                                            hp={character["hp"]} />
+                                            hp={character["stats"]["hitPoints"]} />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Attacks
-                                            attacks={character["attacks"]} />
+                                            attacks={character["stats"]["attacks"]}
+                                            numAttacks={character["stats"]["numAttacks"]} />
 
                                     </Grid>
                                     <Grid item xs={12}>
                                         <SavingThrows
-                                            saving={character["save_bonuses"]} />
+                                            saving={character["stats"]["savingThrows"]} />
 
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={6} container direction="row">
                                     <Grid item xs={12}>
                                         <Skills
-                                            skills={character["skills"]} />
+                                            skills={character["stats"]["skills"]} />
 
                                     </Grid>
                                 </Grid>

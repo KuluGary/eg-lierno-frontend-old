@@ -59,7 +59,7 @@ function Login(props) {
     const [hasLoggedIn, setLoggedIn] = useState(false)
     const [errorState, setError] = useState(false);
 
-    useEffect(() => {
+    useEffect(() => {        
         if (Auth.loggedIn()) {
             props.history.push("/")
         }
@@ -72,18 +72,16 @@ function Login(props) {
                 username,
                 password
             }
-            const url = Api.getKey('base_url') + '/login';
-
-            fetch(url, {
+            
+            Api.fetchInternal('/auth/login', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(user)
             })
-                .then(res => res.json())
-                .then(res => res.payload.token)
-                .then(async token => {
+                .then(res => res.token)
+                .then(token => {
                     if (remember) {
                         localStorage.setItem('token', token);
                     } else {

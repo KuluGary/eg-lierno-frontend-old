@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from "react-redux";
 import Grid from '@material-ui/core/Grid';
 import Api from '../../helpers/api'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ModalImage from "react-modal-image";
 import Stats from '../CharacterProfile/components/Stats';
 import Slide from '@material-ui/core/Slide';
 
@@ -45,14 +47,22 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function MonsterProfile(props) {
+const mapStateToProps = state => {
+    return { monsters: state.monsters }
+}
+
+function MonsterProfile(props) {
     const classes = useStyles();
     const [monster, setMonster] = useState();
 
     useEffect(() => {
-        
-        Api.fetchInternal('/bestiary/' + props.match.params.id)
-            .then(res => setMonster(res));
+        if (!props.monsters) {
+            Api.fetchInternal('/bestiary/' + props.match.params.id)
+                .then(res => setMonster(res));
+        } else {
+            const selectedMonster = props.monsters.filter(monster => monster._id === props.match.params.id)[0];
+            selectedMonster && setMonster(selectedMonster)
+        }
     }, [])
 
     return (
@@ -72,14 +82,14 @@ export default function MonsterProfile(props) {
                                         </Box>
                                     </Typography>
                                     <Typography variant={'subheader2'}>
-                                        {monster.stats.size + ' ' + monster.stats.race + ', ' + monster.stats.alignment}
+                                        {monster.stats.race + ' ' + monster.stats.size + ', ' + monster.stats.alignment}
                                     </Typography>
                                 </Box>
                                 <Divider className={classes.divider} />
                                 <Box>
                                     <Box>
                                         <Typography className={classes.bold} variant={'subheader2'} inline>
-                                            {'Armor: '}
+                                            {'Armadura: '}
                                         </Typography>
                                         <Typography variant={'subheader4'} inline>
                                             {monster.stats.armorClass + (monster.stats.armorType && ' (' + monster.stats.armorType + ')')}
@@ -87,7 +97,7 @@ export default function MonsterProfile(props) {
                                     </Box>
                                     <Box>
                                         <Typography className={classes.bold} variant={'subheader2'} inline>
-                                            {'Hit Points: '}
+                                            {'Puntos de vida: '}
                                         </Typography>
                                         <Typography variant={'subheader4'} inline>
                                             {monster.stats.hitPointsStr}
@@ -96,7 +106,7 @@ export default function MonsterProfile(props) {
                                     <Box>
                                         <Box>
                                             <Typography className={classes.bold} variant={'subheader2'} inline>
-                                                {'Speed: '}
+                                                {'Velocidad: '}
                                             </Typography>
                                             <Typography variant={'subheader4'} inline>
                                                 {monster.stats.speed}
@@ -106,14 +116,14 @@ export default function MonsterProfile(props) {
 
                                     <Divider className={classes.divider} />
 
-                                    <Stats stats={monster.stats} />
+                                    <Stats stats={monster.stats.abilityScores} />
 
                                     <Divider className={classes.divider} />
 
                                     <Box>
                                         <Box>
                                             <Typography className={classes.bold} variant={'subheader2'} inline>
-                                                {'Senses: '}
+                                                {'Sentidos: '}
                                             </Typography>
                                             <Typography variant={'subheader4'} inline>
                                                 {monster.stats.senses.map((sense, index) =>
@@ -125,7 +135,7 @@ export default function MonsterProfile(props) {
                                         </Box>
                                         {monster.stats.damageVulnerabilities.length > 0 && <Box>
                                             <Typography className={classes.bold} variant={'subheader2'} inline>
-                                                {'Damage Vulnerabilities: '}
+                                                {'Vulnerabilidades al daño: '}
                                             </Typography>
                                             <Typography variant={'subheader4'} inline>
                                                 {monster.stats.damageVulnerabilities.map((vulnerability, index) =>
@@ -137,7 +147,7 @@ export default function MonsterProfile(props) {
                                         </Box>}
                                         {monster.stats.damageResistances.length > 0 && <Box>
                                             <Typography className={classes.bold} variant={'subheader2'} inline>
-                                                {'Damage Resistances: '}
+                                                {'Resistencias al daño: '}
                                             </Typography>
                                             <Typography variant={'subheader4'} inline>
                                                 {monster.stats.damageResistances.map((resistance, index) =>
@@ -149,7 +159,7 @@ export default function MonsterProfile(props) {
                                         </Box>}
                                         {monster.stats.damageImmunities.length > 0 && <Box>
                                             <Typography className={classes.bold} variant={'subheader2'} inline>
-                                                {'Damage Immunities: '}
+                                                {'Inmunidades al daño: '}
                                             </Typography>
                                             <Typography variant={'subheader4'} inline>
                                                 {monster.stats.damageImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
@@ -157,7 +167,7 @@ export default function MonsterProfile(props) {
                                         </Box>}
                                         {monster.stats.conditionImmunities.length > 0 && <Box>
                                             <Typography className={classes.bold} variant={'subheader2'} inline>
-                                                {'Condition Immunities: '}
+                                                {'Inmunidades a las condiciones: '}
                                             </Typography>
                                             <Typography variant={'subheader4'} inline>
                                                 {monster.stats.conditionImmunities.map((immunity, index) => (
@@ -169,7 +179,7 @@ export default function MonsterProfile(props) {
                                         </Box>}
                                         <Box>
                                             <Typography className={classes.bold} variant={'subheader2'} inline>
-                                                {'Languages: '}
+                                                {'Idiomas: '}
                                             </Typography>
                                             <Typography variant={'subheader4'} inline>
                                                 {monster.stats.languages.length > 0
@@ -183,7 +193,7 @@ export default function MonsterProfile(props) {
                                         </Box>
                                         <Box>
                                             <Typography className={classes.bold} variant={'subheader2'} inline>
-                                                {'Challenge: '}
+                                                {'Valor de desafío: '}
                                             </Typography>
                                             <Typography variant={'subheader4'} inline>
                                                 {monster.stats.challengeRatingStr}
@@ -206,7 +216,7 @@ export default function MonsterProfile(props) {
                                     }
 
                                     <Box>
-                                        <Typography variant={'h6'}>Actions</Typography>
+                                        <Typography variant={'h6'}>Acciones</Typography>
                                         <Divider className={classes.fullWidthDivier} />
                                         <Box>
                                             {monster.stats.actions.map(action => (
@@ -219,7 +229,7 @@ export default function MonsterProfile(props) {
                                     </Box>
                                     {monster.stats.reactions.length > 0 &&
                                         <Box>
-                                            <Typography variant={'h6'}>Reactions</Typography>
+                                            <Typography variant={'h6'}>Reacciones</Typography>
                                             <Box>
                                                 {monster.stats.reactions.map(reaction => (
                                                     <Box component="p">
@@ -232,7 +242,7 @@ export default function MonsterProfile(props) {
                                     }
                                     {monster.stats.legendaryActions.length > 0 &&
                                         <Box>
-                                            <Typography variant={'h6'}>Legendary Actions</Typography>
+                                            <Typography variant={'h6'}>Acciones legendarias</Typography>
                                             <Divider />
                                             <Box>
                                                 {monster.stats.legendaryActionsDescription}
@@ -252,13 +262,20 @@ export default function MonsterProfile(props) {
                         </Grid>
                         <Grid item xs={12} sm={12} md={6} className={classes.gridItem}>
                             <Paper variant="outlined" className={classes.profileBox}>
-                                <img className={classes.image} src={monster.flavor.imageUrl} />
+                                <ModalImage
+                                    hideDownload
+                                    className={classes.image}
+                                    small={monster.flavor.imageUrl}
+                                    large={monster.flavor.imageUrl}
+                                />
                                 {monster.flavor.description}
                             </Paper>
                         </Grid>
                     </Grid>
                 }
             </div>
-            </ Slide>
+        </ Slide>
     )
 }
+
+export default connect(mapStateToProps)(MonsterProfile);

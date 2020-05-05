@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from "react-redux";
+import { addAlignments, addCharacters } from "../../shared/actions/index";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -24,36 +26,51 @@ const useStyles = makeStyles({
     }
 });
 
-export default function AlignmentScreen(props) {
+const mapStateToProps = state => {
+    return { alignments: state.alignments, characters: state.characters }
+}
+
+const mapDispatchToProps = dispatch => {
+    return { addAlignments: alignments => dispatch(addAlignments(alignments)), addCharacters: characters => dispatch(addCharacters(characters)) };
+}
+
+function AlignmentScreen(props) {
     const classes = useStyles();
     const [charactersState, setCharacters] = useState();
     const [characterSelected, setSelectedCharacter] = useState();
     const [alignments, setAlignments] = useState();
 
     useEffect(() => {
-
-        const getAlignments = () => {
-
+        if (!props.alignments) {
             Api.fetchInternal('/alignments').then(res => {
                 setAlignments(res.simple)
+                props.addAlignments(res.simple)
             })
+        } else {
+            setAlignments(props.alignments)
         }
-        const getCharacters = () => {
+
+        if (!props.characters) {
             Api.fetchInternal('/characters')
                 .then(res => {
+                    props.addCharacters(res)
                     let charas = []
 
                     res.forEach(chara => {
                         charas.push({ name: chara.character[0].character_name, alignment: chara.character[0].alignment_stat })
                     })
-
+                    
                     setCharacters(charas);
-
                 })
-        }
+        } else {
+            let charas = []
 
-        getCharacters();
-        getAlignments();
+            props.characters.forEach(chara => {
+                charas.push({ name: chara.character[0].character_name, alignment: chara.character[0].alignment_stat })
+            })
+
+            setCharacters(charas);
+        }
     }, [])
 
     const changeAlignment = (c = null, a) => {
@@ -105,3 +122,5 @@ export default function AlignmentScreen(props) {
         </Slide>
     );
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(AlignmentScreen);

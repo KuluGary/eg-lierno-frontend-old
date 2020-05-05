@@ -44,15 +44,19 @@ export default function Armor(props) {
                 <Grid item xs={12} sm={12} md={6}>
                     <Paper variant="outlined" className={classes.paper}>
                         <Typography variant="subtitle2">{'Rasgos de Personalidad.'}</Typography>
-                        <Box className={classes.trait}>{character.personality_trait_1 + character.personality_trait_2}</Box>
+                        <Box className={classes.trait}>{
+                            character["psychTraits"]["personalityTrait1"]
+                            + character["psychTraits"]["personalityTrait2"]}</Box>
                         <Typography variant="subtitle2">{'Ideales.'}</Typography>
-                        <Box className={classes.trait}>{character.ideals}</Box>
+                        <Box className={classes.trait}>{character["psychTraits"]["ideals"]}</Box>
                         <Typography variant="subtitle2">{'Vínculos.'}</Typography>
-                        <Box className={classes.trait}>{character.bonds}</Box>
+                        <Box className={classes.trait}>{character["psychTraits"]["bonds"]}</Box>
                         <Typography variant="subtitle2">{'Defectos.'}</Typography>
-                        <Box className={classes.trait}>{character.flaws}</Box>
+                        <Box className={classes.trait}>{character["psychTraits"]["flaws"]}</Box>
                         <Typography variant="subtitle2">{'Historia.'}</Typography>
-                        <Box className={classes.trait}>{character.character_backstory}</Box>
+                        <Box className={classes.trait}>
+                            <span dangerouslySetInnerHTML={{ __html: character["psychTraits"]["backstory"] }} />
+                        </Box>
                     </Paper>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -62,35 +66,35 @@ export default function Armor(props) {
                             <Grid item xs={6}>
                                 <Box className={classes.trait}>
                                     <Typography display="inline" variant="subtitle2">{'Edad. '}</Typography>
-                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character.age}</Typography>
+                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character["physicalTraits"]["age"]}</Typography>
                                 </Box>
                                 <Box className={classes.trait}>
                                     <Typography display="inline" variant="subtitle2">{'Género. '}</Typography>
-                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character.sex}</Typography>
+                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character["gender"]}</Typography>
                                 </Box>
                                 <Box className={classes.trait}>
                                     <Typography display="inline" variant="subtitle2">{'Altura. '}</Typography>
-                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character.height}</Typography>
+                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character["physicalTraits"]["height"]}</Typography>
                                 </Box>
                                 <Box className={classes.trait}>
                                     <Typography display="inline" variant="subtitle2">{'Peso.'}</Typography>
-                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character.weight}</Typography>
+                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character["physicalTraits"]["weight"]}</Typography>
                                 </Box>
                                 <Box className={classes.trait}>
                                     <Typography display="inline" variant="subtitle2">{'Ojos.'}</Typography>
-                                    <Typography display="inline" variant="subtitle4" className={classes.trait}></Typography>{character.eyes}
+                                    <Typography display="inline" variant="subtitle4" className={classes.trait}></Typography>{character["physicalTraits"]["eyes"]}
                                 </Box>
                                 <Box className={classes.trait}>
                                     <Typography display="inline" variant="subtitle2">{'Pelo.'}</Typography>
-                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character.hair}</Typography>
+                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character["physicalTraits"]["hair"]}</Typography>
                                 </Box>
                                 <Box className={classes.trait}>
                                     <Typography display="inline" variant="subtitle2">{'Piel.'}</Typography>
-                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character.skin}</Typography>
+                                    <Typography display="inline" variant="subtitle4" className={classes.trait}>{character["physicalTraits"]["skin"]}</Typography>
                                 </Box>
                             </Grid>
                             <Grid item xs={6}>
-                                <img className={classes.img} src={props.img} />
+                                <img className={classes.img} src={character.imageUrl} />
                             </Grid>
                         </Grid>
                     </Paper>

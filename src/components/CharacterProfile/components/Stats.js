@@ -4,7 +4,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles({
     root: {
@@ -44,34 +43,31 @@ export default function Stats(props) {
 
     return (
         <div className={classes.root}>
-            {/* <Collapse> */}
-            <Paper variant={props.stats.abilities && "outlined"} elevation={props.stats.abilities ? 1 : 0} className={classes.paper}>
-                {props.stats.abilities ? (
-                    Object.keys(props.stats.abilities).map((stat, index) => (
+            <Paper elevation={props.character ? 1 : 0} variant={props.character && 'outlined'} className={classes.paper}>
+                {props.stats ? (
+                    Object.keys(props.stats).map((stat, index) => (
                         <span className={classes.statBox} key={index} >
                             <Box component="span" className={classes.stat}>
-                                <Typography variant="subtitle2">{statNames[index].toUpperCase()}</Typography>
-                                <Typography variant="h6">{props.stats.abilities && props.stats.abilities[stat]}</Typography>
+                                <Typography variant="subtitle2">{statNames[index]}</Typography>
+                                <Typography variant="h6">{props.stats && props.stats[stat]}</Typography>
                                 <Typography variant="subtitle1">{props.stats.bonuses && props.stats.bonuses[stat]}</Typography>
                             </Box>
-                            {index + 1 !== Object.keys(props.stats.abilities).length && <Divider orientation="vertical" flexItem />}
+                            {index + 1 !== Object.keys(props.stats).length && <Divider orientation="vertical" flexItem />}
                         </span>
                     ))
                 ) : (
-                        Object.keys(props.stats.abilityScores).map((stat, index) => (
+                        Object.keys(props.stats).map((stat, index) => (
                             <span className={classes.statBox} key={index} >
                                 <Box component="span" className={classes.stat}>
                                     <Typography variant="subtitle2">{statNames[index].toUpperCase()}</Typography>
-                                    <Typography variant="h6">{props.stats.abilityScores && props.stats.abilityScores[stat]}</Typography>
+                                    <Typography variant="h6">{props.stats && props.stats[stat]}</Typography>
                                     <Typography variant="subtitle1">{props.stats.abilityScoreModifiers && props.stats.abilityScoreModifiers[stat]}</Typography>
                                 </Box>
-                                {index + 1 !== Object.keys(props.stats.abilityScores).length && <Divider orientation="vertical" flexItem />}
+                                {index + 1 !== Object.keys(props.stats).length && <Divider orientation="vertical" flexItem />}
                             </span>
                         ))
                     )}
-
             </Paper>
-            {/* </Collapse> */}
         </div>
     );
 }

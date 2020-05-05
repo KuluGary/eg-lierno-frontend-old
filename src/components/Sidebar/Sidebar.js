@@ -120,7 +120,7 @@ export default function MiniDrawer(props) {
               <ListItemIcon>
                 <AccountCircleIcon />
               </ListItemIcon>
-              <ListItemText primary={'Characters'} />
+              <ListItemText primary={'Personajes'} />
             </ListItem>
           </Link>}
           {Auth.hasRole("NPC_ACCESS") && <Link to="/npcs" className={classes.link}>
@@ -128,7 +128,7 @@ export default function MiniDrawer(props) {
               <ListItemIcon>
                 <SupervisedUserCircleIcon />
               </ListItemIcon>
-              <ListItemText primary={'NPCs'} />
+              <ListItemText primary={'PNJs'} />
             </ListItem>
           </Link>}
           {Auth.hasRole("BESTIARY_ACCESS") && <Link to="/bestiary" className={classes.link}>
@@ -136,7 +136,7 @@ export default function MiniDrawer(props) {
               <ListItemIcon>
                 <PetsIcon />
               </ListItemIcon>
-              <ListItemText primary={'Bestiary'} />
+              <ListItemText primary={'Bestiario'} />
             </ListItem>
           </Link>}
           {Auth.hasRole("MAP_ACCESS") &&
@@ -145,25 +145,25 @@ export default function MiniDrawer(props) {
                 <ListItemIcon>
                   <MapIcon />
                 </ListItemIcon>
-                <ListItemText primary={'Map'} />
+                <ListItemText primary={'Mapa'} />
               </ListItem>
             </Link>}
-          {Auth.hasRole("ALIGNMENT_ACCESS") && <Link to="/alignments" className={classes.link}>
+          {/* {Auth.hasRole("ALIGNMENT_ACCESS") && <Link to="/alignments" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
                 <ExploreIcon />
               </ListItemIcon>
               <ListItemText primary={'Alignments'} />
             </ListItem>
-          </Link>}
+          </Link>} */}
           {Auth.hasRole("INITIATIVE_ACCESS") && <Link to="/initiative" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
                 <ListAltIcon />
               </ListItemIcon>
-              <ListItemText primary={'Initiative Tracker'} />
+              <ListItemText primary={'Iniciativa'} />
             </ListItem>
-          </Link>}          
+          </Link>}
         </List>
       </Drawer>
     </div>

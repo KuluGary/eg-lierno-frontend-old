@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from "react-redux";
 import Grid from '@material-ui/core/Grid';
 import Api from '../../helpers/api'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
 import Slide from '@material-ui/core/Slide';
-import { Map, ImageOverlay, TileLayer, Marker, Popup, LayersControl } from 'react-leaflet'
+import { Map, ImageOverlay, LayersControl } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,16 +44,24 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function MonsterProfile(props) {
+const mapStateToProps = state => {
+    return { locations: state.locations }
+}
+
+function Location(props) {
     const classes = useStyles();
     const [location, setLocation] = useState();
     const information = ["Localización", "Tipo", "Población", "Líderes", "Religión", "Fuerzas militares", "Descripción"]
 
     useEffect(() => {
-        const url = Api.getKey('base_url') + '/location/' + props.match.params.id;
+        if (!props.locations) {
+            Api.fetchInternal('/location/' + props.match.params.id)
+                .then(res => setLocation(res));
+        } else {
+            const selectedLocation = props.locations.filter(location => location._id === props.match.params.id)[0];
+            selectedLocation && setLocation(selectedLocation)
+        }
 
-        Api.fetchInternal('/location/' + props.match.params.id)
-            .then(res => setLocation(res));
     }, [])
 
     return (
@@ -130,3 +137,5 @@ export default function MonsterProfile(props) {
         </Slide>
     )
 }
+
+export default connect(mapStateToProps)(Location);

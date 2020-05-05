@@ -2,41 +2,31 @@ import { dev, prod } from './api-config';
 import Auth from './auth';
 
 export default class Api {
-    static getKey(key, defaultValue = null) {
-        const environment =
-            this.environment() === "production" ? prod : dev;
-
-        if (key in environment) {
-            return environment[key];
-        }
-        return defaultValue;
-    }
-
-    static environment(){
+    static environment() {
         return process.env.NODE_ENV;
     }
-    
+
     static async fetchInternal(url, options) {
-        console.log(this.environment());
-            url = this.getKey("base_url") + url;
+        url = (this.environment() === "production" ? prod : dev) + url;
 
         const headers = {
             Accept: 'application/json',
             "Content-Type": "application/json"
         };
-        
+
         if (Auth.loggedIn()) {
             headers["Authorization"] = "Bearer " + await Auth.getToken();
 
-            return fetch(url, {
-                headers,
-                ...options
-            })
-                .then(this._checkStatus)
-                .then(response => response.json())
-                .then(response => response.payload)
-                .catch(e => console.log(e))
         }
+        
+        return fetch(url, {
+            headers,
+            ...options
+        })
+            .then(this._checkStatus)
+            .then(response => response.json())
+            .then(response => response.payload)
+            .catch(e => console.log(e))
     }
 
     static _checkStatus = response => {

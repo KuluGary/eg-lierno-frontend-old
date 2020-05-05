@@ -20,14 +20,6 @@ class HomeScreen extends Component {
             this.props.history.push("/login")
         } else {
             this.props.history.push("/characters")
-            // const url = Api.getKey('base_url') + '/characters';
-
-            // Api.fetchInternal(url)
-            //     .then(res => {
-            //         if (res.length === 0) {
-            //             // this.props.history.push("/character-creation")
-            //         }
-            //     })
         }
     }
 

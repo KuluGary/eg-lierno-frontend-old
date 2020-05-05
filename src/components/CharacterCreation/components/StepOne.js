@@ -29,8 +29,6 @@ export default function StepOne() {
   const levels = Array.from({ length: 20 }, (_, i) => i + 1);
 
   useEffect(() => {
-    const url = Api.getKey('base_url');
-
     Api.fetchInternal('/races')
       .then(res => setRaces(res));
 

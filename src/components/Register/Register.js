@@ -75,9 +75,7 @@ export default function Register(props) {
             }
         }
 
-        const url = Api.getKey('base_url') + '/register';
-
-        fetch(url, {
+        Api.fetchInternal('/auth/register', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import { connect } from "react-redux";
+import { addCharacters, addProfile } from "../../shared/actions/index";
 import Slide from '@material-ui/core/Slide';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,12 +12,11 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
 import { useWidth } from '../../helpers/media-query';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Api from "../../helpers/api";
 
 const useStyles = makeStyles({
@@ -47,76 +43,73 @@ const useStyles = makeStyles({
     },
 });
 
-function TablePaginationActions(props) {
-    const classes = useStyles1();
-    const theme = useTheme();
-    const { count, page, rowsPerPage, onChangePage } = props;
+const mapStateToProps = state => {
+    return {
+        characters: state.characters,
+        profile: state.profile,
+    }
+}
 
-    const handleFirstPageButtonClick = (event) => {
-        onChangePage(event, 0);
+const mapDispatchToProps = dispatch => {
+    return {
+        addCharacters: characters => dispatch(addCharacters(characters)),
+        addProfile: profile => dispatch(addProfile(profile))
     };
+}
 
-    const handleBackButtonClick = (event) => {
-        onChangePage(event, page - 1);
-    };
-
-    const handleNextButtonClick = (event) => {
-        onChangePage(event, page + 1);
-    };
-
-    const handleLastPageButtonClick = (event) => {
-        onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    };
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
 
     return (
-        <div className={classes.root}>
-            <IconButton
-                onClick={handleFirstPageButtonClick}
-                disabled={page === 0}
-                aria-label="first page"
-            >
-                {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-            </IconButton>
-            <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
-                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-            </IconButton>
-            <IconButton
-                onClick={handleNextButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="next page"
-            >
-                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-            </IconButton>
-            <IconButton
-                onClick={handleLastPageButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="last page"
-            >
-                {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-            </IconButton>
-        </div>
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box p={3}>{children}</Box>}
+        </Typography>
     );
 }
 
-const useStyles1 = makeStyles((theme) => ({
-    root: {
-        flexShrink: 0,
-        marginLeft: theme.spacing(2.5),
-    },
-}));
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
-export default function MediaCard() {
+function CharacterScreen(props) {
     const classes = useStyles();
-    const [characters, setCharacters] = useState([])
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [characters, setCharacters] = useState([]);
+    const [profile, setProfile] = useState([]);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [value, setValue] = React.useState(0);
     const width = useWidth();
 
     useEffect(() => {
-        const url = Api.getKey('base_url') + '/characters';
+        if (!props.characters) {
+            Api.fetchInternal('/characters')
+                .then(res => {
+                    props.addCharacters(res);
+                    setCharacters(res)
+                })
+        } else {
+            setCharacters(props.characters);
+        }
 
-        Api.fetchInternal('/characters')
-            .then(res => setCharacters(res))
+        if (!props.profile) {
+            Api.fetchInternal('/auth/me')
+                .then(res => {
+                    props.addProfile(res);
+                    setProfile(res)
+                })
+        } else {
+            setProfile(props.profile)
+        }
     }, [])
 
     const handleChangePage = (event, newPage) => {
@@ -128,79 +121,104 @@ export default function MediaCard() {
         setPage(0);
     };
 
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
     return (
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             <Paper variant="outlined">
-                <Table className={classes.table}>
-                    <TableHead>
-                        <TableRow>
-                            {(width !== "xs") &&
-                                <>
-                                    <TableCell className={classes.smallCell}></TableCell>
-                                </>}
-                            <TableCell>Nombre</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {characters.length > 0 && characters
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map(char => (
-                                <TableRow component={Link} to={'/characters/' + char._id} className={classes.link}>
-                                    {(width !== "xs") &&
-                                        <>
+                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                    <Tab label="Mis Personajes" {...a11yProps(0)} />
+                    <Tab label="Personajes de mis Campañas" {...a11yProps(1)} />
+                </Tabs>
+                <TabPanel value={value} index={0}>
+                    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                        <Table className={classes.table}>
+                            <TableHead>
+                                <TableRow>
+                                    {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
+                                    <TableCell>Nombre</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {(characters && profile) && characters.length > 0 && characters
+                                    .filter(character => character.player === profile._id)
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map(char => (
+                                        <TableRow component={Link} to={'/characters/' + char._id} className={classes.link}>
+                                            {(width !== "xs") &&
+                                                <TableCell className={classes.smallCell}>
+                                                    <div style={{
+                                                        backgroundImage: `url(${char.flavor.imageUrl})`,
+                                                        width: "5vw",
+                                                        height: "5vw",
+                                                        backgroundSize: "cover"
+                                                    }} />
+                                                </TableCell>}
+                                            <TableCell>{char.name}</TableCell>
+                                        </TableRow>))}
+                            </TableBody>
+                            <TableFooter>
+                                <TableRow>
+                                    <TablePagination
+                                        rowsPerPageOptions={5, 10, 15}
+                                        colspan={12}
+                                        count={characters.length}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage} />
+                                </TableRow>
+                            </TableFooter>
+                        </Table>
+                    </Slide>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                    <Table className={classes.table}>
+                        <TableHead>
+                            <TableRow>
+                                {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
+                                <TableCell>Nombre</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {(characters && profile) && characters.length > 0 && characters
+                                .filter(character => character.player !== profile._id)
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map(char => (
+                                    <TableRow component={Link} to={'/characters/' + char._id} className={classes.link}>
+                                        {(width !== "xs") &&
                                             <TableCell className={classes.smallCell}>
                                                 <div style={{
-                                                    backgroundImage: `url(${char.character[0].image_url})`,
+                                                    backgroundImage: `url(${char.flavor.imageUrl})`,
                                                     width: "5vw",
                                                     height: "5vw",
                                                     backgroundSize: "cover"
                                                 }} />
-                                            </TableCell>
-                                        </>}
-                                    <TableCell>{char.character[0].character_name}</TableCell>                                    
-                                </TableRow>
-                            ))}
-                    </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={5, 10, 15}
-                                colspan={12}
-                                count={characters.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                onChangePage={handleChangePage}
-                                onChangeRowsPerPage={handleChangeRowsPerPage} />
-                        </TableRow>
-                    </TableFooter>
-                </Table>
+                                            </TableCell>}
+                                        <TableCell>{char.name}</TableCell>
+                                    </TableRow>))}
+                        </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    rowsPerPageOptions={5, 10, 15}
+                                    colspan={12}
+                                    count={characters.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    onChangePage={handleChangePage}
+                                    onChangeRowsPerPage={handleChangeRowsPerPage} />
+                            </TableRow>
+                        </TableFooter>
+                    </Table>
+                    </Slide>
+                </TabPanel>
             </Paper>
-            {/* <div className={classes.root}>
-                {characters && characters.map((char, index) => (
-                    <Card className={classes.card} key={index}>
-                        <CardActionArea component={Link} to={'/characters/' + char._id}>
-                            <CardMedia
-                                className={classes.media}
-                                image={char.character[0].image_url}
-                                title={char.character[0].character_name}
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    {char.character[0].character_name}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    <span>{char.character[0].subrace && char.character[0].subrace}&nbsp;{char.character[0].race}&nbsp;</span>
-                                    {char.character[0].classes.map((charClass, index) => (
-                                        <span key={index}>
-                                            {charClass["class-name"]}({charClass["class-level"]})
-                                        </span>
-                                    ))}
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                ))}
-            </div> */}
         </Slide>
     );
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterScreen);

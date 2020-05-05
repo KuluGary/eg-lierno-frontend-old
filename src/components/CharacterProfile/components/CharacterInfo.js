@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Api from '../../../helpers/api';
 
 const useStyles = makeStyles({
     root: {
@@ -48,9 +49,12 @@ const useStyles = makeStyles({
 export default function CharacterInfo(props) {
     const classes = useStyles();
     const { name, image, race, subrace, alignment, background, charClass } = props;
+    const [raceData, setRace] = useState();
+    console.log(props)
 
     useEffect(() => {
-
+        Api.fetchInternal('/race/' + race)
+            .then(res => setRace(res))
     }, [])
 
     return (
@@ -64,9 +68,9 @@ export default function CharacterInfo(props) {
                         </Typography>
                     </Box>
                     <Box>
-                        {subrace + ' ' + race + ','}
+                        {raceData && (raceData.name + ',')}
                         {" " + background + " " + alignment + ", "}
-                        {charClass.map(charClass => <span>{" " + charClass["class-name"] + " " + charClass["class-level"]}</span>)}
+                        {charClass.map(charClass => <span>{" " + charClass["className"] + " " + charClass["classLevel"]}</span>)}
                     </Box>
                     <Box>
                     </Box>

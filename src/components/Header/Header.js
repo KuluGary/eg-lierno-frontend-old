@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { Redirect, Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { compose } from "redux";
 import { makeStyles } from '@material-ui/core/styles';
+import { addProfile } from "../../shared/actions/index";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
+import Api from "../../helpers/api";
 import Menu from '@material-ui/core/Menu';
 
 const drawerWidth = 240;
@@ -44,15 +48,42 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: 'inherit',
     textDecoration: 'none'
+  },
+  avatar: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+    fontSize: "50%",
+    backgroundColor: theme.palette.secondary.main
   }
 }));
 
-function MenuAppBar(props) {
+const mapStateToProps = state => {
+  return { profile: state.profile }
+}
+
+const mapDispatchToProps = dispatch => {
+  return { addProfile: profile => dispatch(addProfile(profile)) };
+}
+
+function Header(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [hasLoggedOut, setLogout] = React.useState(false);
-  const [goToProfile, setProfile] = React.useState(false);
+  const [user, setUser] = useState();
+  const [avatar, setAvatar] = useState();
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    if (!props.profile) {
+      Api.fetchInternal('/auth/me')
+        .then(res => {
+          props.addProfile(res)
+          setUser(res)
+        });
+    } else {
+      setUser(props.profile)
+    }
+  }, [])
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -80,7 +111,6 @@ function MenuAppBar(props) {
   return (
     <div className={classes.root}>
       {hasLoggedOut && <Redirect to="/login" />}
-      {goToProfile && <Redirect to="/profile" />}
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
@@ -112,7 +142,19 @@ function MenuAppBar(props) {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle fontSize="large" />
+                {avatar || (user && user.metadata.avatar) ?
+                  <Avatar
+                    src={avatar || (user && user.metadata.avatar)}
+                    className={classes.avatar}
+                    alt={user && user.metadata.first_name + ' ' + user.metadata.last_name}
+                  /> :
+                  <Avatar
+                    className={classes.avatar}
+                    alt={user && user.metadata.first_name + ' ' + user.metadata.last_name}>
+                    {user && (user.metadata.first_name + ' ' + user.metadata.last_name).match(/\b(\w)/g).join('')}
+                  </Avatar>
+                }
+                {/* <AccountCircle fontSize="large" /> */}
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -129,7 +171,7 @@ function MenuAppBar(props) {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={() => setProfile(true)}>My account</MenuItem>
+                <MenuItem onClick={() => props.history.push("/profile")}>My account</MenuItem>
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
             </div>
@@ -140,4 +182,7 @@ function MenuAppBar(props) {
   );
 }
 
-export default withRouter(MenuAppBar)
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Header)

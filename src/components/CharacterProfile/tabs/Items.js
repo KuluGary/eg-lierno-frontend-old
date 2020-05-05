@@ -34,6 +34,7 @@ export default function Items(props) {
     const [categories, setCategories] = useState([])
     const [selectedCategory, setSelectedCategory] = useState();
     const [tableItems, setTableItems] = useState([]);
+    const [categoryNames, setCategoryNames] = useState([]);
     const width = useWidth();
 
     function TabPanel(props) {
@@ -54,14 +55,20 @@ export default function Items(props) {
     }
 
     useEffect(() => {
-        const url = Api.getKey('base_url') + '/items/'
         let items = [];
         let cats = [];
+        let selectedCategoryNames = [];
+        const categoryNames = ["Objetos", "Armadura", "Objetos Mágicos", "Armas", "Armas mágicas"];
 
-        Object.keys(props.items).forEach(block => {
-            props.items[block] && cats.push(block);
+        Object.keys(props.items).forEach((block, index) => {
+            if (props.items[block]) {
+                cats.push(block)
+                selectedCategoryNames.push(categoryNames[index])
+            }
         })
+
         setCategories(cats)
+        setCategoryNames(selectedCategoryNames)
         cats.forEach(cat => props.items[cat].forEach(item => item.id && items.push(item.id)))
 
         setSelectedCategory(0)
@@ -72,6 +79,7 @@ export default function Items(props) {
 
         })
             .then(async res => {
+                console.log(res)
                 let itemsToSet = [];
 
                 cats.forEach(cat => {
@@ -105,14 +113,14 @@ export default function Items(props) {
 
     return (
         <div className={classes.container}>
-            <Paper>
+            <Paper variant="outlined">
                 <Tabs
                     variant="scrollable"
                     value={selectedCategory}
                     onChange={handleChange}
                     aria-label="simple tabs example">
                     {categories.map((category, index) => (
-                        <Tab key={index} label={category} {...a11yProps(category)} />
+                        <Tab key={index} label={categoryNames[index]} {...a11yProps(category)} />
                     ))}
                 </Tabs>
                 {categories.map((category, index) => (
@@ -121,50 +129,47 @@ export default function Items(props) {
                     </TabPanel>
                 ))}
                 {tableItems.length > 0 &&
-                    <TableContainer component={Paper}>
-                        <Table className={classes.table} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                {(width !== "xs") &&
+                                    <TableCell></TableCell>
+                                }
+                                <TableCell align="left">Nombre</TableCell>
+                                {(width !== "xs" && width !== "sm") &&
+                                    <>
+                                        <TableCell align="left">Efecto</TableCell>
+                                        <TableCell align="left">Descripción</TableCell>
+                                        <TableCell align="left">¿Equipado?</TableCell>
+                                        <TableCell align="left">Cantidad</TableCell>
+                                    </>
+                                }
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {tableItems.map((row, index) => (
+                                <TableRow key={index}>
                                     {(width !== "xs") &&
-                                        <TableCell></TableCell>
+                                        <TableCell component="th" scope="row">
+                                            <img src={row.data.image.small} className={classes.avatar} />
+                                        </TableCell>
                                     }
-                                    <TableCell align="left">Name</TableCell>
+                                    <TableCell align="left">{row.data.name}</TableCell>
                                     {(width !== "xs" && width !== "sm") &&
                                         <>
-                                            <TableCell align="left">Effect</TableCell>
-                                            <TableCell align="left">Description</TableCell>
-                                            <TableCell align="left">Equipped?</TableCell>
-                                            <TableCell align="left">Quantity</TableCell>
-                                        </>
-                                    }
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {tableItems.map((row, index) => (
-                                    <TableRow key={index}>
-                                        {(width !== "xs") &&
-                                            <TableCell component="th" scope="row">
-                                                <img src={row.data.image.small} className={classes.avatar} />
+                                            <TableCell align="left">{row.data.effect}</TableCell>
+                                            <TableCell align="left">{row.data.description}</TableCell>
+                                            <TableCell align="left">
+                                                <Checkbox
+                                                    checked={row.equipped}
+                                                />
                                             </TableCell>
-                                        }
-                                        <TableCell align="left">{row.data.name}</TableCell>
-                                        {(width !== "xs" && width !== "sm") &&
-                                            <>
-                                                <TableCell align="left">{row.data.effect}</TableCell>
-                                                <TableCell align="left">{row.data.description}</TableCell>
-                                                <TableCell align="left">
-                                                    <Checkbox
-                                                        checked={row.equipped}
-                                                    // inputProps={{ 'aria-labelledby': labelId }}
-                                                    />
-                                                </TableCell>
-                                                <TableCell align="right">{row.quantity}</TableCell>
-                                            </>}
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                                            <TableCell align="right">{row.quantity}</TableCell>
+                                        </>}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 }
             </Paper>
         </div>

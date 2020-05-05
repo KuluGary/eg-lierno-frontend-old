@@ -61,7 +61,7 @@ export default function Attacks(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.attacks["weapons-attacks"].map((attack, index) => (
+                    {props.attacks.map((attack, index) => (
                         <TableRow key={index}>
                             <TableCell>
                                 {attack.name}
@@ -89,7 +89,7 @@ export default function Attacks(props) {
             </Table>
             <Box className={classes.box}>
                 <Typography variant="subtitle2">
-                    {"Número de ataques: " + props.attacks["num-attacks"]}
+                    {"Número de ataques: " + props["numAttacks"]}
                 </Typography>
             </Box>
         </Paper>
