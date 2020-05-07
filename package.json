@@ -1,13 +1,49 @@
 {
-  "name": "front",
+  "name": "lierno-client-app",
+  "productName": "Lierno",
+  "description": "Lierno frontend application",
+  "author": "Gabriel Cuétara",
+  "main": "public/electron.js",
+  "homepage": "./",
   "version": "0.1.0",
   "private": true,
+  "build": {
+    "appId": "com.lierno.app",
+    "files": [
+      "./build/**/*",
+      "./public/electron.js"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32",
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nodeGypRebuild": "false",
+    "npmRebuild": "false"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron-build": "npm run build && npm electron-builder",
+    "release": "electron-builder --publish=never",
+    "electron-dev": "concurrently \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\""
+  },
   "dependencies": {
     "@material-ui/core": "^4.9.13",
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "cross-env": "^7.0.2",
+    "electron-is-dev": "^1.2.0",
     "jwt-decode": "^2.2.0",
     "leaflet": "^1.6.0",
     "react": "^16.13.1",
@@ -20,11 +56,11 @@
     "redux": "^4.0.5",
     "typeface-roboto": "0.0.75"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "devDependencies": {
+    "concurrently": "^5.2.0",
+    "electron": "^8.2.5",
+    "electron-builder": "^19.26.3",
+    "wait-on": "^5.0.0"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,4 +77,5 @@
       "last 1 safari version"
     ]
   }
+
 }
