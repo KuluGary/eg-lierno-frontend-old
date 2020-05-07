@@ -105,7 +105,7 @@ function Login(props) {
                         <Avatar className={classes.avatar}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <Typography component="h1" variant="h5">Sign in</Typography>
+                        <Typography component="h1" variant="h5">Entrar</Typography>
                         <form className={classes.form} noValidate onSubmit={login}>
                             <TextField
                                 variant="outlined"
@@ -114,7 +114,7 @@ function Login(props) {
                                 fullWidth
                                 error={errorState}
                                 id="email"
-                                label="Username"
+                                label="Cuenta de usuario"
                                 name="username"
                                 autoComplete="username"
                                 autoFocus
@@ -127,7 +127,7 @@ function Login(props) {
                                 fullWidth
                                 error={errorState}
                                 name="password"
-                                label="Password"
+                                label="Contraseña"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
@@ -139,7 +139,7 @@ function Login(props) {
                                         checked={remember}
                                         onChange={() => setRemember(!remember)} />
                                 }
-                                label="Remember me"
+                                label="Recuérdame"
                             />
                             <Button
                                 type="submit"
@@ -147,12 +147,12 @@ function Login(props) {
                                 variant="contained"
                                 color="primary"
                                 className={classes.submit}>
-                                Sign In
+                                Entrar
                         </Button>
                             <Grid container>
                                 <Grid item>
                                     <Link to="/register" className={classes.link}>
-                                        {"Don't have an account? Sign Up"}
+                                        {"¿No tienes una cuenta? Regístrate"}
                                     </Link>
                                 </Grid>
                             </Grid>

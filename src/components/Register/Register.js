@@ -82,7 +82,10 @@ export default function Register(props) {
             },
             body: JSON.stringify(user)
         })
-            .then(() => setRegistered(true))
+            .then(() => {
+                props.history.push("/");
+                setRegistered(true);
+            })
     }
 
     return (
@@ -94,7 +97,7 @@ export default function Register(props) {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        Registrarse
                     </Typography>
                     <form className={classes.form} noValidate>
                         <Grid container spacing={2}>
@@ -106,7 +109,7 @@ export default function Register(props) {
                                     required
                                     fullWidth
                                     id="firstName"
-                                    label="First Name"
+                                    label="Nombre"
                                     autoFocus
                                     onChange={(e) => setName(e.target.value)}
                                 />
@@ -117,7 +120,7 @@ export default function Register(props) {
                                     required
                                     fullWidth
                                     id="lastName"
-                                    label="Last Name"
+                                    label="Apellido"
                                     name="lastName"
                                     autoComplete="lname"
                                     onChange={(e) => setLastName(e.target.value)}
@@ -129,7 +132,7 @@ export default function Register(props) {
                                     required
                                     fullWidth
                                     id="email"
-                                    label="Email Address"
+                                    label="Cuenta de e-mail"
                                     name="email"
                                     autoComplete="email"
                                     onChange={(e) => setEmail(e.target.value)}
@@ -141,7 +144,7 @@ export default function Register(props) {
                                     required
                                     fullWidth
                                     id="username"
-                                    label="Username"
+                                    label="Nombre de Usuario"
                                     name="username"
                                     autoComplete="username"
                                     onChange={(e) => setUserName(e.target.value)}
@@ -153,7 +156,7 @@ export default function Register(props) {
                                     required
                                     fullWidth
                                     name="password"
-                                    label="Password"
+                                    label="Contraseña"
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
@@ -168,12 +171,12 @@ export default function Register(props) {
                             color="primary"
                             className={classes.submit}
                         >
-                            Sign Up
+                            Registrarse
                         </Button>
                         <Grid container justify="flex-end">
                             <Grid item>
                                 <Link to="/login" className={classes.link}>
-                                    Already have an account? Sign in
+                                    ¿Ya tienes una cuenta? Entra.
                                 </Link>
                             </Grid>
                         </Grid>

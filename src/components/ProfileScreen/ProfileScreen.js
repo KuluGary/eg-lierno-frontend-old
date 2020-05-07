@@ -134,9 +134,11 @@ function ProfileScreen(props) {
     }, [])
 
     const updateProfile = () => {
+        setAvatar();
         let body = {
             profile: user["metadata"]
         }
+
 
         body["profile"]["avatar"] = avatar;
 
@@ -148,10 +150,6 @@ function ProfileScreen(props) {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-    };
-
-    const handleChangeIndex = (index) => {
-        setValue(index);
     };
 
     return (
@@ -186,13 +184,14 @@ function ProfileScreen(props) {
                                     defaultValue={user && user.metadata.avatar}
                                     helperText="Input a valid direct URL"
                                     variant="outlined"
+                                    value={avatar}
                                     onChange={(e) => setAvatar(e.target.value)}
                                 />
                             </Box>
                         </Grid>
                         <Grid item md={9} style={{ position: "relative" }}>
                             <Typography variant="h6">
-                                User profile
+                                Perfil de usuario
                         </Typography>
                             <Box component="div" style={{
                                 display: "flex",
@@ -200,7 +199,7 @@ function ProfileScreen(props) {
                             }}>
                                 <Box component="div">
                                     <Box component="span" style={{ fontWeight: 600 }}>
-                                        {'Full name: '}
+                                        {'Nombre: '}
                                     </Box>
                                     <Box component="span">
                                         {user && user.metadata.first_name + ' ' + user.metadata.last_name}
@@ -216,7 +215,7 @@ function ProfileScreen(props) {
                                 </Box>
                                 <Box component="div">
                                     <Box component="span" style={{ fontWeight: 600 }}>
-                                        {'Date of creation: '}
+                                        {'Fecha de creación: '}
                                     </Box>
                                     <Box component="span">
                                         {user && StringUtil.getDateFromISODate(user.createdAt)}
@@ -224,7 +223,7 @@ function ProfileScreen(props) {
                                 </Box>
                                 <Box component="div">
                                     <Box component="span" style={{ fontWeight: 600 }}>
-                                        {'Last updated: '}
+                                        {'Última edición: '}
                                     </Box>
                                     <Box component="span">
                                         {user && StringUtil.getDateFromISODate(user.updatedAt)}
@@ -237,7 +236,7 @@ function ProfileScreen(props) {
                                 color="primary"
                                 onClick={updateProfile}
                                 disabled={!avatar}
-                                className={classes.submitButton}> Save profile </Button>
+                                className={classes.submitButton}> Guardar perfil </Button>
                         </Grid>
                     </Grid>
                 </Paper>
@@ -260,7 +259,7 @@ function ProfileScreen(props) {
                                 <TableRow>
                                     <TableCell></TableCell>
                                     <TableCell>
-                                        Name
+                                        Nombre
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -287,7 +286,7 @@ function ProfileScreen(props) {
                                 <TableRow>
                                     <TableCell></TableCell>
                                     <TableCell>
-                                        Name
+                                        Nombre
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

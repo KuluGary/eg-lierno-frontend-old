@@ -171,8 +171,8 @@ function Header(props) {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={() => props.history.push("/profile")}>My account</MenuItem>
-                <MenuItem onClick={logout}>Logout</MenuItem>
+                <MenuItem onClick={() => props.history.push("/profile")}>Mi cuenta</MenuItem>
+                <MenuItem onClick={logout}>Salir</MenuItem>
               </Menu>
             </div>
           </div>
