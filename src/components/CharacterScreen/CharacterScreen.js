@@ -164,7 +164,7 @@ function CharacterScreen(props) {
                                     <TablePagination
                                         rowsPerPageOptions={5, 10, 15}
                                         colspan={12}
-                                        count={characters.length}
+                                        count={characters.filter(character => character.player === profile._id).length}
                                         rowsPerPage={rowsPerPage}
                                         page={page}
                                         onChangePage={handleChangePage}
@@ -206,7 +206,7 @@ function CharacterScreen(props) {
                                 <TablePagination
                                     rowsPerPageOptions={5, 10, 15}
                                     colspan={12}
-                                    count={characters.length}
+                                    count={characters.filter(character => character.player !== profile._id).length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onChangePage={handleChangePage}

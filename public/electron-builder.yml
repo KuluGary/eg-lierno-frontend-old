@@ -1,0 +1,4 @@
+appId: com.lierno.app
+publish:
+  provider: github
+  token: 2f0915647fdd82f2fd50c9176a81e98fea26ba53

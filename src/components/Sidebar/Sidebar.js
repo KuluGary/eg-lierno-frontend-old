@@ -18,6 +18,7 @@ import ExploreIcon from '@material-ui/icons/Explore';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import PetsIcon from '@material-ui/icons/Pets';
 import MapIcon from '@material-ui/icons/Map';
+import BookIcon from '@material-ui/icons/Book';
 import Auth from '../../helpers/auth';
 
 const drawerWidth = 240;
@@ -129,6 +130,14 @@ export default function MiniDrawer(props) {
                 <SupervisedUserCircleIcon />
               </ListItemIcon>
               <ListItemText primary={'PNJs'} />
+            </ListItem>
+          </Link>}
+          {Auth.hasRole("REFERENCE_ACCESS") && <Link to="/reference" className={classes.link}>
+            <ListItem button>
+              <ListItemIcon>
+                <BookIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Referencias'} />
             </ListItem>
           </Link>}
           {Auth.hasRole("BESTIARY_ACCESS") && <Link to="/bestiary" className={classes.link}>

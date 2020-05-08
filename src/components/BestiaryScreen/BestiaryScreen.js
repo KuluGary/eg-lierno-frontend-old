@@ -111,7 +111,14 @@ function BestiaryScreen(props) {
                                         {(width !== "xs" && width !== "sm") &&
                                             <>
                                                 <TableCell>{monster.stats.challengeRatingStr}</TableCell>
-                                                <TableCell>{monster.flavor.description}</TableCell>
+                                                <TableCell style={{
+                                                    maxWidth: "30vw",
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    whiteSpace: "nowrap",
+                                                }}>
+                                                    {monster.flavor.description}
+                                                </TableCell>
                                             </>}
                                         {/* <TableCell><NavLink className={classes.link} to={'/bestiary/' + monster._id}><NavigateNextIcon /></NavLink></TableCell> */}
                                     </TableRow>

@@ -22,8 +22,13 @@ import BestiaryScreen from './components/BestiaryScreen/BestiaryScreen';
 import MonsterProfile from './components/MonsterProfile/MonsterProfile';
 import NpcScreen from './components/NpcScreen/NpcScreen';
 import NpcProfile from './components/NpcProfile/NpcProfile';
+import Reference from './components/Referencia/Referencia';
+import Update from './components/Update/Update';
 import Box from '@material-ui/core/Box';
-import Slide from '@material-ui/core/Slide'
+
+const electron = window.require('electron');
+const ipcRenderer = electron.ipcRenderer;
+
 
 class App extends Component {
   constructor(props) {
@@ -32,7 +37,33 @@ class App extends Component {
     this.state = {
       isAuthenticated: false,
       hasLoaded: false,
-      drawerOpen: false
+      drawerOpen: false,
+      update: false,
+      downloaded: false,
+      updateVersion: "0.0.0"
+    }
+  }
+
+  componentDidMount() {
+    if (window && window.process && window.process.type) {
+      ipcRenderer.on('update_available', () => {
+        ipcRenderer.send('app_version');
+        ipcRenderer.on('app_version', (event, arg) => {
+          ipcRenderer.removeAllListeners('app_version');
+          this.setState({
+            update: true,
+            updateVersion: arg.version
+          })
+        });
+      })
+
+      ipcRenderer.on('update_downloaded', () => {
+        ipcRenderer.removeAllListeners('update_downloaded');
+        this.setState({
+          update: true,
+          downloaded: true
+        })
+      })
     }
   }
 
@@ -45,6 +76,16 @@ class App extends Component {
   authenticated() {
     this.setState({
       isAuthenticated: !this.state.isAuthenticated
+    })
+  }
+
+  restartApp() {
+    ipcRenderer.sent('restart_app')
+  }
+
+  closeNotification() {
+    this.setState({
+      update: false
     })
   }
 
@@ -62,14 +103,19 @@ class App extends Component {
                 open={this.state.drawerOpen}
                 handleDrawer={this.handleDrawerOpen.bind(this)} />
             </>}
+          <Update
+            update={this.state.update}
+            restartApp={this.restartApp}
+            downloaded={this.state.downloaded}
+            closeNotification={this.closeNotification}
+            version={this.state.updateVersion} />
           <Switch>
             <Route path="/login" render={() => (
               <Login
                 authenticated={this.authenticated.bind(this)} />
             )} />
             <Box style={{
-              margin: '5rem 1rem 1rem 5rem', 
-              // width: "100vw"             
+              margin: '5rem 1rem 1rem 5rem'
             }}>
               <Route path="/register" component={Register} />
               <Route path="/profile" component={ProfileScreen} />
@@ -84,6 +130,7 @@ class App extends Component {
               {Auth.hasRole("BESTIARY_ACCESS") && <Route exact path="/bestiary" component={BestiaryScreen} />}
               {Auth.hasRole("MAP_ACCESS") && <Route exact path="/map" component={MapScreen} />}
               {Auth.hasRole("MAP_ACCESS") && <Route exact path="/location/:id" component={Location} />}
+              {Auth.hasRole("REFERENCE_ACCESS") && <Route exact path="/reference" component={Reference} />}
               <Route exact path="/" component={HomeScreen} />
             </Box>
           </Switch>

@@ -196,7 +196,7 @@ function MonsterProfile(props) {
                                                 {'Valor de desafío: '}
                                             </Typography>
                                             <Typography variant={'subheader4'} inline>
-                                                {monster.stats.challengeRatingStr}
+                                                {monster.stats.challengeRatingStr + (monster.stats.experiencePoints && ' (' + monster.stats.experiencePoints + ' XP)')}
                                             </Typography>
                                         </Box>
                                     </Box>
@@ -268,7 +268,8 @@ function MonsterProfile(props) {
                                     small={monster.flavor.imageUrl}
                                     large={monster.flavor.imageUrl}
                                 />
-                                {monster.flavor.description}
+                                <span dangerouslySetInnerHTML={{ __html: monster.flavor.description }} />
+
                             </Paper>
                         </Grid>
                     </Grid>
