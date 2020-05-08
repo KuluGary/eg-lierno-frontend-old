@@ -47,21 +47,16 @@ class App extends Component {
 
   componentDidMount() {
     if (window && window.process && window.process.type) {
+      console.log('window', ipcRenderer)
       ipcRenderer.on('update_available', () => {
-        ipcRenderer.send('app_version');
-        ipcRenderer.on('app_version', (event, arg) => {
-          ipcRenderer.removeAllListeners('app_version');
-          this.setState({
-            update: true,
-            updateVersion: arg.version
-          })
-        });
+        this.setState({
+          update: true,
+        })
       })
 
       ipcRenderer.on('update_downloaded', () => {
         ipcRenderer.removeAllListeners('update_downloaded');
         this.setState({
-          update: true,
           downloaded: true
         })
       })
@@ -108,8 +103,7 @@ class App extends Component {
             update={this.state.update}
             restartApp={this.restartApp}
             downloaded={this.state.downloaded}
-            closeNotification={this.closeNotification}
-            version={this.state.updateVersion} />
+            closeNotification={this.closeNotification}  />
           <Switch>
             <Route path="/login" render={() => (
               <Login

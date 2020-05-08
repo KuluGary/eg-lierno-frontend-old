@@ -5,6 +5,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
+
 
 export default function Update(props) {
     const [open, setOpen] = React.useState(false);
@@ -18,11 +21,21 @@ export default function Update(props) {
         >
             <DialogTitle id="alert-dialog-title">{"Hay una nueva versión disponible"}</DialogTitle>
             <DialogContent>
+                {!props.download ?                 
                 <DialogContentText id="alert-dialog-description">
-                    {!props.download ? 
-                    `Lierno App tiene una nueva versión desde la última vez que entraste. ¿Quieres descargar Lierno App versión ${props.version}?` 
-                    : `La actualización se ha descargado, y se instalará una vez se reinicie la aplicación. ¿Reiniciar ahora?`}
+                    <Box component="div">
+                    <CircularProgress style={{
+                        display: "block",
+                        margin: "0 auto",
+                        marginBottom: "1rem"
+                    }} />
+                    </Box>
+                    Lierno App está descargando una nueva versión. Por favor espera unos segundos y podrá instalarla.                    
                 </DialogContentText>
+                :
+                <DialogContentText id="alert-dialog-description">
+                    La actualización se ha descargado, y se instalará una vez se reinicie la aplicación. ¿Reiniciar ahora?
+                </DialogContentText>}
             </DialogContent>
             <DialogActions>
                 {props.download &&

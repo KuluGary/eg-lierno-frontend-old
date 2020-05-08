@@ -23,7 +23,7 @@ function Copyright(props) {
             {'Copyright © '}
                 Gary Cuétara{' '}
             {new Date().getFullYear()}
-            {'. '}
+            {'. '} 
             {'Versión #' + props.version}
         </Typography>
     );

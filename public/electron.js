@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
 
+const log = require('electron-log');
 const path = require('path');
 const isDev = require('electron-is-dev');
 
@@ -13,21 +14,28 @@ function createWindow() {
     minWidth: 640,
     minHeight: 480,
     webPreferences: {
-      nodeIntegration: true,
-    } 
+      nodeIntegration: true
+    }
   });
   mainWindow.removeMenu()
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+  
   if (isDev) {
-    // Open the DevTools.
-    //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
     mainWindow.webContents.openDevTools();
   }
+
   mainWindow.on('closed', () => mainWindow = null);
-  
+
   mainWindow.once('ready-to-show', () => {
     autoUpdater.checkForUpdatesAndNotify();
   })
+}
+
+function sendStatus(text) {
+  log.info(text);
+  if (mainWindow) {
+    mainWindow.webContents.send('message', text);
+  }
 }
 
 app.on('ready', createWindow);
@@ -48,15 +56,20 @@ autoUpdater.on('update-available', () => {
   mainWindow.webContents.send('update_available');
 });
 
+
 autoUpdater.on('update-downloaded', () => {
   mainWindow.webContents.send('update_downloaded');
 });
 
 ipcMain.on('app_version', (event) => {
-  console.log('')
   event.sender.send('app_version', { version: app.getVersion() });
 })
 
 ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall();
 });
+
+setTimeout(function() {
+  log.info('starting update check');
+  autoUpdater.checkForUpdates()  
+}, 1000);
