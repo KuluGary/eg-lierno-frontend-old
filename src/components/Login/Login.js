@@ -17,13 +17,14 @@ import Api from "../../helpers/api";
 import Auth from "../../helpers/auth";
 import Slide from '@material-ui/core/Slide';
 
-function Copyright() {
+function Copyright(props) {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
                 Gary Cuétara{' '}
             {new Date().getFullYear()}
-            {'.'}
+            {'. '}
+            {'Versión #' + props.version}
         </Typography>
     );
 }
@@ -159,7 +160,7 @@ function Login(props) {
                         </form>
                     </div>
                     <Box mt={8}>
-                        <Copyright />
+                        <Copyright version={props.version} />
                     </Box>
                 </Container>        
             </Slide>

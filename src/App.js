@@ -24,6 +24,7 @@ import NpcScreen from './components/NpcScreen/NpcScreen';
 import NpcProfile from './components/NpcProfile/NpcProfile';
 import Reference from './components/Referencia/Referencia';
 import Update from './components/Update/Update';
+import Package from '../package.json';
 import Box from '@material-ui/core/Box';
 
 const electron = window.require('electron');
@@ -112,6 +113,7 @@ class App extends Component {
           <Switch>
             <Route path="/login" render={() => (
               <Login
+                version={this.state.uploadVersion || Package.version}
                 authenticated={this.authenticated.bind(this)} />
             )} />
             <Box style={{
