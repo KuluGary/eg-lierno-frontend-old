@@ -27,8 +27,8 @@ import Update from './components/Update/Update';
 import Package from '../package.json';
 import Box from '@material-ui/core/Box';
 
-const electron = window.require('electron');
-const ipcRenderer = electron.ipcRenderer;
+const electron = window && window.process && window.process.type && window.require('electron');
+const ipcRenderer = electron && electron.ipcRenderer;
 
 
 class App extends Component {
@@ -111,7 +111,7 @@ class App extends Component {
             restartApp={this.restartApp}
             downloaded={this.state.downloaded}
             status={this.state.status}
-            closeNotification={this.closeNotification}  />
+            closeNotification={this.closeNotification.bind(this)}  />
           <Switch>
             <Route path="/login" render={() => (
               <Login
