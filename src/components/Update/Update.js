@@ -21,29 +21,30 @@ export default function Update(props) {
         >
             <DialogTitle id="alert-dialog-title">{"Hay una nueva versión disponible"}</DialogTitle>
             <DialogContent>
-                {!props.download ?                 
-                <DialogContentText id="alert-dialog-description">
-                    <Box component="div">
-                    <CircularProgress style={{
-                        display: "block",
-                        margin: "0 auto",
-                        marginBottom: "1rem"
-                    }} />
-                    </Box>
-                    Lierno App está descargando una nueva versión. Por favor espera unos segundos y podrá instalarla.                    
-                </DialogContentText>
-                :
-                <DialogContentText id="alert-dialog-description">
-                    La actualización se ha descargado, y se instalará una vez se reinicie la aplicación. ¿Reiniciar ahora?
+                {!props.downloaded ?
+                    <DialogContentText id="alert-dialog-description">
+                        <Box component="div">
+                            <CircularProgress style={{
+                                display: "block",
+                                margin: "0 auto",
+                                marginBottom: "1rem"
+                            }} />
+                        </Box>
+                        <Box component="p">Lierno App está descargando una nueva versión. Por favor espera unos segundos y podrá instalarla.</Box>
+                        <Box component="p">{props.status && props.status}</Box>
+                    </DialogContentText>
+                    :
+                    <DialogContentText id="alert-dialog-description">
+                        La actualización se ha descargado, y se instalará una vez se reinicie la aplicación. ¿Reiniciar ahora?
                 </DialogContentText>}
             </DialogContent>
             <DialogActions>
-                {props.download &&
+                {props.downloaded &&
                     <>
-                        <Button color="primary" onClick={this.props.closeNotification}>
+                        <Button color="primary" onClick={props.closeNotification}>
                             Cerrar
                         </Button>
-                        <Button color="primary" onClick={this.props.restartApp} autoFocus>
+                        <Button color="primary" onClick={props.restartApp} autoFocus>
                             Reiniciar
                         </Button>
                     </>

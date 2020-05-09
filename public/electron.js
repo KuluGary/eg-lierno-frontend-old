@@ -17,7 +17,7 @@ function createWindow() {
       nodeIntegration: true
     }
   });
-  mainWindow.removeMenu()
+  // mainWindow.removeMenu()
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
   
   if (isDev) {
@@ -56,10 +56,13 @@ autoUpdater.on('update-available', () => {
   mainWindow.webContents.send('update_available');
 });
 
-
 autoUpdater.on('update-downloaded', () => {
   mainWindow.webContents.send('update_downloaded');
 });
+
+autoUpdater.on('error', (ev, err) => {
+  mainWindow.webContents.send(err)
+})
 
 ipcMain.on('app_version', (event) => {
   event.sender.send('app_version', { version: app.getVersion() });
