@@ -24,16 +24,14 @@ const useStyles = makeStyles({
         textDecoration: 'none',
 
     },
-    bold: {
-        fontWeight: 800
-    },
     fullWidthDivier: {
         margin: ".5rem 0"
     },
     image: {
         display: "block",
         margin: "0 auto",
-        maxHeight: "100vh"
+        maxHeight: "100vh",
+        maxWidth: "100%"
     }
 });
 
@@ -76,7 +74,7 @@ export default function Race(props) {
                                     <Box>
                                         {race.racialFeatures.map(feature => (
                                             <Box component="p">
-                                                <span className={classes.bold}>{feature.name + '. '}</span>
+                                                <Typography display="inline" variant="subtitle2">{feature.name + '. '}</Typography>
                                                 <span dangerouslySetInnerHTML={{ __html: feature.effect }} />
                                             </Box>
                                         ))}
@@ -89,8 +87,7 @@ export default function Race(props) {
                                 src={race.imageUrl} />
                         </Grid>
                     </Grid>
-                </Paper>
-            }
+                </Paper>}
         </div >
     );
 }

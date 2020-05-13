@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         width: "20%",
-        height: "20%"
+        height: "20%",
     },
     link: {
         color: 'inherit',
@@ -101,7 +101,8 @@ function NpcScreen(props) {
                                                         backgroundImage: `url(${npc.flavor.imageUrl})`,
                                                         width: "5vw",
                                                         height: "5vw",
-                                                        backgroundSize: "cover"
+                                                        backgroundSize: "cover",
+                                                        borderRadius: 10
                                                     }} />
                                                 </TableCell>
                                             </>}

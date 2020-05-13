@@ -69,7 +69,7 @@ function TabPanel(props) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && <Box p={3}>{children}</Box>}
+            {value === index && <Box>{children}</Box>}
         </Typography>
     );
 }
@@ -153,7 +153,8 @@ function CharacterScreen(props) {
                                                         backgroundImage: `url(${char.flavor.imageUrl})`,
                                                         width: "5vw",
                                                         height: "5vw",
-                                                        backgroundSize: "cover"
+                                                        backgroundSize: "cover",
+                                                        borderRadius: 10
                                                     }} />
                                                 </TableCell>}
                                             <TableCell>{char.name}</TableCell>
@@ -195,7 +196,8 @@ function CharacterScreen(props) {
                                                     backgroundImage: `url(${char.flavor.imageUrl})`,
                                                     width: "5vw",
                                                     height: "5vw",
-                                                    backgroundSize: "cover"
+                                                    backgroundSize: "cover",
+                                                    borderRadius: 10
                                                 }} />
                                             </TableCell>}
                                         <TableCell>{char.name}</TableCell>

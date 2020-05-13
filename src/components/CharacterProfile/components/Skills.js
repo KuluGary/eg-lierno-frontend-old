@@ -49,10 +49,6 @@ const HtmlTooltip = withStyles((theme) => ({
 export default function Skills(props) {
     const classes = useStyles();
 
-    useEffect(() => {
-
-    }, [])
-
     return (
         <Paper variant="outlined" className={classes.paper}>
             <Table className={classes.table}>
@@ -80,7 +76,7 @@ export default function Skills(props) {
                                     {props.skills[check].name}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {props.skills[check].bonus}
+                                    { props.stats[props.skills[check].modifier] + (props.skills[check].proficient && props.proficiency * (props.skills[check].expertise ? 2 : 1)) }
                                 </TableCell>
                             </TableRow>
                         </HtmlTooltip>

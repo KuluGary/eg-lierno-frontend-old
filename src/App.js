@@ -20,17 +20,20 @@ import Location from "./components/Location/Location";
 import InitiativeTracker from './components/InitiativeTracker/InitiativeTracker';
 import BestiaryScreen from './components/BestiaryScreen/BestiaryScreen';
 import MonsterProfile from './components/MonsterProfile/MonsterProfile';
+import MonsterCreation from './components/MonsterCreation/MonsterCreation';
 import NpcScreen from './components/NpcScreen/NpcScreen';
 import NpcProfile from './components/NpcProfile/NpcProfile';
 import Reference from './components/Referencia/Referencia';
 import Update from './components/Update/Update';
 import Package from '../package.json';
+import 'react-toastify/dist/ReactToastify.css';
 import Box from '@material-ui/core/Box';
+import { toast } from 'react-toastify'
 
 const electron = window && window.process && window.process.type && window.require('electron');
 const ipcRenderer = electron && electron.ipcRenderer;
 
-
+toast.configure()
 class App extends Component {
   constructor(props) {
     super(props)
@@ -93,6 +96,7 @@ class App extends Component {
   }
 
   render() {
+    
     return (
       <>
         <Router>
@@ -111,7 +115,7 @@ class App extends Component {
             restartApp={this.restartApp}
             downloaded={this.state.downloaded}
             status={this.state.status}
-            closeNotification={this.closeNotification.bind(this)}  />
+            closeNotification={this.closeNotification.bind(this)} />
           <Switch>
             <Route path="/login" render={() => (
               <Login
@@ -130,6 +134,7 @@ class App extends Component {
               {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npcs" component={NpcScreen} />}
               {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npc/:id" component={NpcProfile} />}
               {Auth.hasRole("INITIATIVE_ACCESS") && <Route path="/initiative" component={InitiativeTracker} />}
+              {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/add" component={MonsterCreation} />}
               {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/:id" component={MonsterProfile} />}
               {Auth.hasRole("BESTIARY_ACCESS") && <Route exact path="/bestiary" component={BestiaryScreen} />}
               {Auth.hasRole("MAP_ACCESS") && <Route exact path="/map" component={MapScreen} />}

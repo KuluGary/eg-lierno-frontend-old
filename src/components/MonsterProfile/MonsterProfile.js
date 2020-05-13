@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         margin: ".5rem 0"
     },
     bold: {
-        fontWeight: 600
+        // fontWeight: 600
     },
     image: {
         height: "65vh",
@@ -81,36 +81,30 @@ function MonsterProfile(props) {
                                             {monster.name}
                                         </Box>
                                     </Typography>
-                                    <Typography variant={'subheader2'}>
+                                    <Typography variant={'subtitle1'}>
                                         {monster.stats.race + ' ' + monster.stats.size + ', ' + monster.stats.alignment}
                                     </Typography>
                                 </Box>
                                 <Divider className={classes.divider} />
                                 <Box>
                                     <Box>
-                                        <Typography className={classes.bold} variant={'subheader2'} inline>
+                                        <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                             {'Armadura: '}
                                         </Typography>
-                                        <Typography variant={'subheader4'} inline>
-                                            {monster.stats.armorClass + (monster.stats.armorType && ' (' + monster.stats.armorType + ')')}
-                                        </Typography>
+                                        {monster.stats.armorClass + (monster.stats.armorType && ' (' + monster.stats.armorType + ')')}
                                     </Box>
                                     <Box>
-                                        <Typography className={classes.bold} variant={'subheader2'} inline>
+                                        <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                             {'Puntos de vida: '}
                                         </Typography>
-                                        <Typography variant={'subheader4'} inline>
-                                            {monster.stats.hitPointsStr}
-                                        </Typography>
+                                        {monster.stats.hitPointsStr}
                                     </Box>
                                     <Box>
                                         <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Velocidad: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {monster.stats.speed}
-                                            </Typography>
+                                            {monster.stats.speed}
                                         </Box>
                                     </Box>
 
@@ -122,82 +116,68 @@ function MonsterProfile(props) {
 
                                     <Box>
                                         <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Sentidos: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {monster.stats.senses.map((sense, index) =>
-                                                    <Box component="span">
-                                                        {sense}
-                                                        {monster.stats.senses.length !== index + 1 && ', '}
-                                                    </Box>)}
-                                            </Typography>
+                                            {monster.stats.senses.map((sense, index) =>
+                                                <Box component="span">
+                                                    {sense}
+                                                    {monster.stats.senses.length !== index + 1 && ', '}
+                                                </Box>)}
                                         </Box>
                                         {monster.stats.damageVulnerabilities.length > 0 && <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Vulnerabilidades al daño: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {monster.stats.damageVulnerabilities.map((vulnerability, index) =>
-                                                    <Box component="span">
-                                                        {vulnerability}
-                                                        {monster.stats.damageVulnerabilities.length !== index + 1 && ', '}
-                                                    </Box>)}
-                                            </Typography>
+                                            {monster.stats.damageVulnerabilities.map((vulnerability, index) =>
+                                                <Box component="span">
+                                                    {vulnerability}
+                                                    {monster.stats.damageVulnerabilities.length !== index + 1 && ', '}
+                                                </Box>)}
                                         </Box>}
                                         {monster.stats.damageResistances.length > 0 && <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Resistencias al daño: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {monster.stats.damageResistances.map((resistance, index) =>
-                                                    <Box component="span">
-                                                        {resistance}
-                                                        {monster.stats.damageResistances.length !== index + 1 && ', '}
-                                                    </Box>)}
-                                            </Typography>
+                                            {monster.stats.damageResistances.map((resistance, index) =>
+                                                <Box component="span">
+                                                    {resistance}
+                                                    {monster.stats.damageResistances.length !== index + 1 && ', '}
+                                                </Box>)}
                                         </Box>}
                                         {monster.stats.damageImmunities.length > 0 && <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Inmunidades al daño: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {monster.stats.damageImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
-                                            </Typography>
+                                            {monster.stats.damageImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
                                         </Box>}
                                         {monster.stats.conditionImmunities.length > 0 && <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Inmunidades a las condiciones: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {monster.stats.conditionImmunities.map((immunity, index) => (
-                                                    <Box component="span">
-                                                        {immunity}
-                                                        {monster.stats.conditionImmunities.length !== index + 1 && ', '} </Box>
-                                                ))}
-                                            </Typography>
+                                            {monster.stats.conditionImmunities.map((immunity, index) => (
+                                                <Box component="span">
+                                                    {immunity}
+                                                    {monster.stats.conditionImmunities.length !== index + 1 && ', '} </Box>
+                                            ))}
                                         </Box>}
                                         <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Idiomas: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {monster.stats.languages.length > 0
-                                                    ? monster.stats.languages.map((sense, index) =>
-                                                        <Box component="span">
-                                                            {sense}
-                                                            {monster.stats.languages.length !== index + 1 && ', '}
-                                                        </Box>)
-                                                    : '–'}
-                                            </Typography>
+                                            {monster.stats.languages.length > 0
+                                                ? monster.stats.languages.map((sense, index) =>
+                                                    <Box component="span">
+                                                        {sense}
+                                                        {monster.stats.languages.length !== index + 1 && ', '}
+                                                    </Box>)
+                                                : '–'}
                                         </Box>
                                         <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Valor de desafío: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {monster.stats.challengeRatingStr + (monster.stats.experiencePoints && ' (' + monster.stats.experiencePoints + ' XP)')}
-                                            </Typography>
+                                            {monster.stats.challengeRatingStr + (monster.stats.experiencePoints && ' (' + monster.stats.experiencePoints + ' XP)')}
                                         </Box>
                                     </Box>
 
@@ -207,7 +187,7 @@ function MonsterProfile(props) {
                                             <Box>
                                                 {monster.stats.additionalAbilities.map(ability => (
                                                     <Box component="p">
-                                                        <span className={classes.bold}>{ability.name + '. '}</span>
+                                                        <Typography display="inline" variant="subtitle2">{ability.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: ability.description }} />
                                                     </Box>
                                                 ))}
@@ -221,7 +201,7 @@ function MonsterProfile(props) {
                                         <Box>
                                             {monster.stats.actions.map(action => (
                                                 <Box component="p">
-                                                    <span className={classes.bold}>{action.name + '. '}</span>
+                                                    <Typography display="inline" variant="subtitle2">{action.name + '. '}</Typography>
                                                     <span dangerouslySetInnerHTML={{ __html: action.description }} />
                                                 </Box>
                                             ))}
@@ -233,7 +213,7 @@ function MonsterProfile(props) {
                                             <Box>
                                                 {monster.stats.reactions.map(reaction => (
                                                     <Box component="p">
-                                                        <span className={classes.bold}>{reaction.name + '. '}</span>
+                                                        <Typography display="inline" variant="subtitle2">{reaction.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: reaction.description }} />
                                                     </Box>
                                                 ))}
@@ -250,7 +230,7 @@ function MonsterProfile(props) {
                                             <Box>
                                                 {monster.stats.legendaryActions.map(action => (
                                                     <Box component="p">
-                                                        <span className={classes.bold}>{action.name + '. '}</span>
+                                                        <Typography display="inline" variant="subtitle2">{action.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: action.description }} />
                                                     </Box>
                                                 ))}

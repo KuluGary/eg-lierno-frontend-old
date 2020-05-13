@@ -79,7 +79,6 @@ export default function Items(props) {
 
         })
             .then(async res => {
-                console.log(res)
                 let itemsToSet = [];
 
                 cats.forEach(cat => {

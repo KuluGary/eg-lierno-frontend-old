@@ -94,8 +94,7 @@ function CharacterProfile(props) {
                             value={selectedCategory}
                             onChange={handleChange}
                             aria-label="simple tabs example">
-                            {categories.map((category, index) => {
-                                console.log(category)
+                            {categories.map((category, index) => {                                
                                 return <Tab key={index} label={category} {...a11yProps(category)} />
                             })}
                         </Tabs>

@@ -12,6 +12,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Slide from '@material-ui/core/Slide';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import Api from '../../helpers/api'
 import { useWidth } from '../../helpers/media-query';
 
@@ -20,16 +22,20 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     table: {
-        // minWidth: 650,
         width: "100%"
     },
     avatar: {
         width: "20%",
-        height: "20%"
+        height: "20%",
+        borderRadius: 10
     },
     link: {
         color: 'inherit',
         textDecoration: 'none'
+    },
+    addButton: {
+        padding: 8,
+        float: "right"
     }
 }));
 
@@ -74,6 +80,12 @@ function BestiaryScreen(props) {
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             <div className={classes.root}>
                 <Paper variant="outlined" className={classes.profileBox}>
+                    <IconButton 
+                    component="span" 
+                    className={classes.addButton}
+                    onClick={() => props.history.push("/bestiary/add")}>
+                        <AddIcon />
+                    </IconButton>
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
@@ -103,7 +115,8 @@ function BestiaryScreen(props) {
                                                         backgroundImage: `url(${monster.flavor.imageUrl})`,
                                                         width: "5vw",
                                                         height: "5vw",
-                                                        backgroundSize: "cover"
+                                                        backgroundSize: "cover",
+                                                        borderRadius: 10
                                                     }} />
                                                 </TableCell>
                                             </>}

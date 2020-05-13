@@ -50,7 +50,6 @@ export default function CharacterInfo(props) {
     const classes = useStyles();
     const { name, image, race, subrace, alignment, background, charClass } = props;
     const [raceData, setRace] = useState();
-    console.log(props)
 
     useEffect(() => {
         Api.fetchInternal('/race/' + race)

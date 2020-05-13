@@ -198,7 +198,7 @@ function ProfileScreen(props) {
                                 justifyContent: "space-between"
                             }}>
                                 <Box component="div">
-                                    <Box component="span" style={{ fontWeight: 600 }}>
+                                    <Box component="span">
                                         {'Nombre: '}
                                     </Box>
                                     <Box component="span">
@@ -206,7 +206,7 @@ function ProfileScreen(props) {
                                     </Box>
                                 </Box>
                                 <Box component="div">
-                                    <Box component="span" style={{ fontWeight: 600 }}>
+                                    <Box component="span">
                                         {'Email: '}
                                     </Box>
                                     <Box component="span">
@@ -214,7 +214,7 @@ function ProfileScreen(props) {
                                     </Box>
                                 </Box>
                                 <Box component="div">
-                                    <Box component="span" style={{ fontWeight: 600 }}>
+                                    <Box component="span">
                                         {'Fecha de creación: '}
                                     </Box>
                                     <Box component="span">
@@ -222,7 +222,7 @@ function ProfileScreen(props) {
                                     </Box>
                                 </Box>
                                 <Box component="div">
-                                    <Box component="span" style={{ fontWeight: 600 }}>
+                                    <Box component="span">
                                         {'Última edición: '}
                                     </Box>
                                     <Box component="span">

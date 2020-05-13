@@ -22,9 +22,6 @@ const useStyles = makeStyles({
         textDecoration: 'none',
 
     },
-    bold: {
-        fontWeight: 800
-    },
     fullWidthDivier: {
         margin: ".5rem 0"
     },
@@ -45,7 +42,7 @@ export default function Features(props) {
                     <Box>
                         {features.additionalAbilities.map(ability => (
                             <Box component="p">
-                                <span className={classes.bold}>{ability.name + '. '}</span>
+                                <Typography display="inline" variant="subtitle2">{ability.name + '. '}</Typography>
                                 <span dangerouslySetInnerHTML={{ __html: ability.description }} />
                             </Box>
                         ))}
@@ -58,7 +55,7 @@ export default function Features(props) {
                         <Box >
                             {features.actions.map(action => (
                                 <Box component="p">
-                                    <span className={classes.bold}>{action.name + '. '}</span>
+                                    <Typography display="inline" variant="subtitle2">{action.name + '. '}</Typography>
                                     <span dangerouslySetInnerHTML={{ __html: action.description }} />
                                 </Box>
                             ))}
@@ -71,7 +68,7 @@ export default function Features(props) {
                         <Box>
                             {features.reactions.map(reaction => (
                                 <Box component="p">
-                                    <span className={classes.bold}>{reaction.name + '. '}</span>
+                                    <Typography display="inline" variant="subtitle2">{reaction.name + '. '}</Typography>
                                     <span dangerouslySetInnerHTML={{ __html: reaction.description }} />
                                 </Box>
                             ))}
@@ -84,7 +81,7 @@ export default function Features(props) {
                         <Box>
                             {features.bonusActions.map(bonusAction => (
                                 <Box component="p">
-                                    <span className={classes.bold}>{bonusAction.name + '. '}</span>
+                                    <Typography display="inline" variant="subtitle2">{bonusAction.name + '. '}</Typography>
                                     <span dangerouslySetInnerHTML={{ __html: bonusAction.description }} />
                                 </Box>
                             ))}

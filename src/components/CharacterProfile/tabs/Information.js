@@ -79,7 +79,9 @@ export default function Information(props) {
                                 <Grid item xs={12} sm={12} md={6} container direction="row">
                                     <Grid item xs={12}>
                                         <Skills
-                                            skills={character["stats"]["skills"]} />
+                                            skills={character["stats"]["skills"]}
+                                            stats={character["stats"]["abilityScoreModifiers"]}
+                                            proficiency={character["stats"]["proficiencyBonus"]} />
 
                                     </Grid>
                                 </Grid>

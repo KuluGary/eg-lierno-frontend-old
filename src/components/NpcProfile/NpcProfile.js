@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         margin: ".5rem 0"
     },
     bold: {
-        fontWeight: 600
+        // fontWeight: 600
     },
     image: {
         height: "35vh",
@@ -84,36 +84,36 @@ function NpcProfile(props) {
                                             {npc.name}
                                         </Box>
                                     </Typography>
-                                    <Typography variant={'subheader2'}>
+                                    <Typography variant={'subtitle1'}>
                                         {npc.flavor.gender + ' ' + npc.stats.race + ', ' + npc.stats.alignment + ' ' + npc.flavor.class}
                                     </Typography>
                                 </Box>
                                 <Divider className={classes.divider} />
                                 <Box>
                                     <Box>
-                                        <Typography className={classes.bold} variant={'subheader2'} inline>
+                                        <Typography variant={'subtitle2'} display="inline">
                                             {'Armadura: '}
                                         </Typography>
-                                        <Typography variant={'subheader4'} inline>
-                                            {npc.stats.armorClass + (npc.stats.armorType && ' (' + npc.stats.armorType + ')')}
-                                        </Typography>
+
+                                        {npc.stats.armorClass + (npc.stats.armorType && ' (' + npc.stats.armorType + ')')}
+
                                     </Box>
                                     <Box>
-                                        <Typography className={classes.bold} variant={'subheader2'} inline>
+                                        <Typography variant={'subtitle2'} display="inline">
                                             {'Puntos de vida: '}
                                         </Typography>
-                                        <Typography variant={'subheader4'} inline>
-                                            {npc.stats.hitPointsStr}
-                                        </Typography>
+
+                                        {npc.stats.hitPointsStr}
+
                                     </Box>
                                     <Box>
                                         <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography variant={'subtitle2'} display="inline">
                                                 {'Velocidad: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {npc.stats.speed}
-                                            </Typography>
+
+                                            {npc.stats.speed}
+
                                         </Box>
                                     </Box>
 
@@ -125,62 +125,62 @@ function NpcProfile(props) {
 
                                     <Box>
                                         <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography variant={'subtitle2'} display="inline">
                                                 {'Sentidos: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {npc.stats.senses.length > 0 ? npc.stats.senses.map(sense => <Box component="span">{sense}</Box>) : '—'}
-                                            </Typography>
+
+                                            {npc.stats.senses.length > 0 ? npc.stats.senses.map(sense => <Box component="span">{sense}</Box>) : '—'}
+
                                         </Box>
                                         {npc.stats.damageVulnerabilities.length > 0 && <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography variant={'subtitle2'} display="inline">
                                                 {'Vulnerabilidades al daño: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {npc.stats.damageVulnerabilities.map(vulnerability => <Box component="span">{vulnerability}</Box>)}
-                                            </Typography>
+
+                                            {npc.stats.damageVulnerabilities.map(vulnerability => <Box component="span">{vulnerability}</Box>)}
+
                                         </Box>}
                                         {npc.stats.damageResistances.length > 0 && <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography variant={'subtitle2'} display="inline">
                                                 {'Resistencias al daño: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {npc.stats.damageResistances.map(resistance => <Box component="span">{resistance}</Box>)}
-                                            </Typography>
+
+                                            {npc.stats.damageResistances.map(resistance => <Box component="span">{resistance}</Box>)}
+
                                         </Box>}
                                         {npc.stats.damageImmunities.length > 0 && <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography variant={'subtitle2'} display="inline">
                                                 {'Inmunidades al daño: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {npc.stats.damageImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
-                                            </Typography>
+
+                                            {npc.stats.damageImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
+
                                         </Box>}
                                         {npc.stats.conditionImmunities.length > 0 && <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography variant={'subtitle2'} display="inline">
                                                 {'Inmunidades a las condiciones: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {npc.stats.conditionImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
-                                            </Typography>
+
+                                            {npc.stats.conditionImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
+
                                         </Box>}
                                         <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography variant={'subtitle2'} display="inline">
                                                 {'Idiomas: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {npc.stats.languages.length > 0
-                                                    ? npc.stats.languages.map(sense => <Box component="span">{sense}</Box>)
-                                                    : '–'}
-                                            </Typography>
+
+                                            {npc.stats.languages.length > 0
+                                                ? npc.stats.languages.map(sense => <Box component="span">{sense}</Box>)
+                                                : '–'}
+
                                         </Box>
                                         <Box>
-                                            <Typography className={classes.bold} variant={'subheader2'} inline>
+                                            <Typography variant={'subtitle2'} display="inline">
                                                 {'Valor de desafío: '}
                                             </Typography>
-                                            <Typography variant={'subheader4'} inline>
-                                                {npc.stats.challengeRatingStr + (npc.stats.experiencePoints && ' (' + npc.stats.experiencePoints + ' XP)')}
-                                            </Typography>
+
+                                            {npc.stats.challengeRatingStr + (npc.stats.experiencePoints && ' (' + npc.stats.experiencePoints + ' XP)')}
+
                                         </Box>
                                     </Box>
 
@@ -190,7 +190,7 @@ function NpcProfile(props) {
                                             <Box>
                                                 {npc.stats.additionalAbilities.map(ability => (
                                                     <Box component="p">
-                                                        <span className={classes.bold}>{ability.name + '. '}</span>
+                                                        <Typography display="inline" variant="subtitle2">{ability.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: ability.description }} />
                                                     </Box>
                                                 ))}
@@ -205,7 +205,7 @@ function NpcProfile(props) {
                                             <Box>
                                                 {npc.stats.actions.map(action => (
                                                     <Box>
-                                                        <span className={classes.bold}>{action.name + '. '}</span>
+                                                        <Typography display="inline" variant="subtitle2">{action.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: action.description }} />
                                                     </Box>
                                                 ))}
@@ -219,7 +219,7 @@ function NpcProfile(props) {
                                             <Box>
                                                 {npc.stats.reactions.map(reaction => (
                                                     <Box>
-                                                        <span className={classes.bold}>{reaction.name + '. '}</span>
+                                                        <Typography display="inline" variant="subtitle2">{reaction.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: reaction.description }} />
                                                     </Box>
                                                 ))}
@@ -236,7 +236,7 @@ function NpcProfile(props) {
                                             <Box>
                                                 {npc.stats.legendaryActions.map(action => (
                                                     <Box>
-                                                        <span className={classes.bold}>{action.name + '. '}</span>
+                                                        <Typography display="inline" variant="subtitle2">{action.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: action.description }} />
                                                     </Box>
                                                 ))}
@@ -259,7 +259,7 @@ function NpcProfile(props) {
                                     align="left"
                                     style={{
                                         float: "left",
-                                        margin: "0 20px 20px 0",
+                                        margin: "0 20px 40px 0",
                                         padding: "0 1em 0 0"
                                     }}
                                     className={classes.image}
@@ -272,33 +272,23 @@ function NpcProfile(props) {
                                     padding: "0 1em 0 0"
                                 }}>
                                     <Box component="p">
-                                        <Box component="span" className={classes.bold}>
-                                            {'Rasgos de personalidad. '}
-                                        </Box>
+                                        <Typography display="inline" variant="subtitle2">{'Rasgos de personalidad. '}</Typography>
                                         {npc.flavor.personality.personalityTrait1 + ' ' + npc.flavor.personality.personalityTrait2}
                                     </Box>
                                     <Box component="p">
-                                        <Box component="span" className={classes.bold}>
-                                            {'Ideales. '}
-                                        </Box>
+                                        <Typography display="inline" variant="subtitle2">{'Ideales. '}</Typography>
                                         {npc.flavor.personality.ideals}
                                     </Box>
                                     <Box component="p">
-                                        <Box component="span" className={classes.bold}>
-                                            {'Vínculos. '}
-                                        </Box>
+                                        <Typography display="inline" variant="subtitle2">{'Vínculos. '}</Typography>
                                         {npc.flavor.personality.bonds}
                                     </Box>
                                     <Box component="p">
-                                        <Box component="span" className={classes.bold}>
-                                            {'Defectos. '}
-                                        </Box>
+                                        <Typography display="inline" variant="subtitle2">{'Defectos. '}</Typography>
                                         {npc.flavor.personality.flaws}
                                     </Box>
                                     <Box component="p">
-                                        <Box component="span" className={classes.bold}>
-                                            {'Historia. '}
-                                        </Box>
+                                        <Typography display="inline" variant="subtitle2">{'Historia. '}</Typography>
                                         <span dangerouslySetInnerHTML={{ __html: npc.flavor.personality.backstory }} />
                                     </Box>
                                 </Box>

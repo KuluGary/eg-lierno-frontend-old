@@ -38,9 +38,6 @@ const useStyles = makeStyles({
     trait: {
         marginLeft: "1rem"
     },
-    bold: {
-        fontWeight: 800
-    },
     row: {
         '&:hover': {
             cursor: 'pointer'
@@ -71,7 +68,6 @@ export default function Armor(props) {
                 setCategories(cats.sort());
                 setSelectedCategory(0);
                 setTableItems(res.filter(spell => {
-                    console.log(spell.stats.level, cats[0], spell.stats.level === cats[0])
                     return spell.stats.level === cats[0]
                 }));
             })
@@ -151,7 +147,9 @@ export default function Armor(props) {
                                         .map(spell =>
                                             <TableRow className={classes.row} onClick={() => setSelectedSpell(spell)}>
                                                 <TableCell className={classes.bold}>
-                                                    {spell.name}
+                                                    <Typography variant={'subtitle2'} display="inline">
+                                                        {spell.name}
+                                                    </Typography>
                                                 </TableCell>
                                                 <TableCell>
                                                     {spell.stats.school}
@@ -186,7 +184,7 @@ export default function Armor(props) {
                                     {selectedSpell.stats.components.type &&
                                         <Box>
                                             <Box component="p">
-                                                <Box className={classes.bold} component="span">{'Componentes. '}</Box>
+                                                <Typography variant={'subtitle2'} display="inline">{'Componentes. '}</Typography>
                                                 <Box component="span">{selectedSpell.stats.components.type}</Box>
                                                 {selectedSpell.stats.components.description && <Box component="span">{', ' + selectedSpell.stats.components.description}</Box>}
                                             </Box>
@@ -195,7 +193,7 @@ export default function Armor(props) {
                                     {selectedSpell.stats.castingTime &&
                                         <Box>
                                             <Box component="p">
-                                                <Box className={classes.bold} component="span">{'Tiempo de lanzamiento. '}</Box>
+                                                <Typography variant={'subtitle2'} display="inline">{'Tiempo de lanzamiento. '}</Typography>
                                                 <Box component="span">{selectedSpell.stats.castingTime}</Box>
                                             </Box>
                                         </Box>
@@ -203,7 +201,7 @@ export default function Armor(props) {
                                     {selectedSpell.stats.range &&
                                         <Box>
                                             <Box component="p">
-                                                <Box className={classes.bold} component="span">{'Alcance. '}</Box>
+                                                <Typography variant={'subtitle2'} display="inline">{'Alcance. '}</Typography>
                                                 <Box component="span">{selectedSpell.stats.range}</Box>
                                             </Box>
                                         </Box>
@@ -212,7 +210,7 @@ export default function Armor(props) {
                                     {selectedSpell.stats.duration &&
                                         <Box>
                                             <Box component="p">
-                                                <Box className={classes.bold} component="span">{'Duración. '}</Box>
+                                                <Typography variant={'subtitle2'} display="inline">{'Duración. '}</Typography>
                                                 <Box component="span">{selectedSpell.stats.duration}</Box>
                                             </Box>
                                         </Box>

@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         margin: ".5rem 0"
     },
     bold: {
-        fontWeight: 600
+        // fontWeight: 600
     },
     image: {
         maxHeight: "50vh",
@@ -61,7 +61,6 @@ function Location(props) {
             const selectedLocation = props.locations.filter(location => location._id === props.match.params.id)[0];
             selectedLocation && setLocation(selectedLocation)
         }
-
     }, [])
 
     return (
