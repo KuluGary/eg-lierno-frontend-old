@@ -50,6 +50,80 @@ export default function Core(props) {
   ];
 
   const [skills, setSkills] = useState(props.creature.stats.skills || []);
+  const skillList2 = [
+    {
+      name : "Acrobacias",
+      modifier : "dexterity",      
+  },
+  {
+      name : "T.con Animales",
+      modifier : "wisdom",      
+  },
+  {
+      name : "C.Arcano",
+      modifier : "intelligence",      
+  },
+  {
+      name : "Atletismo",
+      modifier : "strength",      
+  },
+  {
+      name : "Engaño",
+      modifier : "charisma",      
+  },
+  {
+      name : "Historia",
+      modifier : "intelligence",      
+  },
+  {
+      name : "Perspicacia",
+      modifier : "wisdom",      
+  },
+  {
+      name : "Intimidación",
+      modifier : "charisma",      
+  },
+  {
+      name : "Investigación",
+      modifier : "intelligence",      
+  },
+  {
+      name : "Medicina",
+      modifier : "wisdom",      
+  },
+  {
+      name : "Naturaleza",
+      modifier : "intelligence",      
+  },
+  {
+      name : "Percepción",
+      modifier : "wisdom",      
+  },
+  {
+      name : "Interpretación",
+      modifier : "charisma",      
+  },
+  {
+      name : "Persuasión",
+      modifier : "charisma",      
+  },
+  {
+      name : "Religión",
+      modifier : "intelligence",      
+  },
+  {
+      name : "Juego de Manos",
+      modifier : "dexterity",      
+  },
+  {
+      name : "Sigilo",
+      modifier : "dexterity",      
+  },
+  {
+      name : "Supervivencia",
+      modifier : "wisdom",      
+  }
+  ]
   const skillList = [
     "Acrobacias",
     "Atletismo",
@@ -83,19 +157,20 @@ export default function Core(props) {
         charisma: calculateAbilityScoreModifiers(abilityScores["charisma"]),
       }, "abilityScoreModifiers")
       
+      savingThrows.forEach(savingThrow => console.log(savingThrow, abilities.filter(ability => ability.key === savingThrow.ability)[0].label))
       const newSavingThrows = savingThrows.map(savingThrow => ({
-        ability: savingThrow.ability,
+        ability: savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].label,
         proficient: true,
-        modifier: calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability])),
-        modifierStr: `${savingThrow.label} ${(calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability])) >= 0 && '+') + calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability]))}`
+        modifier: calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].label])),
+        modifierStr: `${savingThrow.label || abilities.filter(ability => ability.key === savingThrow.ability)[0].label} ${(calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].key]), proficiencyBonus) >= 0 && '+') + calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability]), proficiencyBonus)}`
       }))
 
       props.addToCreatureStats(newSavingThrows, 'savingThrows')
       props.addToCreatureStats(skills, 'skills')
   }, [abilityScores, proficiencyBonus, savingThrows, skills])
 
-  const calculateAbilityScoreModifiers = (ability) => {
-    return Math.floor((ability - 10) / 2 + proficiencyBonus);
+  const calculateAbilityScoreModifiers = (ability, proficiency = 0) => {
+    return Math.floor((ability - 10) / 2 + proficiency);
   }
 
   const addSavingThrow = () => {
@@ -248,11 +323,12 @@ export default function Core(props) {
             <Grid item sm={10}>
               <FormControl className={classes.formControl}>
                   <InputLabel id="demo-simple-select-label">Tirada de Salvación</InputLabel>
+                  {console.log(savingThrow)}
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     onChange={(e) => handleSavingThrowChange(e, savingThrow)}
-                    value={savingThrow.ability}
+                    value={savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].key}
                   >
                     {abilities
                       .map(ability =>  (

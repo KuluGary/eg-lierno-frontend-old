@@ -4,6 +4,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import HomeScreen from "./components/HomeScreen/HomeScreen";
@@ -21,6 +22,7 @@ import InitiativeTracker from './components/InitiativeTracker/InitiativeTracker'
 import BestiaryScreen from './components/BestiaryScreen/BestiaryScreen';
 import MonsterProfile from './components/MonsterProfile/MonsterProfile';
 import MonsterCreation from './components/MonsterCreation/MonsterCreation';
+import NpcCreation from './components/NpcCreation/NpcCreation';
 import NpcScreen from './components/NpcScreen/NpcScreen';
 import NpcProfile from './components/NpcProfile/NpcProfile';
 import Reference from './components/Referencia/Referencia';
@@ -44,7 +46,8 @@ class App extends Component {
       drawerOpen: false,
       update: false,
       downloaded: false,
-      updateVersion: "0.0.0"
+      updateVersion: "0.0.0",
+      darkMode: localStorage.getItem('theme') || false
     }
   }
 
@@ -95,55 +98,76 @@ class App extends Component {
     })
   }
 
+  setDarkMode() {
+    console.log("darkMode")
+    this.setState({
+      darkMode: !this.state.darkMode
+    }, () => localStorage.setItem('theme', this.state.darkMode))
+  }
+
   render() {
-    
+    let theme = createMuiTheme({
+          palette: {
+            type: this.state.darkMode ? 'dark' : 'light'
+          }
+        })
     return (
       <>
-        <Router>
-          {Auth.loggedIn() &&
-            <>
-              <Header
-                open={this.state.drawerOpen}
-                handleDrawer={this.handleDrawerOpen.bind(this)}
-                authenticated={this.authenticated.bind(this)} />
-              <Sidebar
-                open={this.state.drawerOpen}
-                handleDrawer={this.handleDrawerOpen.bind(this)} />
-            </>}
-          <Update
-            update={this.state.update}
-            restartApp={this.restartApp}
-            downloaded={this.state.downloaded}
-            status={this.state.status}
-            closeNotification={this.closeNotification.bind(this)} />
-          <Switch>
-            <Route path="/login" render={() => (
-              <Login
-                version={this.state.uploadVersion || Package.version}
-                authenticated={this.authenticated.bind(this)} />
-            )} />
-            <Box style={{
-              margin: '5rem 1rem 1rem 5rem'
-            }}>
-              <Route path="/register" component={Register} />
-              <Route path="/profile" component={ProfileScreen} />
-              <Route path="/character-creation" component={CharacterCreation} />
-              {Auth.hasRole("ALIGNMENT_ACCESS") && <Route path="/alignments" component={AlignmentScreen} />}
-              {Auth.hasRole("CHARACTER_ACCESS") && <Route path="/characters/:id" component={CharacterProfile} />}
-              {Auth.hasRole("CHARACTER_ACCESS") && <Route exact path="/characters" component={CharacterScreen} />}
-              {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npcs" component={NpcScreen} />}
-              {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npc/:id" component={NpcProfile} />}
-              {Auth.hasRole("INITIATIVE_ACCESS") && <Route path="/initiative" component={InitiativeTracker} />}
-              {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/add" component={MonsterCreation} />}
-              {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/:id" component={MonsterProfile} />}
-              {Auth.hasRole("BESTIARY_ACCESS") && <Route exact path="/bestiary" component={BestiaryScreen} />}
-              {Auth.hasRole("MAP_ACCESS") && <Route exact path="/map" component={MapScreen} />}
-              {Auth.hasRole("MAP_ACCESS") && <Route exact path="/location/:id" component={Location} />}
-              {Auth.hasRole("REFERENCE_ACCESS") && <Route exact path="/reference" component={Reference} />}
-              <Route exact path="/" component={HomeScreen} />
-            </Box>
-          </Switch>
-        </Router>
+        <ThemeProvider theme={theme}>
+          <Router>
+            {Auth.loggedIn() &&
+              <>
+                <Header
+                  mode={this.state.darkMode}
+                  open={this.state.drawerOpen}
+                  handleDrawer={this.handleDrawerOpen.bind(this)}
+                  authenticated={this.authenticated.bind(this)} />
+                <Sidebar
+                  open={this.state.drawerOpen}
+                  handleDrawer={this.handleDrawerOpen.bind(this)} />
+              </>}
+            <Update
+              update={this.state.update}
+              restartApp={this.restartApp}
+              downloaded={this.state.downloaded}
+              status={this.state.status}
+              closeNotification={this.closeNotification.bind(this)} />
+            <Switch>
+              <Route path="/login" render={() => (
+                <Login
+                  version={this.state.uploadVersion || Package.version}
+                  authenticated={this.authenticated.bind(this)} />
+              )} />
+              <Box style={{
+                margin: '5rem 1rem 1rem 5rem'
+              }}>
+                <Route path="/register" component={Register} />
+                <Route path="/profile" render={() => (
+                  <ProfileScreen
+                    setDarkMode={this.setDarkMode.bind(this)}
+                    darkMode={this.state.darkMode} />
+                )} />
+                <Route path="/character-creation" component={CharacterCreation} />
+                {Auth.hasRole("ALIGNMENT_ACCESS") && <Route path="/alignments" component={AlignmentScreen} />}
+                {Auth.hasRole("CHARACTER_ACCESS") && <Route path="/characters/:id" component={CharacterProfile} />}
+                {Auth.hasRole("CHARACTER_ACCESS") && <Route exact path="/characters" component={CharacterScreen} />}
+                {/* {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npc/add/:id" component={NpcCreation} />} */}
+                {Auth.hasRole("NPC_ACCESS") && <Route path="/npc/add/:id?" component={NpcCreation} />}
+                {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npcs" component={NpcScreen} />}
+                {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npc/:id" component={NpcProfile} />}
+                {Auth.hasRole("INITIATIVE_ACCESS") && <Route path="/initiative" component={InitiativeTracker} />}
+                {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/add" component={MonsterCreation} />}
+                {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/add/:id" component={MonsterCreation} />}
+                {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/:id" component={MonsterProfile} />}
+                {Auth.hasRole("BESTIARY_ACCESS") && <Route exact path="/bestiary" component={BestiaryScreen} />}
+                {Auth.hasRole("MAP_ACCESS") && <Route exact path="/map" component={MapScreen} />}
+                {Auth.hasRole("MAP_ACCESS") && <Route exact path="/location/:id" component={Location} />}
+                {Auth.hasRole("REFERENCE_ACCESS") && <Route exact path="/reference" component={Reference} />}
+                <Route exact path="/" component={HomeScreen} />
+              </Box>
+            </Switch>
+          </Router>
+        </ThemeProvider>
       </>
     )
   }

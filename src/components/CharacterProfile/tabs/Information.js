@@ -46,7 +46,8 @@ export default function Information(props) {
                                     <Grid item xs={12}>
                                         <Stats
                                             character={true}
-                                            stats={character["stats"]["abilityScores"]} />
+                                            stats={character["stats"]["abilityScores"]}
+                                            modifiers={character["stats"]["abilityScoreModifiers"]} />
                                     </Grid>
                                     <Grid item xs={12} sm={4} md={2}>
                                         <Proficiency

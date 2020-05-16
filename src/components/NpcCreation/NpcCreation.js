@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { addMonsters } from "../../shared/actions/index";
+import { addNpcs } from "../../shared/actions/index";
 import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -100,38 +100,39 @@ function Alert(props) {
 }
 
 const mapDispatchToProps = dispatch => {
-    return { addMonsters: monsters => dispatch(addMonsters(monsters)) };
+    return { addNpcs: npcs => dispatch(addNpcs(npcs)) };
 }
 
 const mapStateToProps = state => {
-    return { monsters: state.monsters }
+    return { npcs: state.npcs }
 }
 
 
-class MonsterCreation extends Component {
+class NpcCreation extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
             activeStep: 0,
-            pronoun: "El",
             disabled: true,
             open: false,
             snack: 'success',
             defaultCreature: {
-                name: "Nueva criatura",
+                name: "Nuevo personaje",
                 flavor: {
                     faction: "",
                     gender: "",
+                    pronoun: "",
                     environment: "",
                     description: "",
                     nameIsProper: false,
                     imageUrl: "",
                     class: "",
-                    campaign: []
+                    campaign: [],
+                    personality: {}
                 },
                 stats: {
-                    size: "Mediano",
+                    size: "Medio",
                     race: "Humanoide",
                     alignment: "Sin alineamiento",
                     armorClass: 10,
@@ -169,6 +170,24 @@ class MonsterCreation extends Component {
                     legendaryActionsPerRound: 3
                 }
             }
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.match.params && this.props.match.params.id) {
+            Api.fetchInternal('/npc/' + this.props.match.params.id)
+                .then(res => {
+                    // setNpc(res)
+                    this.setState({
+                        defaultCreature: res,
+                        loaded: true
+                    }, () => console.log(this.state.defaultCreature.flavor.campaign))
+                });
+        } else {
+
+            this.setState({
+                loaded: true
+            })
         }
     }
 
@@ -233,22 +252,22 @@ class MonsterCreation extends Component {
     }
 
     saveMonster() {
-        Api.fetchInternal('/bestiary', {
-            method: "POST",
+        Api.fetchInternal('/npc', {
+            method: this.props.match.params.id ? "PUT" : "POST",
             body: JSON.stringify(this.state.defaultCreature)
         })
             .then(() => {
-                this.notify("success", "El monstruo ha sido añadido a la lista.")
-                Api.fetchInternal('/bestiary')
+                this.notify("success", "El npc ha sido añadido a la lista.")
+                Api.fetchInternal('/npc')
                     .then(res => {
-                        const monsters = res.sort((a, b) => (a.stats.challengeRating > b.stats.challengeRating) ? 1 : -1)
-                        this.props.addMonsters(monsters)
-                        this.props.history.push("/bestiary")
+                        const npcs = res.sort((a, b) => (a.stats.challengeRating > b.stats.challengeRating) ? 1 : -1)
+                        this.props.addNpcs(npcs)
+                        this.props.history.push("/npcs")
                     });
             })
             .catch(() => {
-                this.notify("error", "El monstruo no ha podido ser añadido.")
-                this.props.history.push("/bestiary")
+                this.notify("error", "El npc no ha podido ser añadido.")
+                this.props.history.push("/npcs")
             })
     }
 
@@ -259,7 +278,7 @@ class MonsterCreation extends Component {
             case 0:
                 if ((!creature.name || !creature.name.length > 0) ||
                     (!creature.flavor.description || !creature.flavor.description.length > 0) ||
-                    (!this.state.pronoun) ||
+                    (!creature.flavor.pronoun) ||
                     (!creature.flavor.campaign || !creature.flavor.campaign.length > 0)) {
                     disabled = true;
                 }
@@ -290,7 +309,7 @@ class MonsterCreation extends Component {
                 break;
             case 5:
                 if ((!creature.stats.challengeRating || creature.stats.challengeRating === '') ||
-                    (!creature.stats.experience || creature.stats.experience === '')) {
+                    (!creature.stats.experiencePoints || creature.stats.experiencePoints === '')) {
                     disabled = true
                 }
                 break;
@@ -344,14 +363,14 @@ class MonsterCreation extends Component {
                             </>
                         ) : (
                                 <>
-                                    {getStepContent(
+                                    {this.state.loaded && getStepContent(
                                         this.state.activeStep,
                                         this.changeName.bind(this),
                                         this.setPronoun.bind(this),
                                         this.addToCreatureFlavor.bind(this),
                                         this.addToCreatureStats.bind(this),
                                         this.state.defaultCreature,
-                                        this.state.pronoun)}
+                                        this.state.defaultCreature.flavor.pronoun)}
                                     <div className={classes.buttons}>
                                         {this.state.activeStep !== 0 && (
                                             <Button onClick={this.handleBack} className={classes.button}>
@@ -380,4 +399,4 @@ class MonsterCreation extends Component {
 export default compose(
     withStyles(useStyles),
     connect(mapStateToProps, mapDispatchToProps)
-)(MonsterCreation)
+)(NpcCreation)

@@ -47,39 +47,58 @@ function Flavor(props) {
     StringUtil.generiza("Neutral malo", "Neutral mala", "Neutal male", props.pronoun),
     StringUtil.generiza("Caótico malo", "Caótica mala", "Caótique male", props.pronoun)
   ]
-  const [pronoun, setPronoun] = useState(props.pronoun);
-  const [gender, setGender] = useState('');
+  const [pronoun, setPronoun] = useState(props.creature.flavor.pronoun || 'el');
+  const [gender, setGender] = useState(props.creature.flavor.gender || '');
   const [name, setName] = useState(props.creature.name);
   const [description, setDescription] = useState(props.creature.flavor.description || '');
   const [image, setImage] = useState(props.creature.flavor.imageUrl);
-  const [characterClass, setCharacterClass] = useState('');
-  const [campaigns, setCampaigns] = useState(props.creature.campaigns || []);
+  const [characterClass, setCharacterClass] = useState(props.creature.flavor.class || '');
   const [campaignAvailable, setCampaignAvailable] = useState([]);
+  const [campaigns, setCampaigns] = useState(props.creature.flavor.campaign || []);
+
+  const [personalityTrait1, setPersonalityTrait1] = useState(props.creature.flavor.personality.personalityTrait1 || '');
+  const [personalityTrait2, setPersonalityTrait2] = useState(props.creature.flavor.personality.personalityTrait2 || '');
+  const [ideals, setIdeals] = useState(props.creature.flavor.personality.ideals || '');
+  const [bonds, setBonds] = useState(props.creature.flavor.personality.bonds || '');
+  const [flaws, setFlaws] = useState(props.creature.flavor.personality.flaws || '');
+  const [story, setStory] = useState(
+    (props.creature.flavor.personality.backstory && props.creature.flavor.personality.backstory.replace(/<br \/>/gi, "\n")) || '');
   const [faction, setFaction] = useState(props.creature.flavor.faction);
   const [alignment, setAlignment] = useState(props.creature.stats.alignment || alignment[0]);
 
   useEffect(() => {
     Api.fetchInternal('/campaigns')
-      .then(campaignList => setCampaignAvailable(
-        campaignList.filter(campaign => campaign.dm === props.profile._id))
-      )
+      .then(campaignList => {
+        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === props.profile._id))
+      })
   }, [props.profile])
 
   useEffect(() => {
-    props.changeName(name);
-    props.setPronoun(pronoun);
-    props.addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
-    props.addToCreatureFlavor(image, "imageUrl");
-    props.addToCreatureFlavor(faction, "faction");
-    props.addToCreatureStats(alignment, "alignment")
-    props.addToCreatureFlavor(gender, "gender");
-    props.addToCreatureFlavor(characterClass, "class")
-    props.addToCreatureFlavor(campaigns.map(campaign => ({
-      campaignId: campaign.id,
-      unlocked: campaign.unlocked
-    })), "campaign")
-    props.addToCreatureFlavor(props.profile._id, "owner")
-  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass])
+    if (campaignAvailable.length > 0) {
+      props.changeName(name);
+      props.addToCreatureFlavor(pronoun, "pronoun");
+      props.addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
+      props.addToCreatureFlavor(image, "imageUrl");
+      props.addToCreatureFlavor(faction, "faction");
+      props.addToCreatureStats(alignment, "alignment");
+      props.addToCreatureFlavor(gender, "gender");
+      props.addToCreatureFlavor(characterClass, "class")
+      props.addToCreatureFlavor(campaigns.map(campaign => ({
+        campaignId: campaign.id || campaignAvailable.filter(campaignA => campaignA._id === campaign.campaignId)[0]._id,
+        unlocked: campaign.unlocked
+      })), "campaign")
+      const personality = {
+        personalityTrait1,
+        personalityTrait2,
+        ideals,
+        bonds,
+        flaws,
+        backstory: story.replace(/\n/g, "<br />")
+      }
+      props.addToCreatureFlavor(personality, "personality")
+      props.addToCreatureFlavor(props.profile._id, "owner")
+    }
+  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, personalityTrait1, personalityTrait2, ideals, bonds, flaws, story])
 
   const addCampaign = () => {
     const indexOf = campaignAvailable.findIndex(campaignAvailable => campaigns.every(campaign => campaign.id !== campaignAvailable._id))
@@ -113,12 +132,13 @@ function Flavor(props) {
   }
 
   return (
+    campaignAvailable.length > 0 &&
     <>
       <Typography variant="h6" gutterBottom>
         Detalles básicos
       </Typography>
       <Typography variant="subtitle2" gutterBottom>
-        Por favor detalla los datos básicos de tu monstruo.
+        Por favor detalla los datos básicos de tu personaje no jugable.
       </Typography>
       <Grid container spacing={3}>
         <Grid item sm={2}>
@@ -129,9 +149,9 @@ function Flavor(props) {
               id="demo-simple-select"
               value={pronoun}
               onChange={(e) => setPronoun(e.target.value)}>
-              <MenuItem value={'El'}>{'El'}</MenuItem>
-              <MenuItem value={'La'}>{'La'}</MenuItem>
-              <MenuItem value={'Le'}>{'Le'}</MenuItem>
+              <MenuItem value={'el'}>{'El'}</MenuItem>
+              <MenuItem value={'ella'}>{'La'}</MenuItem>
+              <MenuItem value={'elle'}>{'Le'}</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -173,7 +193,7 @@ function Flavor(props) {
             />
           </FormControl>
         </Grid>
-        <Grid item xs={3} style={{display: (image && image.length > 0) ? 'block' : 'none'}}>
+        <Grid item xs={3} style={{ display: (image && image.length > 0) ? 'block' : 'none' }}>
           <img className={classes.image} src={image} />
         </Grid>
         <Grid item sm={(image && image.length > 0) ? 9 : 12}>
@@ -238,6 +258,84 @@ function Flavor(props) {
             />
           </FormControl>
         </Grid>
+        <Grid item xs={12} sm={12}>
+          <FormControl className={classes.formControl}>
+            <TextField
+              id="personalityTrait1"
+              name="personalityTrait1"
+              onChange={(e) => setPersonalityTrait1(e.target.value)}
+              value={personalityTrait1}
+              multiline
+              label="Rasgo de personalidad I"
+              fullWidth
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <FormControl className={classes.formControl}>
+            <TextField
+              id="personalityTrait2"
+              name="personalityTrait2"
+              onChange={(e) => setPersonalityTrait2(e.target.value)}
+              value={personalityTrait2}
+              multiline
+              label="Rasgo de personalidad II"
+              fullWidth
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <FormControl className={classes.formControl}>
+            <TextField
+              id="ideals"
+              name="ideals"
+              onChange={(e) => setIdeals(e.target.value)}
+              value={ideals}
+              multiline
+              label="Ideales"
+              fullWidth
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <FormControl className={classes.formControl}>
+            <TextField
+              id="bonds"
+              name="bonds"
+              onChange={(e) => setBonds(e.target.value)}
+              value={bonds}
+              multiline
+              label="Vínculos"
+              fullWidth
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <FormControl className={classes.formControl}>
+            <TextField
+              id="flaws"
+              name="flaws"
+              onChange={(e) => setFlaws(e.target.value)}
+              value={flaws}
+              multiline
+              label="Defectos"
+              fullWidth
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <FormControl className={classes.formControl}>
+            <TextField
+              id="story"
+              name="story"
+              onChange={(e) => setStory(e.target.value)}
+              value={story}
+              multiline
+              label="Historia"
+              fullWidth
+            />
+          </FormControl>
+        </Grid>
         <Grid item sm={12}>
           <Button onClick={addCampaign}>
             AÑADIR CAMPAÑA
@@ -245,6 +343,7 @@ function Flavor(props) {
         </Grid>
         {campaigns.map((campaign, index) => (
           <>
+            {console.log(campaign)}
             <Grid key={index} item sm={8}>
               <FormControl className={classes.formControl}>
                 <InputLabel id="demo-simple-select-label">Campaña</InputLabel>
@@ -252,7 +351,7 @@ function Flavor(props) {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   onChange={(e) => handleCampaignChange(e, campaign, campaign.unlocked)}
-                  value={campaign.id}
+                  value={campaign.id || campaignAvailable.filter(campaignA => campaignA._id === campaign.campaignId)[0]._id}
                 >
                   {campaignAvailable.map((item, index) => (
                     <MenuItem

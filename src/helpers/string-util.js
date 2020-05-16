@@ -1,4 +1,78 @@
 export const StringUtil = {
+    abilityMatrix: [
+        {
+            "name" : "Acrobacias",
+            "modifier" : "dexterity"        
+        },
+        {
+            "name" : "T.con Animales",
+            "modifier" : "wisdom"        
+        },
+        {
+            "name" : "C.Arcano",
+            "modifier" : "intelligence"        
+        },
+        {
+            "name" : "Atletismo",
+            "modifier" : "strength"        
+        },
+        {
+            "name" : "Engaño",
+            "modifier" : "charisma"        
+        },
+        {
+            "name" : "Historia",
+            "modifier" : "intelligence"        
+        },
+        {
+            "name" : "Perspicacia",
+            "modifier" : "wisdom"        
+        },
+        {
+            "name" : "Intimidación",
+            "modifier" : "charisma"        
+        },
+        {
+            "name" : "Investigación",
+            "modifier" : "intelligence"        
+        },
+        {
+            "name" : "Medicina",
+            "modifier" : "wisdom"        
+        },
+        {
+            "name" : "Naturaleza",
+            "modifier" : "intelligence"        
+        },
+        {
+            "name" : "Percepción",
+            "modifier" : "wisdom"        
+        },
+        {
+            "name" : "Interpretación",
+            "modifier" : "charisma"        
+        },
+        {
+            "name" : "Persuasión",
+            "modifier" : "charisma"        
+        },
+        {
+            "name" : "Religión",
+            "modifier" : "intelligence"        
+        },
+        {
+            "name" : "Juego de Manos",
+            "modifier" : "dexterity"        
+        },
+        {
+            "name" : "Sigilo",
+            "modifier" : "dexterity"        
+        },
+        {
+            "name" : "Supervivencia",
+            "modifier" : "wisdom"        
+        }
+    ],
     getRandomInt(min = 1, max = 20) {
         return Math.floor(Math.random() * max ) + min
     },
@@ -22,5 +96,59 @@ export const StringUtil = {
         role = role[0].toUpperCase() + role.substring(1)
 
         return role
+    },
+
+    replaceDescriptionLineBreaks(array) {
+        const newArray = array.map(item => {
+            const description = item.description;
+            return {
+                ...item,
+                description: description.replace(/\n/g, "<br />")
+            }
+        })
+        return newArray;
+    },
+
+    generiza(masculino, femenino, neutro, pronombre) {     
+        console.log(pronombre)   
+        if (pronombre.toLowerCase() === 'el') {
+            return masculino
+        } else if (pronombre.toLowerCase() === 'ella' || pronombre.toLowerCase() === 'la') {
+            return femenino
+        } else {
+            return neutro
+        }
+    },
+
+    returnStringFromObjectArray(arr, key) {
+        const newArray = [];
+        arr.forEach(item => newArray.push(item[key]));
+
+        return newArray.join(", ");
+    },
+    
+    returnModifierStr(arr, creature) {
+        const newArray = arr.map(item => {
+            console.log(item)
+            if (item.modifierStr) {
+                return item
+            } else {
+                const typeIndex = this.abilityMatrix.findIndex(el => el.name === item.name)
+                if (typeIndex >= 0) {
+                    const type = this.abilityMatrix[typeIndex].modifier
+                    console.log(creature)
+                    // console.log(creature.stats.abilityScoreModifiers[type], creature.stats.proficiencyBonus);
+                    const modifier = parseInt(creature.stats.abilityScoreModifiers[type]) + parseInt(creature.stats.proficiencyBonus);
+                    return {
+                        name: item.name,
+                        profient: true,
+                        modifier,
+                        modifierStr: `${item.name} ${(modifier >= 0 && '+') + modifier}`
+                    }
+                }
+            }
+        })
+        
+        return this.returnStringFromObjectArray(newArray, "modifierStr")
     }
 }

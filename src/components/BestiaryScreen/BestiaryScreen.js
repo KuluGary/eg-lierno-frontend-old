@@ -51,6 +51,7 @@ function BestiaryScreen(props) {
     const classes = useStyles();
     const [monsters, setMonsters] = useState([]);
     const [page, setPage] = React.useState(0);
+    const [anchorEl, setAnchorEl] = React.useState(null);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const width = useWidth();
 
@@ -67,7 +68,19 @@ function BestiaryScreen(props) {
         if (!props.monsters) {
             Api.fetchInternal('/bestiary')
                 .then(res => {
-                    const monsters = res.sort((a, b) => (a.stats.challengeRating > b.stats.challengeRating) ? 1 : -1)
+                    const monsters = res.sort((a, b) => {
+                        if (a.stats.challengeRating > b.stats.challengeRating) {
+                            return 1
+                        } else if (a.stats.challengeRating < b.stats.challengeRating) {
+                            return -1
+                        } else {
+                            if (a.name > b.name) {
+                                return 1
+                            } else {
+                                return -1
+                            }
+                        }
+                    })
                     props.addMonsters(monsters)
                     setMonsters(monsters)
                 });
@@ -116,7 +129,8 @@ function BestiaryScreen(props) {
                                                         width: "5vw",
                                                         height: "5vw",
                                                         backgroundSize: "cover",
-                                                        borderRadius: 10
+                                                        borderRadius: 10,
+                                                        backgroundColor: "white"
                                                     }} />
                                                 </TableCell>
                                             </>}

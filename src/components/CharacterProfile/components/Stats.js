@@ -50,7 +50,7 @@ export default function Stats(props) {
                             <Box component="span" className={classes.stat}>
                                 <Typography variant="subtitle2">{statNames[index]}</Typography>
                                 <Typography variant="h6">{props.stats && props.stats[stat]}</Typography>
-                                <Typography variant="subtitle1">{props.stats.bonuses && props.stats.bonuses[stat]}</Typography>
+                                <Typography variant="subtitle1">{props.modifiers && (props.modifiers[stat] >= 0 && '+') + props.modifiers[stat]}</Typography>
                             </Box>
                             {index + 1 !== Object.keys(props.stats).length && <Divider orientation="vertical" flexItem />}
                         </span>

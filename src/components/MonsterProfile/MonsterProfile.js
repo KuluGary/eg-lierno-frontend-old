@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { StringUtil } from '../../helpers/string-util';
 import Paper from '@material-ui/core/Paper';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -43,7 +44,13 @@ const useStyles = makeStyles((theme) => ({
         height: "65vh",
         maxWidth: "100%",
         display: "block",
-        margin: "0 auto"
+        margin: "0 auto",
+        backgroundColor: "white"
+    },
+    imageBox: {
+        backgroundColor: "white",
+        borderRadius: ".2rem",
+        marginBottom: "1rem"
     }
 }));
 
@@ -110,67 +117,63 @@ function MonsterProfile(props) {
 
                                     <Divider className={classes.divider} />
 
-                                    <Stats stats={monster.stats.abilityScores} />
+                                    <Stats stats={monster.stats.abilityScores} modifiers={monster.stats.abilityScoreModifiers} />
 
                                     <Divider className={classes.divider} />
 
                                     <Box>
                                         <Box>
+                                            <Typography variant={'subtitle2'} display="inline">
+                                                {'Tiradas de salvación: '}
+                                            </Typography>
+
+                                            {monster.stats.savingThrows.length > 0
+                                                ? StringUtil.returnStringFromObjectArray(monster.stats.savingThrows, "modifierStr") : '—'}
+                                        </Box>
+                                        <Box>
+                                            <Typography variant={'subtitle2'} display="inline">
+                                                {'Habilidades: '}
+                                            </Typography>
+
+                                            {monster.stats.skills.length > 0
+                                                ? StringUtil.returnModifierStr(monster.stats.skills, monster) : '—'}
+                                        </Box>
+                                        <Box>
                                             <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Sentidos: '}
                                             </Typography>
-                                            {monster.stats.senses.map((sense, index) =>
-                                                <Box component="span">
-                                                    {sense}
-                                                    {monster.stats.senses.length !== index + 1 && ', '}
-                                                </Box>)}
+                                            {monster.stats.senses.length > 0 ? monster.stats.senses.join(", ") : '—'}
                                         </Box>
                                         {monster.stats.damageVulnerabilities.length > 0 && <Box>
                                             <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Vulnerabilidades al daño: '}
                                             </Typography>
-                                            {monster.stats.damageVulnerabilities.map((vulnerability, index) =>
-                                                <Box component="span">
-                                                    {vulnerability}
-                                                    {monster.stats.damageVulnerabilities.length !== index + 1 && ', '}
-                                                </Box>)}
+                                            {monster.stats.damageVulnerabilities.join(", ")}
                                         </Box>}
                                         {monster.stats.damageResistances.length > 0 && <Box>
                                             <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Resistencias al daño: '}
                                             </Typography>
-                                            {monster.stats.damageResistances.map((resistance, index) =>
-                                                <Box component="span">
-                                                    {resistance}
-                                                    {monster.stats.damageResistances.length !== index + 1 && ', '}
-                                                </Box>)}
+                                            {monster.stats.damageResistances.join(", ")}
                                         </Box>}
                                         {monster.stats.damageImmunities.length > 0 && <Box>
                                             <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Inmunidades al daño: '}
                                             </Typography>
-                                            {monster.stats.damageImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
+                                            {monster.stats.damageImmunities.join(", ")}
                                         </Box>}
                                         {monster.stats.conditionImmunities.length > 0 && <Box>
                                             <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Inmunidades a las condiciones: '}
                                             </Typography>
-                                            {monster.stats.conditionImmunities.map((immunity, index) => (
-                                                <Box component="span">
-                                                    {immunity}
-                                                    {monster.stats.conditionImmunities.length !== index + 1 && ', '} </Box>
-                                            ))}
+                                            {monster.stats.conditionImmunities.join(", ")}
                                         </Box>}
                                         <Box>
                                             <Typography className={classes.bold} variant={'subtitle2'} display="inline">
                                                 {'Idiomas: '}
                                             </Typography>
                                             {monster.stats.languages.length > 0
-                                                ? monster.stats.languages.map((sense, index) =>
-                                                    <Box component="span">
-                                                        {sense}
-                                                        {monster.stats.languages.length !== index + 1 && ', '}
-                                                    </Box>)
+                                                ? monster.stats.languages.join(", ")
                                                 : '–'}
                                         </Box>
                                         <Box>
@@ -210,6 +213,7 @@ function MonsterProfile(props) {
                                     {monster.stats.reactions.length > 0 &&
                                         <Box>
                                             <Typography variant={'h6'}>Reacciones</Typography>
+                                            <Divider className={classes.fullWidthDivier} />
                                             <Box>
                                                 {monster.stats.reactions.map(reaction => (
                                                     <Box component="p">
@@ -223,7 +227,7 @@ function MonsterProfile(props) {
                                     {monster.stats.legendaryActions.length > 0 &&
                                         <Box>
                                             <Typography variant={'h6'}>Acciones legendarias</Typography>
-                                            <Divider />
+                                            <Divider className={classes.fullWidthDivier} />
                                             <Box>
                                                 {monster.stats.legendaryActionsDescription}
                                             </Box>
@@ -242,12 +246,14 @@ function MonsterProfile(props) {
                         </Grid>
                         <Grid item xs={12} sm={12} md={6} className={classes.gridItem}>
                             <Paper variant="outlined" className={classes.profileBox}>
-                                <ModalImage
-                                    hideDownload
-                                    className={classes.image}
-                                    small={monster.flavor.imageUrl}
-                                    large={monster.flavor.imageUrl}
-                                />
+                                <Box className={classes.imageBox}>
+                                    <ModalImage
+                                        hideDownload
+                                        className={classes.image}
+                                        small={monster.flavor.imageUrl}
+                                        large={monster.flavor.imageUrl}
+                                    />
+                                </Box>
                                 <span dangerouslySetInnerHTML={{ __html: monster.flavor.description }} />
 
                             </Paper>

@@ -12,6 +12,11 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Slide from '@material-ui/core/Slide';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import Api from '../../helpers/api'
 import { useWidth } from '../../helpers/media-query';
 
@@ -29,11 +34,15 @@ const useStyles = makeStyles((theme) => ({
     link: {
         color: 'inherit',
         textDecoration: 'none'
+    },
+    addButton: {
+        padding: 8,
+        float: "right"
     }
 }));
 
 const mapStateToProps = state => {
-    return { npcs: state.npcs }
+    return { npcs: state.npcs, profile: state.profile }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -43,8 +52,11 @@ const mapDispatchToProps = dispatch => {
 function NpcScreen(props) {
     const classes = useStyles();
     const [npcs, setNpcs] = useState([]);
+    const [selectedData, setSelectedData] = useState();
+    const [anchorEl, setAnchorEl] = React.useState(null);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const open = Boolean(anchorEl);
     const width = useWidth();
 
     const handleChangePage = (event, newPage) => {
@@ -56,14 +68,35 @@ function NpcScreen(props) {
         setPage(0);
     };
 
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     useEffect(() => {
         if (!props.npcs) {
             Api.fetchInternal('/npc')
                 .then(res => {
-                    props.addNpcs(res)
-                    setNpcs(res)
+                    const npcs = res.sort((a, b) => {
+                        if (a.stats.challengeRating > b.stats.challengeRating) {
+                            return 1
+                        } else if (a.stats.challengeRating < b.stats.challengeRating) {
+                            return -1
+                        } else {
+                            if (a.name > b.name) {
+                                return 1
+                            } else {
+                                return -1
+                            }
+                        }
+                    })
+                    props.addNpcs(npcs)
+                    setNpcs(npcs)
                 });
-        }  else {
+        } else {
             setNpcs(props.npcs)
         }
     }, [])
@@ -72,6 +105,12 @@ function NpcScreen(props) {
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             <div className={classes.root}>
                 <Paper variant="outlined" className={classes.profileBox}>
+                    <IconButton
+                        component="span"
+                        className={classes.addButton}
+                        onClick={() => props.history.push("/npc/add")}>
+                        <AddIcon />
+                    </IconButton>
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
@@ -85,12 +124,11 @@ function NpcScreen(props) {
                                         <TableCell>Descripción</TableCell>
                                     </>
                                 }
-                                {/* <TableCell></TableCell> */}
+                                <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {npcs.length > 0 && npcs
-                                .sort((a, b) => (a.stats.challengeRating > b.stats.challengeRating) ? 1 : -1)
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map(npc => (
                                     <TableRow component={Link} to={'/npc/' + npc._id} className={classes.link}>
@@ -111,6 +149,16 @@ function NpcScreen(props) {
                                             <>
                                                 <TableCell>{npc.flavor.description}</TableCell>
                                             </>}
+                                        {props.profile && props.profile._id === npc.flavor.owner && <TableCell>
+                                            <Link>
+                                                <IconButton onClick={(e) => {
+                                                    setSelectedData(npc._id)
+                                                    return handleMenu(e)
+                                                }}>
+                                                    <MoreVertIcon />
+                                                </IconButton>
+                                            </Link>
+                                        </TableCell>}
                                     </TableRow>
                                 ))}
                         </TableBody>
@@ -128,6 +176,23 @@ function NpcScreen(props) {
                         </TableFooter>
                     </Table>
                 </Paper>
+                <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    open={open}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={() => props.history.push("/npc/add/" + selectedData)}>Editar</MenuItem>
+                </Menu>
             </div>
         </ Slide>
     )

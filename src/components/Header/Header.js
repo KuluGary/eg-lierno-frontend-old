@@ -112,6 +112,7 @@ function Header(props) {
     <div className={classes.root}>
       {hasLoggedOut && <Redirect to="/login" />}
       <AppBar
+        color={props.mode ? 'inherit' : 'primary'}
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: props.open,

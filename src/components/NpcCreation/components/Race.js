@@ -35,31 +35,40 @@ export default function Race(props) {
   const [senseAux, setSenseAux] = useState('');
   const [languages, setLanguages] = useState(props.creature.stats.languages || []);
   const [languageAux, setLanguageAux] = useState('');
-  const [selectedRace, setSelectedRace] = useState(props.creature.stats.race);
-  const [selectedSize, setSelectedSize] = useState(props.creature.stats.size);
-  const [speed, setSpeed] = useState(props.creature.stats.speed);
   const races = [
-    "Aberración", "Bestia", "Celestial",
-    "Construcción", "Dragón", "Elemental",
-    "Hada", "Felón", "Gigante",
-    "Humanoide", "Goblinoide", "Monstruosidad",
-    "Viscoso", "Planta", "No-muerto"
+    "Humanoide",
+    StringUtil.generiza("Humano", "Humana", "Humane", props.pronoun),
+    StringUtil.generiza("Medio-elfo", "Medio-elfa", "Medio-elfe", props.pronoun),
+    StringUtil.generiza("Medio-orco", "Medio-orca", "Medio-orque", props.pronoun),
+    "Drow",
+    StringUtil.generiza("Elfo", "Elfa", "Elfe", props.pronoun),
+    StringUtil.generiza("Enano", "Enana", "Enane", props.pronoun),
+    StringUtil.generiza("Mediano", "Mediana", "Mediane", props.pronoun),
+    StringUtil.generiza("Gnomo", "Gnoma", "Gnome", props.pronoun),
+    StringUtil.generiza("Dracónido", "Dracónida", "Dracónide", props.pronoun),
+    "Tiefling", "Aasimar", "Firbolg", "Goliath", "Kenku", "Tabaxi",
+    "Aarakocra", "Bullywug", "Gnoll", "Hobgoblin",
+    StringUtil.generiza("Sirénido", "Sirénida", "Sirénide", props.pronoun),
+    StringUtil.generiza("Orco", "Orca", "Orque", props.pronoun), "Esqueleto", "Zombie"
   ]
+  const [selectedRace, setSelectedRace] = useState(props.creature.stats.race || races[0]);
+  const [speed, setSpeed] = useState(props.creature.stats.speed);
 
   const sizes = [
-    StringUtil.generiza("Diminuto", "Diminuta", "Diminute", props.pronoun), 
-    StringUtil.generiza("Pequeño", "Pequeña", "Pequeñe", props.pronoun), 
-    StringUtil.generiza("Mediano", "Mediana", "Mediane", props.pronoun), 
-    "Grande", "Enorme", 
+    StringUtil.generiza("Diminuto", "Diminuta", "Diminute", props.pronoun),
+    StringUtil.generiza("Pequeño", "Pequeña", "Pequeñe", props.pronoun),
+    StringUtil.generiza("Mediano", "Mediana", "Mediane", props.pronoun),
+    "Grande", "Enorme",
     StringUtil.generiza("Gigantesco", "Gigantesca", "Gigantesque", props.pronoun)
   ]
+  const [selectedSize, setSelectedSize] = useState(props.creature.stats.size || sizes[1]);
 
   useEffect(() => {
-      props.addToCreatureStats(senses, "senses");
-      props.addToCreatureStats(languages, "languages");
-      props.addToCreatureStats(selectedRace, "race");
-      props.addToCreatureStats(selectedSize, "size");
-      props.addToCreatureStats(speed, "speed");
+    props.addToCreatureStats(senses, "senses");
+    props.addToCreatureStats(languages, "languages");
+    props.addToCreatureStats(selectedRace, "race");
+    props.addToCreatureStats(selectedSize, "size");
+    props.addToCreatureStats(speed, "speed");
   }, [senses, languages, selectedRace, selectedSize, speed])
 
   const handleKeyDown = (e, type) => {
@@ -96,7 +105,7 @@ export default function Race(props) {
         Datos raciales
       </Typography>
       <Typography variant="subtitle2" gutterBottom>
-        Por favor detalla los datos raciales de tu monstruo.
+        Por favor detalla los datos raciales de tu personaje no jugable.
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>

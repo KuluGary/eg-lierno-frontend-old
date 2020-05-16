@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, createMuiTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { connect } from "react-redux";
 import {
     addProfile,
@@ -24,6 +25,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import StarIcon from '@material-ui/icons/Star';
 import Tooltip from '@material-ui/core/Tooltip';
+import Switch from '@material-ui/core/Switch';
+import Brightness3Icon from '@material-ui/icons/Brightness3';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Api from '../../helpers/api'
 import { StringUtil } from '../../helpers/string-util'
 
@@ -93,12 +97,13 @@ function a11yProps(index) {
 
 function ProfileScreen(props) {
     const classes = useStyles();
-    const theme = useTheme();
+    // const theme = useTheme();
     const [user, setUser] = useState();
     const [campaigns, setCampaigns] = useState();
     const [avatar, setAvatar] = useState();
     const [roles, setRoles] = useState();
     const [value, setValue] = useState(0);
+    const [darkMode, setDarkMode] = React.useState(false);
 
     useEffect(() => {
         if (!props.profile) {
@@ -151,6 +156,16 @@ function ProfileScreen(props) {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const theme = React.useMemo(
+        () =>
+            createMuiTheme({
+                palette: {
+                    type: darkMode ? 'dark' : 'light',
+                },
+            }),
+        [darkMode],
+    );
 
     return (
         <Slide direction="up" in={true} mountOnEnter unmountOnExit>
@@ -231,12 +246,24 @@ function ProfileScreen(props) {
                                 </Box>
                             </Box>
                             <Divider style={{ margin: "1rem 0" }} light />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={updateProfile}
-                                disabled={!avatar}
-                                className={classes.submitButton}> Guardar perfil </Button>
+                            <Box style={{ display: "flex", justifyContent: "space-between", position: "absolute", width: "100%", bottom: 0 }}>
+                                <Box>
+                                    <FormControlLabel
+                                        labelPlacement="start"
+                                        control={
+                                            <Switch
+                                                checked={props.darkMode}
+                                                onChange={() => props.setDarkMode(!props.darkMode)} />}
+                                        label={'Modo oscuro'} />
+                                </Box>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={updateProfile}
+                                    disabled={!avatar}
+                                // className={classes.submitButton}
+                                > Guardar perfil </Button>
+                            </Box>
                         </Grid>
                     </Grid>
                 </Paper>

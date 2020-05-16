@@ -12,6 +12,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ModalImage from "react-modal-image";
 import Stats from '../CharacterProfile/components/Stats';
 import Slide from '@material-ui/core/Slide';
+import { StringUtil } from '../../helpers/string-util';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -119,17 +120,33 @@ function NpcProfile(props) {
 
                                     <Divider className={classes.divider} />
 
-                                    <Stats stats={npc.stats.abilityScores} />
+                                    <Stats stats={npc.stats.abilityScores} modifiers={npc.stats.abilityScoreModifiers} />
 
                                     <Divider className={classes.divider} />
 
                                     <Box>
                                         <Box>
                                             <Typography variant={'subtitle2'} display="inline">
+                                                {'Tiradas de salvación: '}
+                                            </Typography>
+
+                                            {npc.stats.savingThrows.length > 0 
+                                                ? StringUtil.returnStringFromObjectArray(npc.stats.savingThrows, "modifierStr") : '—'}
+                                        </Box>
+                                        <Box>
+                                            <Typography variant={'subtitle2'} display="inline">
+                                                {'Habilidades: '}
+                                            </Typography>
+
+                                            {npc.stats.skills.length > 0 
+                                                ? StringUtil.returnModifierStr(npc.stats.skills, npc) : '—'}
+                                        </Box>
+                                        <Box>
+                                            <Typography variant={'subtitle2'} display="inline">
                                                 {'Sentidos: '}
                                             </Typography>
 
-                                            {npc.stats.senses.length > 0 ? npc.stats.senses.map(sense => <Box component="span">{sense}</Box>) : '—'}
+                                            {npc.stats.senses.length > 0 ? npc.stats.senses.join(", ") : '—'}
 
                                         </Box>
                                         {npc.stats.damageVulnerabilities.length > 0 && <Box>
@@ -137,7 +154,7 @@ function NpcProfile(props) {
                                                 {'Vulnerabilidades al daño: '}
                                             </Typography>
 
-                                            {npc.stats.damageVulnerabilities.map(vulnerability => <Box component="span">{vulnerability}</Box>)}
+                                            {npc.stats.damageVulnerabilities.join(", ")}
 
                                         </Box>}
                                         {npc.stats.damageResistances.length > 0 && <Box>
@@ -145,7 +162,7 @@ function NpcProfile(props) {
                                                 {'Resistencias al daño: '}
                                             </Typography>
 
-                                            {npc.stats.damageResistances.map(resistance => <Box component="span">{resistance}</Box>)}
+                                            {npc.stats.damageResistances.join(", ")}
 
                                         </Box>}
                                         {npc.stats.damageImmunities.length > 0 && <Box>
@@ -153,7 +170,7 @@ function NpcProfile(props) {
                                                 {'Inmunidades al daño: '}
                                             </Typography>
 
-                                            {npc.stats.damageImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
+                                            {npc.stats.damageImmunities.join(", ")}
 
                                         </Box>}
                                         {npc.stats.conditionImmunities.length > 0 && <Box>
@@ -161,7 +178,7 @@ function NpcProfile(props) {
                                                 {'Inmunidades a las condiciones: '}
                                             </Typography>
 
-                                            {npc.stats.conditionImmunities.map(immunity => <Box component="span">{immunity}</Box>)}
+                                            {npc.stats.conditionImmunities.join(", ")}
 
                                         </Box>}
                                         <Box>
@@ -170,7 +187,7 @@ function NpcProfile(props) {
                                             </Typography>
 
                                             {npc.stats.languages.length > 0
-                                                ? npc.stats.languages.map(sense => <Box component="span">{sense}</Box>)
+                                                ? npc.stats.languages.join(", ")
                                                 : '–'}
 
                                         </Box>
@@ -216,6 +233,7 @@ function NpcProfile(props) {
                                     {npc.stats.reactions.length > 0 &&
                                         <Box>
                                             <Typography variant={'h6'}>Reacciones</Typography>
+                                            <Divider className={classes.fullWidthDivier} />
                                             <Box>
                                                 {npc.stats.reactions.map(reaction => (
                                                     <Box>
@@ -229,7 +247,7 @@ function NpcProfile(props) {
                                     {npc.stats.legendaryActions.length > 0 &&
                                         <Box>
                                             <Typography variant={'h6'}>Acciones legendarias</Typography>
-                                            <Divider />
+                                            <Divider className={classes.fullWidthDivier} />
                                             <Box>
                                                 {npc.stats.legendaryActionsDescription}
                                             </Box>
