@@ -25,7 +25,7 @@ export default function Challenge(props) {
   const classes = useStyles();
   const [challengeRating, setChallengeRating] = useState(props.creature.stats.challengeRating);
   const [step, setStep] = useState(0.125)
-  const [experience, setExperience] = useState(props.creature.stats.experience);
+  const [experience, setExperience] = useState(props.creature.stats.experiencePoints);
   const rows = [
     createData(0, 2, 13, 1 - 6, 3, 0 - 1, 13),
     createData(0.125, 2, 13, 7 - 35, 3, 2 - 3, 13),

@@ -14,7 +14,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ExploreIcon from '@material-ui/icons/Explore';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import PetsIcon from '@material-ui/icons/Pets';
 import MapIcon from '@material-ui/icons/Map';
@@ -124,14 +124,22 @@ export default function MiniDrawer(props) {
               <ListItemText primary={'Personajes'} />
             </ListItem>
           </Link>}
-          {Auth.hasRole("NPC_ACCESS") && <Link to="/npcs" className={classes.link}>
+          <Link to="/campaigns" className={classes.link}>
+            <ListItem button>
+              <ListItemIcon>
+                <MenuBookIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Partidas'} />
+            </ListItem>
+          </Link>
+          {/* {Auth.hasRole("NPC_ACCESS") && <Link to="/npcs" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
                 <SupervisedUserCircleIcon />
               </ListItemIcon>
               <ListItemText primary={'PNJs'} />
             </ListItem>
-          </Link>}
+          </Link>} */}
           {Auth.hasRole("REFERENCE_ACCESS") && <Link to="/reference" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
@@ -140,15 +148,15 @@ export default function MiniDrawer(props) {
               <ListItemText primary={'Referencias'} />
             </ListItem>
           </Link>}
-          {Auth.hasRole("BESTIARY_ACCESS") && <Link to="/bestiary" className={classes.link}>
+          {/* {Auth.hasRole("BESTIARY_ACCESS") && <Link to="/bestiary" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
                 <PetsIcon />
               </ListItemIcon>
               <ListItemText primary={'Bestiario'} />
             </ListItem>
-          </Link>}
-          {Auth.hasRole("MAP_ACCESS") &&
+          </Link>} */}
+          {/* {Auth.hasRole("MAP_ACCESS") &&
             <Link to="/map" className={classes.link}>
               <ListItem button>
                 <ListItemIcon>
@@ -156,7 +164,7 @@ export default function MiniDrawer(props) {
                 </ListItemIcon>
                 <ListItemText primary={'Mapa'} />
               </ListItem>
-            </Link>}
+            </Link>} */}
           {/* {Auth.hasRole("ALIGNMENT_ACCESS") && <Link to="/alignments" className={classes.link}>
             <ListItem button>
               <ListItemIcon>

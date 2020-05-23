@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StringUtil } from '../../helpers/string-util';
-import Paper from '@material-ui/core/Paper';
-import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import Api from '../../helpers/api'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ModalImage from "react-modal-image";
@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         color: 'inherit',
-        display: "flex"
+        display: "flex",
+        padding: ".2rem"
     },
     divider: {
         maxWidth: "50%",
@@ -81,9 +82,9 @@ function MonsterProfile(props) {
                             <Paper variant="outlined" className={classes.profileBox}>
                                 <Box>
                                     <Typography variant={'h5'} className={classes.title}>
-                                        <NavLink to={'/bestiary'} className={classes.link}>
+                                    <   IconButton onClick={props.history.goBack} className={classes.link}>
                                             <ArrowBackIosIcon />
-                                        </NavLink>
+                                        </IconButton>
                                         <Box component="span" style={{ height: "100%" }}>
                                             {monster.name}
                                         </Box>

@@ -50,80 +50,6 @@ export default function Core(props) {
   ];
 
   const [skills, setSkills] = useState(props.creature.stats.skills || []);
-  const skillList2 = [
-    {
-      name : "Acrobacias",
-      modifier : "dexterity",      
-  },
-  {
-      name : "T.con Animales",
-      modifier : "wisdom",      
-  },
-  {
-      name : "C.Arcano",
-      modifier : "intelligence",      
-  },
-  {
-      name : "Atletismo",
-      modifier : "strength",      
-  },
-  {
-      name : "Engaño",
-      modifier : "charisma",      
-  },
-  {
-      name : "Historia",
-      modifier : "intelligence",      
-  },
-  {
-      name : "Perspicacia",
-      modifier : "wisdom",      
-  },
-  {
-      name : "Intimidación",
-      modifier : "charisma",      
-  },
-  {
-      name : "Investigación",
-      modifier : "intelligence",      
-  },
-  {
-      name : "Medicina",
-      modifier : "wisdom",      
-  },
-  {
-      name : "Naturaleza",
-      modifier : "intelligence",      
-  },
-  {
-      name : "Percepción",
-      modifier : "wisdom",      
-  },
-  {
-      name : "Interpretación",
-      modifier : "charisma",      
-  },
-  {
-      name : "Persuasión",
-      modifier : "charisma",      
-  },
-  {
-      name : "Religión",
-      modifier : "intelligence",      
-  },
-  {
-      name : "Juego de Manos",
-      modifier : "dexterity",      
-  },
-  {
-      name : "Sigilo",
-      modifier : "dexterity",      
-  },
-  {
-      name : "Supervivencia",
-      modifier : "wisdom",      
-  }
-  ]
   const skillList = [
     "Acrobacias",
     "Atletismo",
@@ -156,8 +82,7 @@ export default function Core(props) {
         wisdom: calculateAbilityScoreModifiers(abilityScores["wisdom"]),
         charisma: calculateAbilityScoreModifiers(abilityScores["charisma"]),
       }, "abilityScoreModifiers")
-      
-      savingThrows.forEach(savingThrow => console.log(savingThrow, abilities.filter(ability => ability.key === savingThrow.ability)[0].label))
+            
       const newSavingThrows = savingThrows.map(savingThrow => ({
         ability: savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].label,
         proficient: true,
@@ -233,6 +158,9 @@ export default function Core(props) {
     <>
       <Typography variant="h6" gutterBottom>
         Estadísticas
+      </Typography>
+      <Typography variant="subtitle2" gutterBottom>
+        Por favor detalla los datos estadísticos de tu personaje no jugable.
       </Typography>
       <Grid container spacing={2}>
         <Grid item sm={2}>
@@ -314,8 +242,7 @@ export default function Core(props) {
         </Grid>
         <Grid item sm={12}>
           <Button onClick={addSavingThrow}>
-            AÑADIR TIRADA DE SALVACIÓN
-            
+            AÑADIR TIRADA DE SALVACIÓN            
           </Button>
         </Grid>
         {savingThrows.map(savingThrow => (
@@ -323,7 +250,6 @@ export default function Core(props) {
             <Grid item sm={10}>
               <FormControl className={classes.formControl}>
                   <InputLabel id="demo-simple-select-label">Tirada de Salvación</InputLabel>
-                  {console.log(savingThrow)}
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"

@@ -1804,7 +1804,7 @@ export default function Abilities(props) {
                         multiline
                         placeholder="Descripción"
                         defaultValue={
-                            `${(!props.creature.flavor.nameIsProper && props.pronoun && props.pronoun.length > 0) ? props.pronoun + ' ' + props.creature.name.toLowerCase() : props.creature.name} puede llevar a cabo 3 acciones legendarias, escogiendo entre las opciones disponibles. Solo se puede utilizar una opción a la vez y solo al final del turno de otra criatura. ${(!props.creature.flavor.nameIsProper && props.pronoun && props.pronoun.length > 0) ? props.pronoun + ' ' + props.creature.name.toLowerCase() : props.creature.name} recupera las acciones legendarias usadas al principio de su turno.`
+                            `${(!props.creature.flavor.nameIsProper && props.pronoun && props.pronoun.length > 0) ? StringUtil.generiza("El", "La", "Le", props.pronoun) + ' ' + props.creature.name.toLowerCase() : props.creature.name} puede llevar a cabo 3 acciones legendarias, escogiendo entre las opciones disponibles. Solo se puede utilizar una opción a la vez y solo al final del turno de otra criatura. ${(!props.creature.flavor.nameIsProper && props.pronoun && props.pronoun.length > 0) ? StringUtil.generiza("El", "La", "Le", props.pronoun) + ' ' + props.creature.name.toLowerCase() : props.creature.name} recupera las acciones legendarias usadas al principio de su turno.`
                         } />
                 )}
                 {legendaryActions.map((legendaryAction, index) => (

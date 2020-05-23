@@ -126,100 +126,103 @@ function CharacterScreen(props) {
     };
 
     return (
-        <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-            <Paper variant="outlined">
-                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                    <Tab label="Mis Personajes" {...a11yProps(0)} />
-                    <Tab label="Personajes de mis Campañas" {...a11yProps(1)} />
-                </Tabs>
-                <TabPanel value={value} index={0}>
-                    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                        <Table className={classes.table}>
-                            <TableHead>
-                                <TableRow>
-                                    {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
-                                    <TableCell>Nombre</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {(characters && profile) && characters.length > 0 && characters
-                                    .filter(character => character.player === profile._id)
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map(char => (
-                                        <TableRow component={Link} to={'/characters/' + char._id} className={classes.link}>
-                                            {(width !== "xs") &&
-                                                <TableCell className={classes.smallCell}>
-                                                    <div style={{
-                                                        backgroundImage: `url(${char.flavor.imageUrl})`,
-                                                        width: "5vw",
-                                                        height: "5vw",
-                                                        backgroundSize: "cover",
-                                                        borderRadius: 10
-                                                    }} />
-                                                </TableCell>}
-                                            <TableCell>{char.name}</TableCell>
-                                        </TableRow>))}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TablePagination
-                                        rowsPerPageOptions={5, 10, 15}
-                                        colspan={12}
-                                        count={characters.filter(character => character.player === profile._id).length}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
-                                        onChangePage={handleChangePage}
-                                        onChangeRowsPerPage={handleChangeRowsPerPage} />
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
-                    </Slide>
-                </TabPanel>
-                <TabPanel value={value} index={1}>
+        <>
+            {characters &&
                 <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
-                                <TableCell>Nombre</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {(characters && profile) && characters.length > 0 && characters
-                                .filter(character => character.player !== profile._id)
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map(char => (
-                                    <TableRow component={Link} to={'/characters/' + char._id} className={classes.link}>
-                                        {(width !== "xs") &&
-                                            <TableCell className={classes.smallCell}>
-                                                <div style={{
-                                                    backgroundImage: `url(${char.flavor.imageUrl})`,
-                                                    width: "5vw",
-                                                    height: "5vw",
-                                                    backgroundSize: "cover",
-                                                    borderRadius: 10
-                                                }} />
-                                            </TableCell>}
-                                        <TableCell>{char.name}</TableCell>
-                                    </TableRow>))}
-                        </TableBody>
-                        <TableFooter>
-                            <TableRow>
-                                <TablePagination
-                                    rowsPerPageOptions={5, 10, 15}
-                                    colspan={12}
-                                    count={characters.filter(character => character.player !== profile._id).length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage} />
-                            </TableRow>
-                        </TableFooter>
-                    </Table>
-                    </Slide>
-                </TabPanel>
-            </Paper>
-        </Slide>
+                    <Paper variant="outlined">
+                        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                            <Tab label="Mis Personajes" {...a11yProps(0)} />
+                            <Tab label="Personajes de mis Campañas" {...a11yProps(1)} />
+                        </Tabs>
+                        <TabPanel value={value} index={0}>
+                            <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                                <Table className={classes.table}>
+                                    <TableHead>
+                                        <TableRow>
+                                            {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
+                                            <TableCell>Nombre</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {(characters && profile) && characters.length > 0 && characters
+                                            .filter(character => character.player === profile._id)
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map(char => (
+                                                <TableRow component={Link} to={'/characters/' + char._id} className={classes.link}>
+                                                    {(width !== "xs") &&
+                                                        <TableCell className={classes.smallCell}>
+                                                            <div style={{
+                                                                backgroundImage: `url(${char.flavor.imageUrl})`,
+                                                                width: "5vw",
+                                                                height: "5vw",
+                                                                backgroundSize: "cover",
+                                                                borderRadius: 10
+                                                            }} />
+                                                        </TableCell>}
+                                                    <TableCell>{char.name}</TableCell>
+                                                </TableRow>))}
+                                    </TableBody>
+                                    <TableFooter>
+                                        <TableRow>
+                                            <TablePagination
+                                                rowsPerPageOptions={5, 10, 15}
+                                                colspan={12}
+                                                count={characters.filter(character => character.player === profile._id).length}
+                                                rowsPerPage={rowsPerPage}
+                                                page={page}
+                                                onChangePage={handleChangePage}
+                                                onChangeRowsPerPage={handleChangeRowsPerPage} />
+                                        </TableRow>
+                                    </TableFooter>
+                                </Table>
+                            </Slide>
+                        </TabPanel>
+                        <TabPanel value={value} index={1}>
+                            <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                                <Table className={classes.table}>
+                                    <TableHead>
+                                        <TableRow>
+                                            {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
+                                            <TableCell>Nombre</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {(characters && profile) && characters.length > 0 && characters
+                                            .filter(character => character.player !== profile._id)
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map(char => (
+                                                <TableRow component={Link} to={'/characters/' + char._id} className={classes.link}>
+                                                    {(width !== "xs") &&
+                                                        <TableCell className={classes.smallCell}>
+                                                            <div style={{
+                                                                backgroundImage: `url(${char.flavor.imageUrl})`,
+                                                                width: "5vw",
+                                                                height: "5vw",
+                                                                backgroundSize: "cover",
+                                                                borderRadius: 10
+                                                            }} />
+                                                        </TableCell>}
+                                                    <TableCell>{char.name}</TableCell>
+                                                </TableRow>))}
+                                    </TableBody>
+                                    <TableFooter>
+                                        <TableRow>
+                                            <TablePagination
+                                                rowsPerPageOptions={5, 10, 15}
+                                                colspan={12}
+                                                count={characters.filter(character => character.player !== profile._id).length}
+                                                rowsPerPage={rowsPerPage}
+                                                page={page}
+                                                onChangePage={handleChangePage}
+                                                onChangeRowsPerPage={handleChangeRowsPerPage} />
+                                        </TableRow>
+                                    </TableFooter>
+                                </Table>
+                            </Slide>
+                        </TabPanel>
+                    </Paper>
+                </Slide>}
+        </>
     );
 }
 

@@ -111,12 +111,16 @@ export const StringUtil = {
 
     generiza(masculino, femenino, neutro, pronombre) {     
         console.log(pronombre)   
-        if (pronombre.toLowerCase() === 'el') {
-            return masculino
-        } else if (pronombre.toLowerCase() === 'ella' || pronombre.toLowerCase() === 'la') {
-            return femenino
+        if (pronombre) {
+            if (pronombre.toLowerCase() === 'el') {
+                return masculino
+            } else if (pronombre.toLowerCase() === 'ella' || pronombre.toLowerCase() === 'la') {
+                return femenino
+            } else {
+                return neutro
+            } 
         } else {
-            return neutro
+            return masculino
         }
     },
 

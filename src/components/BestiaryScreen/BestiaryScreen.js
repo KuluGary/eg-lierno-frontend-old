@@ -12,8 +12,12 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Slide from '@material-ui/core/Slide';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
+import Box from '@material-ui/core/Box';
 import AddIcon from '@material-ui/icons/Add';
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Api from '../../helpers/api'
 import { useWidth } from '../../helpers/media-query';
 
@@ -40,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const mapStateToProps = state => {
-    return { monsters: state.monsters }
+    return { monsters: state.monsters, profile: state.profile }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -50,10 +54,12 @@ const mapDispatchToProps = dispatch => {
 function BestiaryScreen(props) {
     const classes = useStyles();
     const [monsters, setMonsters] = useState([]);
-    const [page, setPage] = React.useState(0);
+    const [selectedData, setSelectedData] = useState();
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const width = useWidth();
+    const open = Boolean(anchorEl);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -62,6 +68,14 @@ function BestiaryScreen(props) {
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+    };
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
     };
 
     useEffect(() => {
@@ -82,21 +96,21 @@ function BestiaryScreen(props) {
                         }
                     })
                     props.addMonsters(monsters)
-                    setMonsters(monsters)
+                    setMonsters(props.campaign ? monsters.filter(monster => monster.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : monsters)
                 });
         } else {
-            setMonsters(props.monsters)
+            setMonsters(props.campaign ? props.monsters.filter(monster => monster.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : props.monsters)
         }
     }, [])
 
     return (
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             <div className={classes.root}>
-                <Paper variant="outlined" className={classes.profileBox}>
-                    <IconButton 
-                    component="span" 
-                    className={classes.addButton}
-                    onClick={() => props.history.push("/bestiary/add")}>
+                <Box component={props.campaign ? "span" : Paper} variant="outlined">
+                    <IconButton
+                        component="span"
+                        className={classes.addButton}
+                        onClick={() => props.history.push("/bestiary/add")}>
                         <AddIcon />
                     </IconButton>
                     <Table className={classes.table}>
@@ -113,7 +127,7 @@ function BestiaryScreen(props) {
                                         <TableCell>Descripción</TableCell>
                                     </>
                                 }
-                                {/* <TableCell></TableCell> */}
+                                <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -147,6 +161,17 @@ function BestiaryScreen(props) {
                                                     {monster.flavor.description}
                                                 </TableCell>
                                             </>}
+                                        {console.log(props.profile._id, props.dm)}
+                                        {(props.profile && props.dm) && props.profile._id === props.dm && <TableCell align="right">
+                                            <Link>
+                                                <IconButton onClick={(e) => {
+                                                    setSelectedData(monster._id)
+                                                    return handleMenu(e)
+                                                }}>
+                                                    <MoreVertIcon />
+                                                </IconButton>
+                                            </Link>
+                                        </TableCell>}
                                         {/* <TableCell><NavLink className={classes.link} to={'/bestiary/' + monster._id}><NavigateNextIcon /></NavLink></TableCell> */}
                                     </TableRow>
                                 ))}
@@ -164,7 +189,24 @@ function BestiaryScreen(props) {
                             </TableRow>
                         </TableFooter>
                     </Table>
-                </Paper>
+                </Box>
+                <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    open={open}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={() => props.history.push("/bestiary/add/" + selectedData)}>Editar</MenuItem>
+                </Menu>
             </div>
         </Slide>
     )

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { NavLink } from 'react-router-dom';
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Api from '../../helpers/api'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         color: 'inherit',
-        display: "flex"
+        display: "flex",
+        padding: ".2rem"
     },
     divider: {
         maxWidth: "50%",
@@ -78,9 +79,9 @@ function NpcProfile(props) {
                             <Paper variant="outlined" className={classes.profileBox}>
                                 <Box>
                                     <Typography variant={'h5'} className={classes.title}>
-                                        <NavLink to={'/npcs'} className={classes.link}>
+                                        <IconButton onClick={props.history.goBack} className={classes.link}>
                                             <ArrowBackIosIcon />
-                                        </NavLink>
+                                        </IconButton>
                                         <Box component="span" style={{ height: "100%" }}>
                                             {npc.name}
                                         </Box>

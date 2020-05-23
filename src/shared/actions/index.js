@@ -6,7 +6,9 @@ import {
     ADD_ALIGNMENTS,
     ADD_PROFILE,
     ADD_CAMPAIGNS,
-    ADD_ROLES
+    ADD_ROLES,
+    ADD_CLASSES,
+    ADD_RACES
  } from "../constants/action-types";
 
 export function addCharacters(payload) {
@@ -39,4 +41,12 @@ export function addCampaigns(payload) {
 
 export function addRoles(payload) {
     return { type: ADD_ROLES, payload }
+};
+
+export function addClasses(payload) {
+    return { type: ADD_CLASSES, payload }
+};
+
+export function addRaces(payload) {
+    return { type: ADD_RACES, payload }
 };

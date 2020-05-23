@@ -160,9 +160,9 @@ class NpcCreation extends Component {
                     experiencePoints: 25,
                     additionalAbilities: [],
                     challengeRating: .125,
-                    experience: 50,
+                    experiencePoints: 50,
                     actions: [{
-                        name: "Espada cota",
+                        name: "Espada corta",
                         description: "<i>Ataque de arma a melé:</i> +0 a golpear, alcance 5 ft., un objetivo. <i>Daño:</i> 3 (1d6 + 0) daño perforante."
                     }],
                     reactions: [],
@@ -181,10 +181,9 @@ class NpcCreation extends Component {
                     this.setState({
                         defaultCreature: res,
                         loaded: true
-                    }, () => console.log(this.state.defaultCreature.flavor.campaign))
+                    })
                 });
         } else {
-
             this.setState({
                 loaded: true
             })
@@ -262,12 +261,13 @@ class NpcCreation extends Component {
                     .then(res => {
                         const npcs = res.sort((a, b) => (a.stats.challengeRating > b.stats.challengeRating) ? 1 : -1)
                         this.props.addNpcs(npcs)
-                        this.props.history.push("/npcs")
+                        this.props.history.goBack()
                     });
             })
             .catch(() => {
                 this.notify("error", "El npc no ha podido ser añadido.")
-                this.props.history.push("/npcs")
+                // this.props.history.push("/npcs")
+                this.props.history.goBack()
             })
     }
 

@@ -47,38 +47,41 @@ function Flavor(props) {
     StringUtil.generiza("Neutral malo", "Neutral mala", "Neutal male", props.pronoun),
     StringUtil.generiza("Caótico malo", "Caótica mala", "Caótique male", props.pronoun)
   ]
-  const [pronoun, setPronoun] = useState(props.pronoun);
-  const [gender, setGender] = useState('');
+  const [pronoun, setPronoun] = useState(props.creature.flavor.pronoun || 'el');
+  const [gender, setGender] = useState(props.creature.flavor.gender || '');
   const [name, setName] = useState(props.creature.name);
   const [description, setDescription] = useState(props.creature.flavor.description || '');
   const [image, setImage] = useState(props.creature.flavor.imageUrl);
-  const [characterClass, setCharacterClass] = useState('');
-  const [campaigns, setCampaigns] = useState(props.creature.campaigns || []);
+  const [characterClass, setCharacterClass] = useState(props.creature.flavor.class || '');
   const [campaignAvailable, setCampaignAvailable] = useState([]);
+  const [campaigns, setCampaigns] = useState(props.creature.flavor.campaign || []);
+
   const [faction, setFaction] = useState(props.creature.flavor.faction);
   const [alignment, setAlignment] = useState(props.creature.stats.alignment || alignment[0]);
 
   useEffect(() => {
     Api.fetchInternal('/campaigns')
-      .then(campaignList => setCampaignAvailable(
-        campaignList.filter(campaign => campaign.dm === props.profile._id))
-      )
+      .then(campaignList => {
+        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === props.profile._id))
+      })
   }, [props.profile])
 
   useEffect(() => {
-    props.changeName(name);
-    props.setPronoun(pronoun);
-    props.addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
-    props.addToCreatureFlavor(image, "imageUrl");
-    props.addToCreatureFlavor(faction, "faction");
-    props.addToCreatureStats(alignment, "alignment")
-    props.addToCreatureFlavor(gender, "gender");
-    props.addToCreatureFlavor(characterClass, "class")
-    props.addToCreatureFlavor(campaigns.map(campaign => ({
-      campaignId: campaign.id,
-      unlocked: campaign.unlocked
-    })), "campaign")
-    props.addToCreatureFlavor(props.profile._id, "owner")
+    if (campaignAvailable.length > 0) {
+      props.changeName(name);
+      props.addToCreatureFlavor(pronoun, "pronoun");
+      props.addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
+      props.addToCreatureFlavor(image, "imageUrl");
+      props.addToCreatureFlavor(faction, "faction");
+      props.addToCreatureStats(alignment, "alignment")
+      props.addToCreatureFlavor(gender, "gender");
+      props.addToCreatureFlavor(characterClass, "class")
+      props.addToCreatureFlavor(campaigns.map(campaign => ({
+        campaignId: campaign.id || campaignAvailable.filter(campaignA => campaignA._id === campaign.campaignId)[0]._id,
+        unlocked: campaign.unlocked
+      })), "campaign")
+      props.addToCreatureFlavor(props.profile._id, "owner")
+    }
   }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass])
 
   const addCampaign = () => {
@@ -113,6 +116,7 @@ function Flavor(props) {
   }
 
   return (
+    campaignAvailable.length > 0 &&
     <>
       <Typography variant="h6" gutterBottom>
         Detalles básicos
@@ -129,9 +133,9 @@ function Flavor(props) {
               id="demo-simple-select"
               value={pronoun}
               onChange={(e) => setPronoun(e.target.value)}>
-              <MenuItem value={'El'}>{'El'}</MenuItem>
-              <MenuItem value={'La'}>{'La'}</MenuItem>
-              <MenuItem value={'Le'}>{'Le'}</MenuItem>
+              <MenuItem value={'el'}>{'El'}</MenuItem>
+              <MenuItem value={'ella'}>{'La'}</MenuItem>
+              <MenuItem value={'elle'}>{'Le'}</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -173,7 +177,7 @@ function Flavor(props) {
             />
           </FormControl>
         </Grid>
-        <Grid item xs={3} style={{display: (image && image.length > 0) ? 'block' : 'none'}}>
+        <Grid item xs={3} style={{ display: (image && image.length > 0) ? 'block' : 'none' }}>
           <img className={classes.image} src={image} />
         </Grid>
         <Grid item sm={(image && image.length > 0) ? 9 : 12}>
@@ -229,6 +233,7 @@ function Flavor(props) {
         <Grid item xs={6} sm={6}>
           <FormControl className={classes.formControl}>
             <TextField
+              required
               id="gender"
               name="gender"
               onChange={(e) => setGender(e.target.value)}
@@ -240,11 +245,12 @@ function Flavor(props) {
         </Grid>
         <Grid item sm={12}>
           <Button onClick={addCampaign}>
-            AÑADIR CAMPAÑA
+            AÑADIR CAMPAÑA *
           </Button>
         </Grid>
         {campaigns.map((campaign, index) => (
           <>
+            {console.log(campaign)}
             <Grid key={index} item sm={8}>
               <FormControl className={classes.formControl}>
                 <InputLabel id="demo-simple-select-label">Campaña</InputLabel>
@@ -252,7 +258,7 @@ function Flavor(props) {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   onChange={(e) => handleCampaignChange(e, campaign, campaign.unlocked)}
-                  value={campaign.id}
+                  value={campaign.id || campaignAvailable.filter(campaignA => campaignA._id === campaign.campaignId)[0]._id}
                 >
                   {campaignAvailable.map((item, index) => (
                     <MenuItem

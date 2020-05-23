@@ -114,7 +114,6 @@ class MonsterCreation extends Component {
 
         this.state = {
             activeStep: 0,
-            pronoun: "El",
             disabled: true,
             open: false,
             snack: 'success',
@@ -123,6 +122,7 @@ class MonsterCreation extends Component {
                 flavor: {
                     faction: "",
                     gender: "",
+                    pronoun: "",
                     environment: "",
                     description: "",
                     nameIsProper: false,
@@ -159,9 +159,9 @@ class MonsterCreation extends Component {
                     experiencePoints: 25,
                     additionalAbilities: [],
                     challengeRating: .125,
-                    experience: 50,
+                    experiencePoints: 50,
                     actions: [{
-                        name: "Espada cota",
+                        name: "Espada corta",
                         description: "<i>Ataque de arma a melé:</i> +0 a golpear, alcance 5 ft., un objetivo. <i>Daño:</i> 3 (1d6 + 0) daño perforante."
                     }],
                     reactions: [],
@@ -169,6 +169,22 @@ class MonsterCreation extends Component {
                     legendaryActionsPerRound: 3
                 }
             }
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.match.params && this.props.match.params.id) {
+            Api.fetchInternal('/bestiary/' + this.props.match.params.id)
+                .then(res => {
+                    this.setState({
+                        defaultCreature: res,
+                        loaded: true
+                    })
+                })
+        } else {
+            this.setState({
+                loaded: true
+            })
         }
     }
 
@@ -234,7 +250,7 @@ class MonsterCreation extends Component {
 
     saveMonster() {
         Api.fetchInternal('/bestiary', {
-            method: "POST",
+            method: this.props.match.params.id ? "PUT" : "POST",
             body: JSON.stringify(this.state.defaultCreature)
         })
             .then(() => {
@@ -243,12 +259,12 @@ class MonsterCreation extends Component {
                     .then(res => {
                         const monsters = res.sort((a, b) => (a.stats.challengeRating > b.stats.challengeRating) ? 1 : -1)
                         this.props.addMonsters(monsters)
-                        this.props.history.push("/bestiary")
+                        this.props.history.goBack()
                     });
             })
             .catch(() => {
                 this.notify("error", "El monstruo no ha podido ser añadido.")
-                this.props.history.push("/bestiary")
+                this.props.history.goBack()
             })
     }
 
@@ -259,7 +275,7 @@ class MonsterCreation extends Component {
             case 0:
                 if ((!creature.name || !creature.name.length > 0) ||
                     (!creature.flavor.description || !creature.flavor.description.length > 0) ||
-                    (!this.state.pronoun) ||
+                    (!creature.flavor.pronoun) ||
                     (!creature.flavor.campaign || !creature.flavor.campaign.length > 0)) {
                     disabled = true;
                 }
@@ -290,7 +306,7 @@ class MonsterCreation extends Component {
                 break;
             case 5:
                 if ((!creature.stats.challengeRating || creature.stats.challengeRating === '') ||
-                    (!creature.stats.experience || creature.stats.experience === '')) {
+                    (!creature.stats.experiencePoints || creature.stats.experiencePoints === '')) {
                     disabled = true
                 }
                 break;
@@ -344,14 +360,14 @@ class MonsterCreation extends Component {
                             </>
                         ) : (
                                 <>
-                                    {getStepContent(
+                                    {this.state.loaded && getStepContent(
                                         this.state.activeStep,
                                         this.changeName.bind(this),
                                         this.setPronoun.bind(this),
                                         this.addToCreatureFlavor.bind(this),
                                         this.addToCreatureStats.bind(this),
                                         this.state.defaultCreature,
-                                        this.state.pronoun)}
+                                        this.state.defaultCreature.flavor.pronoun)}
                                     <div className={classes.buttons}>
                                         {this.state.activeStep !== 0 && (
                                             <Button onClick={this.handleBack} className={classes.button}>

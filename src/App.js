@@ -25,6 +25,8 @@ import MonsterCreation from './components/MonsterCreation/MonsterCreation';
 import NpcCreation from './components/NpcCreation/NpcCreation';
 import NpcScreen from './components/NpcScreen/NpcScreen';
 import NpcProfile from './components/NpcProfile/NpcProfile';
+import CampaignScreen from './components/CampaignScreen/CampaignScreen';
+import CampaignProfile from './components/CampaignProfile/CampaignProfile';
 import Reference from './components/Referencia/Referencia';
 import Update from './components/Update/Update';
 import Package from '../package.json';
@@ -99,7 +101,6 @@ class App extends Component {
   }
 
   setDarkMode() {
-    console.log("darkMode")
     this.setState({
       darkMode: !this.state.darkMode
     }, () => localStorage.setItem('theme', this.state.darkMode))
@@ -151,15 +152,18 @@ class App extends Component {
                 {Auth.hasRole("ALIGNMENT_ACCESS") && <Route path="/alignments" component={AlignmentScreen} />}
                 {Auth.hasRole("CHARACTER_ACCESS") && <Route path="/characters/:id" component={CharacterProfile} />}
                 {Auth.hasRole("CHARACTER_ACCESS") && <Route exact path="/characters" component={CharacterScreen} />}
-                {/* {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npc/add/:id" component={NpcCreation} />} */}
+                <Route exact path="/campaigns" component={CampaignScreen} />
+                <Route exact path="/campaigns/:id" component={CampaignProfile} />
+
                 {Auth.hasRole("NPC_ACCESS") && <Route path="/npc/add/:id?" component={NpcCreation} />}
                 {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npcs" component={NpcScreen} />}
                 {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npc/:id" component={NpcProfile} />}
-                {Auth.hasRole("INITIATIVE_ACCESS") && <Route path="/initiative" component={InitiativeTracker} />}
-                {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/add" component={MonsterCreation} />}
-                {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/add/:id" component={MonsterCreation} />}
-                {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/:id" component={MonsterProfile} />}
+
+                {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/add/:id?" component={MonsterCreation} />}
                 {Auth.hasRole("BESTIARY_ACCESS") && <Route exact path="/bestiary" component={BestiaryScreen} />}
+                {Auth.hasRole("BESTIARY_ACCESS") && <Route exact path="/bestiary/:id" component={MonsterProfile} />}
+
+                {Auth.hasRole("INITIATIVE_ACCESS") && <Route path="/initiative" component={InitiativeTracker} />}
                 {Auth.hasRole("MAP_ACCESS") && <Route exact path="/map" component={MapScreen} />}
                 {Auth.hasRole("MAP_ACCESS") && <Route exact path="/location/:id" component={Location} />}
                 {Auth.hasRole("REFERENCE_ACCESS") && <Route exact path="/reference" component={Reference} />}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from "react-redux";
+import { addRaces } from "../../../shared/actions/index";
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -35,14 +37,31 @@ const useStyles = makeStyles({
     }
 });
 
-export default function Race(props) {
+const mapStateToProps = state => {
+    return { races: state.races }
+}
+
+const mapDispatchToProps = dispatch => {
+    return { addRaces: races => dispatch(addRaces(races)) };
+}
+
+function Race(props) {
     const classes = useStyles();
     const { raceId, subraceIndex } = props;
     const [race, setRace] = useState();
 
     useEffect(() => {
-        Api.fetchInternal('/race/' + raceId)
-            .then(res => setRace(res))
+        if (!props.races) {
+            Api.fetchInternal('/races/')
+                .then(res => {
+                    console.log(res)
+                    props.addRaces(res)
+                    let selectedRace = res.filter(apiRace => apiRace._id === raceId)[0]
+                    setRace(selectedRace)
+                })
+        } else {
+            setRace(props.races.filter(apiRace => apiRace._id === raceId)[0]);
+        }
     }, [])
 
     return (
@@ -51,7 +70,6 @@ export default function Race(props) {
                 <Paper variant="outlined" className={classes.paper}>
                     <Grid container spacing={1}>
                         <Grid item md={6} sm={12}>
-
                             <Box>
                                 <Box>
                                     <Typography variant="h6">
@@ -91,3 +109,5 @@ export default function Race(props) {
         </div >
     );
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Race);

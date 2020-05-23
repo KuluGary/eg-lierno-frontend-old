@@ -6,3 +6,5 @@ export const ADD_ALIGNMENTS = "ADD_ALIGNMENTS";
 export const ADD_PROFILE = "ADD_PROFILE";
 export const ADD_CAMPAIGNS = "ADD_CAMPAIGNS";
 export const ADD_ROLES = "ADD_ROLES";
+export const ADD_CLASSES = "ADD_CLASSES";
+export const ADD_RACES = "ADD_RACES";

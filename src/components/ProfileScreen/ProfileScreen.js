@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, useTheme, createMuiTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import {
     addProfile,
@@ -26,7 +25,6 @@ import TableRow from '@material-ui/core/TableRow';
 import StarIcon from '@material-ui/icons/Star';
 import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
-import Brightness3Icon from '@material-ui/icons/Brightness3';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Api from '../../helpers/api'
 import { StringUtil } from '../../helpers/string-util'

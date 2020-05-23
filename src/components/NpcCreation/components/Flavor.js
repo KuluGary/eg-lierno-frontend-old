@@ -96,7 +96,7 @@ function Flavor(props) {
         backstory: story.replace(/\n/g, "<br />")
       }
       props.addToCreatureFlavor(personality, "personality")
-      props.addToCreatureFlavor(props.profile._id, "owner")
+      // props.addToCreatureFlavor(props.profile._id, "owner")
     }
   }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, personalityTrait1, personalityTrait2, ideals, bonds, flaws, story])
 
@@ -249,6 +249,7 @@ function Flavor(props) {
         <Grid item xs={6} sm={6}>
           <FormControl className={classes.formControl}>
             <TextField
+              required
               id="gender"
               name="gender"
               onChange={(e) => setGender(e.target.value)}
@@ -338,7 +339,7 @@ function Flavor(props) {
         </Grid>
         <Grid item sm={12}>
           <Button onClick={addCampaign}>
-            AÑADIR CAMPAÑA
+            AÑADIR CAMPAÑA *
           </Button>
         </Grid>
         {campaigns.map((campaign, index) => (

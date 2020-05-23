@@ -84,18 +84,18 @@ export default function Core(props) {
       }, "abilityScoreModifiers")
       
       const newSavingThrows = savingThrows.map(savingThrow => ({
-        ability: savingThrow.ability,
+        ability: savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].label,
         proficient: true,
-        modifier: calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability])),
-        modifierStr: `${savingThrow.label} ${(calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability])) >= 0 && '+') + calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability]))}`
+        modifier: calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].label])),
+        modifierStr: `${savingThrow.label || abilities.filter(ability => ability.key === savingThrow.ability)[0].label} ${(calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].key]), proficiencyBonus) >= 0 && '+') + calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability]), proficiencyBonus)}`
       }))
 
       props.addToCreatureStats(newSavingThrows, 'savingThrows')
       props.addToCreatureStats(skills, 'skills')
   }, [abilityScores, proficiencyBonus, savingThrows, skills])
 
-  const calculateAbilityScoreModifiers = (ability) => {
-    return Math.floor((ability - 10) / 2 + proficiencyBonus);
+  const calculateAbilityScoreModifiers = (ability, proficiency = 0) => {
+    return Math.floor((ability - 10) / 2 + proficiency);
   }
 
   const addSavingThrow = () => {
@@ -158,6 +158,9 @@ export default function Core(props) {
     <>
       <Typography variant="h6" gutterBottom>
         Estadísticas
+      </Typography>
+      <Typography variant="subtitle2" gutterBottom>
+        Por favor detalla los datos estadísticos de tu monstruo.
       </Typography>
       <Grid container spacing={2}>
         <Grid item sm={2}>
@@ -239,8 +242,7 @@ export default function Core(props) {
         </Grid>
         <Grid item sm={12}>
           <Button onClick={addSavingThrow}>
-            AÑADIR TIRADA DE SALVACIÓN
-            
+            AÑADIR TIRADA DE SALVACIÓN            
           </Button>
         </Grid>
         {savingThrows.map(savingThrow => (
@@ -252,7 +254,7 @@ export default function Core(props) {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     onChange={(e) => handleSavingThrowChange(e, savingThrow)}
-                    value={savingThrow.ability}
+                    value={savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].key}
                   >
                     {abilities
                       .map(ability =>  (

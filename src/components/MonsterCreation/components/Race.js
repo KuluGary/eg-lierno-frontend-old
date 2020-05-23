@@ -35,17 +35,17 @@ export default function Race(props) {
   const [senseAux, setSenseAux] = useState('');
   const [languages, setLanguages] = useState(props.creature.stats.languages || []);
   const [languageAux, setLanguageAux] = useState('');
-  const [selectedRace, setSelectedRace] = useState(props.creature.stats.race);
-  const [selectedSize, setSelectedSize] = useState(props.creature.stats.size);
-  const [speed, setSpeed] = useState(props.creature.stats.speed);
   const races = [
+    StringUtil.generiza("Humano", "Humana", "Humane", props.pronoun),
     "Aberración", "Bestia", "Celestial",
     "Construcción", "Dragón", "Elemental",
     "Hada", "Felón", "Gigante",
     "Humanoide", "Goblinoide", "Monstruosidad",
     "Viscoso", "Planta", "No-muerto"
   ]
-
+  const [selectedRace, setSelectedRace] = useState(props.creature.stats.race || races[0]);
+  const [speed, setSpeed] = useState(props.creature.stats.speed);
+  
   const sizes = [
     StringUtil.generiza("Diminuto", "Diminuta", "Diminute", props.pronoun), 
     StringUtil.generiza("Pequeño", "Pequeña", "Pequeñe", props.pronoun), 
@@ -53,6 +53,7 @@ export default function Race(props) {
     "Grande", "Enorme", 
     StringUtil.generiza("Gigantesco", "Gigantesca", "Gigantesque", props.pronoun)
   ]
+  const [selectedSize, setSelectedSize] = useState(props.creature.stats.size || sizes[1]);
 
   useEffect(() => {
       props.addToCreatureStats(senses, "senses");

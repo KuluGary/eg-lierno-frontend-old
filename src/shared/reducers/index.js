@@ -6,7 +6,9 @@ import {
     ADD_ALIGNMENTS,
     ADD_PROFILE,
     ADD_CAMPAIGNS,
-    ADD_ROLES
+    ADD_ROLES,
+    ADD_CLASSES,
+    ADD_RACES
  } from "../constants/action-types";
 
 const initialState = {};
@@ -36,6 +38,12 @@ function rootReducer(state = initialState, action) {
         })
         case ADD_ROLES: return Object.assign({}, state, {
             roles: action.payload
+        })
+        case ADD_CLASSES: return Object.assign({}, state, {
+            classes: action.payload
+        })
+        case ADD_RACES: return Object.assign({}, state, {
+            races: action.payload
         })
         default:            
     }
