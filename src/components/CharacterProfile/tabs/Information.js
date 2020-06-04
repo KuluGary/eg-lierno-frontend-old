@@ -42,7 +42,7 @@ export default function Information(props) {
                 <>
                     <Grid container spacing={1}>
                             {/* <Box className={classes.flexGrid}> */}
-                                <Grid item xs={12} sm={12} md={6} container direction="row">
+                                <Grid item xs={12} sm={12} md={6} container direction="row" spacing={1}>
                                     <Grid item xs={12}>
                                         <Stats
                                             character={true}

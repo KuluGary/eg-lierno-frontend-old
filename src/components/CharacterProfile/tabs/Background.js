@@ -32,14 +32,19 @@ const useStyles = makeStyles({
     trait: {
         margin: "0 1rem"
     },
+    psychTrait: {
+        margin: ".5rem 1rem"
+    },
     physicalTraits: {
-        display: "flex",
-        flex: 1,
-        flexWrap: "wrap",
+        marginBottom: "1rem"
     },
     profileBox: {
         padding: "1rem",
-        minHeight: "60vh"
+        minHeight: "60vh",
+        height: "100%"
+    },
+    traitBox: {
+        minHeight: "100%"
     }
 });
 
@@ -54,53 +59,63 @@ export default function Armor(props) {
     return (
         <div className={classes.root}>
             <Grid container spacing={1} >
-                <Grid item xs={12} sm={12} md={6}>
+                <Grid item xs={12} sm={12} md={6} className={classes.traitBox}>
                     <Paper variant="outlined" className={classes.paper}>
                         <Typography variant="subtitle2">{'Rasgos físicos.'}</Typography>
                         <Box component="div" className={classes.physicalTraits}>
-                            <Box component="span" className={classes.trait}>
+                            <Box component="div" className={classes.trait}>
                                 <Typography variant="subtitle2" display="inline">{'Edad. '}</Typography>
                                 <Typography display="inline" variant="subtitle4">{character["physicalTraits"]["age"]}</Typography>
                             </Box>
-                            <Box component="span" className={classes.trait}>
+                            <Box component="div" className={classes.trait}>
                                 <Typography variant="subtitle2" display="inline">{'Género. '}</Typography>
                                 <Typography display="inline" variant="subtitle4">{character["gender"]}</Typography>
                             </Box>
-                            <Box component="span" className={classes.trait}>
+                            <Box component="div" className={classes.trait}>
                                 <Typography variant="subtitle2" display="inline">{'Altura. '}</Typography>
                                 <Typography display="inline" variant="subtitle4">{character["physicalTraits"]["height"]}</Typography>
                             </Box>
-                            <Box component="span" className={classes.trait}>
+                            <Box component="div" className={classes.trait}>
                                 <Typography variant="subtitle2" display="inline">{'Peso. '}</Typography>
                                 <Typography display="inline" variant="subtitle4">{character["physicalTraits"]["weight"]}</Typography>
                             </Box>
-                            <Box component="span" className={classes.trait}>
+                            <Box component="div" className={classes.trait}>
                                 <Typography variant="subtitle2" display="inline">{'Ojos. '}</Typography>
                                 <Typography display="inline" variant="subtitle4"></Typography>{character["physicalTraits"]["eyes"]}
                             </Box>
-                            <Box component="span" className={classes.trait}>
+                            <Box component="div" className={classes.trait}>
                                 <Typography variant="subtitle2" display="inline">{'Pelo. '}</Typography>
                                 <Typography display="inline" variant="subtitle4">{character["physicalTraits"]["hair"]}</Typography>
                             </Box>
-                            <Box component="span" className={classes.trait}>
+                            <Box component="div" className={classes.trait}>
                                 <Typography variant="subtitle2" display="inline">{'Piel. '}</Typography>
                                 <Typography display="inline" variant="subtitle4">{character["physicalTraits"]["skin"]}</Typography>
                             </Box>
                         </Box>
                         <Typography variant="subtitle2">{'Rasgos de Personalidad.'}</Typography>
-                        <Box className={classes.trait}>{
-                            character["psychTraits"]["personalityTrait1"]
-                            + character["psychTraits"]["personalityTrait2"]}</Box>
-                        <Typography variant="subtitle2">{'Ideales.'}</Typography>
-                        <Box className={classes.trait}>{character["psychTraits"]["ideals"]}</Box>
-                        <Typography variant="subtitle2">{'Vínculos.'}</Typography>
-                        <Box className={classes.trait}>{character["psychTraits"]["bonds"]}</Box>
-                        <Typography variant="subtitle2">{'Defectos.'}</Typography>
-                        <Box className={classes.trait}>{character["psychTraits"]["flaws"]}</Box>
+                        <Box component="div">
+                            <Box className={classes.psychTrait}>
+                                <Typography variant="subtitle2" display="inline">{'Personalidad. '}</Typography>
+                                <Typography display="inline" variant="subtitle4">{character["psychTraits"]["personalityTrait1"]
+                                    + " " + character["psychTraits"]["personalityTrait2"]}</Typography>
+                            </Box>
+                            <Box className={classes.psychTrait}>
+                                <Typography variant="subtitle2" display="inline">{'Ideales. '}</Typography>
+                                <Typography display="inline" variant="subtitle4">{character["psychTraits"]["ideals"]}</Typography>
+                            </Box>
+                            <Box className={classes.trait}>
+                                <Typography variant="subtitle2" display="inline">{'Vínculos. '}</Typography>
+                                <Typography display="inline" variant="subtitle4">{character["psychTraits"]["bonds"]}</Typography>
+                            </Box>
+                            <Box className={classes.psychTrait}>
+                                <Typography variant="subtitle2" display="inline">{'Defectos. '}</Typography>
+                                <Typography display="inline" variant="subtitle4">{character["psychTraits"]["flaws"]}</Typography>
+                            </Box>
+                        </Box>
 
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6}>
+                <Grid item xs={12} sm={12} md={6} className={classes.traitBox}>
                     <Paper variant="outlined" className={classes.profileBox}>
                         <ModalImage
                             hideDownload

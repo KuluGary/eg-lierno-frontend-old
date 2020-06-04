@@ -37,7 +37,8 @@ const mapStateToProps = state => {
 function CharacterProfile(props) {
     const classes = useStyles();
     const [character, setCharacter] = useState();
-    const [categories] = useState(["Información", "Trasfondo", "Rasgos", "Raza", "Objetos", "Hechizos"]);
+    const [categories, setCategories] = useState([]);
+    console.log(character && character.stats.spells.length, categories)
     const [selectedCategory, setSelectedCategory] = useState(0);
 
     useEffect(() => {
@@ -45,10 +46,12 @@ function CharacterProfile(props) {
             Api.fetchInternal('/characters/' + props.match.params.id)
                 .then(res => {
                     setCharacter(res)
+                    setCategories(["Información", "Trasfondo", "Rasgos", "Raza", "Objetos", (res && res.stats.spells.length > 0) && "Hechizos"].filter(el => el))
                 })
         } else {
             const selectedCharacter = props.characters.filter(character => character._id === props.match.params.id)[0];
             selectedCharacter && setCharacter(selectedCharacter)
+            setCategories(["Información", "Trasfondo", "Rasgos", "Raza", "Objetos", (selectedCharacter && selectedCharacter.stats.spells.length > 0) && "Hechizos"].filter(el => el))
         }
     }, [])
 
@@ -70,7 +73,7 @@ function CharacterProfile(props) {
             case 2: return <Features features={character.stats} />
             case 3: return <Race raceId={character.stats.race} subraceIndex={character.stats.subrace} />
             case 4: return <Items items={character.stats.equipment} />
-            case 5: return <Spells spellIds={character.stats.spells} />
+            case 5: return (character && character.stats.spells.length > 0) ? <Spells spellIds={character.stats.spells} /> : null
         }
     }
 

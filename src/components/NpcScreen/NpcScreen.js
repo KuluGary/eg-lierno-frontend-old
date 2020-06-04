@@ -81,6 +81,7 @@ function NpcScreen(props) {
         if (!props.npcs) {
             Api.fetchInternal('/npc')
                 .then(res => {
+                    
                     const npcs = res.sort((a, b) => {
                         if (a.stats.challengeRating > b.stats.challengeRating) {
                             return 1
@@ -94,6 +95,7 @@ function NpcScreen(props) {
                             }
                         }
                     })
+
                     props.addNpcs(npcs)
                     setNpcs(props.campaign ? npcs.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : npcs)
                 });

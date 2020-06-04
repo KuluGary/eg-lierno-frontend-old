@@ -87,7 +87,7 @@ function NpcProfile(props) {
                                         </Box>
                                     </Typography>
                                     <Typography variant={'subtitle1'}>
-                                        {npc.flavor.gender + ' ' + npc.stats.race + ', ' + npc.stats.alignment + ' ' + npc.flavor.class}
+                                        {npc.flavor.gender + ' ' + npc.stats.race + ', ' + npc.flavor.class + ' ' + npc.stats.alignment}
                                     </Typography>
                                 </Box>
                                 <Divider className={classes.divider} />
@@ -222,7 +222,7 @@ function NpcProfile(props) {
                                             <Divider className={classes.fullWidthDivier} />
                                             <Box>
                                                 {npc.stats.actions.map(action => (
-                                                    <Box>
+                                                    <Box component="p">
                                                         <Typography display="inline" variant="subtitle2">{action.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: action.description }} />
                                                     </Box>
@@ -237,7 +237,7 @@ function NpcProfile(props) {
                                             <Divider className={classes.fullWidthDivier} />
                                             <Box>
                                                 {npc.stats.reactions.map(reaction => (
-                                                    <Box>
+                                                    <Box component="p">
                                                         <Typography display="inline" variant="subtitle2">{reaction.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: reaction.description }} />
                                                     </Box>
@@ -254,7 +254,7 @@ function NpcProfile(props) {
                                             </Box>
                                             <Box>
                                                 {npc.stats.legendaryActions.map(action => (
-                                                    <Box>
+                                                    <Box component="p">
                                                         <Typography display="inline" variant="subtitle2">{action.name + '. '}</Typography>
                                                         <span dangerouslySetInnerHTML={{ __html: action.description }} />
                                                     </Box>
