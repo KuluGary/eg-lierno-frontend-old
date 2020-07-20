@@ -7,6 +7,7 @@ import {
     addCampaigns,
     addRoles
 } from "../../shared/actions/index";
+import { NavLink } from "react-router-dom";
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Slide from '@material-ui/core/Slide';
@@ -27,6 +28,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Api from '../../helpers/api'
+import { toast } from 'react-toastify';
 import { StringUtil } from '../../helpers/string-util'
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     },
     smallCell: {
         width: "2rem"
+    },
+    link: {
+        color: "inherit"
     }
 }));
 
@@ -100,6 +105,7 @@ function ProfileScreen(props) {
     const [campaigns, setCampaigns] = useState();
     const [avatar, setAvatar] = useState();
     const [roles, setRoles] = useState();
+    const [newPassword, setNewPassword] = useState();
     const [value, setValue] = useState(0);
     const [darkMode, setDarkMode] = React.useState(false);
 
@@ -137,18 +143,31 @@ function ProfileScreen(props) {
     }, [])
 
     const updateProfile = () => {
-        setAvatar();
-        let body = {
-            profile: user["metadata"]
+        if (newPassword && newPassword.length > 0) {
+            Api.fetchInternal('/auth/reset', {
+                method: "POST",
+                body: JSON.stringify({
+                    email: user['metadata']['email'],
+                    password: newPassword
+                })
+            })
+                .then(() => toast.success("Contraseña actualizada"))
         }
+        
+        if (avatar) {
+            setAvatar();
 
+            let body = {
+                profile: user["metadata"]
+            }
 
-        body["profile"]["avatar"] = avatar;
+            body["profile"]["avatar"] = avatar;
 
-        Api.fetchInternal('/auth/me/' + user._id, {
-            method: "POST",
-            body: JSON.stringify(body)
-        })
+            Api.fetchInternal('/auth/me/' + user._id, {
+                method: "POST",
+                body: JSON.stringify(body)
+            })
+        }
     }
 
     const handleChange = (event, newValue) => {
@@ -244,6 +263,21 @@ function ProfileScreen(props) {
                                 </Box>
                             </Box>
                             <Divider style={{ margin: "1rem 0" }} light />
+                            <Box>
+                                {/* <Link>{'Modificar contraseña'}</Link>
+                                <NavLink to={'/campaigns'} className={classes.link}>
+                                    {'Modificar contraseña'}
+                                </NavLink> */}
+                                <TextField
+                                    id="outlined-helperText"
+                                    label="Nueva contraseña"
+                                    variant="outlined"
+                                    value={newPassword}
+                                    type="password"
+                                    fullWidth
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                />
+                            </Box>
                             <Box style={{ display: "flex", justifyContent: "space-between", position: "absolute", width: "100%", bottom: 0 }}>
                                 <Box>
                                     <FormControlLabel
@@ -258,7 +292,7 @@ function ProfileScreen(props) {
                                     variant="contained"
                                     color="primary"
                                     onClick={updateProfile}
-                                    disabled={!avatar}
+                                    disabled={!avatar && (!newPassword || newPassword.length < 6)}
                                 // className={classes.submitButton}
                                 > Guardar perfil </Button>
                             </Box>
