@@ -17,7 +17,8 @@ import { useWidth } from "../../../helpers/media-query";
 
 const useStyles = makeStyles({
     container: {
-        width: "100%"
+        width: "100%",
+        paddingLeft: "4px"
     },
     table: {
         width: "100%"

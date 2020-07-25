@@ -9,12 +9,16 @@ import Armor from "../components/Armor";
 import Attacks from "../components/Attacks";
 import SavingThrows from '../components/SavingThrows';
 import Skills from '../components/Skills';
+import Initiative from '../components/Initiative';
 
 import Grid from '@material-ui/core/Grid';
+import PassivePerception from '../components/PassivePerception';
 
 const useStyles = makeStyles({
     root: {
-        width: "100%"
+        width: "100%",
+        paddingLeft: "4px"
+        // paddingLeft: "4px"
     },
     container: {
         maxWidth: "45vw"
@@ -41,52 +45,61 @@ export default function Information(props) {
             {character &&
                 <>
                     <Grid container spacing={1}>
-                            {/* <Box className={classes.flexGrid}> */}
-                                <Grid item xs={12} sm={12} md={6} container direction="row" spacing={1}>
-                                    <Grid item xs={12}>
-                                        <Stats
-                                            character={true}
-                                            stats={character["stats"]["abilityScores"]}
-                                            modifiers={character["stats"]["abilityScoreModifiers"]} />
-                                    </Grid>
-                                    <Grid item xs={12} sm={4} md={2}>
-                                        <Proficiency
-                                            proficiency={character["stats"]["proficiencyBonus"]} />
-                                    </Grid>
-                                    <Grid item xs={12} sm={4} md={2}>
-                                        <Speed
-                                            speed={character["stats"]['speed']} />
-                                    </Grid>
-                                    <Grid item xs={12} sm={4} md={2}>
-                                        <Armor
-                                            ac={character["stats"]["armorClass"]} />
-                                    </Grid>
-                                    <Grid item xs={12} sm={12} md={6}>
-                                        <HitPoints
-                                            hp={character["stats"]["hitPoints"]} />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Attacks
-                                            attacks={character["stats"]["attacks"]}
-                                            numAttacks={character["stats"]["numAttacks"]} />
+                        {/* <Box className={classes.flexGrid}> */}
+                        <Grid item xs={12} sm={12} md={6} container direction="row" spacing={1}>
+                            <Grid item xs={12}>
+                                <Stats
+                                    character={true}
+                                    stats={character["stats"]["abilityScores"]}
+                                    modifiers={character["stats"]["abilityScoreModifiers"]} />
+                            </Grid>
+                            <Grid item xs={12} sm={4} md={2}>
+                                <Proficiency
+                                    proficiency={character["stats"]["proficiencyBonus"]} />
+                            </Grid>
+                            <Grid item xs={12} sm={4} md={2}>
+                                <Speed
+                                    speed={character["stats"]['speed']} />
+                            </Grid>
+                            <Grid item xs={12} sm={4} md={2}>
+                                <Armor
+                                    ac={character["stats"]["armorClass"]} />
+                            </Grid>
+                            <Grid item xs={12} sm={4} md={2}>                                
+                                <Initiative
+                                    initiative={character["stats"]["initiativeBonus"]} />
+                            </Grid>
+                            <Grid item xs={12} sm={4} md={2}>                                
+                                <PassivePerception
+                                    perception={character["stats"]["passivePerception"]} />
+                            </Grid>
+                            {console.log(character)}
+                            <Grid item xs={12} sm={4} md={2}>
+                                <HitPoints
+                                    hp={character["stats"]["hitPoints"]} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Attacks
+                                    attacks={character["stats"]["attacks"]}
+                                    numAttacks={character["stats"]["numAttacks"]} />
 
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <SavingThrows
-                                            saving={character["stats"]["savingThrows"]} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <SavingThrows
+                                    saving={character["stats"]["savingThrows"]} />
 
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={12} sm={12} md={6} container direction="row">
-                                    <Grid item xs={12}>
-                                        <Skills
-                                            skills={character["stats"]["skills"]}
-                                            stats={character["stats"]["abilityScoreModifiers"]}
-                                            proficiency={character["stats"]["proficiencyBonus"]} />
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={6} container direction="row">
+                            <Grid item xs={12}>
+                                <Skills
+                                    skills={character["stats"]["skills"]}
+                                    stats={character["stats"]["abilityScoreModifiers"]}
+                                    proficiency={character["stats"]["proficiencyBonus"]} />
 
-                                    </Grid>
-                                </Grid>
-                            {/* </Box> */}
+                            </Grid>
+                        </Grid>
+                        {/* </Box> */}
                     </Grid>
                 </>
             }

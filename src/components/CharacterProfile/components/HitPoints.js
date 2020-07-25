@@ -23,7 +23,7 @@ const useStyles = makeStyles({
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
-        maxWidth: "20%",
+        // maxWidth: "30%",
         alignItems: "center"
     },
     link: {
@@ -55,7 +55,7 @@ export default function Proficiency(props) {
     return (
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper}>
-                {(width !== "xs") &&
+                {/* {(width !== "xs") &&
                 <Box component="span" className={classes.stat}>
                     <Button variant="contained" color="secondary" className={classes.button}>
                         <Typography className={classes.buttonFont}>
@@ -69,19 +69,20 @@ export default function Proficiency(props) {
                         </Typography>
                     </Button>
                 </Box>
-                }
+                } */}
                 <Box component="span" className={classes.stat}>
-                    <Typography variant="subtitle2">{'ACTUALES'}</Typography>
+                    <Typography variant="subtitle2">{'PUNTOS DE'}</Typography>
                     <Typography variant="h6">{props.hp.hp_current ? props.hp.hp_current : props.hp.hp_max}</Typography>
+                    <Typography variant="subtitle2">{'VIDA'}</Typography>
                 </Box>
-                <Box component="span" className={classes.stat}>
+                {/* <Box component="span" className={classes.stat}>
                     <Typography variant="subtitle2">{'MÁX'}</Typography>
                     <Typography variant="h6">{props.hp.hp_max}</Typography>
-                </Box>
-                <Box component="span" className={classes.stat}>
+                </Box> */}
+                {/* <Box component="span" className={classes.stat}>
                     <Typography variant="subtitle2">{'TEMP'}</Typography>
                     <Typography variant="h6">{props.hp.hp_temp ? props.hp.hp_temp : '-'}</Typography>
-                </Box>
+                </Box> */}
             </Paper>
         </div>
     );

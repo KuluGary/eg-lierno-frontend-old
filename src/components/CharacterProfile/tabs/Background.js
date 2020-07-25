@@ -8,7 +8,8 @@ import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles({
     root: {
-        width: "100%"
+        width: "100%",
+        paddingLeft: "4px"
     },
     paper: {
         margin: 0,

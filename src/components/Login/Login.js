@@ -6,13 +6,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-// import Link from '@material-ui/core/Link';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { grey } from '@material-ui/core/colors';
 import Api from "../../helpers/api";
 import Auth from "../../helpers/auth";
 import Slide from '@material-ui/core/Slide';
@@ -23,7 +24,7 @@ function Copyright(props) {
             {'Copyright © '}
                 Gary Cuétara{' '}
             {new Date().getFullYear()}
-            {'. Versión #' + props.version} 
+            {'. Versión #' + props.version}
         </Typography>
     );
 }
@@ -48,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         textDecoration: 'none'
+    },
+    progress: {
+        color: grey[400]
     }
 }));
 
@@ -57,9 +61,10 @@ function Login(props) {
     const [password, setPassWord] = useState('');
     const [remember, setRemember] = useState(false);
     const [hasLoggedIn, setLoggedIn] = useState(false)
+    const [loading, setLoading] = useState(false);
     const [errorState, setError] = useState(false);
 
-    useEffect(() => {        
+    useEffect(() => {
         if (Auth.loggedIn()) {
             props.history.push("/")
         }
@@ -72,7 +77,9 @@ function Login(props) {
                 username,
                 password
             }
-            
+
+            setLoading(true);
+
             Api.fetchInternal('/auth/login', {
                 method: "POST",
                 headers: {
@@ -89,9 +96,13 @@ function Login(props) {
                     }
                     props.history.push("/")
                     setLoggedIn(true);
+                    setLoading(false);
                     props.authenticated();
                 })
-                .catch(err => setError(true))
+                .catch(err => {
+                    setError(true)
+                    setLoading(false);
+                })
         }
     }
 
@@ -119,6 +130,7 @@ function Login(props) {
                                 autoComplete="username"
                                 autoFocus
                                 onChange={(e) => setUserName(e.target.value)}
+                                helperText={errorState && 'El email o contraseña insertados no existen.'}
                             />
                             <TextField
                                 variant="outlined"
@@ -146,9 +158,10 @@ function Login(props) {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
+                                disabled={loading}
                                 className={classes.submit}>
-                                Entrar
-                        </Button>
+                                {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar'}
+                            </Button>
                             <Grid container>
                                 <Grid item>
                                     <Link to="/register" className={classes.link}>
@@ -161,7 +174,7 @@ function Login(props) {
                     <Box mt={8}>
                         <Copyright version={props.version} />
                     </Box>
-                </Container>        
+                </Container>
             </Slide>
         </>
     );

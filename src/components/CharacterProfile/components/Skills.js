@@ -14,7 +14,7 @@ const useStyles = makeStyles({
         height: "100%"
     },
     paper: {
-        margin: "0 .5rem",
+        // margin: "0 .5rem",
         padding: "1rem",
         display: "flex",
         flexDirection: "row",

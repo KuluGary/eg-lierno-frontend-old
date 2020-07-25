@@ -20,6 +20,9 @@ const useStyles = makeStyles({
     container: {
         maxWidth: "45vw"
     },
+    root: {
+        marginLeft: "4px"
+    },  
     link: {
         color: 'inherit',
         textDecoration: 'none'
