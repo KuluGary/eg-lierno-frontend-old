@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
+import { toast } from 'react-toastify';
+import { addCampaigns } from "../../shared/actions/index";
 import Slide from '@material-ui/core/Slide';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -59,6 +61,12 @@ const mapStateToProps = state => {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        addCampaigns: campaigns => dispatch(addCampaigns(campaigns))
+    };
+}
+
 function CampaignCreation(props) {
     const classes = useStyles();
     const [campaignData, setCampaignData] = useState({
@@ -75,6 +83,7 @@ function CampaignCreation(props) {
     const [players, setPlayers] = useState([])
     const [characters, setCharacters] = useState([])
     const [rules, setRules] = useState([])
+    const [submitDisabled, setSubmitDisabled] = useState(true)
 
     useEffect(() => {
         Api.fetchInternal("/auth/users")
@@ -104,6 +113,23 @@ function CampaignCreation(props) {
             setData("dm", props.profile._id)
         }
     }, [props.profile])
+
+    useEffect(() => {
+        if (!checkDisable()) {
+            setSubmitDisabled(false)
+        }   
+    }, [campaignData])
+
+    const notify = (type, msg) => {
+        switch (type) {
+            case "success":
+                toast.success(msg);
+                break;
+            case "error":
+                toast.error(msg);
+                break;
+        }
+    }
 
     const setData = (key, value) => {
         let data = { ...campaignData };
@@ -166,8 +192,36 @@ function CampaignCreation(props) {
         )
     }
 
+    const checkDisable = () => {
+        return !campaignData.name ||
+            !campaignData.game ||
+            !campaignData.mode ||
+            !campaignData.dm ||
+            campaignData.characters.length <= 0 ||
+            campaignData.players.length <= 0
+    }
+
     const handleSubmit = () => {
-        console.log(campaignData)
+        let campaign = {...campaignData};
+
+        campaign.players = [...campaign.players.map(item => item._id)]
+        delete campaign['mode']
+        Api.fetchInternal('/campaigns', {
+            method: "POST", 
+            body: JSON.stringify(campaign)
+        })
+            .then(() => {
+                notify("success", "La campaña ha sido añadida.")
+
+                Api.fetchInternal("/campaigns")
+                    .then(res => {
+                        props.addCampaigns(res)
+                        props.history.goBack()
+                    })
+            })
+            .catch(() => {
+                notify("error", "La campaña no ha podido ser añadida.")
+            })
     }
 
     return (
@@ -304,11 +358,13 @@ function CampaignCreation(props) {
                             {rules[campaignData.mode] && rules[campaignData.mode].map((rule, index) => getTreeOption(rule, index))}
                         </TreeView>
                     </Grid>
+                    {console.log(checkDisable(), campaignData)}
                     <Grid item sm={12}>
-                        <Button 
-                            variant="contained" 
-                            color="primary" 
+                        <Button
+                            variant="contained"
+                            color="primary"
                             style={{ float: "right" }}
+                            disabled={submitDisabled}
                             onClick={handleSubmit}>
                             Guardar
                         </Button>
@@ -319,4 +375,4 @@ function CampaignCreation(props) {
     )
 }
 
-export default connect(mapStateToProps)(CampaignCreation);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignCreation);

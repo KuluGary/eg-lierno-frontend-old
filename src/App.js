@@ -175,7 +175,7 @@ class App extends Component {
                   {Auth.hasRole("MAP_ACCESS") && <Route exact path="/location/:id" component={Location} />}
                   {Auth.hasRole("REFERENCE_ACCESS") && <Route exact path="/reference" component={Reference} />}
                   <Route exact path="/" component={HomeScreen} />
-                </> : <Redirect to={{pathname: '/login', state: {from: this.props.location}}} />}
+                </> : <Redirect to={{ pathname: '/login', state: { from: this.props.location } }} />}
               </Box>
             </Switch>
           </Router>
