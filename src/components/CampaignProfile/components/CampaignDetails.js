@@ -39,7 +39,6 @@ function CampaignProfile(props) {
     const [characters, setCharacters] = useState();
 
     useEffect(() => {
-        console.log(props)
         Api.fetchInternal('/auth/players', {
             method: "POST",
             body: JSON.stringify({

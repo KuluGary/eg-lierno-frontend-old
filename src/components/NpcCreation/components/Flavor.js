@@ -344,7 +344,6 @@ function Flavor(props) {
         </Grid>
         {campaigns.map((campaign, index) => (
           <>
-            {console.log(campaign)}
             <Grid key={index} item sm={8}>
               <FormControl className={classes.formControl}>
                 <InputLabel id="demo-simple-select-label">Campaña</InputLabel>

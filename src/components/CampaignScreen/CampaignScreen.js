@@ -103,6 +103,12 @@ function CampaignScreen(props) {
                         onClick={() => props.history.push("/npc/add")}> 
                         <AddIcon />
                     </IconButton> */}
+                    <IconButton
+                        component="span"
+                        className={classes.addButton}
+                        onClick={() => props.history.push("/campaigns/add")}>
+                        <AddIcon />
+                    </IconButton>
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
