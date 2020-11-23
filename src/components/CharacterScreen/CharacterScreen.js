@@ -18,6 +18,7 @@ import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Api from "../../helpers/api";
+import { StringUtil } from "../../helpers/string-util";
 
 const useStyles = makeStyles({
     root: {
@@ -125,6 +126,61 @@ function CharacterScreen(props) {
         setValue(newValue);
     };
 
+    const CharacterTable = ({ characters }) => (
+        <Table className={classes.table}>
+            <TableHead>
+                <TableRow>
+                    {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
+                    <TableCell>Nombre</TableCell>
+                    <TableCell>Clase</TableCell>
+                    {(width !== "xs") && <TableCell>Alineamiento</TableCell>}
+                    {(width !== "xs") && <TableCell>Trasfondo</TableCell>}
+                    {(width !== "xs") && <TableCell></TableCell>}
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {(characters && profile) && characters.length > 0 && characters
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map(char => (
+                        <TableRow hover key={char._id} component={Link} to={'/characters/' + char._id} className={classes.link}>
+                            {(width !== "xs") &&
+                                <TableCell className={classes.smallCell}>
+                                    <div style={{
+                                        backgroundImage: `url(${char.flavor.portrait})`,
+                                        width: "5vw",
+                                        height: "5vw",
+                                        backgroundSize: "cover",
+                                        borderRadius: 10
+                                    }} />
+                                </TableCell>}
+                            <TableCell>{char.flavor.traits.name}</TableCell>
+                            <TableCell>{char.stats.classes.map(charClass => StringUtil.generizaClase(charClass.className, char.flavor.traits.pronoun)).join(", ")}</TableCell>
+                            {(width !== "xs") && <TableCell>{char.stats.alignment}</TableCell>}
+                            {(width !== "xs") && <TableCell>{char.stats.background.name}</TableCell>}
+                            {(width !== "xs") && <TableCell>{char.flavor.personality.personalityTraits}</TableCell>}
+                        </TableRow>))}
+            </TableBody>
+            <TableFooter>
+                <TableRow>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 15]}
+                        colSpan={12}
+                        labelRowsPerPage={'Filas por página: '}
+                        labelDisplayedRows={
+                            ({ from, to, count }) => {
+                                return '' + from + '-' + to + ' de ' + count
+                            }
+                        }
+                        count={characters.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage} />
+                </TableRow>
+            </TableFooter>
+        </Table>
+    )
+
     return (
         <>
             {characters &&
@@ -135,90 +191,16 @@ function CharacterScreen(props) {
                             <Tab label="Personajes de mis Campañas" {...a11yProps(1)} />
                         </Tabs>
                         <TabPanel value={value} index={0}>
-                            <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                                <Table className={classes.table}>
-                                    <TableHead>
-                                        <TableRow>
-                                            {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
-                                            <TableCell>Nombre</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {(characters && profile) && characters.length > 0 && characters
-                                            .filter(character => character.player === profile._id)
-                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map(char => (
-                                                <TableRow component={Link} to={'/characters/' + char._id} className={classes.link}>
-                                                    {(width !== "xs") &&
-                                                        <TableCell className={classes.smallCell}>
-                                                            <div style={{
-                                                                backgroundImage: `url(${char.flavor.imageUrl})`,
-                                                                width: "5vw",
-                                                                height: "5vw",
-                                                                backgroundSize: "cover",
-                                                                borderRadius: 10
-                                                            }} />
-                                                        </TableCell>}
-                                                    <TableCell>{char.name}</TableCell>
-                                                </TableRow>))}
-                                    </TableBody>
-                                    <TableFooter>
-                                        <TableRow>
-                                            <TablePagination
-                                                rowsPerPageOptions={5, 10, 15}
-                                                colspan={12}
-                                                count={characters.filter(character => character.player === profile._id).length}
-                                                rowsPerPage={rowsPerPage}
-                                                page={page}
-                                                onChangePage={handleChangePage}
-                                                onChangeRowsPerPage={handleChangeRowsPerPage} />
-                                        </TableRow>
-                                    </TableFooter>
-                                </Table>
-                            </Slide>
+                            {(characters && profile) && characters.length > 0 &&
+                                <CharacterTable
+                                    characters={characters.filter(character => character.player === profile._id)} />
+                            }
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                                <Table className={classes.table}>
-                                    <TableHead>
-                                        <TableRow>
-                                            {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
-                                            <TableCell>Nombre</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {(characters && profile) && characters.length > 0 && characters
-                                            .filter(character => character.player !== profile._id)
-                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map(char => (
-                                                <TableRow component={Link} to={'/characters/' + char._id} className={classes.link}>
-                                                    {(width !== "xs") &&
-                                                        <TableCell className={classes.smallCell}>
-                                                            <div style={{
-                                                                backgroundImage: `url(${char.flavor.imageUrl})`,
-                                                                width: "5vw",
-                                                                height: "5vw",
-                                                                backgroundSize: "cover",
-                                                                borderRadius: 10
-                                                            }} />
-                                                        </TableCell>}
-                                                    <TableCell>{char.name}</TableCell>
-                                                </TableRow>))}
-                                    </TableBody>
-                                    <TableFooter>
-                                        <TableRow>
-                                            <TablePagination
-                                                rowsPerPageOptions={5, 10, 15}
-                                                colspan={12}
-                                                count={characters.filter(character => character.player !== profile._id).length}
-                                                rowsPerPage={rowsPerPage}
-                                                page={page}
-                                                onChangePage={handleChangePage}
-                                                onChangeRowsPerPage={handleChangeRowsPerPage} />
-                                        </TableRow>
-                                    </TableFooter>
-                                </Table>
-                            </Slide>
+                            {(characters && profile) && characters.length > 0 &&
+                                <CharacterTable
+                                    characters={characters.filter(character => character.player !== profile._id)} />
+                            }                            
                         </TabPanel>
                     </Paper>
                 </Slide>}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
+import { Editor, EditorState, RichUtils } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
@@ -114,7 +114,6 @@ function DiaryScreen(props) {
         event.preventDefault();
 
         let block = event.currentTarget.getAttribute('data-block');
-        console.log(block)
         setEditorState(RichUtils.toggleBlockType(editorState, block))
     }
 
@@ -141,7 +140,7 @@ function DiaryScreen(props) {
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
                                 id="panel1a-header">
-                                <Typography variant="h6">{entry.title}</Typography>
+                                <Typography variant="h5">{entry.title}</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
                                 <Box component="div">

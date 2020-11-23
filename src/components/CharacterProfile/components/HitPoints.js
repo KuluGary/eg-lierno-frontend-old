@@ -3,28 +3,32 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import { useWidth } from "../../../helpers/media-query";
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
     root: {
-        height: "100%"
+        height: "100%",
+        // margin: "0 .1rem .2rem .1rem",
+        display: "flex",
+        margin: ".1rem"
     },
     paper: {
-        margin: 0,
         padding: "1rem",
         display: "flex",
         flexDirection: "row",
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
-        height: "100%"
+        width: "100%",
+        marginBottom: ".1rem"
     },
     stat: {
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
         // maxWidth: "30%",
-        alignItems: "center"
+        alignItems: "center",
+        margin: "0 .5rem"
     },
     link: {
         color: 'inherit',
@@ -39,8 +43,12 @@ const useStyles = makeStyles({
     },
     input: {
         padding: "0px 14px",
-        width: "100%",        
+        width: "100%",
         margin: ".5rem",
+    },
+    resize: {
+        fontSize: 21,
+        textAlign: 'center'
     }
 });
 
@@ -54,35 +62,61 @@ export default function Proficiency(props) {
 
     return (
         <div className={classes.root}>
-            <Paper variant="outlined" className={classes.paper}>
-                {/* {(width !== "xs") &&
+            <Paper variant="outlined" className={classes.paper} style={{ maxWidth: "32.6%" }}>
                 <Box component="span" className={classes.stat}>
-                    <Button variant="contained" color="secondary" className={classes.button}>
-                        <Typography className={classes.buttonFont}>
-                            CURAR
-                        </Typography>
-                    </Button>
-                    <input className={classes.input} />
-                    <Button variant="contained" color="secondary" className={classes.button}>
-                        <Typography className={classes.buttonFont}>
-                            DAÑAR
-                        </Typography>
-                    </Button>
+                    <Typography variant="subtitle2" style={{ fontSize: '11px' }}>{'PUNTOS DE VIDA'}</Typography>
+                    <TextField
+                        value={props.hp.hp_max}
+                        disabled={!props.editable}
+                        onChange={(event) => props.changeStats("hitPoints", { ...props.hp, hp_max: event.target.value })}
+                        InputProps={{
+                            classes: {
+                                input: classes.resize,
+                            }
+                        }}></TextField>
+                    <Typography variant="subtitle2" style={{ fontSize: '11px', opacity: .5 }}>{'MÁXIMOS'}</Typography>
                 </Box>
-                } */}
-                <Box component="span" className={classes.stat}>
-                    <Typography variant="subtitle2">{'PUNTOS DE'}</Typography>
-                    <Typography variant="h6">{props.hp.hp_current ? props.hp.hp_current : props.hp.hp_max}</Typography>
-                    <Typography variant="subtitle2">{'VIDA'}</Typography>
+            </Paper>
+            <Paper variant="outlined" className={classes.paper} style={{
+                width: "100%", padding: ".5rem",
+                // margin: "0 .1rem .2rem .1rem",
+                marginLeft: ".2rem",
+                flexDirection: "column", justifyContent: "center"
+            }}>
+                <Box style={{ textAlign: "center" }}>
+                    <Typography variant="subtitle2" style={{ fontSize: '11px' }}>{'PUNTOS DE VIDA'}</Typography>
                 </Box>
-                {/* <Box component="span" className={classes.stat}>
-                    <Typography variant="subtitle2">{'MÁX'}</Typography>
-                    <Typography variant="h6">{props.hp.hp_max}</Typography>
-                </Box> */}
-                {/* <Box component="span" className={classes.stat}>
-                    <Typography variant="subtitle2">{'TEMP'}</Typography>
-                    <Typography variant="h6">{props.hp.hp_temp ? props.hp.hp_temp : '-'}</Typography>
-                </Box> */}
+                <Box style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                }}>
+                    <Box component="span" className={classes.stat} >
+                        <TextField
+                            value={props.hp.hp_current ? props.hp.hp_current : props.hp.hp_max}
+                            disabled={!props.editable}
+                            onChange={(event) => props.changeStats("hitPoints", { ...props.hp, hp_current: event.target.value })}
+                            InputProps={{
+                                classes: {
+                                    input: classes.resize,
+                                }
+                            }}></TextField>
+                        <Typography variant="subtitle2" style={{ fontSize: '8px', opacity: .5 }}>{'ACTUALES'}</Typography>
+                    </Box>
+                    <Box component="span" className={classes.stat}>
+                        <TextField
+                            value={props.hp.hp_temp ? props.hp.hp_temp : 0}
+                            disabled={!props.editable}
+                            onChange={(event) => props.changeStats("hitPoints", { ...props.hp, hp_temp: event.target.value })}
+                            InputProps={{
+                                classes: {
+                                    input: classes.resize,
+                                }
+                            }}></TextField>
+                        <Typography variant="subtitle2" style={{ fontSize: '8px', opacity: .5 }}>{'TEMPORALES'}</Typography>
+                    </Box>
+                </Box>
             </Paper>
         </div>
     );

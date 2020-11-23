@@ -35,11 +35,12 @@ import Package from '../package.json';
 import 'react-toastify/dist/ReactToastify.css';
 import Box from '@material-ui/core/Box';
 import { toast } from 'react-toastify'
+import { theme } from './shared/theme/theme';
 
 const electron = window && window.process && window.process.type && window.require('electron');
 const ipcRenderer = electron && electron.ipcRenderer;
 
-toast.configure()
+toast.configure();
 class App extends Component {
   constructor(props) {
     super(props)
@@ -58,14 +59,12 @@ class App extends Component {
   componentDidMount() {
     if (window && window.process && window.process.type) {
       ipcRenderer.on('update_available', () => {
-        console.log('update_available')
         this.setState({
           update: true,
         })
       })
 
       ipcRenderer.on('update_downloaded', () => {
-        console.log('update_downloaded')
         ipcRenderer.removeAllListeners('update_downloaded');
         this.setState({
           downloaded: true
@@ -78,6 +77,13 @@ class App extends Component {
         })
       })
     }
+
+    this.updateDimensions()
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.addEventListener("resize",  this.updateDimensions.bind(this));
   }
 
   handleDrawerOpen() {
@@ -108,15 +114,24 @@ class App extends Component {
     }, () => localStorage.setItem('theme', this.state.darkMode))
   }
 
-  render() {
-    let theme = createMuiTheme({
-      palette: {
-        type: this.state.darkMode ? 'dark' : 'light'
-      }
+  updateDimensions() {
+    console.log("DIMENSIONS UPDATED")
+    this.setState({
+      innerWidth: window.innerWidth
     })
+  }
+
+  render() {
+    let muiTheme = createMuiTheme({
+      palette: {
+        type: this.state.darkMode ? 'dark' : 'light',
+      },
+      ...theme
+    })
+    
     return (
       <>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={muiTheme}>
           <Router>
             {Auth.loggedIn() &&
               <>
@@ -135,10 +150,11 @@ class App extends Component {
               downloaded={this.state.downloaded}
               status={this.state.status}
               closeNotification={this.closeNotification.bind(this)} />
-            <Switch>
-              <Box style={{
-                margin: '5rem 1rem 1rem 5rem'
-              }}>
+            <Box style={{
+              maxWidth: 1440,
+              margin: this.state.innerWidth > 1440 ? '5rem auto' : (this.state.innerWidth < 512 ? '5rem 1rem' : '5rem 1rem 1rem 5rem')
+            }}>
+              <Switch>
                 <Route path="/login" render={() => (
                   <Login
                     version={this.state.uploadVersion || Package.version}
@@ -176,8 +192,8 @@ class App extends Component {
                   {Auth.hasRole("REFERENCE_ACCESS") && <Route exact path="/reference" component={Reference} />}
                   <Route exact path="/" component={HomeScreen} />
                 </> : <Redirect to={{ pathname: '/login', state: { from: this.props.location } }} />}
-              </Box>
-            </Switch>
+              </Switch>
+            </Box>
           </Router>
         </ThemeProvider>
       </>

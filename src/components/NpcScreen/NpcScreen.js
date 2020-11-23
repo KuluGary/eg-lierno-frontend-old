@@ -20,6 +20,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Api from '../../helpers/api'
 import { useWidth } from '../../helpers/media-query';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
+import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,6 +44,15 @@ const useStyles = makeStyles((theme) => ({
     addButton: {
         padding: 8,
         float: "right"
+    },
+    searchContainer: {
+        display: "flex",
+        justifyContent: "space-between",
+        position: "absolute",
+        top: "0",
+        right: ".5rem",
+        alignItems: "center",
+        width: "25%"
     }
 }));
 
@@ -53,6 +67,7 @@ const mapDispatchToProps = dispatch => {
 function NpcScreen(props) {
     const classes = useStyles();
     const [npcs, setNpcs] = useState([]);
+    const [npcsToDisplay, setNpcsToDisplay] = useState([]);
     const [selectedData, setSelectedData] = useState();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [page, setPage] = React.useState(0);
@@ -81,7 +96,7 @@ function NpcScreen(props) {
         if (!props.npcs) {
             Api.fetchInternal('/npc')
                 .then(res => {
-                    
+
                     const npcs = res.sort((a, b) => {
                         if (a.stats.challengeRating > b.stats.challengeRating) {
                             return 1
@@ -98,106 +113,133 @@ function NpcScreen(props) {
 
                     props.addNpcs(npcs)
                     setNpcs(props.campaign ? npcs.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : npcs)
+                    setNpcsToDisplay(props.campaign ? npcs.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : npcs)
                 });
         } else {
             setNpcs(props.campaign ? props.npcs.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : props.npcs)
+            setNpcsToDisplay(props.campaign ? props.npcs.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : props.npcs)
         }
     }, [])
 
     return (
-        <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-            <div className={classes.root}>
-                <Box component={props.campaign ? "span" : Paper}>
+        // <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+        <div className={classes.root}>
+            <Box component={props.campaign ? "span" : Paper}>
+                <Box className={classes.searchContainer}>
+                    <FormControl style={{ marginLeft: "1rem" }}>
+                        <InputLabel htmlFor="input-with-icon-adornment">Busca</InputLabel>
+                        <Input
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                if (value.length > 3) {
+                                    setNpcsToDisplay(npcs.filter(i => i.name.includes(value)))
+                                } else {
+                                    setNpcsToDisplay(npcs);
+                                }
+                            }}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            } />
+                    </FormControl>
                     <IconButton
                         component="span"
                         className={classes.addButton}
                         onClick={() => props.history.push("/npc/add")}>
                         <AddIcon />
                     </IconButton>
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                {(width !== "xs") &&
-                                    <>
-                                        <TableCell></TableCell>
-                                    </>}
-                                <TableCell>Nombre</TableCell>
-                                {(width !== "xs" && width !== "sm") &&
-                                    <>
-                                        <TableCell>Descripción</TableCell>
-                                    </>
-                                }
-                                <TableCell></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {npcs.length > 0 && npcs
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map(npc => (
-                                    <TableRow component={Link} to={'/npc/' + npc._id} className={classes.link}>
-                                        {(width !== "xs") &&
-                                            <>
-                                                <TableCell>
-                                                    <div style={{
-                                                        backgroundImage: `url(${npc.flavor.imageUrl})`,
-                                                        width: "5vw",
-                                                        height: "5vw",
-                                                        backgroundSize: "cover",
-                                                        borderRadius: 10
-                                                    }} />
-                                                </TableCell>
-                                            </>}
-                                        <TableCell>{npc.name}</TableCell>
-                                        {(width !== "xs" && width !== "sm") &&
-                                            <>
-                                                <TableCell>{npc.flavor.description}</TableCell>
-                                            </>}
-                                        {(props.profile && props.dm) && props.profile._id === props.dm && <TableCell>
-                                            <Link>
-                                                <IconButton onClick={(e) => {
-                                                    setSelectedData(npc._id)
-                                                    return handleMenu(e)
-                                                }}>
-                                                    <MoreVertIcon />
-                                                </IconButton>
-                                            </Link>
-                                        </TableCell>}
-                                    </TableRow>
-                                ))}
-                        </TableBody>
-                        <TableFooter>
-                            <TableRow>
-                                <TablePagination
-                                    rowsPerPageOptions={5, 10, 15}
-                                    colspan={12}
-                                    count={npcs.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage} />
-                            </TableRow>
-                        </TableFooter>
-                    </Table>
                 </Box>
-                <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    open={open}
-                    onClose={handleClose}
-                >
-                    <MenuItem onClick={() => props.history.push("/npc/add/" + selectedData)}>Editar</MenuItem>
-                </Menu>
-            </div>
-        </ Slide>
+                <Table className={classes.table}>
+                    <TableHead>
+                        <TableRow>
+                            {(width !== "xs") &&
+                                <>
+                                    <TableCell></TableCell>
+                                </>}
+                            <TableCell>Nombre</TableCell>
+                            {(width !== "xs" && width !== "sm") &&
+                                <>
+                                    <TableCell>Descripción</TableCell>
+                                </>
+                            }
+                            <TableCell></TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {npcsToDisplay.length > 0 && npcsToDisplay
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map(npc => (
+                                <TableRow hover component={Link} to={'/npc/' + npc._id} className={classes.link}>
+                                    {(width !== "xs") &&
+                                        <>
+                                            <TableCell>
+                                                <div style={{
+                                                    backgroundImage: `url(${npc.flavor.imageUrl})`,
+                                                    width: "5vw",
+                                                    height: "5vw",
+                                                    backgroundSize: "cover",
+                                                    borderRadius: 10
+                                                }} />
+                                            </TableCell>
+                                        </>}
+                                    <TableCell>{npc.name}</TableCell>
+                                    {(width !== "xs" && width !== "sm") &&
+                                        <>
+                                            <TableCell>{npc.flavor.description}</TableCell>
+                                        </>}
+                                    {(props.profile && props.dm) && props.profile._id === props.dm && <TableCell>
+                                        <Link>
+                                            <IconButton onClick={(e) => {
+                                                setSelectedData(npc._id)
+                                                return handleMenu(e)
+                                            }}>
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                        </Link>
+                                    </TableCell>}
+                                </TableRow>
+                            ))}
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 15]}
+                                colSpan={12}
+                                labelRowsPerPage={'Filas por página: '}
+                                labelDisplayedRows={
+                                    ({ from, to, count }) => {
+                                        return '' + from + '-' + to + ' de ' + count
+                                    }
+                                }
+                                count={npcs.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onChangePage={handleChangePage}
+                                onChangeRowsPerPage={handleChangeRowsPerPage} />
+                        </TableRow>
+                    </TableFooter>
+                </Table>
+            </Box>
+            <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={() => props.history.push("/npc/add/" + selectedData)}>Editar</MenuItem>
+            </Menu>
+        </div>
+        // </ Slide>
     )
 }
 

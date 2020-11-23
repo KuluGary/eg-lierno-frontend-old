@@ -43,13 +43,20 @@
     "deploy": "npm run build && electron-builder --publish=always"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.11",
     "@material-ui/core": "^4.9.13",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.53",
+    "@nivo/line": "^0.64.0",
+    "@nivo/pie": "^0.64.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "cross-env": "^7.0.2",
+    "discord-markdown": "^2.4.1",
     "draft-js": "^0.11.5",
     "draft-js-export-html": "^1.4.1",
     "electron-is-dev": "^1.2.0",
@@ -60,6 +67,8 @@
     "leaflet": "^1.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-infinite-scroll-component": "^5.1.0",
+    "react-lazyload": "^3.0.0",
     "react-leaflet": "^2.7.0",
     "react-modal-image": "^2.5.0",
     "react-redux": "^7.2.0",
@@ -67,6 +76,7 @@
     "react-scripts": "3.4.1",
     "react-toastify": "^6.0.3",
     "redux": "^4.0.5",
+    "socket.io-client": "^2.3.1",
     "typeface-roboto": "0.0.75"
   },
   "devDependencies": {

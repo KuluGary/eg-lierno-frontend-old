@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Core(props) {
+  const { addToCreatureStats } = props;
   const classes = useStyles();
   const [savingThrows, setSavingThrows] = useState(props.creature.stats.savingThrows || []);
   const [proficiencyBonus, setProficiencyBonus] = useState(props.creature.stats.proficiencyBonus);
@@ -72,9 +73,9 @@ export default function Core(props) {
   ];
 
   useEffect(() => {
-      props.addToCreatureStats(abilityScores, "abilityScores");
-      props.addToCreatureStats(proficiencyBonus, "proficiencyBonus");
-      props.addToCreatureStats({
+      addToCreatureStats(abilityScores, "abilityScores");
+      addToCreatureStats(proficiencyBonus, "proficiencyBonus");
+      addToCreatureStats({
         strength: calculateAbilityScoreModifiers(abilityScores["strength"]),
         dexterity: calculateAbilityScoreModifiers(abilityScores["dexterity"]),
         constitution: calculateAbilityScoreModifiers(abilityScores["constitution"]),
@@ -90,9 +91,9 @@ export default function Core(props) {
         modifierStr: `${savingThrow.label || abilities.filter(ability => ability.key === savingThrow.ability)[0].label} ${(calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].key]), proficiencyBonus) >= 0 && '+') + calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability]), proficiencyBonus)}`
       }))
 
-      props.addToCreatureStats(newSavingThrows, 'savingThrows')
-      props.addToCreatureStats(skills, 'skills')
-  }, [abilityScores, proficiencyBonus, savingThrows, skills])
+      addToCreatureStats(newSavingThrows, 'savingThrows')
+      addToCreatureStats(skills, 'skills')
+  }, [abilityScores, proficiencyBonus, savingThrows, skills, abilities, addToCreatureStats])
 
   const calculateAbilityScoreModifiers = (ability, proficiency = 0) => {
     return Math.floor((ability - 10) / 2 + proficiency);
@@ -260,7 +261,7 @@ export default function Core(props) {
                       .map(ability =>  (
                         <MenuItem 
                           value={ability.key}
-                          disabled={savingThrows.filter(savingThrow => savingThrow.ability == ability.key).length > 0}>
+                          disabled={savingThrows.filter(savingThrow => savingThrow.ability === ability.key).length > 0}>
                             {ability.label}
                         </MenuItem>
                       ))}
@@ -295,7 +296,7 @@ export default function Core(props) {
                       .map(item =>  (
                         <MenuItem 
                           value={item}
-                          disabled={skills.filter(skill => skill.name == item).length > 0}>
+                          disabled={skills.filter(skill => skill.name === item).length > 0}>
                             {item}
                         </MenuItem>
                       ))}

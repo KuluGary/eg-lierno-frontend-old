@@ -62,7 +62,7 @@ function Login(props) {
     const [remember, setRemember] = useState(false);
     const [hasLoggedIn, setLoggedIn] = useState(false)
     const [loading, setLoading] = useState(false);
-    const [errorState, setError] = useState(false);
+    const [errorState, setError] = useState();
 
     useEffect(() => {
         if (Auth.loggedIn()) {
@@ -87,20 +87,27 @@ function Login(props) {
                 },
                 body: JSON.stringify(user)
             })
-                .then(res => res.token)
-                .then(token => {
-                    if (remember) {
-                        localStorage.setItem('token', token);
+                // .then(res => res.token)
+                .then(res => {
+                    if (res.token) {
+                        const token = res.token;
+                        if (remember) {
+                            localStorage.setItem('token', token);
+                        } else {
+                            sessionStorage.setItem('token', token);
+                        }
+                        setLoggedIn(true);
+                        setLoading(false);
+                        props.authenticated();
+                        props.history.push("/")
                     } else {
-                        sessionStorage.setItem('token', token);
+                        setError(res.message)
+                        setLoading(false)
                     }
-                    props.history.push("/")
-                    setLoggedIn(true);
-                    setLoading(false);
-                    props.authenticated();
                 })
                 .catch(err => {
-                    setError(true)
+                    console.log(err)
+                    setError(err.message)
                     setLoading(false);
                 })
         }
@@ -108,7 +115,7 @@ function Login(props) {
 
     return (
         <>
-            {Auth.loggedIn() && <Redirect to="/" />}
+            {/* {Auth.loggedIn() && <Redirect to="/" />} */}
             <Slide direction="up" in={true} mountOnEnter unmountOnExit>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
@@ -130,7 +137,7 @@ function Login(props) {
                                 autoComplete="username"
                                 autoFocus
                                 onChange={(e) => setUserName(e.target.value)}
-                                helperText={errorState && 'El email o contraseña insertados no existen.'}
+                                helperText={errorState && errorState}
                             />
                             <TextField
                                 variant="outlined"

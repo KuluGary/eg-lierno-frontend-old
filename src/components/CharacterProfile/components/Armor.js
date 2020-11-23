@@ -3,18 +3,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
     root: {
-        height: "100%"
+        // height: "100%"
+        marginBottom: ".1rem",
+        marginTop: 0,
+        paddingLeft: ".1rem",
+        width: "100%"
     },
     paper: {
-        margin: 0,
         padding: "1rem",
         display: "flex",
         flexDirection: "row",
         justifyContent: 'center',
         alignItems: 'center',
+        // alignSelf: "stretch"    ,
         height: "100%"
     },
     stat: {
@@ -24,7 +29,15 @@ const useStyles = makeStyles({
     link: {
         color: 'inherit',
         textDecoration: 'none',
-
+    },
+    resize: {
+        fontSize: 21,
+        textAlign: 'center'
+    },
+    textField: {
+        "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+            display: "none"
+        }
     }
 });
 
@@ -39,10 +52,19 @@ export default function Armor(props) {
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
-                   <Typography variant="subtitle2">{'CLASE DE'}</Typography>
-                    <Typography variant="h6">{props.ac}</Typography>
-                    <Typography variant="subtitle2">{'ARMADURA'}</Typography>
-                </Box>                
+                    <TextField
+                        type="number"
+                        value={props.ac}
+                        className={classes.textField}
+                        disabled={!props.editable}
+                        onChange={(event) => props.changeStats("armorClass", event.target.value)}
+                        InputProps={{
+                            classes: {
+                                input: classes.resize,
+                            },
+                        }}></TextField>
+                    <Typography variant="subtitle2" style={{ fontSize: "11px" }}>{'ARMADURA'}</Typography>
+                </Box>
             </Paper>
         </div>
     );

@@ -7,7 +7,6 @@ import {
     addCampaigns,
     addRoles
 } from "../../shared/actions/index";
-import { NavLink } from "react-router-dom";
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Slide from '@material-ui/core/Slide';
@@ -28,8 +27,20 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Api from '../../helpers/api'
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import RoomIcon from '@material-ui/icons/Room';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 import { toast } from 'react-toastify';
 import { StringUtil } from '../../helpers/string-util'
+import equal from 'fast-deep-equal/react';
 
 const useStyles = makeStyles((theme) => ({
     profileBox: {
@@ -107,7 +118,8 @@ function ProfileScreen(props) {
     const [roles, setRoles] = useState();
     const [newPassword, setNewPassword] = useState();
     const [value, setValue] = useState(0);
-    const [darkMode, setDarkMode] = React.useState(false);
+    const [metadata, setMetadata] = useState();
+    const [darkMode] = React.useState(false);
 
     useEffect(() => {
         if (!props.profile) {
@@ -115,9 +127,11 @@ function ProfileScreen(props) {
                 .then(res => {
                     props.addProfile(res)
                     setUser(res)
+                    setMetadata(res.metadata);
                 });
         } else {
             setUser(props.profile)
+            setMetadata(props.profile.metadata)
         }
 
         if (!props.campaigns) {
@@ -142,6 +156,14 @@ function ProfileScreen(props) {
 
     }, [])
 
+    const updateMetadata = (key, value) => {
+        const newMeta = { ...metadata };
+
+        newMeta[key] = value;
+
+        setMetadata(newMeta)
+    }
+
     const updateProfile = () => {
         if (newPassword && newPassword.length > 0) {
             Api.fetchInternal('/auth/reset', {
@@ -153,20 +175,17 @@ function ProfileScreen(props) {
             })
                 .then(() => toast.success("Contraseña actualizada"))
         }
-        
-        if (avatar) {
-            setAvatar();
 
+        if (!equal(user.metadata, metadata)) {
             let body = {
-                profile: user["metadata"]
+                profile: metadata
             }
-
-            body["profile"]["avatar"] = avatar;
 
             Api.fetchInternal('/auth/me/' + user._id, {
                 method: "POST",
                 body: JSON.stringify(body)
             })
+            .then(() => toast.success("Perfil actualizado"))
         }
     }
 
@@ -187,98 +206,77 @@ function ProfileScreen(props) {
     return (
         <Slide direction="up" in={true} mountOnEnter unmountOnExit>
             <Box component="span">
-                <Paper className={classes.profileBox} variant="outlined">
+                {user && metadata &&
                     <Grid container spacing={1}>
-                        <Grid item md={3} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <Box component="div">
-                                <Typography variant="h6">
-                                    {user && user.username}
-                                </Typography>
-                            </Box>
-                            <Box component="div">
-                                {avatar || (user && user.metadata.avatar) ?
-                                    <Avatar
-                                        src={avatar || (user && user.metadata.avatar)}
-                                        className={classes.avatar}
-                                        alt={user && user.metadata.first_name + ' ' + user.metadata.last_name}
-                                    /> :
+                        <Grid item md={3} style={{ display: "flex", flexDirection: "column" }}>
+                            <Paper className={classes.profileBox} style={{ display: "flex", flexDirection: "column", alignItems: "center", height: "100%", width: "100%" }} variant="outlined">
+                                <Box component="div">
+                                    <Typography variant="h6">
+                                        {user && user.username}
+                                    </Typography>
+                                </Box>
+                                <Box component="div">    
                                     <Avatar
                                         className={classes.avatar}
-                                        alt={user && user.metadata.first_name + ' ' + user.metadata.last_name}>
-                                        {user && (user.metadata.first_name + ' ' + user.metadata.last_name).match(/\b(\w)/g).join('')}
+                                        src={avatar || (metadata && metadata.avatar)}
+                                        alt={metadata.first_name + ' ' + metadata.last_name}>
+                                        {!metadata.avatar && (metadata.first_name + ' ' + metadata.last_name).match(/\b(\w)/g).join('')}
                                     </Avatar>
-                                }
-                            </Box>
-                            <Box component="div" style={{ marginTop: "1rem" }}>
-                                <TextField
-                                    id="outlined-helperText"
-                                    label="Avatar"
-                                    defaultValue={user && user.metadata.avatar}
-                                    helperText="Input a valid direct URL"
-                                    variant="outlined"
-                                    value={avatar}
-                                    onChange={(e) => setAvatar(e.target.value)}
-                                />
-                            </Box>
-                        </Grid>
-                        <Grid item md={9} style={{ position: "relative" }}>
-                            <Typography variant="h6">
-                                Perfil de usuario
-                        </Typography>
-                            <Box component="div" style={{
-                                display: "flex",
-                                justifyContent: "space-between"
-                            }}>
-                                <Box component="div">
+                                </Box>
+                                <Box component="div" style={{ marginTop: "1rem" }}>
+                                    <TextField
+                                        id="outlined-helperText"
+                                        label="Avatar"
+                                        defaultValue={metadata.avatar}
+                                        helperText="Introduce una URL válida"
+                                        variant="outlined"
+                                        value={avatar}
+                                        onChange={(e) => updateMetadata("avatar", e.target.value)}
+                                    />
+                                </Box>
+                            </Paper>
+                            <Paper className={classes.profileBox} style={{ marginTop: ".5rem", height: "100%", width: "100%" }} variant="outlined">
+                                <Box component="span"><Typography style={{ fontSize: 16, marginBottom: ".4rem" }}>Sobre mí</Typography></Box>
+                                <Box style={{ display: "flex", alignItems: "center", marginBottom: ".4rem" }}>
+                                    <MailOutlineIcon style={{ marginRight: ".5rem" }} />
                                     <Box component="span">
-                                        {'Nombre: '}
-                                    </Box>
-                                    <Box component="span">
-                                        {user && user.metadata.first_name + ' ' + user.metadata.last_name}
+                                        <TextField
+                                            value={metadata.email}
+                                            onChange={(e) => updateMetadata("email", e.target.value)} />
                                     </Box>
                                 </Box>
-                                <Box component="div">
+                                <Box style={{ display: "flex", alignItems: "center", marginBottom: ".4rem" }}>
+                                    <CalendarTodayIcon style={{ marginRight: ".5rem" }} />
                                     <Box component="span">
-                                        {'Email: '}
-                                    </Box>
-                                    <Box component="span">
-                                        {user && user.metadata.email}
+                                        {user && ('Se unió el ' + StringUtil.getDateFromISODate(user.createdAt))}
                                     </Box>
                                 </Box>
-                                <Box component="div">
+                                <Box style={{ display: "flex", alignItems: "center", marginBottom: ".4rem" }}>
+                                    <RoomIcon style={{ marginRight: ".5rem" }} />
                                     <Box component="span">
-                                        {'Fecha de creación: '}
-                                    </Box>
-                                    <Box component="span">
-                                        {user && StringUtil.getDateFromISODate(user.createdAt)}
-                                    </Box>
-                                </Box>
-                                <Box component="div">
-                                    <Box component="span">
-                                        {'Última edición: '}
-                                    </Box>
-                                    <Box component="span">
-                                        {user && StringUtil.getDateFromISODate(user.updatedAt)}
+                                        <TextField
+                                            value={metadata.location}
+                                            onChange={(e) => updateMetadata("location", e.target.value)} />
                                     </Box>
                                 </Box>
-                            </Box>
-                            <Divider style={{ margin: "1rem 0" }} light />
-                            <Box>
-                                {/* <Link>{'Modificar contraseña'}</Link>
-                                <NavLink to={'/campaigns'} className={classes.link}>
-                                    {'Modificar contraseña'}
-                                </NavLink> */}
-                                <TextField
-                                    id="outlined-helperText"
-                                    label="Nueva contraseña"
-                                    variant="outlined"
-                                    value={newPassword}
-                                    type="password"
-                                    fullWidth
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                />
-                            </Box>
-                            <Box style={{ display: "flex", justifyContent: "space-between", position: "absolute", width: "100%", bottom: 0 }}>
+                                <Box style={{ display: "flex", alignItems: "center", marginBottom: ".4rem" }}>
+                                    <FontAwesomeIcon icon={faDiscord} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
+                                    <Box component="span">
+                                        <TextField
+                                            value={metadata.discordName}
+                                            onChange={(e) => updateMetadata("discordName", e.target.value)} />
+                                    </Box>
+                                </Box>
+                                <Box style={{ display: "flex", alignItems: "center", marginBottom: ".4rem" }}>
+                                    <VpnKeyIcon style={{ marginRight: ".5rem" }} />
+                                    <Box component="span">
+                                        <TextField
+                                            type={'password'}
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                        />
+                                    </Box>
+                                </Box>
                                 <Box>
                                     <FormControlLabel
                                         labelPlacement="start"
@@ -288,86 +286,49 @@ function ProfileScreen(props) {
                                                 onChange={() => props.setDarkMode(!props.darkMode)} />}
                                         label={'Modo oscuro'} />
                                 </Box>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={updateProfile}
-                                    disabled={!avatar && (!newPassword || newPassword.length < 6)}
-                                // className={classes.submitButton}
-                                > Guardar perfil </Button>
-                            </Box>
+                                <Box style={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: "1rem" }}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={updateProfile}
+                                        disabled={(equal(metadata, user.metadata) && !newPassword && !avatar)}
+                                        >
+                                        Guardar perfil
+                                    </Button>
+                                </Box>
+                            </Paper>
                         </Grid>
-                    </Grid>
-                </Paper>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    // variant="fullWidth"
-                    aria-label="full width tabs example"
-                >
-                    <Tab label="Campaigns" {...a11yProps(0)} />
-                    <Tab label="Roles" {...a11yProps(1)} />
-                    {/* <Tab label="Item Three" {...a11yProps(2)} /> */}
-                </Tabs>
-                <Paper variant="outlined">
-                    <TabPanel value={value} index={0} dir={theme.direction}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell></TableCell>
-                                    <TableCell>
-                                        Nombre
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {campaigns && campaigns.map(campaign => (
-                                    <TableRow>
-                                        <TableCell className={classes.smallCell}>
-                                            {campaign.dm === user._id &&
-                                                <Tooltip title="Dungeon Master">
-                                                    <StarIcon color="primary" />
-                                                </Tooltip>}
-                                        </TableCell>
-                                        <TableCell>
-                                            {campaign.name}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TabPanel>
-                    <TabPanel value={value} index={1} dir={theme.direction}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell></TableCell>
-                                    <TableCell>
-                                        Nombre
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {roles && roles.map(role => (
-                                    <TableRow>
-                                        <TableCell className={classes.smallCell}>
-                                            {roles && user && user.roles.includes(role) &&
-                                                <Tooltip title="You have this role">
-                                                    <StarIcon color="primary" />
-                                                </Tooltip>}
-                                        </TableCell>
-                                        <TableCell>
-                                            {StringUtil.parseRole(role)}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TabPanel>
 
-                </Paper>
+                        <Grid item md={9} style={{ position: "relative" }}>
+                            <Paper variant="outlined" style={{ height: "100%" }}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell></TableCell>
+                                            <TableCell>
+                                                Nombre
+                                    </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {roles && roles.map(role => (
+                                            <TableRow>
+                                                <TableCell className={classes.smallCell}>
+                                                    {roles && user && user.roles.includes(role) &&
+                                                        <Tooltip title="Ya tienes este rol">
+                                                            <StarIcon color="default" />
+                                                        </Tooltip>}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {StringUtil.parseRole(role)}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </Paper>
+                        </Grid>
+                    </Grid>}
             </Box>
         </Slide>
     )

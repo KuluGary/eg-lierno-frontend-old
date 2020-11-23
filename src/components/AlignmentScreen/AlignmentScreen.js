@@ -71,7 +71,7 @@ function AlignmentScreen(props) {
 
             setCharacters(charas);
         }
-    }, [])
+    }, [props])
 
     const changeAlignment = (c = null, a) => {
         let character = c ? c : characterSelected;

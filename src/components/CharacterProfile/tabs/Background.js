@@ -5,11 +5,19 @@ import Typography from '@material-ui/core/Typography';
 import ModalImage from "react-modal-image";
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import CharacterDetails from '../components/CharacterDetails';
+import Personality from '../components/Personality';
+import PsychDescription from '../components/PsychDescription';
+import PhysicalDescription from '../components/PhysicalDescription';
+import Experience from '../components/Experience';
+import Training from '../components/Training';
+import Backstory from '../components/Backstory';
+import Portrait from '../components/Portrait';
 
 const useStyles = makeStyles({
     root: {
         width: "100%",
-        paddingLeft: "4px"
+        paddingLeft: "4px",
     },
     paper: {
         margin: 0,
@@ -60,7 +68,54 @@ export default function Armor(props) {
     return (
         <div className={classes.root}>
             <Grid container spacing={1} >
-                <Grid item xs={12} sm={12} md={6} className={classes.traitBox}>
+                <Grid item container lg={8} xs={12}>
+                    <Grid item lg={4} xs={12}>
+                        <CharacterDetails
+                            traits={character["traits"]}
+                            changeFlavor={props.changeFlavor}
+                            editable={props.editable} />
+                    </Grid>
+                    <Grid item container lg={8} xs={12}>
+                        <Grid item lg={7} xs={12}>
+                            <Personality
+                                traits={character["personality"]}
+                                changeFlavor={props.changeFlavor}
+                                editable={props.editable} />
+                        </Grid>
+                        <Grid item lg={5} xs={12}>
+                            <Portrait
+                                image={character.portrait}
+                                changeFlavor={props.changeFlavor}
+                                editable={props.editable} />
+                        </Grid>
+                    </Grid>
+                    <Grid item lg={6} xs={12}>
+                        <PsychDescription
+                            description={character.psychologicalDescription}
+                            changeFlavor={props.changeFlavor}
+                            editable={props.editable} />
+                    </Grid>
+                    <Grid item lg={6} xs={12} style={{ display: "flex", flexDirection: "column" }}>
+                        {(props.settings && props.settings.generalOptions.experience) &&
+                            <Experience
+                                editable={props.editable} />
+                        }
+                        {(props.settings && props.settings.generalOptions.training) &&
+                            <Training
+                                editable={props.editable} />
+                        }
+                        <PhysicalDescription
+                            description={character.physicalDescription}
+                            changeFlavor={props.changeFlavor}
+                            editable={props.editable} />
+                    </Grid>
+                </Grid>
+                <Grid item lg={4} xs={12}>
+                    <Backstory
+                        story={character["backstory"]}
+                        editable={props.editable} />
+                </Grid>
+                {/* <Grid item lg={12} sm={12} md={6} className={classes.traitBox}>
                     <Paper variant="outlined" className={classes.paper}>
                         <Typography variant="subtitle2">{'Rasgos físicos.'}</Typography>
                         <Box component="div" className={classes.physicalTraits}>
@@ -116,7 +171,7 @@ export default function Armor(props) {
 
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6} className={classes.traitBox}>
+                <Grid item lg={12} sm={12} md={6} className={classes.traitBox}>
                     <Paper variant="outlined" className={classes.profileBox}>
                         <ModalImage
                             hideDownload
@@ -133,7 +188,7 @@ export default function Armor(props) {
                         <Typography variant="subtitle2" display="inline">{'Historia. '}</Typography>
                         <span dangerouslySetInnerHTML={{ __html: character["psychTraits"]["backstory"] }} />
                     </Paper>
-                </Grid>
+                </Grid> */}
             </Grid>
         </div >
     );

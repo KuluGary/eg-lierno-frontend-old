@@ -35,6 +35,7 @@ const mapStateToProps = state => {
 
 function Flavor(props) {
   const classes = useStyles();
+  const { addToCreatureFlavor, changeName, addToCreatureStats } = props;
   const alignments = [
     "Sin alineamiento",
     StringUtil.generiza("Legal bueno", "Legal buena", "Legal buene", props.pronoun),
@@ -56,15 +57,14 @@ function Flavor(props) {
   const [campaignAvailable, setCampaignAvailable] = useState([]);
   const [campaigns, setCampaigns] = useState(props.creature.flavor.campaign || []);
 
-  const [personalityTrait1, setPersonalityTrait1] = useState(props.creature.flavor.personality.personalityTrait1 || '');
-  const [personalityTrait2, setPersonalityTrait2] = useState(props.creature.flavor.personality.personalityTrait2 || '');
-  const [ideals, setIdeals] = useState(props.creature.flavor.personality.ideals || '');
-  const [bonds, setBonds] = useState(props.creature.flavor.personality.bonds || '');
-  const [flaws, setFlaws] = useState(props.creature.flavor.personality.flaws || '');
+  const [personality, setPersonality] = useState(
+    (props.creature.flavor.personality.personality && props.creature.flavor.personality.personality.replace(/<br \/>/gi, "\n")) || '');
+  const [physical, setPhysical] = useState(
+    (props.creature.flavor.personality.physical && props.creature.flavor.personality.physical.replace(/<br \/>/gi, "\n")) || '');
   const [story, setStory] = useState(
     (props.creature.flavor.personality.backstory && props.creature.flavor.personality.backstory.replace(/<br \/>/gi, "\n")) || '');
   const [faction, setFaction] = useState(props.creature.flavor.faction);
-  const [alignment, setAlignment] = useState(props.creature.stats.alignment || alignment[0]);
+  const [alignment, setAlignment] = useState(props.creature.stats.alignment || alignments[0]);
 
   useEffect(() => {
     Api.fetchInternal('/campaigns')
@@ -75,30 +75,28 @@ function Flavor(props) {
 
   useEffect(() => {
     if (campaignAvailable.length > 0) {
-      props.changeName(name);
-      props.addToCreatureFlavor(pronoun, "pronoun");
-      props.addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
-      props.addToCreatureFlavor(image, "imageUrl");
-      props.addToCreatureFlavor(faction, "faction");
-      props.addToCreatureStats(alignment, "alignment");
-      props.addToCreatureFlavor(gender, "gender");
-      props.addToCreatureFlavor(characterClass, "class")
-      props.addToCreatureFlavor(campaigns.map(campaign => ({
+      changeName(name);
+      addToCreatureFlavor(pronoun, "pronoun");
+      addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
+      addToCreatureFlavor(image, "imageUrl");
+      addToCreatureFlavor(faction, "faction");
+      addToCreatureStats(alignment, "alignment");
+      addToCreatureFlavor(gender, "gender");
+      addToCreatureFlavor(characterClass, "class")
+      addToCreatureFlavor(campaigns.map(campaign => ({
         campaignId: campaign.id || campaignAvailable.filter(campaignA => campaignA._id === campaign.campaignId)[0]._id,
         unlocked: campaign.unlocked
       })), "campaign")
-      const personality = {
-        personalityTrait1,
-        personalityTrait2,
-        ideals,
-        bonds,
-        flaws,
+      const perso = {
+        personality: personality.replace(/\n/g, "<br />"),
+        physical: physical.replace(/\n/g, "<br />"),
         backstory: story.replace(/\n/g, "<br />")
       }
-      props.addToCreatureFlavor(personality, "personality")
+      
+      addToCreatureFlavor(perso, "personality")
       // props.addToCreatureFlavor(props.profile._id, "owner")
     }
-  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, personalityTrait1, personalityTrait2, ideals, bonds, flaws, story])
+  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, personality, physical, story, campaignAvailable, changeName, addToCreatureFlavor, addToCreatureStats])
 
   const addCampaign = () => {
     const indexOf = campaignAvailable.findIndex(campaignAvailable => campaigns.every(campaign => campaign.id !== campaignAvailable._id))
@@ -261,7 +259,7 @@ function Flavor(props) {
         </Grid>
         <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
-            <TextField
+            {/* <TextField
               id="personalityTrait1"
               name="personalityTrait1"
               onChange={(e) => setPersonalityTrait1(e.target.value)}
@@ -269,23 +267,32 @@ function Flavor(props) {
               multiline
               label="Rasgo de personalidad I"
               fullWidth
+            /> */}
+            <TextField
+              id="personality"
+              name="personality"
+              onChange={(e) => setPersonality(e.target.value)}
+              value={personality}
+              multiline
+              label="Descripción psicológica"
+              fullWidth
             />
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
             <TextField
-              id="personalityTrait2"
-              name="personalityTrait2"
-              onChange={(e) => setPersonalityTrait2(e.target.value)}
-              value={personalityTrait2}
+              id="physical"
+              name="physical"
+              onChange={(e) => setPhysical(e.target.value)}
+              value={physical}
               multiline
-              label="Rasgo de personalidad II"
+              label="Descripción física"
               fullWidth
             />
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={12}>
+        {/* <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
             <TextField
               id="ideals"
@@ -323,7 +330,7 @@ function Flavor(props) {
               fullWidth
             />
           </FormControl>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
             <TextField

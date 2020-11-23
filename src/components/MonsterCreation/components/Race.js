@@ -14,14 +14,10 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     padding: theme.spacing(1, 0),
   },
-  total: {
-    // fontWeight: 600,
-  },
   title: {
     marginTop: theme.spacing(2),
   },
   formControl: {
-    // margin: theme.spacing(1),
     minWidth: "100%",
   },
   chip: {
@@ -31,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Race(props) {
   const classes = useStyles();
+  const { addToCreatureStats } = props;
   const [senses, setSenses] = useState(props.creature.stats.senses || []);
   const [senseAux, setSenseAux] = useState('');
   const [languages, setLanguages] = useState(props.creature.stats.languages || []);
@@ -45,23 +42,23 @@ export default function Race(props) {
   ]
   const [selectedRace, setSelectedRace] = useState(props.creature.stats.race || races[0]);
   const [speed, setSpeed] = useState(props.creature.stats.speed);
-  
+
   const sizes = [
-    StringUtil.generiza("Diminuto", "Diminuta", "Diminute", props.pronoun), 
-    StringUtil.generiza("Pequeño", "Pequeña", "Pequeñe", props.pronoun), 
-    StringUtil.generiza("Mediano", "Mediana", "Mediane", props.pronoun), 
-    "Grande", "Enorme", 
+    StringUtil.generiza("Diminuto", "Diminuta", "Diminute", props.pronoun),
+    StringUtil.generiza("Pequeño", "Pequeña", "Pequeñe", props.pronoun),
+    StringUtil.generiza("Mediano", "Mediana", "Mediane", props.pronoun),
+    "Grande", "Enorme",
     StringUtil.generiza("Gigantesco", "Gigantesca", "Gigantesque", props.pronoun)
   ]
   const [selectedSize, setSelectedSize] = useState(props.creature.stats.size || sizes[1]);
 
   useEffect(() => {
-      props.addToCreatureStats(senses, "senses");
-      props.addToCreatureStats(languages, "languages");
-      props.addToCreatureStats(selectedRace, "race");
-      props.addToCreatureStats(selectedSize, "size");
-      props.addToCreatureStats(speed, "speed");
-  }, [senses, languages, selectedRace, selectedSize, speed])
+    addToCreatureStats(senses, "senses");
+    addToCreatureStats(languages, "languages");
+    addToCreatureStats(selectedRace, "race");
+    addToCreatureStats(selectedSize, "size");
+    addToCreatureStats(speed, "speed");
+  }, [senses, languages, selectedRace, selectedSize, speed, addToCreatureStats])
 
   const handleKeyDown = (e, type) => {
     if (e.key === 'Enter') {

@@ -53,6 +53,9 @@ class MapScreen extends Component {
             })
     }
 
+    handleClick(e) {
+    }
+
     render() {
         const position = this.state.map && [this.state.map.mapStats.coordinates.lat, this.state.map.mapStats.coordinates.lng]
         const L = require('leaflet');
@@ -72,7 +75,9 @@ class MapScreen extends Component {
                     <Grid item xs={8}>
                         <Paper variant="outlined" style={{ height: "100vh", padding: "1rem" }}>
                             {this.state.map &&
-                                <Map center={position}
+                                <Map
+                                    onClick={this.handleClick} 
+                                    center={position}
                                     zoom={this.state.map.mapStats.zoom.zoom}
                                     minZoom={this.state.map.mapStats.zoom.minZoom}
                                     maxZoom={this.state.map.mapStats.zoom.maxZoom}

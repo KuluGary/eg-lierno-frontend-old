@@ -8,7 +8,8 @@ import {
     ADD_CAMPAIGNS,
     ADD_ROLES,
     ADD_CLASSES,
-    ADD_RACES
+    ADD_RACES,
+    USER_LOGOUT
  } from "../constants/action-types";
 
 const initialState = {};
@@ -45,6 +46,7 @@ function rootReducer(state = initialState, action) {
         case ADD_RACES: return Object.assign({}, state, {
             races: action.payload
         })
+        case USER_LOGOUT: return initialState
         default:            
     }
     return state;

@@ -3,8 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import Alert from '@material-ui/lab/Alert';
 import Box from '@material-ui/core/Box';
 import Api from '../../../helpers/api';
+import SaveIcon from '@material-ui/icons/Save';
+import Grow from '@material-ui/core/Grow';
+import { IconButton } from '@material-ui/core';
+import { StringUtil } from "../../../helpers/string-util"; 
 
 const useStyles = makeStyles({
     root: {
@@ -16,6 +21,7 @@ const useStyles = makeStyles({
         display: "flex",
         flexDirection: "row",
         alignItems: 'center',
+        justifyContent: "space-between",
         height: "100%"
     },
     info: {
@@ -54,25 +60,39 @@ export default function CharacterInfo(props) {
     useEffect(() => {
         Api.fetchInternal('/race/' + race)
             .then(res => setRace(res))
-    }, [])
+    }, [props.race])
 
     return (
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper}>
-                <Avatar alt={name} src={image} />
-                <Box className={classes.info}>
-                    <Box>
-                        <Typography variant="h6">
-                            {name}
-                        </Typography>
+                <Box style={{ display: "flex", alignItems: "center" }}>
+                    <Avatar alt={name} src={image} />
+                    <Box className={classes.info}>
+                        <Box>
+                            <Typography variant="h6">
+                                {name}
+                            </Typography>
+                        </Box>
+                        <Box>
+                            {raceData && (StringUtil.generizaClase(raceData.name, props.pronoun) + ',')}
+                            {" " + background.name + " " + alignment + ", "}
+                            {charClass.map((charClass, index) => <span key={index}>{" " + StringUtil.generizaClase(charClass["className"], props.pronoun) + " " + charClass["classLevel"]}</span>)}
+                        </Box>
+                        <Box>
+                        </Box>
                     </Box>
-                    <Box>
-                        {raceData && (raceData.name + ',')}
-                        {" " + background + " " + alignment + ", "}
-                        {charClass.map(charClass => <span>{" " + charClass["className"] + " " + charClass["classLevel"]}</span>)}
-                    </Box>
-                    <Box>
-                    </Box>
+                </Box>
+                <Box>
+                    {props.edited &&
+                        <Grow in={true} mountOnEnter unmountOnExit>
+                            <Alert variant="filled" severity="warning" action={
+                                <IconButton size="small" onClick={props.save}>
+                                    <SaveIcon />
+                                </IconButton>
+                            }>
+                                Tienes cambios sin guardar. Por favor, guarda antes de salir de la página.
+                        </Alert>
+                        </Grow>}
                 </Box>
             </Paper>
         </div>

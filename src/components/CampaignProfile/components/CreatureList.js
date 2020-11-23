@@ -28,11 +28,12 @@ function CreatureList(props) {
     }
 
     return (
-        <Paper variant="outlined">
+        <Paper variant="outlined" style={{ position: "relative" }}>
             <Tabs
                 variant="scrollable"
                 value={selectedCategory}
                 onChange={handleChange}
+                // style={{ position: "relative" }}
                 aria-label="simple tabs example">
                 {categories.map((category, index) => {
                     return <Tab key={index} label={category} {...a11yProps(category)} />

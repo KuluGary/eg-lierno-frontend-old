@@ -55,20 +55,21 @@ const mapStateToProps = state => {
 }
 
 function NpcProfile(props) {
+    const { npcs, match } = props;
     const classes = useStyles();
     const [npc, setNpc] = useState();
 
     useEffect(() => {
-        if (!props.npcs) {
-            Api.fetchInternal('/npc/' + props.match.params.id)
+        if (!npcs) {
+            Api.fetchInternal('/npc/' + match.params.id)
                 .then(res => {
                     setNpc(res)
                 });
         } else {
-            const selectedNpc = props.npcs.filter(npc => npc._id === props.match.params.id)[0];
+            const selectedNpc = npcs.filter(npc => npc._id === match.params.id)[0];
             selectedNpc && setNpc(selectedNpc)
         }
-    }, [])
+    }, [ npcs, match ])
 
     return (
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
@@ -96,9 +97,7 @@ function NpcProfile(props) {
                                         <Typography variant={'subtitle2'} display="inline">
                                             {'Armadura: '}
                                         </Typography>
-
                                         {npc.stats.armorClass + (npc.stats.armorType && ' (' + npc.stats.armorType + ')')}
-
                                     </Box>
                                     <Box>
                                         <Typography variant={'subtitle2'} display="inline">
@@ -121,7 +120,7 @@ function NpcProfile(props) {
 
                                     <Divider className={classes.divider} />
 
-                                    <Stats stats={npc.stats.abilityScores} modifiers={npc.stats.abilityScoreModifiers} />
+                                    <Stats stats={npc.stats.abilityScores} modifiers={npc.stats.abilityScoreModifiers} style="npc" />
 
                                     <Divider className={classes.divider} />
 
@@ -131,7 +130,7 @@ function NpcProfile(props) {
                                                 {'Tiradas de salvación: '}
                                             </Typography>
 
-                                            {npc.stats.savingThrows.length > 0 
+                                            {npc.stats.savingThrows.length > 0
                                                 ? StringUtil.returnStringFromObjectArray(npc.stats.savingThrows, "modifierStr") : '—'}
                                         </Box>
                                         <Box>
@@ -139,7 +138,7 @@ function NpcProfile(props) {
                                                 {'Habilidades: '}
                                             </Typography>
 
-                                            {npc.stats.skills.length > 0 
+                                            {npc.stats.skills.length > 0
                                                 ? StringUtil.returnModifierStr(npc.stats.skills, npc) : '—'}
                                         </Box>
                                         <Box>
@@ -291,23 +290,18 @@ function NpcProfile(props) {
                                     padding: "0 1em 0 0"
                                 }}>
                                     <Box component="p">
-                                        <Typography display="inline" variant="subtitle2">{'Rasgos de personalidad. '}</Typography>
-                                        {npc.flavor.personality.personalityTrait1 + ' ' + npc.flavor.personality.personalityTrait2}
+                                        <Typography variant="subtitle1">{'Descripción psicológica'}</Typography>
+                                        <Divider style={{ marginBottom: ".6rem" }} />
+                                        <span dangerouslySetInnerHTML={{ __html: npc.flavor.personality.personality }} />
                                     </Box>
                                     <Box component="p">
-                                        <Typography display="inline" variant="subtitle2">{'Ideales. '}</Typography>
-                                        {npc.flavor.personality.ideals}
+                                        <Typography variant="subtitle1">{'Descripción física'}</Typography>
+                                        <Divider style={{ marginBottom: ".6rem" }} />
+                                        <span dangerouslySetInnerHTML={{ __html: npc.flavor.personality.physical }} />
                                     </Box>
                                     <Box component="p">
-                                        <Typography display="inline" variant="subtitle2">{'Vínculos. '}</Typography>
-                                        {npc.flavor.personality.bonds}
-                                    </Box>
-                                    <Box component="p">
-                                        <Typography display="inline" variant="subtitle2">{'Defectos. '}</Typography>
-                                        {npc.flavor.personality.flaws}
-                                    </Box>
-                                    <Box component="p">
-                                        <Typography display="inline" variant="subtitle2">{'Historia. '}</Typography>
+                                        <Typography variant="subtitle1">{'Historia'}</Typography>
+                                        <Divider style={{ marginBottom: ".6rem" }} />
                                         <span dangerouslySetInnerHTML={{ __html: npc.flavor.personality.backstory }} />
                                     </Box>
                                 </Box>

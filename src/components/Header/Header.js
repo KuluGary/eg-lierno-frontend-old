@@ -4,7 +4,7 @@ import { Redirect, Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { makeStyles } from '@material-ui/core/styles';
-import { addProfile } from "../../shared/actions/index";
+import { addProfile, resetStore } from "../../shared/actions/index";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -14,6 +14,7 @@ import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Api from "../../helpers/api";
 import Menu from '@material-ui/core/Menu';
+import Notifications from '../Notifications/Notifications';
 
 const drawerWidth = 240;
 
@@ -58,11 +59,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const mapStateToProps = state => {
-  return { profile: state.profile }
+  return { profile: state.profile, state: state }
 }
 
 const mapDispatchToProps = dispatch => {
-  return { addProfile: profile => dispatch(addProfile(profile)) };
+  return {
+    addProfile: profile => dispatch(addProfile(profile)),
+    resetStore: store => dispatch(resetStore(store))
+  };
 }
 
 function Header(props) {
@@ -106,6 +110,7 @@ function Header(props) {
     setLogout(true);
     props.authenticated();
     props.history.push("/login")
+    props.resetStore({});
   }
 
   return (
@@ -136,6 +141,9 @@ function Header(props) {
               </Link>
             </Typography>
             <div>
+              {/* <IconButton>
+                <Notifications />
+              </IconButton> */}
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
@@ -157,6 +165,7 @@ function Header(props) {
                 }
                 {/* <AccountCircle fontSize="large" /> */}
               </IconButton>
+
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}

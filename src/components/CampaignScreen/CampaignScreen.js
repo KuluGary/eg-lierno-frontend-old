@@ -38,12 +38,15 @@ const useStyles = makeStyles((theme) => ({
     addButton: {
         padding: 8,
         float: "right"
+    },
+    cell: {
+        width: "10%"
     }
 }));
 
 const mapStateToProps = state => {
     return {
-        profile: state.profile, 
+        profile: state.profile,
         campaigns: state.campaigns
     }
 }
@@ -58,6 +61,8 @@ function CampaignScreen(props) {
     const classes = useStyles();
     const [campaigns, setCampaigns] = useState([]);
     const [selectedData, setSelectedData] = useState();
+    const [players, setPlayers] = useState([]);
+    const [dms, setDms] = useState([]);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -86,6 +91,25 @@ function CampaignScreen(props) {
             Api.fetchInternal('/campaigns')
                 .then(res => {
                     props.addCampaigns(res)
+                    const dungeonMasters = [];
+                    res.forEach(campaign => (
+                        Api.fetchInternal('/auth/players', {
+                            method: "POST",
+                            body: JSON.stringify({
+                                dmId: campaign.dm,
+                                userIds: campaign.players
+                            })
+                        })
+                            .then(res => {
+                                if (dungeonMasters.findIndex(dungeonMaster => dungeonMaster.id === res.dm.id) < 0) {
+                                    dungeonMasters.push(res.dm);
+                                }
+
+                                setPlayers([...players, res.players]);
+                            })
+                    ))
+
+                    setDms(dungeonMasters)
                     setCampaigns(res)
                 });
         } else {
@@ -97,12 +121,6 @@ function CampaignScreen(props) {
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             <div className={classes.root}>
                 <Paper variant="outlined" className={classes.profileBox}>
-                    {/* <IconButton
-                        component="span"
-                        className={classes.addButton}
-                        onClick={() => props.history.push("/npc/add")}> 
-                        <AddIcon />
-                    </IconButton> */}
                     <IconButton
                         component="span"
                         className={classes.addButton}
@@ -113,15 +131,23 @@ function CampaignScreen(props) {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Nombre</TableCell>
+                                {(width !== "xs") && <TableCell>Juego</TableCell>}
+                                <TableCell>DM</TableCell>
+                                {(width !== "xs") && <TableCell>Sinopsis</TableCell>}
                                 <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {campaigns.length > 0 && campaigns
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map(campaign => (
-                                    <TableRow component={Link} to={'/campaigns/' + campaign._id} className={classes.link}>
-                                        <TableCell>{campaign.name}</TableCell>
+                                .map(campaign => {
+                                    const dungeonMaster = dms.filter(dm => campaign.dm === dm.id)[0]
+                                    return (
+                                    <TableRow hover component={Link} to={'/campaigns/' + campaign._id} className={classes.link}>
+                                        <TableCell className={classes.cell}>{campaign.name}</TableCell>                                        
+                                        {(width !== "xs") && <TableCell className={classes.cell}>{campaign.flavor.game}</TableCell>}
+                                        <TableCell className={classes.cell}>{dungeonMaster && dungeonMaster["name"]}</TableCell>                                        
+                                        {(width !== "xs") && <TableCell>{campaign.flavor.synopsis}</TableCell>}
                                         <TableCell align="right">
                                             {props.profile && props.profile._id === campaign.dm &&
                                                 <Link>
@@ -134,13 +160,19 @@ function CampaignScreen(props) {
                                                 </Link>}
                                         </TableCell>
                                     </TableRow>
-                                ))}
+                                )})}
                         </TableBody>
                         <TableFooter>
                             <TableRow>
                                 <TablePagination
-                                    rowsPerPageOptions={5, 10, 15}
-                                    colspan={12}
+                                    rowsPerPageOptions={[5, 10, 15]}
+                                    colSpan={12}
+                                    labelRowsPerPage={'Filas por página: '}
+                                    labelDisplayedRows={
+                                        ({ from, to, count }) => {
+                                            return '' + from + '-' + to + ' de ' + count
+                                        }
+                                    }
                                     count={campaigns.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}

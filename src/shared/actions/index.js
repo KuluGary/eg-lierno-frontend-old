@@ -8,7 +8,8 @@ import {
     ADD_CAMPAIGNS,
     ADD_ROLES,
     ADD_CLASSES,
-    ADD_RACES
+    ADD_RACES,
+    USER_LOGOUT
  } from "../constants/action-types";
 
 export function addCharacters(payload) {
@@ -50,3 +51,7 @@ export function addClasses(payload) {
 export function addRaces(payload) {
     return { type: ADD_RACES, payload }
 };
+
+export function resetStore(payload) {
+    return { type: USER_LOGOUT, payload }
+}

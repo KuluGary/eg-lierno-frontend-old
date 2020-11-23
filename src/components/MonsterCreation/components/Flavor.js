@@ -35,6 +35,7 @@ const mapStateToProps = state => {
 
 function Flavor(props) {
   const classes = useStyles();
+  const { addToCreatureStats, changeName, addToCreatureFlavor, profile } = props;
   const alignments = [
     "Sin alineamiento",
     StringUtil.generiza("Legal bueno", "Legal buena", "Legal buene", props.pronoun),
@@ -57,32 +58,32 @@ function Flavor(props) {
   const [campaigns, setCampaigns] = useState(props.creature.flavor.campaign || []);
 
   const [faction, setFaction] = useState(props.creature.flavor.faction);
-  const [alignment, setAlignment] = useState(props.creature.stats.alignment || alignment[0]);
+  const [alignment, setAlignment] = useState(props.creature.stats.alignment || alignments[0]);
 
   useEffect(() => {
     Api.fetchInternal('/campaigns')
       .then(campaignList => {
-        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === props.profile._id))
+        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === profile._id))
       })
-  }, [props.profile])
+  }, [profile])
 
   useEffect(() => {
     if (campaignAvailable.length > 0) {
-      props.changeName(name);
-      props.addToCreatureFlavor(pronoun, "pronoun");
-      props.addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
-      props.addToCreatureFlavor(image, "imageUrl");
-      props.addToCreatureFlavor(faction, "faction");
-      props.addToCreatureStats(alignment, "alignment")
-      props.addToCreatureFlavor(gender, "gender");
-      props.addToCreatureFlavor(characterClass, "class")
-      props.addToCreatureFlavor(campaigns.map(campaign => ({
+      changeName(name);
+      addToCreatureFlavor(pronoun, "pronoun");
+      addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
+      addToCreatureFlavor(image, "imageUrl");
+      addToCreatureFlavor(faction, "faction");
+      addToCreatureStats(alignment, "alignment")
+      addToCreatureFlavor(gender, "gender");
+      addToCreatureFlavor(characterClass, "class")
+      addToCreatureFlavor(campaigns.map(campaign => ({
         campaignId: campaign.id || campaignAvailable.filter(campaignA => campaignA._id === campaign.campaignId)[0]._id,
         unlocked: campaign.unlocked
       })), "campaign")
-      props.addToCreatureFlavor(props.profile._id, "owner")
+      addToCreatureFlavor(profile._id, "owner")
     }
-  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass])
+  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, campaignAvailable, profile])
 
   const addCampaign = () => {
     const indexOf = campaignAvailable.findIndex(campaignAvailable => campaigns.every(campaign => campaign.id !== campaignAvailable._id))
@@ -250,7 +251,6 @@ function Flavor(props) {
         </Grid>
         {campaigns.map((campaign, index) => (
           <>
-            {console.log(campaign)}
             <Grid key={index} item sm={8}>
               <FormControl className={classes.formControl}>
                 <InputLabel id="demo-simple-select-label">Campaña</InputLabel>

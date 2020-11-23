@@ -1009,8 +1009,6 @@ export default function Abilities(props) {
         let dc = 8 + parseInt(creature.stats.proficiencyBonus) +
             parseInt(creature.stats.abilityScoreModifiers[spellCastingAbility]);
 
-        console.log(dc, creature.stats.proficiencyBonus, creature.stats.abilityScoreModifiers[spellCastingAbility])
-
         return dc;
     }
 
@@ -1066,7 +1064,6 @@ export default function Abilities(props) {
     }
 
     const generateSpellBlock = () => {
-        console.log("generateSpellBlock")
         let text = "";
         const tryAddLine = (title, levelStr, level) => {
             let spellcasterData = spellcasters[spellCastingType];
@@ -1103,7 +1100,7 @@ export default function Abilities(props) {
         if (text[text.length - 1] == '\n') {
             text = text.substring(0, text.length - 1);
         }
-        console.log(text);
+
         return text
     }
 
@@ -1137,7 +1134,6 @@ export default function Abilities(props) {
             if (level === 0) {
                 return true;
             } else if (spellCasterLevel) {
-                console.log(spellcaster);
                 let spellSlots = spellcaster.level[spellCasterLevel].spellSlots;
                 if (spellSlots.hasOwnProperty(level - 1) && spellSlots[level - 1] != 0) {
                     return true;
@@ -1163,7 +1159,7 @@ export default function Abilities(props) {
             let spellcaster = spellcasters[spellCastingType];
             if (spellCasterLevel) {
                 let spellSlots = spellcaster.level[spellCasterLevel].spellSlots
-                console.log(spellSlots.length);
+                
                 return (spellSlots.length);
             } else {
                 return 0;

@@ -3,19 +3,25 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
     root: {
-        height: "100%"
+        // height: "100%"
+        // margin: "0 .1rem .2rem .1rem",
+        margin: ".1rem",
+        paddingLeft: ".1rem",
+        marginTop: 0,
+        width: "100%"
     },
     paper: {
-        margin: 0,
         padding: "1rem",
         display: "flex",
         flexDirection: "row",
         justifyContent: 'center',
-        alignItems: 'center',
-        height: "100%"
+        alignItems: 'center',      
+        // alignSelf: "stretch"    ,
+        height: "100%"      
     },
     stat: {
         margin: "0 1.5rem",
@@ -25,6 +31,15 @@ const useStyles = makeStyles({
         color: 'inherit',
         textDecoration: 'none',
 
+    },
+    resize: {
+        fontSize: 21,
+        textAlign: 'center'
+    },
+    textField: {
+        "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+            display: "none"
+        }
     }
 });
 
@@ -39,9 +54,18 @@ export default function Initiative(props) {
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
-                   <Typography variant="subtitle2">{'BONO DE'}</Typography>
-                    <Typography variant="h6">{props.initiative}</Typography>
-                    <Typography variant="subtitle2">{'INICIATIVA'}</Typography>
+                    <TextField
+                        type="number"
+                        disabled={!props.editable}
+                        value={props.initiative}
+                        className={classes.textField}
+                        onChange={(event) => props.changeStats("initiativeBonus", event.target.value)}
+                        InputProps={{
+                            classes: {
+                                input: classes.resize,
+                            },
+                        }}></TextField>
+                    <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'INICIATIVA'}</Typography>
                 </Box>                
             </Paper>
         </div>

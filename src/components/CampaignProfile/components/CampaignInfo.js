@@ -28,12 +28,12 @@ function CampaignProfile(props) {
                 <NavLink to={'/campaigns'} className={classes.link}>
                     <ArrowBackIosIcon fontSize="small" />
                 </NavLink>
-                <Typography variant="h6" inline>
+                <Typography variant="h5" inline>
                     {props.name}
                 </Typography>
             </Box>
             <Box className={classes.game}>
-                <Typography variant="subtitle2">
+                <Typography variant="caption">
                     {props.game}
                 </Typography>
             </Box>

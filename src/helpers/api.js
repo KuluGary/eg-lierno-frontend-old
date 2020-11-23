@@ -23,10 +23,8 @@ export default class Api {
             headers,
             ...options
         })
-            .then(this._checkStatus)
             .then(response => response.json())
-            .then(response => response.payload)
-            .catch(e => console.log(e))
+            .then(response => response.payload || response)
     }
 
     static _checkStatus = response => {

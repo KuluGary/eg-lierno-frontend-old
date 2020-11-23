@@ -60,18 +60,19 @@ const mapStateToProps = state => {
 }
 
 function MonsterProfile(props) {
+    const { monsters, match } = props;
     const classes = useStyles();
     const [monster, setMonster] = useState();
 
     useEffect(() => {
-        if (!props.monsters) {
-            Api.fetchInternal('/bestiary/' + props.match.params.id)
+        if (!monsters) {
+            Api.fetchInternal('/bestiary/' + match.params.id)
                 .then(res => setMonster(res));
         } else {
-            const selectedMonster = props.monsters.filter(monster => monster._id === props.match.params.id)[0];
+            const selectedMonster = monsters.filter(monster => monster._id === match.params.id)[0];
             selectedMonster && setMonster(selectedMonster)
         }
-    }, [])
+    }, [monsters, match])
 
     return (
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
@@ -118,7 +119,7 @@ function MonsterProfile(props) {
 
                                     <Divider className={classes.divider} />
 
-                                    <Stats stats={monster.stats.abilityScores} modifiers={monster.stats.abilityScoreModifiers} />
+                                    <Stats style="npc" stats={monster.stats.abilityScores} modifiers={monster.stats.abilityScoreModifiers} />
 
                                     <Divider className={classes.divider} />
 

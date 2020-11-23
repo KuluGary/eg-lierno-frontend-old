@@ -18,8 +18,11 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import PetsIcon from '@material-ui/icons/Pets';
 import MapIcon from '@material-ui/icons/Map';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 import BookIcon from '@material-ui/icons/Book';
 import Auth from '../../helpers/auth';
+import { useWidth } from '../../helpers/media-query';
 
 const drawerWidth = 240;
 
@@ -67,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
     }),
     overflowX: 'hidden',
     width: theme.spacing(7) + 1,
+    [theme.breakpoints.up('xs')]: {
+      width: theme.spacing(0),
+    },
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9) + 1,
     },
@@ -92,12 +98,13 @@ const useStyles = makeStyles((theme) => ({
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
+  const width = useWidth();
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <Drawer
-        variant="permanent"
+        variant={"permanent"}
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: props.open,
           [classes.drawerClose]: !props.open,
@@ -132,14 +139,6 @@ export default function MiniDrawer(props) {
               <ListItemText primary={'Partidas'} />
             </ListItem>
           </Link>
-          {/* {Auth.hasRole("NPC_ACCESS") && <Link to="/npcs" className={classes.link}>
-            <ListItem button>
-              <ListItemIcon>
-                <SupervisedUserCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary={'PNJs'} />
-            </ListItem>
-          </Link>} */}
           {Auth.hasRole("REFERENCE_ACCESS") && <Link to="/reference" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
@@ -147,32 +146,7 @@ export default function MiniDrawer(props) {
               </ListItemIcon>
               <ListItemText primary={'Referencias'} />
             </ListItem>
-          </Link>}
-          {/* {Auth.hasRole("BESTIARY_ACCESS") && <Link to="/bestiary" className={classes.link}>
-            <ListItem button>
-              <ListItemIcon>
-                <PetsIcon />
-              </ListItemIcon>
-              <ListItemText primary={'Bestiario'} />
-            </ListItem>
-          </Link>} */}
-          {/* {Auth.hasRole("MAP_ACCESS") &&
-            <Link to="/map" className={classes.link}>
-              <ListItem button>
-                <ListItemIcon>
-                  <MapIcon />
-                </ListItemIcon>
-                <ListItemText primary={'Mapa'} />
-              </ListItem>
-            </Link>} */}
-          {/* {Auth.hasRole("ALIGNMENT_ACCESS") && <Link to="/alignments" className={classes.link}>
-            <ListItem button>
-              <ListItemIcon>
-                <ExploreIcon />
-              </ListItemIcon>
-              <ListItemText primary={'Alignments'} />
-            </ListItem>
-          </Link>} */}
+          </Link>}          
           {Auth.hasRole("INITIATIVE_ACCESS") && <Link to="/initiative" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
@@ -181,6 +155,14 @@ export default function MiniDrawer(props) {
               <ListItemText primary={'Iniciativa'} />
             </ListItem>
           </Link>}
+          <a target="_blank" href="https://kulugary.github.io/eg-lierno-docs/" className={classes.link}>
+            <ListItem button>
+              <ListItemIcon>
+                <FontAwesomeIcon size="lg" style={{ marginLeft: ".2rem" }} icon={faDiscord} />
+              </ListItemIcon>
+              <ListItemText primary={'Lierno Bot'} />
+            </ListItem>
+          </a>
         </List>
       </Drawer>
     </div>

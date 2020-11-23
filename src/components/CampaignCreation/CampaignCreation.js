@@ -73,6 +73,9 @@ function CampaignCreation(props) {
         name: null,
         game: "D&D 5e",
         mode: "classic",
+        discordData: {
+            main: null
+        },
         rules: [],
         players: [],
         characters: [],
@@ -95,7 +98,7 @@ function CampaignCreation(props) {
 
     useEffect(() => {
         if (players.length > 0) {
-            const userIds = campaignData.players.map((player) => player = player._id)
+            const userIds = campaignData.players.map((player) => player._id)
             console.log(userIds)
             Api.fetchInternal("/usercharacter", {
                 method: "POST",
@@ -103,9 +106,13 @@ function CampaignCreation(props) {
                     userIds: userIds
                 })
             })
-                .then(res => setCharacters(res.map(item => item.name)))
+                .then(res => {
+                    console.log(res);
+                    setCharacters(res)
+                    // setCharacters(res.map(item => item.name))
+                })
         }
-    }, [campaignData.players])
+    }, [campaignData.players, players.length])
 
 
     useEffect(() => {
@@ -117,7 +124,7 @@ function CampaignCreation(props) {
     useEffect(() => {
         if (!checkDisable()) {
             setSubmitDisabled(false)
-        }   
+        }
     }, [campaignData])
 
     const notify = (type, msg) => {
@@ -202,12 +209,14 @@ function CampaignCreation(props) {
     }
 
     const handleSubmit = () => {
-        let campaign = {...campaignData};
+        let campaign = { ...campaignData };
 
         campaign.players = [...campaign.players.map(item => item._id)]
+        campaign.characters = [...campaign.characters.map(item => item._id)];
+        
         delete campaign['mode']
         Api.fetchInternal('/campaigns', {
-            method: "POST", 
+            method: "POST",
             body: JSON.stringify(campaign)
         })
             .then(() => {
@@ -216,6 +225,7 @@ function CampaignCreation(props) {
                 Api.fetchInternal("/campaigns")
                     .then(res => {
                         props.addCampaigns(res)
+                        props.history.goBack()
                         props.history.goBack()
                     })
             })
@@ -308,18 +318,21 @@ function CampaignCreation(props) {
                                 id="tags-outlined"
                                 value={campaignData.characters}
                                 onChange={(event, newValue) => {
+                                    console.log(event.target.value, newValue)
                                     setData("characters", newValue)
                                 }}
                                 options={characters}
-                                getOptionLabel={(option) => option}
+                                getOptionLabel={(option) => option.name}
                                 filterSelectedOptions
                                 renderTags={(tagValue, getTagProps) =>
-                                    tagValue.map((option, index) => (
+                                    tagValue.map((option, index) => {
+                                        console.log(option)
+                                        return (
                                         <Chip
-                                            label={option}
+                                            label={option.name}
                                             {...getTagProps({ index })}
                                         />
-                                    ))}
+                                    )})}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
@@ -328,6 +341,25 @@ function CampaignCreation(props) {
                                 )}
                             />
                         </FormControl>
+                    </Grid>
+                    <Grid item lg={12}>
+                        Integración con Discord
+                    </Grid>
+                    <Grid item sm={3}>
+                        <TextField
+                            id="dm"
+                            name="dm"
+                            label="Canal principal"
+                            onChange={(e) => setData("discordData", {
+                                main: e.target.value
+                            })}
+                            // onChange={(e) => setData("name", e.target.value)}
+                            value={campaignData.discordData.main}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item lg={12}>
+                        Reglas personalizadas
                     </Grid>
                     <Grid item sm={4}>
                         <FormControl className={classes.formControl} required>
@@ -358,7 +390,6 @@ function CampaignCreation(props) {
                             {rules[campaignData.mode] && rules[campaignData.mode].map((rule, index) => getTreeOption(rule, index))}
                         </TreeView>
                     </Grid>
-                    {console.log(checkDisable(), campaignData)}
                     <Grid item sm={12}>
                         <Button
                             variant="contained"

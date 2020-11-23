@@ -55,7 +55,6 @@ function Race(props) {
         if (!props.races) {
             Api.fetchInternal('/races/')
                 .then(res => {
-                    console.log(res)
                     props.addRaces(res)
                     let selectedRace = res.filter(apiRace => apiRace._id === raceId)[0]
                     setRace(selectedRace)

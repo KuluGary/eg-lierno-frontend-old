@@ -33,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
     fullWidthDivier: {
         margin: ".5rem 0"
     },
-    bold: {
-        // fontWeight: 600
-    },
     image: {
         maxHeight: "50vh",
         maxWidth: "100%",
@@ -49,19 +46,20 @@ const mapStateToProps = state => {
 }
 
 function Location(props) {
+    const { locations, match } = props;
     const classes = useStyles();
     const [location, setLocation] = useState();
     const information = ["Localización", "Tipo", "Población", "Líderes", "Religión", "Fuerzas militares", "Descripción"]
 
     useEffect(() => {
-        if (!props.locations) {
-            Api.fetchInternal('/location/' + props.match.params.id)
+        if (!locations) {
+            Api.fetchInternal('/location/' + match.params.id)
                 .then(res => setLocation(res));
         } else {
-            const selectedLocation = props.locations.filter(location => location._id === props.match.params.id)[0];
+            const selectedLocation = locations.filter(location => location._id === match.params.id)[0];
             selectedLocation && setLocation(selectedLocation)
         }
-    }, [])
+    }, [locations, match])
 
     return (
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>

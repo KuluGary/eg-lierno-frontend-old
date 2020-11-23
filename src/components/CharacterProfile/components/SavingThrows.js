@@ -13,13 +13,14 @@ const useStyles = makeStyles({
         height: "100%"
     },
     paper: {
-        margin: 0,
-        padding: "1rem",
+        // margin: "0 .2rem 0 .2rem",
+        margin: ".1rem",
+        padding: ".2rem",
         display: "flex",
         flexDirection: "row",
         justifyContent: 'center',
         alignItems: 'center',
-        height: "100%"
+        // height: "100%"
     },
     stat: {
         margin: "0 1.5rem",
@@ -32,6 +33,9 @@ const useStyles = makeStyles({
     },
     smallCell: {
         width: "2rem"
+    },
+    radio: {
+        padding: 0
     }
 });
 
@@ -43,34 +47,71 @@ export default function SavingThrows(props) {
 
     }, [])
 
+    const handleClick = (check) => {
+        let newItems = {...props.saving};
+
+        if (props.saving[check].expertise) {
+            newItems[check].expertise = false;
+            newItems[check].proficient = false;
+        } else if (props.saving[check].proficient) {
+            newItems[check].expertise = true;
+        } else {
+            newItems[check].proficient = true;
+        }
+
+        props.changeStats("savingThrows", newItems)
+    }
+
     return (
         <Paper variant="outlined" className={classes.paper}>
-            <Table className={classes.table}>
-                <TableHead>
+            <Table className={classes.table} size="small">
+            <TableHead>
                     <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell align="left">Tipo</TableCell>
-                        <TableCell align="right">Bonus</TableCell>
+                        <TableCell size="small" colSpan={3}>
+                            <div style={{ fontSize: "12px", textAlign: 'center' }}>
+                                {'TIRADAS DE SALVACIÓN'}
+                            </div>
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {Object.keys(props.saving).map((check, index) => (
+                    {Object.keys(props.saving).map((check, index) => {
+                        let bonus = 0;
+
+                         if (props.saving[check].expertise) {
+                             bonus = Math.floor((props.stats[check] - 10) / 2) + (props.proficiency * 2)
+                         } else if (props.saving[check].proficient) {
+                            bonus = Math.floor((props.stats[check] - 10) / 2) + (props.proficiency)
+                         } else {
+                            bonus = Math.floor((props.stats[check] - 10) / 2)
+                         }
+
+                        return (
                         <TableRow key={index}>
                             <TableCell size="small" padding="none" className={classes.smallCell}>
                                 <Radio
                                     checked={props.saving[check].proficient}
-                                    size="small"
-                                    disabled
+                                    size={"small"}
+                                    color="default"
+                                    disabled={!props.editable}
+                                    classes={{
+                                        root: classes.radio
+                                    }}
+                                    onClick={() => handleClick(check)}
                                 />
                             </TableCell>
                             <TableCell>
-                                {checks[index]}
+                                <div style={{ fontSize: "12px" }}>
+                                    {checks[index]}
+                                </div>
                             </TableCell>
                             <TableCell align="right">
-                                {props.saving[check].bonus}
+                                <div style={{ fontSize: "14px" }}>
+                                    {bonus}
+                                </div>
                             </TableCell>
                         </TableRow>
-                    ))}
+                    )})}
                 </TableBody>
             </Table>
         </Paper>
