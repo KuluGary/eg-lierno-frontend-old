@@ -24,6 +24,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+
 import {
     EmailShareButton,
     FacebookShareButton,
@@ -76,7 +77,6 @@ function CharacterProfile(props) {
     const [edited, setEdited] = useState(false);
     const [proficiencyBonus, setProficiencyBonus] = useState(0);
     const [dialogOpen, setDialogOpen] = useState(false);
-    let textArea = null;
 
     useEffect(() => {
         if (!props.characters) {
@@ -238,6 +238,7 @@ function CharacterProfile(props) {
                                 background={editedCharacter.stats.background}
                                 charClass={editedCharacter.stats.classes}
                                 pronoun={editedCharacter.flavor.traits.pronoun}
+                                playerId={editedCharacter.player}
                                 edited={edited}
                                 save={save}
                                 openDialog={openDialog} />

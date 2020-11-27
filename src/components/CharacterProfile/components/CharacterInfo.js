@@ -55,13 +55,19 @@ const useStyles = makeStyles({
 
 export default function CharacterInfo(props) {
     const classes = useStyles();
-    const { name, image, race, subrace, alignment, background, charClass, openDialog } = props;
+    const { name, image, race, alignment, background, charClass, openDialog, playerId } = props;
     const [raceData, setRace] = useState();
+    const [player, setPlayer] = useState();
 
     useEffect(() => {
         Api.fetchInternal('/race/' + race)
             .then(res => setRace(res))
+
+        Api.fetchInternal('/auth/users/' + playerId)
+            .then(res => setPlayer(res))
     }, [props.race])
+
+    console.log(player)
 
     return (
         <div className={classes.root}>
@@ -75,6 +81,8 @@ export default function CharacterInfo(props) {
                             </Typography>
                         </Box>
                         <Box>
+                            {player ? ("Personaje de " +  player.username) : ""}
+                            <br/>
                             {raceData && (StringUtil.generizaClase(raceData.name, props.pronoun) + ',')}
                             {" " + (background.name ? background.name : "") + " " + (alignment ? alignment : "") + ", "}
                             {charClass.map((charClass, index) => <span key={index}>{" " + StringUtil.generizaClase(charClass["className"], props.pronoun) + " " + charClass["classLevel"] + (charClass["subclassName"] ? (" " + charClass["subclassName"]) : " ")}</span>)}

@@ -37,7 +37,11 @@ const useStyles = makeStyles({
         "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
             display: "none"
         },
-        maxWidth: "25%"
+        maxWidth: "25%",
+
+        "& input[type=number]": {
+            "-moz-appearance": "textfield"
+        }
     }
 });
 

@@ -160,6 +160,7 @@ class App extends Component {
               margin: this.state.innerWidth > 1440 ? '5rem auto' : (this.state.innerWidth < 512 ? '5rem 1rem' : '5rem 1rem 1rem 5rem')
             }}>
               <Switch>
+
                 <Route path="/login" render={() => (
                   <Login
                     version={this.state.uploadVersion || Package.version}
@@ -171,7 +172,12 @@ class App extends Component {
                     setDarkMode={this.setDarkMode.bind(this)}
                     darkMode={this.state.darkMode} />
                 )} />
+
                 <Route path="/characters/:id" component={CharacterProfile} />
+                <Route exact path="/npc/:id" component={NpcProfile} />
+                <Route exact path="/bestiary/:id" component={MonsterProfile} />
+                <Route exact path="/campaigns/:id" component={CampaignProfile} />
+
                 {Auth.loggedIn() ? <>
                   {Auth.hasRole("ALIGNMENT_ACCESS") && <Route path="/alignments" component={AlignmentScreen} />}
 
@@ -185,17 +191,14 @@ class App extends Component {
 
                   {Auth.hasRole("NPC_ACCESS") && <Route path="/npc/add/:id?" component={NpcCreation} />}
                   {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npcs" component={NpcScreen} />}
-                  {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npc/:id" component={NpcProfile} />}
 
                   {Auth.hasRole("BESTIARY_ACCESS") && <Route path="/bestiary/add/:id?" component={MonsterCreation} />}
                   {Auth.hasRole("BESTIARY_ACCESS") && <Route exact path="/bestiary" component={BestiaryScreen} />}
-                  {Auth.hasRole("BESTIARY_ACCESS") && <Route exact path="/bestiary/:id" component={MonsterProfile} />}
 
                   {Auth.hasRole("INITIATIVE_ACCESS") && <Route path="/initiative" component={InitiativeTracker} />}
                   {Auth.hasRole("MAP_ACCESS") && <Route exact path="/map" component={MapScreen} />}
                   {Auth.hasRole("MAP_ACCESS") && <Route exact path="/location/:id" component={Location} />}
                   {Auth.hasRole("REFERENCE_ACCESS") && <Route exact path="/reference" component={Reference} />}
-                  {<Route exact path="/campaigns/:id" component={CampaignProfile} />}
                   <Route exact path="/" component={HomeScreen} />
                 </> : <Redirect to={{ pathname: '/login', state: { from: this.props.location } }} />}
               </Switch>

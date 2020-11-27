@@ -37,6 +37,10 @@ const useStyles = makeStyles({
         textAlign: 'center',
         "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
             display: "none"
+        },
+
+        "& input[type=number]": {
+            "-moz-appearance": "textfield"
         }
     }
 });
