@@ -56,12 +56,13 @@ export default function Stats(props) {
 
     return (
         <div className={classes.root}>
+            {console.log(props.style)}
             <Paper 
                 variant={props.character && 'outlined'} 
                 className={classes.paper} 
                 // style={{ padding: width === "xs" ? "1rem" : "1rem 0" }}
                 elevation={0}
-                style={(props.style && (props.style === "npc" || width === 'xs')) ? { flexDirection: "row", justifyContent: "space-between", padding: width === "xs" ? "1rem" : "1rem 0" } : { flexDirection: "column" }}>
+                style={((props.style === "npc" || width === 'xs')) ? { flexDirection: "row", justifyContent: "space-between", padding: width === "xs" ? "1rem" : "1rem 0" } : { flexDirection: "column" }}>
                 {props.stats ? (
                     Object.keys(props.stats).map((stat, index) => (
                         <span className={classes.statBox} key={index} >
