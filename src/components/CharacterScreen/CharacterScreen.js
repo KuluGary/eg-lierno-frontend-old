@@ -15,10 +15,15 @@ import Paper from '@material-ui/core/Paper';
 import { useWidth } from '../../helpers/media-query';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Api from "../../helpers/api";
 import { StringUtil } from "../../helpers/string-util";
+import CharacterTable from "./components/CharacterTable";
 
 const useStyles = makeStyles({
     root: {
@@ -86,6 +91,9 @@ function CharacterScreen(props) {
     const classes = useStyles();
     const [characters, setCharacters] = useState([]);
     const [profile, setProfile] = useState([]);
+    const [selectedData, setSelectedData] = useState();
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [value, setValue] = React.useState(0);
@@ -126,60 +134,102 @@ function CharacterScreen(props) {
         setValue(newValue);
     };
 
-    const CharacterTable = ({ characters }) => (
-        <Table className={classes.table}>
-            <TableHead>
-                <TableRow>
-                    {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
-                    <TableCell>Nombre</TableCell>
-                    <TableCell>Clase</TableCell>
-                    {(width !== "xs") && <TableCell>Alineamiento</TableCell>}
-                    {(width !== "xs") && <TableCell>Trasfondo</TableCell>}
-                    {(width !== "xs") && <TableCell></TableCell>}
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {(characters && profile) && characters.length > 0 && characters
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map(char => (
-                        <TableRow hover key={char._id} component={Link} to={'/characters/' + char._id} className={classes.link}>
-                            {(width !== "xs") &&
-                                <TableCell className={classes.smallCell}>
-                                    <div style={{
-                                        backgroundImage: `url(${char.flavor.portrait})`,
-                                        width: "5vw",
-                                        height: "5vw",
-                                        backgroundSize: "cover",
-                                        borderRadius: 10
-                                    }} />
-                                </TableCell>}
-                            <TableCell>{char.flavor.traits.name}</TableCell>
-                            <TableCell>{char.stats.classes.map(charClass => StringUtil.generizaClase(charClass.className, char.flavor.traits.pronoun)).join(", ")}</TableCell>
-                            {(width !== "xs") && <TableCell>{char.stats.alignment}</TableCell>}
-                            {(width !== "xs") && <TableCell>{char.stats.background.name}</TableCell>}
-                            {(width !== "xs") && <TableCell>{char.flavor.personality.personalityTraits}</TableCell>}
-                        </TableRow>))}
-            </TableBody>
-            <TableFooter>
-                <TableRow>
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 15]}
-                        colSpan={12}
-                        labelRowsPerPage={'Filas por página: '}
-                        labelDisplayedRows={
-                            ({ from, to, count }) => {
-                                return '' + from + '-' + to + ' de ' + count
-                            }
-                        }
-                        count={characters.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onChangePage={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage} />
-                </TableRow>
-            </TableFooter>
-        </Table>
-    )
+    const handleMenu = (event) => {
+        console.log(event.currentTarget)
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    // const CharacterTable = ({ characters }) => {
+    //     return (
+    //     <>
+    //         <Table className={classes.table}>
+    //             <TableHead>
+    //                 <TableRow>
+    //                     {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
+    //                     <TableCell>Nombre</TableCell>
+    //                     <TableCell>Clase</TableCell>
+    //                     {(width !== "xs") && <TableCell>Alineamiento</TableCell>}
+    //                     {(width !== "xs") && <TableCell>Trasfondo</TableCell>}
+    //                     {(width !== "xs") && <TableCell></TableCell>}
+    //                     <TableCell></TableCell>
+    //                 </TableRow>
+    //             </TableHead>
+    //             <TableBody>
+    //                 {(characters && profile) && characters.length > 0 && characters
+    //                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    //                     .map(char => (
+    //                         <TableRow hover key={char._id} component={Link} to={'/characters/' + char._id} className={classes.link}>
+    //                             {(width !== "xs") &&
+    //                                 <TableCell className={classes.smallCell}>
+    //                                     <div style={{
+    //                                         backgroundImage: `url(${char.flavor.portrait})`,
+    //                                         width: "5vw",
+    //                                         height: "5vw",
+    //                                         backgroundSize: "cover",
+    //                                         borderRadius: 10
+    //                                     }} />
+    //                                 </TableCell>}
+    //                             <TableCell>{char.flavor.traits.name}</TableCell>
+    //                             <TableCell>{char.stats.classes.map(charClass => StringUtil.generizaClase(charClass.className, char.flavor.traits.pronoun)).join(", ")}</TableCell>
+    //                             {(width !== "xs") && <TableCell>{char.stats.alignment}</TableCell>}
+    //                             {(width !== "xs") && <TableCell>{char.stats.background.name}</TableCell>}
+    //                             {(width !== "xs") && <TableCell>{char.flavor.personality.personalityTraits}</TableCell>}
+    //                             <TableCell align="right">
+    //                                 {props.profile && props.profile._id === char.player &&
+    //                                     <Link>
+    //                                         <IconButton onClick={(e) => {
+    //                                             // setSelectedData(char._id)
+    //                                             return handleMenu(e)
+    //                                         }}>
+    //                                             <MoreVertIcon />
+    //                                         </IconButton>
+    //                                     </Link>}
+    //                             </TableCell>
+    //                         </TableRow>))}
+    //             </TableBody>
+    //             <TableFooter>
+    //                 <TableRow>
+    //                     <TablePagination
+    //                         rowsPerPageOptions={[5, 10, 15]}
+    //                         colSpan={12}
+    //                         labelRowsPerPage={'Filas por página: '}
+    //                         labelDisplayedRows={
+    //                             ({ from, to, count }) => {
+    //                                 return '' + from + '-' + to + ' de ' + count
+    //                             }
+    //                         }
+    //                         count={characters.length}
+    //                         rowsPerPage={rowsPerPage}
+    //                         page={page}
+    //                         onChangePage={handleChangePage}
+    //                         onChangeRowsPerPage={handleChangeRowsPerPage} />
+    //                 </TableRow>
+    //             </TableFooter>
+    //         </Table>
+    //         {console.log(anchorEl)}
+    //         <Menu
+    //             id="menu-appbar"
+    //             anchorEl={anchorEl}
+    //             anchorOrigin={{
+    //                 vertical: 'top',
+    //                 horizontal: 'right',
+    //             }}
+    //             keepMounted
+    //             transformOrigin={{
+    //                 vertical: 'top',
+    //                 horizontal: 'right',
+    //             }}
+    //             open={open}
+    //             onClose={handleClose}
+    //         >
+    //             <MenuItem onClick={() => props.history.push("/npc/add/" + selectedData)}>Editar</MenuItem>
+    //         </Menu>
+    //     </>
+    // )}
 
     return (
         <>
@@ -193,15 +243,24 @@ function CharacterScreen(props) {
                         <TabPanel value={value} index={0}>
                             {(characters && profile) && characters.length > 0 &&
                                 <CharacterTable
-                                    characters={characters.filter(character => character.player === profile._id)} />
+                                    characters={characters.filter(character => character.player === profile._id)}
+                                    profile={profile}
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                    history={props.history} />
                             }
                         </TabPanel>
                         <TabPanel value={value} index={1}>
                             {(characters && profile) && characters.length > 0 &&
                                 <CharacterTable
-                                    characters={characters.filter(character => character.player !== profile._id)} />
-                            }                            
+                                    characters={characters.filter(character => character.player !== profile._id)}
+                                    profile={profile}
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                    history={props.history} />
+                            }
                         </TabPanel>
+
                     </Paper>
                 </Slide>}
         </>

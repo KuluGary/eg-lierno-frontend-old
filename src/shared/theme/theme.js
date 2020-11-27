@@ -18,5 +18,32 @@ export const theme = {
         h6: {
             fontSize: "1.1rem"
         }
-    }
+    },
+    overrides: {
+        MuiInputBase: {
+            root: {
+                "&$disabled": {
+                    opacity: 1,
+                    color: "inherit"
+                }
+            }
+        },
+        MuiInput: {
+            underline: {
+                "&$disabled": {
+                    '&:before': {
+                        borderBottomStyle: "dashed"
+                    },
+                }
+            }
+        },
+        MuiRadio: {
+            root: {
+                "&$disabled": {
+                    opacity: 1,
+                    color: "inherit"
+                }
+            }
+        }
+    },
 }

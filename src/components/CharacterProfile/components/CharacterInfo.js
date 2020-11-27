@@ -7,9 +7,10 @@ import Alert from '@material-ui/lab/Alert';
 import Box from '@material-ui/core/Box';
 import Api from '../../../helpers/api';
 import SaveIcon from '@material-ui/icons/Save';
+import ShareIcon from '@material-ui/icons/Share';
 import Grow from '@material-ui/core/Grow';
-import { IconButton } from '@material-ui/core';
-import { StringUtil } from "../../../helpers/string-util"; 
+import IconButton from '@material-ui/core/IconButton';
+import { StringUtil } from "../../../helpers/string-util";
 
 const useStyles = makeStyles({
     root: {
@@ -54,7 +55,7 @@ const useStyles = makeStyles({
 
 export default function CharacterInfo(props) {
     const classes = useStyles();
-    const { name, image, race, subrace, alignment, background, charClass } = props;
+    const { name, image, race, subrace, alignment, background, charClass, openDialog } = props;
     const [raceData, setRace] = useState();
 
     useEffect(() => {
@@ -75,14 +76,17 @@ export default function CharacterInfo(props) {
                         </Box>
                         <Box>
                             {raceData && (StringUtil.generizaClase(raceData.name, props.pronoun) + ',')}
-                            {" " + background.name + " " + alignment + ", "}
-                            {charClass.map((charClass, index) => <span key={index}>{" " + StringUtil.generizaClase(charClass["className"], props.pronoun) + " " + charClass["classLevel"]}</span>)}
+                            {" " + (background.name ? background.name : "") + " " + (alignment ? alignment : "") + ", "}
+                            {charClass.map((charClass, index) => <span key={index}>{" " + StringUtil.generizaClase(charClass["className"], props.pronoun) + " " + charClass["classLevel"] + (charClass["subclassName"] ? (" " + charClass["subclassName"]) : " ")}</span>)}
                         </Box>
                         <Box>
                         </Box>
                     </Box>
                 </Box>
-                <Box>
+                <Box style={{ display: "flex" }}>
+                    <IconButton onClick={openDialog}>
+                        <ShareIcon />
+                    </IconButton>
                     {props.edited &&
                         <Grow in={true} mountOnEnter unmountOnExit>
                             <Alert variant="filled" severity="warning" action={
@@ -91,7 +95,7 @@ export default function CharacterInfo(props) {
                                 </IconButton>
                             }>
                                 Tienes cambios sin guardar. Por favor, guarda antes de salir de la página.
-                        </Alert>
+                            </Alert>
                         </Grow>}
                 </Box>
             </Paper>

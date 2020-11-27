@@ -1398,10 +1398,10 @@ export default function Abilities(props) {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={openDialog} color="primary">
+                    <Button onClick={openDialog} color="default">
                         Cerrar
                      </Button>
-                    <Button color="primary" onClick={generateAttack} autoFocus>
+                    <Button color="default" onClick={generateAttack} autoFocus>
                         Generar
                     </Button>
                 </DialogActions>
@@ -1678,10 +1678,10 @@ export default function Abilities(props) {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setSpellDialogOpen(!spellDialogOpen)} color="primary">
+                    <Button onClick={() => setSpellDialogOpen(!spellDialogOpen)} color="default">
                         Cerrar
                      </Button>
-                    <Button color="primary" onClick={generateSpellcasting} autoFocus>
+                    <Button color="default" onClick={generateSpellcasting} autoFocus>
                         Generar
                     </Button>
                 </DialogActions>

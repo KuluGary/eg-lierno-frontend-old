@@ -422,7 +422,7 @@ export default function Items(props) {
                                                 />
                                             )}
                                         </TableCell>
-                                        <TableCell align={width !=="xs" ? "right" : "left"} width={width !== "xs" ? "20%" : "100%"} onClick={() => setOpen(open === index ? -1 : index)}>{row.data.name}</TableCell>
+                                        <TableCell align={width !=="xs" ? "left" : "right"} width={width !== "xs" ? "20%" : "100%"} onClick={() => setOpen(open === index ? -1 : index)}>{row.data.name}</TableCell>
                                         {(width !== "xs" && <TableCell align="left" onClick={() => setOpen(open === index ? -1 : index)}>{row.data.description}</TableCell>)}
                                         {(width !== "xs" && <TableCell>
                                             <TextField

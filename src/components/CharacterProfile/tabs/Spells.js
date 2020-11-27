@@ -242,7 +242,7 @@ export default function Armor(props) {
                                     {tableItems
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map(spell =>
-                                            <TableRow className={classes.row} onClick={() => setSelectedSpell(spell)}>
+                                            <TableRow hover className={classes.row} onClick={() => setSelectedSpell(spell)}>
                                                 <TableCell className={classes.bold}>
                                                     <Typography variant={'subtitle2'} display="inline">
                                                         {spell.name}

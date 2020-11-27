@@ -41,10 +41,10 @@ export default function Update(props) {
             <DialogActions>
                 {props.downloaded &&
                     <>
-                        <Button color="primary" onClick={props.closeNotification}>
+                        <Button color="default" onClick={props.closeNotification}>
                             Cerrar
                         </Button>
-                        <Button color="primary" onClick={props.restartApp} autoFocus>
+                        <Button color="default" onClick={props.restartApp} autoFocus>
                             Reiniciar
                         </Button>
                     </>

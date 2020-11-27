@@ -15,6 +15,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Api from "../../helpers/api";
 import Menu from '@material-ui/core/Menu';
 import Notifications from '../Notifications/Notifications';
+import Auth from "../../helpers/auth";
+import Button from '@material-ui/core/Button';
 
 const drawerWidth = 240;
 
@@ -76,18 +78,22 @@ function Header(props) {
   const [user, setUser] = useState();
   const [avatar, setAvatar] = useState();
   const open = Boolean(anchorEl);
+  const { history } = props;
 
   useEffect(() => {
-    if (!props.profile) {
-      Api.fetchInternal('/auth/me')
-        .then(res => {
-          props.addProfile(res)
-          setUser(res)
-        });
-    } else {
-      setUser(props.profile)
+    console.log(history.location.pathname, Auth.loggedIn())
+    if (Auth.loggedIn()) {
+      if (!props.profile) {
+        Api.fetchInternal('/auth/me')
+          .then(res => {
+            props.addProfile(res)
+            setUser(res)
+          });
+      } else {
+        setUser(props.profile)
+      }
     }
-  }, [])
+  }, [history.location.pathname])
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -123,17 +129,19 @@ function Header(props) {
           [classes.appBarShift]: props.open,
         })} >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={props.handleDrawer}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: props.open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
+          {Auth.loggedIn() &&
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={props.handleDrawer}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: props.open,
+              })}
+            >
+              <MenuIcon />
+            </IconButton>
+          }
           <div className={classes.flex}>
             <Typography variant="h6" noWrap>
               <Link to={'/'} className={classes.link}>
@@ -144,27 +152,37 @@ function Header(props) {
               {/* <IconButton>
                 <Notifications />
               </IconButton> */}
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                {avatar || (user && user.metadata.avatar) ?
-                  <Avatar
-                    src={avatar || (user && user.metadata.avatar)}
-                    className={classes.avatar}
-                    alt={user && user.metadata.first_name + ' ' + user.metadata.last_name}
-                  /> :
-                  <Avatar
-                    className={classes.avatar}
-                    alt={user && user.metadata.first_name + ' ' + user.metadata.last_name}>
-                    {user && (user.metadata.first_name + ' ' + user.metadata.last_name).match(/\b(\w)/g).join('')}
-                  </Avatar>
-                }
-                {/* <AccountCircle fontSize="large" /> */}
-              </IconButton>
+              {Auth.loggedIn() ?
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  {avatar || (user && user.metadata.avatar) ?
+                    <Avatar
+                      src={avatar || (user && user.metadata.avatar)}
+                      className={classes.avatar}
+                      alt={user && user.metadata.first_name + ' ' + user.metadata.last_name}
+                    /> :
+                    <Avatar
+                      className={classes.avatar}
+                      alt={user && user.metadata.first_name + ' ' + user.metadata.last_name}>
+                      {user && (user.metadata.first_name + ' ' + user.metadata.last_name).match(/\b(\w)/g).join('')}
+                    </Avatar>
+                  }
+                  {/* <AccountCircle fontSize="large" /> */}
+                </IconButton>
+                : <>
+                  <Link to={'/register'} style={{ marginRight: "1rem" }} className={classes.link}>
+                    <Button>Signup</Button>
+                  </Link>
+                  <Link to={'/login'}>
+                    <Button variant="outlined">Login</Button>
+                  </Link>
+                </>
+              }
 
               <Menu
                 id="menu-appbar"
@@ -181,7 +199,10 @@ function Header(props) {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={() => props.history.push("/profile")}>Mi cuenta</MenuItem>
+                <MenuItem onClick={() => {
+                  handleClose();
+                  props.history.push("/profile")
+                }}>Mi cuenta</MenuItem>
                 <MenuItem onClick={logout}>Salir</MenuItem>
               </Menu>
             </div>

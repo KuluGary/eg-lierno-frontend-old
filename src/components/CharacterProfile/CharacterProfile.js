@@ -1,6 +1,5 @@
 import React, { useState, useEffect, m } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import Api from "../../helpers/api";
 
@@ -12,10 +11,36 @@ import Items from "./tabs/Items";
 import Options from "./tabs/Options";
 import Spells from "./tabs/Spells";
 
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Slide from '@material-ui/core/Slide';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import {
+    EmailShareButton,
+    FacebookShareButton,
+    RedditShareButton,
+    TelegramShareButton,
+    TumblrShareButton,
+    TwitterShareButton,
+    WhatsappShareButton
+} from "react-share";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
+import { faTelegram } from '@fortawesome/free-brands-svg-icons'
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { faTumblr } from '@fortawesome/free-brands-svg-icons'
+import { faFacebook } from '@fortawesome/free-brands-svg-icons'
+import { faReddit } from '@fortawesome/free-brands-svg-icons'
 
 const useStyles = makeStyles({
     container: {
@@ -34,42 +59,6 @@ const useStyles = makeStyles({
     }
 });
 
-const theme = createMuiTheme({
-    overrides: {
-        MuiInputBase: {
-            root: {
-                "&$disabled": {
-                    opacity: 1,
-                    color: "inherit"
-                }
-            }
-        },
-        MuiInput: {
-            underline: {
-                "&$disabled": {
-                    '&:before': {
-                        borderBottomStyle: "dashed"
-                    },
-                }
-            }
-        },
-        MuiRadio: {
-            root: {
-                "&$disabled": {
-                    opacity: 1,
-                    color: "inherit"
-                }
-            }
-        }
-    },
-    palette: {
-        type: localStorage.getItem("theme") ? 'dark' : 'light',
-        primary: {
-            main: "#fff"
-        }
-    }
-});
-
 const mapStateToProps = state => {
     return {
         characters: state.characters,
@@ -85,7 +74,9 @@ function CharacterProfile(props) {
     const [selectedCategory, setSelectedCategory] = useState(0);
     const [editable, setEditable] = useState(false)
     const [edited, setEdited] = useState(false);
-    const [proficiencyBonus, setProficiencyBonus] = useState(0)
+    const [proficiencyBonus, setProficiencyBonus] = useState(0);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    let textArea = null;
 
     useEffect(() => {
         if (!props.characters) {
@@ -98,7 +89,6 @@ function CharacterProfile(props) {
         } else {
             const selectedCharacter = props.characters.filter(character => character._id === props.match.params.id)[0];
             selectedCharacter && setCharacter(selectedCharacter)
-            // selectedCharacter && setCharacter(selectedCharacter)
             selectedCharacter && setEditedCharacter(selectedCharacter)
             setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", (selectedCharacter && selectedCharacter.stats.spells.length > 0) && "Hechizos", "Opciones"].filter(el => el))
         }
@@ -149,6 +139,7 @@ function CharacterProfile(props) {
         const char = { ...editedCharacter };
 
         char['stats'][key] = value
+        console.log(char)
 
         setEditedCharacter(char)
     }
@@ -228,40 +219,127 @@ function CharacterProfile(props) {
             .then((res) => setEdited(false))
     }
 
+    const openDialog = () => {
+        setDialogOpen(!dialogOpen);
+    }
+
     return (
-        <ThemeProvider theme={theme}>
-            <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                <div className={classes.root}>
-                    {editedCharacter &&
-                        <Grid container spacing={1}>
-                            <Grid item xs={12}>
-                                <CharacterInfo
-                                    name={editedCharacter.flavor.traits["name"]}
-                                    image={editedCharacter.flavor.portrait}
-                                    race={editedCharacter.stats.race}
-                                    subrace={editedCharacter.stats.subrace}
-                                    alignment={editedCharacter.stats.alignment}
-                                    background={editedCharacter.stats.background}
-                                    charClass={editedCharacter.stats.classes}
-                                    pronoun={editedCharacter.flavor.traits.pronoun}
-                                    edited={edited}
-                                    save={save} />
-                            </Grid>
-                            <Tabs
-                                variant="scrollable"
-                                value={selectedCategory}
-                                onChange={handleChange}
-                                aria-label="simple tabs example">
-                                {categories.map((category, index) => {
-                                    return <Tab key={index} label={category} {...a11yProps(category)} />
-                                })}
-                            </Tabs>
-                            {tabData()}
+        <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+            <div className={classes.root}>
+                {editedCharacter &&
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <CharacterInfo
+                                name={editedCharacter.flavor.traits["name"]}
+                                image={editedCharacter.flavor.portrait}
+                                race={editedCharacter.stats.race}
+                                subrace={editedCharacter.stats.subrace}
+                                alignment={editedCharacter.stats.alignment}
+                                background={editedCharacter.stats.background}
+                                charClass={editedCharacter.stats.classes}
+                                pronoun={editedCharacter.flavor.traits.pronoun}
+                                edited={edited}
+                                save={save}
+                                openDialog={openDialog} />
                         </Grid>
-                    }
-                </div>
-            </Slide>
-        </ThemeProvider>
+                        <Tabs
+                            variant="scrollable"
+                            value={selectedCategory}
+                            onChange={handleChange}
+                            aria-label="simple tabs example">
+                            {categories.map((category, index) => {
+                                return <Tab key={index} label={category} {...a11yProps(category)} />
+                            })}
+                        </Tabs>
+                        {tabData()}
+                    </Grid>
+                }
+                <Dialog open={dialogOpen} style={{ padding: 10 }}>
+                    <DialogTitle>Comparte tu ficha de personaje</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            fullWidth
+                            value={window.location.href}
+                            label={'Enlace'}
+                            InputProps={{
+                                endAdornment:
+                                    <IconButton
+                                        onClick={() => navigator.clipboard.writeText(window.location.href)}>
+                                        <FileCopyIcon />
+                                    </IconButton>
+                            }}
+                        />
+                        <Box variant="div" style={{ margin: "1rem 0" }}>
+                            <EmailShareButton
+                                subject={'¡Mira mi ficha de personaje!'}
+                                url={window.location.href}
+                                body={"¡Mira el personaje que he creado en Lierno App!"}
+                            >
+                                <FontAwesomeIcon icon={faEnvelope} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
+                            Compartir por email
+                        </EmailShareButton>
+                        </Box>
+                        <Box variant="div" style={{ margin: "1rem 0" }}>
+                            <TwitterShareButton
+                                url={window.location.href}
+                                title={'¡Mira mi ficha de personaje!'}
+                                hashtags={["dnd", "charactersheet"]}>
+                                <FontAwesomeIcon icon={faTwitter} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
+                            Compartir en Twitter
+                        </TwitterShareButton>
+                        </Box>
+                        <Box variant="div" style={{ margin: "1rem 0" }}>
+                            <TelegramShareButton
+                                url={window.location.href}
+                                title={'¡Mira mi ficha de personaje!'}>
+                                <FontAwesomeIcon icon={faTelegram} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
+                            Compartir por Telegram
+                        </TelegramShareButton>
+                        </Box>
+                        <Box variant="div" style={{ margin: "1rem 0" }}>
+                            <WhatsappShareButton
+                                url={window.location.href}
+                                title={'¡Mira mi ficha de personaje!'}>
+                                <FontAwesomeIcon icon={faWhatsapp} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
+                            Compartir por Whatsapp
+                        </WhatsappShareButton>
+                        </Box>
+                        <Box variant="div" style={{ margin: "1rem 0" }}>
+                            <TumblrShareButton
+                                url={window.location.href}
+                                title={'¡Mira mi ficha de personaje!'}
+                                tags={["d&d", "character sheet"]}>
+                                <FontAwesomeIcon icon={faTumblr} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
+                            Compartir en Tumblr
+                        </TumblrShareButton>
+                        </Box>
+                        <Box variant="div" style={{ margin: "1rem 0" }}>
+                            <FacebookShareButton
+                                url={window.location.href}
+                                quote={'¡Mira mi ficha de personaje!'}
+                                hashtag={"#dnd"}>
+                                <FontAwesomeIcon icon={faFacebook} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
+                            Compartir en Facebook
+                        </FacebookShareButton>
+                        </Box>
+                        <Box variant="div" style={{ margin: "1rem 0" }}>
+                            <RedditShareButton
+                                url={"window.location.href"}
+                                title={'¡Mira mi ficha de personaje!'}>
+                                <FontAwesomeIcon icon={faReddit} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
+                            Compartir en Reddit
+                        </RedditShareButton>
+                        </Box>
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={openDialog} color="default">
+                            Cerrar
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
+        </Slide >
     );
 }
 

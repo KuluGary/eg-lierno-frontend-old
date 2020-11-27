@@ -11,9 +11,15 @@ import Api from "../../../helpers/api";
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import CancelIcon from '@material-ui/icons/Cancel';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Button from '@material-ui/core/Button';
-import { MenuItem, Select } from '@material-ui/core';
+import Menu from '@material-ui/core/Menu';
+import { Checkbox, MenuItem, Select } from '@material-ui/core';
 import { useWidth } from '../../../helpers/media-query';
+import ActionGeneration from '../components/FeatureGeneration/ActionGeneration';
+import ReactionGeneration from '../components/FeatureGeneration/ReactionGeneration';
+import BonusActionGeneration from '../components/FeatureGeneration/BonusActionGeneration';
+import AdditionalAbilities from '../components/FeatureGeneration/AdditionalAbilities';
 
 const useStyles = makeStyles({
     root: {
@@ -72,10 +78,13 @@ const mapDispatchToProps = dispatch => {
 function Features(props) {
     const classes = useStyles();
     const [characterClasses, setCharacterClasses] = useState();
-    const [classOptions, setClassOptions] = useState([])
+    const [classOptions, setClassOptions] = useState([]);
+    const [selectedData, setSelectedData] = useState();
     const { features, raceId, subraceIndex } = props;
     const [race, setRace] = useState();
     const [raceOptions, setRaceOptions] = useState([]);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
     const alignmentOptions = [
         StringUtil.generiza("Legal malo", "Legal mala", "Legal male", props.pronoun),
         StringUtil.generiza("Neutral malo", "Neutral mala", "Legal mala", props.pronoun),
@@ -120,7 +129,28 @@ function Features(props) {
         }
     }, [])
 
-    const generateRow = (item, index, array, type) => {
+    const generateRow = (item, index, array, type, editFunc = null) => {
+        const checks = [];
+
+        if (item.usage_num) {
+            for (let i = 0; i < parseInt(item.usage_num.max); i++) {
+                console.log("i: " + (parseInt(i)), "current: " + parseInt(item.usage_num.current - 1))
+                checks.push(
+                    <Checkbox
+                        checked={(item.usage_num.current - 1) >= i}
+                        onChange={() => {
+                            const action = { ...item };
+                            action["usage_num"]["current"] =
+                                ((item.usage_num.current - 1) >= i) ? i : i + 1
+
+                            const newActions = [...features[type]];
+                            newActions[index] = action;
+
+                            props.changeStats(type, newActions)
+                        }} />)
+
+            }
+        }
         return <Box component="p">
             <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <TextField
@@ -133,20 +163,44 @@ function Features(props) {
                     disabled={!props.editable}
                     value={item.name}
                     style={{ width: "50%" }}
-                    onChange={(event) => modifyItem(array, index, "name", event, type)} />
-                {props.editable &&
-                    <IconButton
-                        onClick={() => removeItem(array, type, index)}>
-                        <CancelIcon size="small" />
+                    onChange={(event) => {
+                        const newItem = { ...item };
+                        newItem["name"] = event.target.value;
+                        modifyItem(array, index, newItem, type)
+                    }} />
+                {props.editable && editFunc &&
+                    <IconButton onClick={(e) => {
+                        setSelectedData({
+                            item,
+                            index,
+                            array,
+                            type,
+                            editFunc
+                        })
+                        return handleMenu(e)
+                    }}>
+                        <MoreVertIcon size="small" />
                     </IconButton>
                 }
             </Box>
+            {item.usage_num && item.usage_type &&
+                <Box style={{ display: "flex", alignItems: "center" }}>
+                    {checks}
+                    <Box>
+                        {item.usage_type === "long_rest" ? "por descanso largo" : "por descanso corto"}
+                    </Box>
+                </ Box>
+            }
             <TextField
                 multiline
                 fullWidth
                 placeholder={'Descripción'}
                 disabled={!props.editable}
-                onChange={(event) => modifyItem(array, index, "description", event, type)}
+                onChange={(event) => {
+                    const newItem = { ...item };
+                    newItem["description"] = event.target.value;
+                    modifyItem(array, index, newItem, type)
+                }}
                 InputProps={{
                     classes: {
                         input: classes.resize,
@@ -156,10 +210,18 @@ function Features(props) {
         </Box>
     }
 
-    const modifyItem = (arr, index, key, event, type) => {
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const modifyItem = (arr, index, item, type) => {
         let newItems = [...arr];
 
-        newItems[index][key] = event.target.value;
+        newItems[index] = item;
 
         props.changeStats(type, newItems);
     }
@@ -172,16 +234,6 @@ function Features(props) {
         props.changeStats(type, newItems);
     }
 
-    const addItem = (arr, type) => {
-        let newItems = [...arr, {
-            name: null,
-            description: null
-        }];
-
-        props.changeStats(type, newItems);
-
-    }
-
     const changeClass = (index, event) => {
         let newItems = [...props.features.classes];
 
@@ -191,6 +243,17 @@ function Features(props) {
             ...props.features.classes[index],
             className: selectedClass.name,
             classId: selectedClass._id
+        }
+
+        props.changeStats("classes", newItems);
+    }
+
+    const changeSubclass = (index, event, type) => {
+        let newItems = [...props.features.classes];
+
+        newItems[index] = {
+            ...props.features.classes[index],
+            [type]: event.target.value
         }
 
         props.changeStats("classes", newItems);
@@ -242,6 +305,7 @@ function Features(props) {
                     <Paper variant="outlined" className={classes.paper}>
                         <Box>
                             <Box>
+                                <Typography style={{ fontSize: 11, textAlign: "center" }}>CLASES</Typography>
                                 {characterClasses && props.features.classes.map((characterClass, index) => {
                                     const extendedData = classOptions.filter(item => item._id === characterClass.classId)[0];
                                     return (
@@ -280,7 +344,7 @@ function Features(props) {
                                             </Box>
                                             <Box component="p">
                                                 <Typography style={{ fontSize: 12 }}>Rasgos de clase</Typography>
-                                                <Divider className={classes.fullWidthDivier} />
+                                                <Divider className={classes.fullWidthDivider} />
                                                 <Box>
                                                     <Box component="p">
                                                         <Typography display="inline" style={{ fontSize: 11 }}>{'Dado de golpe. '}</Typography>
@@ -296,6 +360,30 @@ function Features(props) {
                                                     </Box>
                                                 </Box>
                                             </Box>
+                                            {characterClass.classLevel === extendedData.data.subclassLevel && <Box component="p">
+                                                <TextField
+                                                    placeholder={'Nombre de subclase'}
+                                                    value={characterClass.subclassName}
+                                                    onChange={(event) => changeSubclass(index, event, "subclassName")}
+                                                    disabled={!props.editable}
+                                                    InputProps={{
+                                                        classes: {
+                                                            input: classes.title,
+                                                        },
+                                                    }} />
+                                                <TextField
+                                                    fullWidth
+                                                    multiline
+                                                    value={characterClass.subclassDescription}
+                                                    onChange={(event) => changeSubclass(index, event, "subclassDescription")}
+                                                    placeholder={'Descripción'}
+                                                    disabled={!props.editable}
+                                                    InputProps={{
+                                                        classes: {
+                                                            input: classes.resize,
+                                                        },
+                                                    }} />
+                                            </Box>}
                                         </Box>
                                     )
                                 })}
@@ -314,6 +402,7 @@ function Features(props) {
                     </Paper>
                     <Paper variant="outlined" className={classes.paper}>
                         <Box style={{ position: "relative" }}>
+                            <Typography style={{ fontSize: 11, textAlign: "center" }}>RAZA</Typography>
                             <Box>
                                 {race &&
                                     <Select
@@ -350,10 +439,10 @@ function Features(props) {
                                         </Box>
                                     </Box>}
                             </Box>
-                            <Typography style={{ fontSize: 11, textAlign: "center" }}>RAZA</Typography>
                         </Box>
                     </Paper>
                     <Paper variant="outlined" className={classes.paper}>
+                        <Typography style={{ fontSize: 11, textAlign: "center" }}>TRASFONDO</Typography>
                         <Box >
                             <Box>
                                 <TextField
@@ -395,7 +484,6 @@ function Features(props) {
                                         },
                                     }} />
                             </Box>
-                            <Typography style={{ fontSize: 11, textAlign: "center" }}>TRASFONDO</Typography>
                         </Box>
                     </Paper>
                     <Paper variant="outlined" className={classes.paper}>
@@ -434,68 +522,57 @@ function Features(props) {
                     </Paper>
                 </Box>
                 <Box style={{ width: width === "xs" ? "100%" : "60%", position: "relative", marginLeft: ".2rem", display: "flex", flexDirection: "column" }}>
-                    <Paper variant="outlined" className={classes.paper}>
-                        <Box style={{ position: "relative" }}>
-                            <Box>
-                                {features.actions.map((action, index) => generateRow(action, index, features.actions, "actions"))}
-                            </Box>
-                            <Typography style={{ fontSize: 11, textAlign: "center" }}>ACCIONES</Typography>
-                            <Box style={{ position: "absolute", bottom: 3, right: 20 }}>
-                                <Button variant="outlined" disabled={!props.editable} onClick={() => addItem(features.actions, "actions")}>
-                                    <Typography variant="subtitle2" style={{ fontSize: "8px", textAlign: "left" }} >
-                                        {'+ Añadir'}
-                                    </Typography>
-                                </Button>
-                            </Box>
-                        </Box>
-                    </Paper>
-                    <Paper variant="outlined" className={classes.paper}>
-                        <Box style={{ position: "relative" }}>
-                            <Box>
-                                {features.bonusActions.map((bonusAction, index) => generateRow(bonusAction, index, features.bonusActions, "bonusActions"))}
-                            </Box>
-                            <Typography style={{ fontSize: 11, textAlign: "center" }}>ACCIONES BONUS</Typography>
-                            <Box style={{ position: "absolute", bottom: 3, right: 20 }}>
-                                <Button variant="outlined" disabled={!props.editable} onClick={() => addItem(features.bonusActions, "bonusActions")}>
-                                    <Typography variant="subtitle2" style={{ fontSize: "8px", textAlign: "left" }} >
-                                        {'+ Añadir'}
-                                    </Typography>
-                                </Button>
-                            </Box>
-                        </Box>
-                    </Paper>
-                    <Paper variant="outlined" className={classes.paper}>
-                        <Box style={{ position: "relative" }}>
-                            <Box>
-                                {features.reactions.map((reaction, index) => generateRow(reaction, index, features.reactions, "reactions"))}
-                            </Box>
-                            <Typography style={{ fontSize: 11, textAlign: "center" }}>REACCIONES</Typography>
-                            <Box style={{ position: "absolute", bottom: 3, right: 20 }}>
-                                <Button variant="outlined" disabled={!props.editable} onClick={() => addItem(features.reactions, "reactions")}>
-                                    <Typography variant="subtitle2" style={{ fontSize: "8px", textAlign: "left" }} >
-                                        {'+ Añadir'}
-                                    </Typography>
-                                </Button>
-                            </Box>
-                        </Box>
-                    </Paper>
-                    <Paper variant="outlined" className={classes.paper}>
-                        <Box style={{ position: "relative" }}>
-                            <Box >
-                                {features.additionalAbilities.map((ability, index) => generateRow(ability, index, features.additionalAbilities, "additionalAbilities"))}
-                            </Box>
-                            <Typography style={{ fontSize: 11, textAlign: "center" }}>OTROS RASGOS</Typography>
-                            <Box style={{ position: "absolute", bottom: 3, right: 20 }}>
-                                <Button variant="outlined" disabled={!props.editable} onClick={() => addItem(features.reactions, "reactions")}>
-                                    <Typography variant="subtitle2" style={{ fontSize: "8px", textAlign: "left" }} >
-                                        {'+ Añadir'}
-                                    </Typography>
-                                </Button>
-                            </Box>
-                        </Box>
-                    </Paper>
+                    <ActionGeneration
+                        editable={props.editable}
+                        addItem={props.changeStats}
+                        modifyItem={modifyItem}
+                        actions={features.actions}
+                        generateRow={generateRow} />
+                    <BonusActionGeneration
+                        editable={props.editable}
+                        addItem={props.changeStats}
+                        modifyItem={modifyItem}
+                        bonusActions={features.bonusActions}
+                        generateRow={generateRow}
+                    />
+                    <ReactionGeneration
+                        editable={props.editable}
+                        addItem={props.changeStats}
+                        modifyItem={modifyItem}
+                        reactions={features.reactions}
+                        generateRow={generateRow} />
+                    <AdditionalAbilities
+                        editable={props.editable}
+                        addItem={props.changeStats}
+                        modifyItem={modifyItem}
+                        additionalAbilities={features.additionalAbilities}
+                        generateRow={generateRow} />
                 </Box>
             </Box>
+            <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={() => {
+                    selectedData.editFunc(selectedData.item, selectedData.index)
+                    handleClose()
+                }}>Editar</MenuItem>
+                <MenuItem onClick={() => {
+                    removeItem(selectedData.array, selectedData.type, selectedData.index)
+                    handleClose()
+                }}>Delete</MenuItem>
+            </Menu>
         </div >
     );
 }

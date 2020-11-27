@@ -36,6 +36,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Box from '@material-ui/core/Box';
 import { toast } from 'react-toastify'
 import { theme } from './shared/theme/theme';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const electron = window && window.process && window.process.type && window.require('electron');
 const ipcRenderer = electron && electron.ipcRenderer;
@@ -83,7 +84,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    window.addEventListener("resize",  this.updateDimensions.bind(this));
+    window.addEventListener("resize", this.updateDimensions.bind(this));
   }
 
   handleDrawerOpen() {
@@ -128,22 +129,26 @@ class App extends Component {
       },
       ...theme
     })
-    
+
     return (
       <>
         <ThemeProvider theme={muiTheme}>
+          <CssBaseline />
           <Router>
+            {console.log(window.location)}
+            <Header
+              mode={this.state.darkMode}
+              open={this.state.drawerOpen}
+              handleDrawer={this.handleDrawerOpen.bind(this)}
+              authenticated={this.authenticated.bind(this)} />
             {Auth.loggedIn() &&
               <>
-                <Header
-                  mode={this.state.darkMode}
-                  open={this.state.drawerOpen}
-                  handleDrawer={this.handleDrawerOpen.bind(this)}
-                  authenticated={this.authenticated.bind(this)} />
                 <Sidebar
                   open={this.state.drawerOpen}
                   handleDrawer={this.handleDrawerOpen.bind(this)} />
-              </>}
+              </>
+            }
+            {/* } */}
             <Update
               update={this.state.update}
               restartApp={this.restartApp}
@@ -166,17 +171,17 @@ class App extends Component {
                     setDarkMode={this.setDarkMode.bind(this)}
                     darkMode={this.state.darkMode} />
                 )} />
+                <Route path="/characters/:id" component={CharacterProfile} />
                 {Auth.loggedIn() ? <>
                   {Auth.hasRole("ALIGNMENT_ACCESS") && <Route path="/alignments" component={AlignmentScreen} />}
 
                   {Auth.hasRole("CHARACTER_ACCESS") && <Route path="/character-creation" component={CharacterCreation} />}
-                  {Auth.hasRole("CHARACTER_ACCESS") && <Route path="/characters/:id" component={CharacterProfile} />}
                   {Auth.hasRole("CHARACTER_ACCESS") && <Route exact path="/characters" component={CharacterScreen} />}
+                  {Auth.hasRole("CHARACTER_ACCESS") && <Route path="/characters/:id" component={CharacterProfile} />}
 
 
                   {Auth.hasRole("CAMPAIGN_ACCESS") && <Route path="/campaigns/add/:id?" component={CampaignCreation} />}
                   {Auth.hasRole("CAMPAIGN_ACCESS") && <Route exact path="/campaigns" component={CampaignScreen} />}
-                  {Auth.hasRole("CAMPAIGN_ACCESS") && <Route exact path="/campaigns/:id" component={CampaignProfile} />}
 
                   {Auth.hasRole("NPC_ACCESS") && <Route path="/npc/add/:id?" component={NpcCreation} />}
                   {Auth.hasRole("NPC_ACCESS") && <Route exact path="/npcs" component={NpcScreen} />}
@@ -190,6 +195,7 @@ class App extends Component {
                   {Auth.hasRole("MAP_ACCESS") && <Route exact path="/map" component={MapScreen} />}
                   {Auth.hasRole("MAP_ACCESS") && <Route exact path="/location/:id" component={Location} />}
                   {Auth.hasRole("REFERENCE_ACCESS") && <Route exact path="/reference" component={Reference} />}
+                  {<Route exact path="/campaigns/:id" component={CampaignProfile} />}
                   <Route exact path="/" component={HomeScreen} />
                 </> : <Redirect to={{ pathname: '/login', state: { from: this.props.location } }} />}
               </Switch>

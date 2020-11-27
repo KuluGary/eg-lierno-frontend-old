@@ -105,7 +105,6 @@ export default function SpellSlots(props) {
     }
     const [maxSpellSlots, setMaxSpellSlots] = useState(0)
 
-    console.log(props)
     useEffect(() => {
         let classLevel = 0;
         const casterType = {
