@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import ModalImage from "react-modal-image";
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import CharacterDetails from '../components/CharacterDetails';
 import Personality from '../components/Personality';

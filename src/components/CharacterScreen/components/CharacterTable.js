@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,25 +42,20 @@ const useStyles = makeStyles({
 export default function CharacterTable(props) {
     const classes = useStyles();
     const [selectedData, setSelectedData] = useState();
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [page] = useState(0);
+    const [rowsPerPage] = useState(5);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const { characters, profile, handleChangePage, handleChangeRowsPerPage } = props;
     const open = Boolean(anchorEl);
     const width = useWidth();
 
     const handleMenu = (event) => {
-        console.log(event.currentTarget)
         setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const handleDeleteCharacter = () => {
-
-    }
 
 
     return (

@@ -1,13 +1,8 @@
-import { dev, prod } from './api-config';
 import Auth from './auth';
 
 export default class Api {
-    static environment() {
-        return process.env.NODE_ENV;
-    }
-
     static async fetchInternal(url, options) {
-        url = (this.environment() === "production" ? prod : dev) + url;
+        url = process.env.REACT_APP_ENDPOINT + url;
 
         const headers = {
             Accept: 'application/json',

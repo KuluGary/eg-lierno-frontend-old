@@ -11,7 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { toHTML } from 'discord-markdown';
 import { MenuItem, Select } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     container: {
         display: "flex",
         minHeight: 0,
@@ -55,7 +55,6 @@ function CampaignLogs(props) {
     const [options, setOptions] = useState([])
     const [selectedCategory, setSelectedCategory] = useState(0)
     let chatBox = React.createRef();
-    let scrollRef = React.createRef();
 
     useEffect(() => {
         Api.fetchInternal('/auth/players', {
@@ -100,8 +99,7 @@ function CampaignLogs(props) {
         if (chatBox && chatBox.current) {
             chatBox.current.scrollTop = chatBox.current.scrollHeight;
         }
-        // chatBox && chatBox.scrollToBottom()
-    }, [logs])
+    }, [logs, chatBox])
 
     const getDisplayName = (author) => {
         if (dm && dm.metadata.discordId === author.id) {
@@ -151,7 +149,7 @@ function CampaignLogs(props) {
                 <Paper variant="outlined" style={{ padding: "1rem", width: "100%", }} >
                     <Box style={{ display: "flex", justifyContent: "space-between" }}>
                         <Box style={{ display: "flex" }}>
-                            <img src={logs[selectedCategory].discordData.guild.iconUrl} style={{ padding: ".5rem", maxWidth: "100px", maxHeight: "100px" }} />
+                            <img alt={'avatar-icon'} src={logs[selectedCategory].discordData.guild.iconUrl} style={{ padding: ".5rem", maxWidth: "100px", maxHeight: "100px" }} />
                             <Box>
                                 <Typography variant="h6">
                                     {logs[selectedCategory].discordData.guild.name}
@@ -213,7 +211,6 @@ function CampaignLogs(props) {
                                                     {portrait ?
                                                         <Avatar
                                                             style={{
-                                                                height: "40px",
                                                                 height: "40px"
                                                             }}
                                                             src={portrait}
@@ -222,7 +219,6 @@ function CampaignLogs(props) {
                                                         /> :
                                                         <Avatar
                                                             style={{
-                                                                height: "40px",
                                                                 height: "40px"
                                                             }}
                                                             className={classes.avatar}
@@ -290,7 +286,7 @@ function CampaignLogs(props) {
                                         </>
                                     )
                                 })}
-                            <div ref={ref => scrollRef = ref} />
+                            <div />
                         </InfiniteScroll>
                     </div>
                 </Paper>

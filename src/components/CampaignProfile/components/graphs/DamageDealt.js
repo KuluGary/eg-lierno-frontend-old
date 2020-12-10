@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -11,7 +11,6 @@ export default function DamageDealt(props) {
                 Daño total causado
             </Typography>
             {props.damageDealt &&
-
                 <ResponsiveLine
                     height={400}
                     margin={{ top: 20, right: 120, bottom: 60, left: 80 }}

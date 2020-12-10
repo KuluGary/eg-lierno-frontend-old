@@ -23,7 +23,7 @@ function CreatureList(props) {
     function tabData() {
         switch (selectedCategory) {
             case 0: return <NpcScreen history={props.history} dm={props.dm} campaign={props.campaignId} />
-            case 1: return <BestiaryScreen history={props.history} dm={props.dm} campaign={props.campaignId} />
+            default: return <BestiaryScreen history={props.history} dm={props.dm} campaign={props.campaignId} />
         }
     }
 

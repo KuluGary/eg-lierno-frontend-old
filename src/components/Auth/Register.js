@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Link } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,12 +12,13 @@ import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 import Api from "../../helpers/api";
 import Auth from "../../helpers/auth";
+import { toast } from 'react-toastify';
 
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-                Gary Cuétara
+                Gary Cuétara{' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
@@ -52,10 +52,12 @@ export default function Register(props) {
     const classes = useStyles();
     const [username, setUserName] = useState('');
     const [password, setPassWord] = useState('');
+    const [passwordVerification, setPasswordVerification] = useState();
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [hasRegistered, setRegistered] = useState(false);
+    const [setRegistered] = useState(false);
+    const [errorState, setError] = useState({});
 
     useEffect(() => {
         if (Auth.loggedIn()) {
@@ -75,6 +77,26 @@ export default function Register(props) {
             }
         }
 
+        if (!/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/g.test(user.metadata.email)) {
+            return setError({
+                email: "Este no es un email válido."
+            })
+        }
+
+        if (!/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d).*$/g.test(user.password)) {
+            return setError({
+                password: "Esta contraseña no es válida. Debe contener al menos una letra, un número y una longitud de 6 carácteres."
+            })
+        }
+
+        if (password !== passwordVerification) {
+            return setError({
+                passwordVerification: "Tus contraseñas no son iguales. Por favor, asegúrate de repetir tu contraseña correctamente."
+            })
+        }
+
+        setError({});
+
         Api.fetchInternal('/auth/register', {
             method: "POST",
             headers: {
@@ -82,10 +104,12 @@ export default function Register(props) {
             },
             body: JSON.stringify(user)
         })
-            .then(() => {
+            .then((res) => {
+                toast.success(res.message);
                 props.history.push("/");
                 setRegistered(true);
             })
+            .catch(err => toast.error(err.message))
     }
 
     return (
@@ -133,9 +157,11 @@ export default function Register(props) {
                                     fullWidth
                                     id="email"
                                     label="Cuenta de e-mail"
+                                    error={errorState.email}
                                     name="email"
                                     autoComplete="email"
                                     onChange={(e) => setEmail(e.target.value)}
+                                    helperText={errorState.email && errorState.email}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -156,11 +182,28 @@ export default function Register(props) {
                                     required
                                     fullWidth
                                     name="password"
+                                    error={errorState.password}
                                     label="Contraseña"
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
                                     onChange={(e) => setPassWord(e.target.value)}
+                                    helperText={errorState.password && errorState.password}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    name="password2"
+                                    error={errorState.passwordVerification}
+                                    label="Repite tu contraseña"
+                                    type="password"
+                                    id="password2"
+                                    autoComplete="current-password"
+                                    onChange={(e) => setPasswordVerification(e.target.value)}
+                                    helperText={errorState.passwordVerification && errorState.passwordVerification}
                                 />
                             </Grid>
                         </Grid>
@@ -173,13 +216,6 @@ export default function Register(props) {
                         >
                             Registrarse
                         </Button>
-                        <Grid container justify="flex-end">
-                            <Grid item>
-                                <Link to="/login" className={classes.link}>
-                                    ¿Ya tienes una cuenta? Entra.
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </form>
                 </div>
                 <Box mt={5}>

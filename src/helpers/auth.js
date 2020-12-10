@@ -2,9 +2,19 @@ import decode from "jwt-decode";
 
 export default class Auth {
     static token = null;
+    static userRoles = {
+        admins: ["SUPER_ADMIN"],
+        users: ["USER"],
+        all: ["SUPER_ADMIN", "USER"]
+    }
+    
 
     static loggedIn = () => {
-        return this.getToken() ? true : false;      
+        if (!!this.getToken() && this.isValidUser()) {
+            return true;
+        }
+
+        return false;
     }
 
     static isTokenExpired = token => {
@@ -16,15 +26,25 @@ export default class Auth {
         }
     }
 
-    static getToken = () => {        
+    static getToken = () => {
         return sessionStorage.getItem('token') || localStorage.getItem('token');
     }
 
-    static hasRole = (checkRole)  => {
+    static hasRole = (checkRole) => {
         const token = this.getToken();
+        
         if (token) {
             const decoded = decode(token);
-            return decoded.roles && decoded.roles.some(role => role === checkRole);
+            const role = decoded.role || "USER";
+            console.log(checkRole, role)
+
+            return role === checkRole;
         }
+    }
+
+    static isValidUser = (token) => {
+        const decoded = decode(token || this.getToken());
+
+        return decoded.isActive;
     }
 }

@@ -25,7 +25,7 @@ export default function StepOne() {
   const [_classes, setClasses] = useState([]);
   const [selectedRace, setSelectedRace] = useState();
   const [selectedClass, setSelectedClass] = useState();
-  const [selectedLevel, setSelectedLevel] = useState();
+  const [selectedLevel] = useState();
   const levels = Array.from({ length: 20 }, (_, i) => i + 1);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function StepOne() {
       case "race":
         setSelectedRace(event.target.value);
         break;
-      case "class":
+      default:
         setSelectedClass(event.target.value);
     }
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -23,7 +23,6 @@ const useStyles = makeStyles({
         paddingLeft: "4px"
     },
     paper: {
-        margin: 0,
         padding: "1rem",
         height: "100%",
         margin: ".1rem 0"

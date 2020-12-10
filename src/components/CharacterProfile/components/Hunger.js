@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { StringUtil } from "../../../helpers/string-util"; 
 import Paper from '@material-ui/core/Paper';
@@ -56,7 +56,7 @@ export default function Hunger(props) {
             }, {
                 label: StringUtil.generiza('Hambriento', 'Hambrienta', 'Hambriente', props.pronoun),
                 background: "#cf7d01"
-            }, , {
+            }, {
                 label: 'Voraz',
                 background: "#cf4601"
             }, {

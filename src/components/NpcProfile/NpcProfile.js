@@ -244,7 +244,7 @@ function NpcProfile(props) {
 
                                     <Divider className={classes.divider} />
 
-                                    <Stats stats={npc.stats.abilityScores} modifiers={npc.stats.abilityScoreModifiers} style="npc" />
+                                    <Stats stats={npc.stats.abilityScores} modifiers={npc.stats.abilityScoreModifiers} mode="npc" />
 
                                     <Divider className={classes.divider} />
 

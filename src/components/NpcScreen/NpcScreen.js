@@ -11,7 +11,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Slide from '@material-ui/core/Slide';
 import IconButton from '@material-ui/core/IconButton';
 import Box from '@material-ui/core/Box';
 import AddIcon from '@material-ui/icons/Add';

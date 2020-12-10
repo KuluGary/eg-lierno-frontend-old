@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { addNpcs } from "../../shared/actions/index";
@@ -156,8 +156,6 @@ class NpcCreation extends Component {
                     conditionImmunities: [],
                     senses: [],
                     languages: ["Común"],
-                    challengeRating: 0.125,
-                    experiencePoints: 25,
                     additionalAbilities: [],
                     challengeRating: .125,
                     experiencePoints: 50,
@@ -313,6 +311,12 @@ class NpcCreation extends Component {
                     disabled = true
                 }
                 break;
+            default:
+                if ((!creature.stats.challengeRating || creature.stats.challengeRating === '') ||
+                    (!creature.stats.experiencePoints || creature.stats.experiencePoints === '')) {
+                    disabled = true
+                }
+                break;
         }
 
         return disabled;
@@ -323,7 +327,7 @@ class NpcCreation extends Component {
             case "success":
                 toast.success(msg);
                 break;
-            case "error":
+            default:
                 toast.error(msg);
                 break;
         }

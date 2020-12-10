@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { addMonsters } from "../../shared/actions/index";
@@ -155,8 +155,6 @@ class MonsterCreation extends Component {
                     conditionImmunities: [],
                     senses: [],
                     languages: ["Común"],
-                    challengeRating: 0.125,
-                    experiencePoints: 25,
                     additionalAbilities: [],
                     challengeRating: .125,
                     experiencePoints: 50,

@@ -56,8 +56,7 @@ const HtmlTooltip = withStyles((theme) => ({
 const mapStateToProps = state => {
     return {
         profile: state.profile,
-        campaigns: state.campaigns,
-        roles: state.roles
+        campaigns: state.campaigns
     }
 }
 
@@ -132,7 +131,7 @@ function CampaignCreation(props) {
             case "success":
                 toast.success(msg);
                 break;
-            case "error":
+            default:
                 toast.error(msg);
                 break;
         }

@@ -280,7 +280,7 @@ function InitiativeTracker(props) {
                                                         <TextField
                                                             onChange={(e) => setInitiative(e.target.value)}
                                                             className={classes.input}
-                                                            placeholder={(width !== "xs" && width !== "sm") && npc.stats.initiative_bonus || "0"}
+                                                            placeholder={((width !== "xs" && width !== "sm") && npc.stats.initiative_bonus) || "0"}
                                                             name="initiative"
                                                             variant="outlined"
                                                             fullWidth

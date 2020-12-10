@@ -1,4 +1,4 @@
-import React, { useState, useEffect, m } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import Api from "../../helpers/api";
@@ -76,6 +76,7 @@ function CharacterProfile(props) {
     const [editable, setEditable] = useState(false)
     const [edited, setEdited] = useState(false);
     const [proficiencyBonus, setProficiencyBonus] = useState(0);
+    const [shortUrl, setShortUrl] = useState(window.location.href);
     const [dialogOpen, setDialogOpen] = useState(false);
 
     useEffect(() => {
@@ -92,6 +93,25 @@ function CharacterProfile(props) {
             selectedCharacter && setEditedCharacter(selectedCharacter)
             setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", (selectedCharacter && selectedCharacter.stats.spells.length > 0) && "Hechizos", "Opciones"].filter(el => el))
         }
+
+        const headers = {
+            'Authorization': `Bearer ${process.env.REACT_APP_BITLY_ACCESS_TOKEN}`,
+            'Content-Type': 'application/json'
+        };
+        const body = {
+            "long_url": window.location.href,
+            "group_guid": process.env.REACT_APP_BITLY_ACCESS_GROUP
+        }
+
+        fetch("https://api-ssl.bitly.com/v4/shorten", {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(body)
+        })
+        .then(res => res.json())
+            .then(res => {
+                console.log(res.link, res)
+                setShortUrl(res.link)})
     }, [])
 
     useEffect(() => {
@@ -139,7 +159,6 @@ function CharacterProfile(props) {
         const char = { ...editedCharacter };
 
         char['stats'][key] = value
-        console.log(char)
 
         setEditedCharacter(char)
     }
@@ -203,7 +222,7 @@ function CharacterProfile(props) {
                     editable={editable}
                     changeOptions={changeOptions}
                 />
-            case 5: return <Options
+            default: return <Options
                 settings={editedCharacter.config}
                 editable={editable}
                 changeOptions={changeOptions}
@@ -260,12 +279,12 @@ function CharacterProfile(props) {
                     <DialogContent>
                         <TextField
                             fullWidth
-                            value={window.location.href}
+                            value={shortUrl}
                             label={'Enlace'}
                             InputProps={{
                                 endAdornment:
                                     <IconButton
-                                        onClick={() => navigator.clipboard.writeText(window.location.href)}>
+                                        onClick={() => navigator.clipboard.writeText(shortUrl)}>
                                         <FileCopyIcon />
                                     </IconButton>
                             }}
@@ -273,7 +292,7 @@ function CharacterProfile(props) {
                         <Box variant="div" style={{ margin: "1rem 0" }}>
                             <EmailShareButton
                                 subject={'¡Mira mi ficha de personaje!'}
-                                url={window.location.href}
+                                url={shortUrl}
                                 body={"¡Mira el personaje que he creado en Lierno App!"}
                             >
                                 <FontAwesomeIcon icon={faEnvelope} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
@@ -282,7 +301,7 @@ function CharacterProfile(props) {
                         </Box>
                         <Box variant="div" style={{ margin: "1rem 0" }}>
                             <TwitterShareButton
-                                url={window.location.href}
+                                url={shortUrl}
                                 title={'¡Mira mi ficha de personaje!'}
                                 hashtags={["dnd", "charactersheet"]}>
                                 <FontAwesomeIcon icon={faTwitter} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
@@ -291,7 +310,7 @@ function CharacterProfile(props) {
                         </Box>
                         <Box variant="div" style={{ margin: "1rem 0" }}>
                             <TelegramShareButton
-                                url={window.location.href}
+                                url={shortUrl}
                                 title={'¡Mira mi ficha de personaje!'}>
                                 <FontAwesomeIcon icon={faTelegram} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
                             Compartir por Telegram
@@ -299,7 +318,7 @@ function CharacterProfile(props) {
                         </Box>
                         <Box variant="div" style={{ margin: "1rem 0" }}>
                             <WhatsappShareButton
-                                url={window.location.href}
+                                url={shortUrl}
                                 title={'¡Mira mi ficha de personaje!'}>
                                 <FontAwesomeIcon icon={faWhatsapp} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
                             Compartir por Whatsapp
@@ -307,7 +326,7 @@ function CharacterProfile(props) {
                         </Box>
                         <Box variant="div" style={{ margin: "1rem 0" }}>
                             <TumblrShareButton
-                                url={window.location.href}
+                                url={shortUrl}
                                 title={'¡Mira mi ficha de personaje!'}
                                 tags={["d&d", "character sheet"]}>
                                 <FontAwesomeIcon icon={faTumblr} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
@@ -316,7 +335,7 @@ function CharacterProfile(props) {
                         </Box>
                         <Box variant="div" style={{ margin: "1rem 0" }}>
                             <FacebookShareButton
-                                url={window.location.href}
+                                url={shortUrl}
                                 quote={'¡Mira mi ficha de personaje!'}
                                 hashtag={"#dnd"}>
                                 <FontAwesomeIcon icon={faFacebook} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
@@ -325,7 +344,7 @@ function CharacterProfile(props) {
                         </Box>
                         <Box variant="div" style={{ margin: "1rem 0" }}>
                             <RedditShareButton
-                                url={"window.location.href"}
+                                url={"shortUrl"}
                                 title={'¡Mira mi ficha de personaje!'}>
                                 <FontAwesomeIcon icon={faReddit} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
                             Compartir en Reddit

@@ -45,7 +45,6 @@ const useStyles = makeStyles({
 
 export default function AddItem(props) {
     const classes = useStyles();
-    const [items, setItems] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedItem, setSelectedItem] = useState('');
     const [addNew, setAddNew] = useState(false);
@@ -212,7 +211,7 @@ export default function AddItem(props) {
                             />
                             <Box style={{ display: "flex", marginTop: ".5rem" }}>
                                 <Box style={{ width: "45%" }}>
-                                    <img style={{ width: "4rem", height: "4rem", margin: "0 auto" }} src={itemToAdd.image.small} />
+                                    <img alt="item" style={{ width: "4rem", height: "4rem", margin: "0 auto" }} src={itemToAdd.image.small} />
                                 </Box>
                                 <TextField
                                     style={{ width: "45%" }}

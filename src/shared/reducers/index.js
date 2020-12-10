@@ -6,7 +6,6 @@ import {
     ADD_ALIGNMENTS,
     ADD_PROFILE,
     ADD_CAMPAIGNS,
-    ADD_ROLES,
     ADD_CLASSES,
     ADD_RACES,
     USER_LOGOUT
@@ -36,9 +35,6 @@ function rootReducer(state = initialState, action) {
         })
         case ADD_CAMPAIGNS: return Object.assign({}, state, {
             campaigns: action.payload
-        })
-        case ADD_ROLES: return Object.assign({}, state, {
-            roles: action.payload
         })
         case ADD_CLASSES: return Object.assign({}, state, {
             classes: action.payload

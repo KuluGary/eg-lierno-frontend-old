@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
 
 const useStyles = makeStyles({
     block: {
@@ -24,19 +23,6 @@ const useStyles = makeStyles({
 
 export default function MediaCard(props) {
     const classes = useStyles();
-
-    useEffect(() => {
-
-    }, [])
-
-    const checkIndex = () => {
-        switch (props.column) {
-            case 4:
-                return { ...props.style, borderRight: "none", borderTop: "none" }
-            default:
-                return { ...props.style }
-        }
-    }
 
     return (
         <td onClick={() => props.changeAlignment(null, props.alignment)} className={classes.block}>

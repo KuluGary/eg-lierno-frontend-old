@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Link, useHistory, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,6 +17,10 @@ import { grey } from '@material-ui/core/colors';
 import Api from "../../helpers/api";
 import Auth from "../../helpers/auth";
 import Slide from '@material-ui/core/Slide';
+import { toast } from 'react-toastify';
+import { GoogleLogin } from 'react-google-login';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 function Copyright(props) {
     return (
@@ -48,7 +52,8 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3, 0, 2),
     },
     link: {
-        textDecoration: 'none'
+        textDecoration: 'none',
+        color: !localStorage.getItem("theme") ? theme.palette.primary.main : theme.palette.primary.light
     },
     progress: {
         color: grey[400]
@@ -60,7 +65,6 @@ function Login(props) {
     const [username, setUserName] = useState('');
     const [password, setPassWord] = useState('');
     const [remember, setRemember] = useState(false);
-    const [hasLoggedIn, setLoggedIn] = useState(false)
     const [loading, setLoading] = useState(false);
     const [errorState, setError] = useState();
 
@@ -75,7 +79,8 @@ function Login(props) {
         if (username && password) {
             const user = {
                 username,
-                password
+                password,
+                remember
             }
 
             setLoading(true);
@@ -87,35 +92,82 @@ function Login(props) {
                 },
                 body: JSON.stringify(user)
             })
-                // .then(res => res.token)
                 .then(res => {
                     if (res.token) {
                         const token = res.token;
-                        if (remember) {
+
+                        if (Auth.isValidUser(token)) {
                             localStorage.setItem('token', token);
+
+                            console.log(props.location)
+                            props.authenticated();
+                            props.history.push(props.location.state?.requestedPath ?? "/");
                         } else {
-                            sessionStorage.setItem('token', token);
+                            toast.error("Este usuario no está activado. Revisa tu bandeja de entrada.")
+                            setLoading(false);
                         }
-                        setLoggedIn(true);
-                        setLoading(false);
-                        props.authenticated();
-                        props.history.push("/")
                     } else {
                         setError(res.message)
-                        setLoading(false)
                     }
                 })
                 .catch(err => {
-                    console.log(err)
                     setError(err.message)
                     setLoading(false);
                 })
         }
     }
 
+    const responseGoogle = (response) => {
+        const profile = response.profileObj;
+
+        if (profile) {
+            const user = {
+                id: profile.googleId,
+                username: profile.name,
+                remember,
+                metadata: {
+                    first_name: profile.givenName,
+                    last_name: profile.familyName,
+                    email: profile.email,
+                    avatar: profile.imageUrl
+                }
+            }
+
+            Api.fetchInternal('/auth/login/google', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .then(res => {
+                    if (res.token) {
+                        const token = res.token;
+
+                        if (Auth.isValidUser(token)) {
+                            localStorage.setItem('token', token);
+
+                            props.authenticated();
+                            props.history.push("/")
+                        } else {
+                            toast.error("Este usuario no está activado. Revisa tu bandeja de entrada.")
+                            setLoading(false);
+                        }
+                    } else {
+                        setError(res.message)
+                    }
+                })
+                .catch(err => {
+                    setError(err.message)
+                    setLoading(false);
+                })
+
+            console.log(user);
+        }
+    }
+
     return (
         <>
-            {/* {Auth.loggedIn() && <Redirect to="/" />} */}
             <Slide direction="up" in={true} mountOnEnter unmountOnExit>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
@@ -171,11 +223,34 @@ function Login(props) {
                             </Button>
                             <Grid container>
                                 <Grid item>
-                                    <Link to="/register" className={classes.link}>
-                                        {"¿No tienes una cuenta? Regístrate"}
+                                    <Link to="/recover" className={classes.link} variant="span">
+                                        {"¿Has olvidado tu contraseña?"}
                                     </Link>
                                 </Grid>
                             </Grid>
+                            <GoogleLogin
+                                clientId={"586863595362-p9idqhg5t832kl4l9pclj3o3knpvi7br.apps.googleusercontent.com"}
+                                // buttonText="Login"
+                                className={classes.google}
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                                cookiePolicy={'single_host_origin'}
+                                render={renderProps => (
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={renderProps.onClick}
+                                        disabled={renderProps.disabled}
+                                        className={classes.submit}
+                                        startIcon={
+                                            <FontAwesomeIcon size="sm" icon={faGoogle} />
+                                        }>
+                                        {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar con Google'}
+                                    </Button>
+                                )}
+                            />
                         </form>
                     </div>
                     <Box mt={8}>

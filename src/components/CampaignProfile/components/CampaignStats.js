@@ -11,7 +11,6 @@ import DamageDealt from './graphs/DamageDealt';
 import CritRolls from './graphs/CritRolls';
 import CritFails from './graphs/CritFails';
 import DamagePerDay from './graphs/DamagePerDay';
-import { useWidth } from '../../../helpers/media-query';
 
 const useStyles = makeStyles((theme) => ({
     profileBox: {
@@ -36,7 +35,6 @@ const mapStateToProps = state => {
     return {
         profile: state.profile,
         campaigns: state.campaigns,
-        roles: state.roles
     }
 }
 
@@ -47,9 +45,7 @@ function CampaignStats(props) {
     const [characters, setCharacters] = useState();
     const [logs, setLogs] = useState([]);
     const theme = useTheme();
-    const [options, setOptions] = useState([]);
     const [damageDone, setDamageDone] = useState([]);
-    const width = useWidth();
 
     useEffect(() => {
         Api.fetchInternal('/auth/players', {

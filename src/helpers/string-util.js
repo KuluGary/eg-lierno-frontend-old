@@ -164,6 +164,8 @@ export const StringUtil = {
                         modifier,
                         modifierStr: `${item.name} ${(modifier >= 0 && '+') + modifier}`
                     }
+                } else {
+                    return item
                 }
             }
         })

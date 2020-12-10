@@ -6,7 +6,6 @@ import {
     ADD_ALIGNMENTS,
     ADD_PROFILE,
     ADD_CAMPAIGNS,
-    ADD_ROLES,
     ADD_CLASSES,
     ADD_RACES,
     USER_LOGOUT
@@ -38,10 +37,6 @@ export function addProfile(payload) {
 
 export function addCampaigns(payload) {
     return { type: ADD_CAMPAIGNS, payload }
-};
-
-export function addRoles(payload) {
-    return { type: ADD_ROLES, payload }
 };
 
 export function addClasses(payload) {

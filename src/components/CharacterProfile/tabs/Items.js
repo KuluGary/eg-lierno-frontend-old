@@ -201,20 +201,6 @@ export default function Items(props) {
     }
 
     /**
-     * Returns a String based on the Int size
-     * @param {Number} size 
-     */
-    const getItemSize = (size) => {
-        switch (size) {
-            case 1: return "Pequeño";
-            case 2: return "Mediano";
-            case 3: return "Grande";
-            case 6: return "Enorme";
-            case 9: return "Gigantesco"
-        }
-    }
-
-    /**
      * Handles the toggle of equipped and unequipped items
      * @param {Number} index 
      */
@@ -327,7 +313,7 @@ export default function Items(props) {
                     case 2: return "Mediano";
                     case 3: return "Grande";
                     case 6: return "Enorme";
-                    case 9: return "Gigantesco"
+                    default: return "Gigantesco";                    
                 }
             default: return metadata.value
         }
@@ -342,7 +328,7 @@ export default function Items(props) {
         const maxDurability = item.data.properties[indexOf]["value"];
 
         const currentItems = props.items[categories[selectedCategory]];
-        const itemIndex = currentItems.findIndex(i => i.id == item.data._id);
+        const itemIndex = currentItems.findIndex(i => i.id === item.data._id);
 
         const durability = props.items[categories[selectedCategory]][itemIndex].durability || 0;
 

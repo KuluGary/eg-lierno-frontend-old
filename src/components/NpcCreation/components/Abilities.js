@@ -26,9 +26,6 @@ const useStyles = makeStyles((theme) => ({
     title: {
         marginTop: theme.spacing(2),
     },
-    formControl: {
-        minWidth: "100%",
-    },
     chip: {
         margin: theme.spacing(0.5),
     },
@@ -686,7 +683,7 @@ export default function Abilities(props) {
         perDay2: [],
         perDay1: []
     })
-    const [spellLevelArray, setSpellLevelArray] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    const [spellLevelArray] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
     const [spellName, setSpellName] = useState({
         level0: '',
         level1: '',
@@ -803,10 +800,10 @@ export default function Abilities(props) {
         let diceAvg = (diceSize / 2.0) + 0.5;
         let avgDamage = Math.floor(numDice * diceAvg) + modifier;
         let damageStr = avgDamage + "(" + numDice + "d" + diceSize;
-        if (modifier != 0) {
+        if (modifier !== 0) {
             damageStr = damageStr + (modifier >= 0 ? " + " : "") + modifier;
         }
-        damageStr = damageStr + ")" + " daño " + damageType.toLowerCase();
+        damageStr = damageStr + ") daño " + damageType.toLowerCase();
         return damageStr;
     }
 
@@ -990,7 +987,6 @@ export default function Abilities(props) {
     }
 
     const generateInnateDescription = () => {
-        let abilityStr = spellCastingAbility;
         let text = "La habilidad de conjuración de " + props.creature.name + " es " + spellCastingAbilityList.filter(ability => ability.key === spellCastingAbility)[0].label
             + " " + generateStatsText() + ". " + props.creature.name + " puede lanzar los siguientes conjuros de forma innata " +
             generateComponentText() + ":" + generateSpellBlock()
@@ -1047,10 +1043,10 @@ export default function Abilities(props) {
                 }
             } else {
                 text = props.creature.name + " requiere ";
-                if (notRequiredComponents.length == 1) {
+                if (notRequiredComponents.length === 1) {
                     text = text + "no componentes " + notRequiredComponents[0] +
                         " para lanzar sus hechizos";
-                } else if (notRequiredComponents.length == 2) {
+                } else if (notRequiredComponents.length === 2) {
                     text = text + "solo componentes " +
                         requiredComponents[0] +
                         " para lanzar sus hechizos"
@@ -1077,7 +1073,7 @@ export default function Abilities(props) {
                     }
                 }
             }
-            if (spells[levelStr.toString()].length > 0 && (slots == undefined || slots > 0)) {
+            if (spells[levelStr.toString()].length > 0 && (slots === undefined || slots > 0)) {
                 if (slots > 0) {
                     title = title + " (" + slots + " huecos)";
                 }
@@ -1090,14 +1086,13 @@ export default function Abilities(props) {
             tryAddLine("2/día", "perDay2");
             tryAddLine("1/día", "perDay1");
         } else {
-            let slots = 0;
             tryAddLine("Trucos (a voluntad)", "level0");
             for (let i = 1; i < 9; i++) {
                 // let title = getOrdinal(1);
                 tryAddLine("Nivel " + i + "", "level" + i, i)
             }
         }
-        if (text[text.length - 1] == '\n') {
+        if (text[text.length - 1] === '\n') {
             text = text.substring(0, text.length - 1);
         }
 
@@ -1105,7 +1100,6 @@ export default function Abilities(props) {
     }
 
     const generateClassDescription = () => {
-        let abilityStr = spellCastingAbility;
         let levelStr = spellCasterLevel;
         let classStr = spellCastingType.toLowerCase();
         // let possessiveCreatureName = props.creature.name;
@@ -1135,7 +1129,7 @@ export default function Abilities(props) {
                 return true;
             } else if (spellCasterLevel) {
                 let spellSlots = spellcaster.level[spellCasterLevel].spellSlots;
-                if (spellSlots.hasOwnProperty(level - 1) && spellSlots[level - 1] != 0) {
+                if (spellSlots.hasOwnProperty(level - 1) && spellSlots[level - 1] !== 0) {
                     return true;
                 }
             } else {
@@ -1147,7 +1141,7 @@ export default function Abilities(props) {
     }
 
     const getSpellLevelText = (level) => {
-        if (level == 0) {
+        if (level === 0) {
             return ('Trucos');
         } else {
             return ('Hechizos de nivel ' + level)
@@ -1518,7 +1512,7 @@ export default function Abilities(props) {
                                 </Grid>
                             )
                             ))}
-                        {spellLevelArray.length > 0 && spellCastingType == StringUtil.generiza("Brujo", "Bruja", "Bruje", props.pronoun) && (
+                        {spellLevelArray.length > 0 && spellCastingType === StringUtil.generiza("Brujo", "Bruja", "Bruje", props.pronoun) && (
                             <>
                                 <Grid item sm={12}>
                                     {spells['level0'].map(spell => (
@@ -1539,7 +1533,7 @@ export default function Abilities(props) {
                                             if (e.key === 'Enter' && spellName['level0'].length > 0) {
                                                 setSpellName({ ...spellName, level0: '' })
                                                 if (!spells['level0'].includes(spellName['level0'])) {
-                                                    setSpells({ ...spells, ['level0']: [...spells['level0'], spellName['level0']] })
+                                                    setSpells({ ...spells, 'level0': [...spells['level0'], spellName['level0']] })
                                                 }
                                             }
                                         }}
@@ -1571,7 +1565,7 @@ export default function Abilities(props) {
                                 </Grid>
                             </>
                         )}
-                        {spellLevelArray.length > 0 && spellCastingType == 'Innato' && (
+                        {spellLevelArray.length > 0 && spellCastingType === 'Innato' && (
                             <>
                                 <Grid item sm={12}>
                                     {spells['atWill'].map(spell => (
@@ -1592,7 +1586,7 @@ export default function Abilities(props) {
                                             if (e.key === 'Enter' && spellName['atWill'].length > 0) {
                                                 setSpellName({ ...spellName, atWill: '' })
                                                 if (!spells['atWill'].includes(spellName['atWill'])) {
-                                                    setSpells({ ...spells, ['atWill']: [...spells['atWill'], spellName['atWill']] })
+                                                    setSpells({ ...spells, 'atWill': [...spells['atWill'], spellName['atWill']] })
                                                 }
                                             }
                                         }}
@@ -1612,12 +1606,12 @@ export default function Abilities(props) {
                                         name="spellname"
                                         label={'3/día'}
                                         value={spellName['perDay3']}
-                                        onChange={(e) => setSpellName({ ...spellName, ['perDay3']: e.target.value })}
+                                        onChange={(e) => setSpellName({ ...spellName, 'perDay3': e.target.value })}
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter' && spellName['perDay3'].length > 0) {
                                                 setSpellName({ ...spellName, 'perDay3': '' })
                                                 if (!spells['perDay3'].includes(spellName['perDay3'])) {
-                                                    setSpells({ ...spells, ['perDay3']: [...spells['perDay3'], spellName['perDay3']] })
+                                                    setSpells({ ...spells, 'perDay3': [...spells['perDay3'], spellName['perDay3']] })
                                                 }
                                             }
                                         }}
@@ -1637,12 +1631,12 @@ export default function Abilities(props) {
                                         name="spellname"
                                         label={'2/día'}
                                         value={spellName['perDay2']}
-                                        onChange={(e) => setSpellName({ ...spellName, ['perDay2']: e.target.value })}
+                                        onChange={(e) => setSpellName({ ...spellName, 'perDay2': e.target.value })}
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter' && spellName['perDay2'].length > 0) {
                                                 setSpellName({ ...spellName, 'perDay2': '' })
                                                 if (!spells['perDay2'].includes(spellName['perDay2'])) {
-                                                    setSpells({ ...spells, ['perDay2']: [...spells['perDay2'], spellName['perDay2']] })
+                                                    setSpells({ ...spells, 'perDay2': [...spells['perDay2'], spellName['perDay2']] })
                                                 }
                                             }
                                         }}
@@ -1662,12 +1656,12 @@ export default function Abilities(props) {
                                         name="spellname"
                                         label={'1/día'}
                                         value={spellName['perDay1']}
-                                        onChange={(e) => setSpellName({ ...spellName, ['perDay1']: e.target.value })}
+                                        onChange={(e) => setSpellName({ ...spellName, 'perDay1': e.target.value })}
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter' && spellName['perDay1'].length > 0) {
                                                 setSpellName({ ...spellName, 'perDay1': '' })
                                                 if (!spells['perDay1'].includes(spellName['perDay1'])) {
-                                                    setSpells({ ...spells, ['perDay1']: [...spells['perDay1'], spellName['perDay1']] })
+                                                    setSpells({ ...spells, 'perDay1': [...spells['perDay1'], spellName['perDay1']] })
                                                 }
                                             }
                                         }}

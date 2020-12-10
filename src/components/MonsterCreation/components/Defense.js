@@ -37,21 +37,21 @@ export default function Defense(props) {
   const [armorClass, setArmorClass] = useState(props.creature.stats.armorClass || 10);
 
   useEffect(() => {
-      const hitPoints = damageDie * ((dieSize/2.0) + 0.5 + props.creature.stats.abilityScoreModifiers["constitution"]);
-      const extraHealthFromConstitution = props.creature.stats.abilityScoreModifiers['constitution'] * damageDie;
-      let sign = extraHealthFromConstitution >= 0 ? "+" : "-";
-      props.addToCreatureStats(damageDie, "numHitDie");
-      props.addToCreatureStats(dieSize, "hitDieSize");
-      props.addToCreatureStats(armorType, "armorType");
-      armorType && armorType.length > 0 && props.addToCreatureStats("(" + armorType + ")", "armorTypeStr");
-      props.addToCreatureStats(armorClass, "armorClass");
-      props.addToCreatureStats(damageVulnerabilities, "damageVulnerabilities");
-      props.addToCreatureStats(damageResistances, "damageResistances");
-      props.addToCreatureStats(damageImmunities, "damageImmunities");
-      props.addToCreatureStats(conditionImmunities, "conditionImmunities");
-      props.addToCreatureStats(Math.floor(hitPoints), "hitPoints");
-      props.addToCreatureStats(Math.floor(Math.abs(extraHealthFromConstitution)), "extraHealthFromConstitution")
-      props.addToCreatureStats(`${Math.floor(hitPoints)} (${damageDie}d${dieSize} ${sign} ${Math.floor(Math.abs(extraHealthFromConstitution))})`, "hitPointsStr")
+    const hitPoints = damageDie * ((dieSize / 2.0) + 0.5 + props.creature.stats.abilityScoreModifiers["constitution"]);
+    const extraHealthFromConstitution = props.creature.stats.abilityScoreModifiers['constitution'] * damageDie;
+    let sign = extraHealthFromConstitution >= 0 ? "+" : "-";
+    props.addToCreatureStats(damageDie, "numHitDie");
+    props.addToCreatureStats(dieSize, "hitDieSize");
+    props.addToCreatureStats(armorType, "armorType");
+    armorType && armorType.length > 0 && props.addToCreatureStats("(" + armorType + ")", "armorTypeStr");
+    props.addToCreatureStats(armorClass, "armorClass");
+    props.addToCreatureStats(damageVulnerabilities, "damageVulnerabilities");
+    props.addToCreatureStats(damageResistances, "damageResistances");
+    props.addToCreatureStats(damageImmunities, "damageImmunities");
+    props.addToCreatureStats(conditionImmunities, "conditionImmunities");
+    props.addToCreatureStats(Math.floor(hitPoints), "hitPoints");
+    props.addToCreatureStats(Math.floor(Math.abs(extraHealthFromConstitution)), "extraHealthFromConstitution")
+    props.addToCreatureStats(`${Math.floor(hitPoints)} (${damageDie}d${dieSize} ${sign} ${Math.floor(Math.abs(extraHealthFromConstitution))})`, "hitPointsStr")
   }, [damageDie, dieSize, armorType, armorClass, damageVulnerabilities, damageResistances, damageImmunities, conditionImmunities])
 
   const handleKeyDown = (e, type) => {
@@ -81,6 +81,8 @@ export default function Defense(props) {
             setConditionImmunityAux('')
           }
           break;
+        default:
+          break;
       }
     }
   }
@@ -99,6 +101,8 @@ export default function Defense(props) {
       case "conditionImmunity":
         setConditionImmunityAux(e.target.value);
         break;
+      default:
+        break;
     }
   }
 
@@ -115,6 +119,8 @@ export default function Defense(props) {
         break;
       case "conditionImmunity":
         setConditionImmunities((conditionImmunities) => conditionImmunities.filter((conditionImmunity) => conditionImmunity !== chipToDelete));
+        break;
+      default:
         break;
     }
   }

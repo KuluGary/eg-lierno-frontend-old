@@ -166,10 +166,10 @@ export default function Attacks(props) {
         let diceAvg = (diceSize / 2.0) + 0.5;
         let avgDamage = Math.floor(numDice * diceAvg) + modifier;
         let damageStr = avgDamage + "(" + numDice + "d" + diceSize;
-        if (modifier != 0) {
+        if (modifier !== 0) {
             damageStr = damageStr + (modifier >= 0 ? " + " : "") + modifier;
         }
-        damageStr = damageStr + ")" + " daño " + damageType.toLowerCase();
+        damageStr = damageStr + ") daño " + damageType.toLowerCase();
         return damageStr;
     }
 

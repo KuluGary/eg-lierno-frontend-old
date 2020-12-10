@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import Slide from '@material-ui/core/Slide';
 import Paper from '@material-ui/core/Paper';
@@ -19,7 +18,6 @@ const mapStateToProps = state => {
     return {
         profile: state.profile,
         campaigns: state.campaigns,
-        roles: state.roles,
         characters: state.characters
     }
 }
@@ -109,6 +107,7 @@ function CampaignProfile(props) {
                 characters={campaign.characters}
                 campaignId={campaign._id} />
             case 6: return <Grid item component={Paper} variant="outlined" xs={12}>5</Grid>
+            default: return <Grid item component={Paper} variant="outlined" xs={12}>5</Grid>
         }
     }
 

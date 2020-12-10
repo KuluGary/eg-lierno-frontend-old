@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 
 export default function ExhaustionEffects(props) {
     const classes = useStyles();
-    const [options, setOptions] = useState([
+    const [options] = useState([
         'Ninguno',
         'Desventaja en tiradas de Habilidad',
         'Velocidad reducida a la mitad',
@@ -51,7 +51,6 @@ export default function ExhaustionEffects(props) {
         'Velocidad reducida a 0',
         'Muerte'
     ]);
-    const [selectedOption, setSelectedOption] = useState(0);
 
 
     useEffect(() => {

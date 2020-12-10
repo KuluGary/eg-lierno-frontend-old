@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -49,7 +49,7 @@ export default function Health(props) {
         }, {
             label: StringUtil.generiza('Ensangrentado', 'Ensangrentada', 'Ensangrentade', props.pronoun),
             background: "#cf7d01"
-        }, , {
+        }, {
             label: StringUtil.generiza('Herido', 'Herida', 'Heride', props.pronoun),
             background: "#cf4601"
         }, {

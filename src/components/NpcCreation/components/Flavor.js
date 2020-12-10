@@ -192,7 +192,7 @@ function Flavor(props) {
           </FormControl>
         </Grid>
         <Grid item xs={3} style={{ display: (image && image.length > 0) ? 'block' : 'none' }}>
-          <img className={classes.image} src={image} />
+          <img alt={'class'} className={classes.image} src={image} />
         </Grid>
         <Grid item sm={(image && image.length > 0) ? 9 : 12}>
           <FormControl className={classes.formControl}>

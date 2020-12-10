@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Auth from '../../helpers/auth';
-import Api from '../../helpers/api';
 
 const useStyles = theme => ({
     root: {
@@ -10,11 +9,6 @@ const useStyles = theme => ({
 });
 
 class HomeScreen extends Component {
-    constructor(props) {
-        super(props)
-
-    }
-
     componentDidMount() {
         if (!Auth.loggedIn()) {
             this.props.history.push("/login")

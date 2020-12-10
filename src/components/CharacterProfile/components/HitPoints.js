@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { useWidth } from "../../../helpers/media-query";
 import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
@@ -54,11 +53,6 @@ const useStyles = makeStyles({
 
 export default function Proficiency(props) {
     const classes = useStyles();
-    const width = useWidth();
-
-    useEffect(() => {
-
-    }, [])
 
     return (
         <div className={classes.root}>

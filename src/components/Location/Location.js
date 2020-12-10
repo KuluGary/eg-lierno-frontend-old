@@ -87,20 +87,6 @@ function Location(props) {
                                         ))
 
                                         }
-                                        {/* <LayersControl.BaseLayer name="Background Only" checked>
-                                            <ImageOverlay
-                                                bounds={location.mapStats.bounds}
-                                                url={"https://svgshare.com/i/KYu.svg"}
-                                            />
-                                        </LayersControl.BaseLayer>
-                                        {location.flavor.labels &&
-                                            <LayersControl.BaseLayer name="Labels" checked>
-                                                <ImageOverlay
-                                                    bounds={location.mapStats.bounds}
-                                                    url={location.flavor.labels}
-                                                />
-                                            </LayersControl.BaseLayer>
-                                        } */}
                                     </LayersControl>
 
                                 </Map>
@@ -113,7 +99,7 @@ function Location(props) {
                                     <Typography variant="subtitle1">
                                         {location.flavor.subtitle}
                                     </Typography>}
-                                <img className={classes.image} src={location.flavor.banner} />
+                                <img alt="banner" className={classes.image} src={location.flavor.banner} />
                                 {Object.keys(location.flavor.information).map((key, index) => (
                                     Array.isArray(location.flavor.information[key]) ?
                                         location.flavor.information[key].map(item => (

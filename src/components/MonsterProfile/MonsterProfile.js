@@ -119,7 +119,7 @@ function MonsterProfile(props) {
 
                                     <Divider className={classes.divider} />
 
-                                    <Stats style="npc" stats={monster.stats.abilityScores} modifiers={monster.stats.abilityScoreModifiers} />
+                                    <Stats mode="npc" stats={monster.stats.abilityScores} modifiers={monster.stats.abilityScoreModifiers} />
 
                                     <Divider className={classes.divider} />
 

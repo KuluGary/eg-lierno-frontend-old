@@ -14,7 +14,6 @@ import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Api from "../../helpers/api";
 import Menu from '@material-ui/core/Menu';
-import Notifications from '../Notifications/Notifications';
 import Auth from "../../helpers/auth";
 import Button from '@material-ui/core/Button';
 
@@ -76,7 +75,7 @@ function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [hasLoggedOut, setLogout] = React.useState(false);
   const [user, setUser] = useState();
-  const [avatar, setAvatar] = useState();
+  const [avatar] = useState();
   const open = Boolean(anchorEl);
   const { history } = props;
 
@@ -178,8 +177,8 @@ function Header(props) {
                   <Link to={'/register'} style={{ marginRight: "1rem" }} className={classes.link}>
                     <Button>Signup</Button>
                   </Link>
-                  <Link to={'/login'}>
-                    <Button variant="outlined">Login</Button>
+                  <Link to={'/login'} className={classes.link}>
+                    <Button variant="outlined" >Login</Button>
                   </Link>
                 </>
               }

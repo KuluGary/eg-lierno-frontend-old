@@ -11,17 +11,13 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ListAltIcon from '@material-ui/icons/ListAlt';
-import PetsIcon from '@material-ui/icons/Pets';
-import MapIcon from '@material-ui/icons/Map';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 import BookIcon from '@material-ui/icons/Book';
 import Auth from '../../helpers/auth';
-import { useWidth } from '../../helpers/media-query';
 
 const drawerWidth = 240;
 
@@ -97,7 +93,6 @@ const useStyles = makeStyles((theme) => ({
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const width = useWidth();
 
   return (
     <div className={classes.root}>
@@ -122,14 +117,14 @@ export default function MiniDrawer(props) {
         </div>
         <Divider />
         <List>
-          {Auth.hasRole("CHARACTER_ACCESS") && <Link to="/characters" className={classes.link}>
+          <Link to="/characters" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
                 <AccountCircleIcon />
               </ListItemIcon>
               <ListItemText primary={'Personajes'} />
             </ListItem>
-          </Link>}
+          </Link>
           <Link to="/campaigns" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
@@ -138,23 +133,25 @@ export default function MiniDrawer(props) {
               <ListItemText primary={'Partidas'} />
             </ListItem>
           </Link>
-          {Auth.hasRole("REFERENCE_ACCESS") && <Link to="/reference" className={classes.link}>
+          <Link to="/reference" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
                 <BookIcon />
               </ListItemIcon>
               <ListItemText primary={'Referencias'} />
             </ListItem>
-          </Link>}          
-          {Auth.hasRole("INITIATIVE_ACCESS") && <Link to="/initiative" className={classes.link}>
+          </Link>   
+          {Auth.hasRole("SUPER_ADMIN") &&
+            <Link to="/initiative" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
                 <ListAltIcon />
               </ListItemIcon>
               <ListItemText primary={'Iniciativa'} />
             </ListItem>
-          </Link>}
-          <a target="_blank" href="https://kulugary.github.io/eg-lierno-docs/" className={classes.link}>
+          </Link>
+          } 
+          <a target="_blank" rel="noopener noreferrer" href="https://kulugary.github.io/eg-lierno-docs/" className={classes.link}>
             <ListItem button>
               <ListItemIcon>
                 <FontAwesomeIcon size="lg" style={{ marginLeft: ".2rem" }} icon={faDiscord} />

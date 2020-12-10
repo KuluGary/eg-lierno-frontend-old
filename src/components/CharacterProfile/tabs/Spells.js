@@ -57,7 +57,7 @@ const useStyles = makeStyles({
     }
 });
 
-export default function Armor(props) {
+export default function Spells(props) {
     const classes = useStyles();
     const [spellIds, setSpellIds] = useState([])
     const [categories, setCategories] = useState([])

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import {
     addProfile,
-    addCampaigns,
-    addRoles
+    addCampaigns
 } from "../../shared/actions/index";
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -13,17 +12,7 @@ import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
-import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import StarIcon from '@material-ui/icons/Star';
-import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Api from '../../helpers/api'
@@ -36,6 +25,7 @@ import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 import { toast } from 'react-toastify';
 import { StringUtil } from '../../helpers/string-util'
 import equal from 'fast-deep-equal/react';
+import notificationIcon from "../../assets/images/notifications.svg";
 
 const useStyles = makeStyles((theme) => ({
     profileBox: {
@@ -58,49 +48,30 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         color: "inherit"
+    },
+    notificationBox: {
+        height: "100%",
+        backgroundImage:
+            `url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MzcuMyA3MDMuNyI+PGRlZnM+PHN0eWxlPi5he2ZpbGw6I2VmZWVmZn08L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNMCAwczE0Ny44IDEwMC44IDY3LjUgMzAwLjNTNjIwIDM3Ny41IDYyMCAzNzcuNWwtMjQuMiAxODAuNCA0MC42IDEzMS41IDIwMS02Mi44VjB6IiBjbGFzcz0iYSIvPjxwYXRoIGQ9Ik00MzkuNCAzMTAuOWMtNDUuMS0xLjYtODgtMTYuMS0xMjktMzJzLTgxLjUtMzMuNi0xMjUuNS00MmMtMjguMy01LjQtNjAuNy02LjItODMuNCA5LTIyIDE0LjYtMjkgMzkuNy0zMi45IDYzLjEtMi44IDE3LjYtNC41IDM2LjEgMy4zIDUyLjYgNS41IDExLjQgMTUuMiAyMSAyMS45IDMyIDIzLjMgMzggNi44IDg1LTE4LjUgMTIyLjItMTEuOCAxNy41LTI1LjUgMzQuMS0zNC43IDUyLjdzLTEzLjMgMzkuOC01LjMgNTguOEM0My4yIDY0NiA2MiA2NjAuMiA4Mi41IDY3MGM0MS42IDIwLjEgOTAuNSAyNiAxMzguMyAyOS4yIDEwNS43IDcuMiAyMTIgNCAzMTggMWE5MzQgOTM0IDAgMCAwIDExNy4xLTguNGMyMS40LTMuNCA0My41LTguOCA1OS4xLTIxLjZhNDkuNSA0OS41IDAgMCAwIDExLjQtNjQuN2MtMjIuMi0zNC40LTgzLjUtNDMtOTktODAtOC42LTIwLjMuMi00MyAxMi42LTYxLjkgMjYuNi00MC41IDcxLjItNzYgNzMuNi0xMjIuMyAxLjYtMzEuOC0xOS45LTYzLjYtNTMtNzguNkM2MjUuOCAyNDcgNTc3LjYgMjQ5IDU1MiAyNzVjLTI2LjUgMjYuOC03Mi45IDM3LjItMTEyLjYgMzUuOHoiIGNsYXNzPSJhIi8+PC9zdmc+")`,
+        backgroundSize: "contain",
+        backgroundPosition: "right top",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: theme.palette.background.paper,
+        opacity: .8
     }
 }));
 
 const mapStateToProps = state => {
     return {
         profile: state.profile,
-        campaigns: state.campaigns,
-        roles: state.roles
+        campaigns: state.campaigns
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         addProfile: profile => dispatch(addProfile(profile)),
-        addCampaigns: campaigns => dispatch(addCampaigns(campaigns)),
-        addRoles: roles => dispatch(addRoles(roles))
-    };
-}
-
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`full-width-tabpanel-${index}`}
-            aria-labelledby={`full-width-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box p={3}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-function a11yProps(index) {
-    return {
-        id: `full-width-tab-${index}`,
-        'aria-controls': `full-width-tabpanel-${index}`,
+        addCampaigns: campaigns => dispatch(addCampaigns(campaigns))
     };
 }
 
@@ -108,13 +79,9 @@ function ProfileScreen(props) {
     const classes = useStyles();
     // const theme = useTheme();
     const [user, setUser] = useState();
-    const [campaigns, setCampaigns] = useState();
-    const [avatar, setAvatar] = useState();
-    const [roles, setRoles] = useState();
+    const [avatar] = useState();
     const [newPassword, setNewPassword] = useState();
-    const [value, setValue] = useState(0);
     const [metadata, setMetadata] = useState();
-    const [darkMode] = React.useState(false);
 
     useEffect(() => {
         if (!props.profile) {
@@ -128,27 +95,6 @@ function ProfileScreen(props) {
             setUser(props.profile)
             setMetadata(props.profile.metadata)
         }
-
-        if (!props.campaigns) {
-            Api.fetchInternal('/campaigns')
-                .then(res => {
-                    props.addCampaigns(res)
-                    setCampaigns(res)
-                });
-        } else {
-            setCampaigns(props.campaigns)
-        }
-
-        if (!props.roles) {
-            Api.fetchInternal('/auth/roles')
-                .then(res => {
-                    props.addRoles(res)
-                    setRoles(res)
-                });
-        } else {
-            setRoles(props.roles)
-        }
-
     }, [])
 
     const updateMetadata = (key, value) => {
@@ -180,23 +126,9 @@ function ProfileScreen(props) {
                 method: "POST",
                 body: JSON.stringify(body)
             })
-            .then(() => toast.success("Perfil actualizado"))
+                .then(() => toast.success("Perfil actualizado"))
         }
     }
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
-    const theme = React.useMemo(
-        () =>
-            createMuiTheme({
-                palette: {
-                    type: darkMode ? 'dark' : 'light',
-                },
-            }),
-        [darkMode],
-    );
 
     return (
         <Slide direction="up" in={true} mountOnEnter unmountOnExit>
@@ -210,7 +142,7 @@ function ProfileScreen(props) {
                                         {user && user.username}
                                     </Typography>
                                 </Box>
-                                <Box component="div">    
+                                <Box component="div">
                                     <Avatar
                                         className={classes.avatar}
                                         src={avatar || (metadata && metadata.avatar)}
@@ -287,7 +219,7 @@ function ProfileScreen(props) {
                                         color="primary"
                                         onClick={updateProfile}
                                         disabled={(equal(metadata, user.metadata) && !newPassword && !avatar)}
-                                        >
+                                    >
                                         Guardar perfil
                                     </Button>
                                 </Box>
@@ -296,31 +228,12 @@ function ProfileScreen(props) {
 
                         <Grid item md={9} style={{ position: "relative" }}>
                             <Paper variant="outlined" style={{ height: "100%" }}>
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell></TableCell>
-                                            <TableCell>
-                                                Nombre
-                                    </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {roles && roles.map(role => (
-                                            <TableRow>
-                                                <TableCell className={classes.smallCell}>
-                                                    {roles && user && user.roles.includes(role) &&
-                                                        <Tooltip title="Ya tienes este rol">
-                                                            <StarIcon color="default" />
-                                                        </Tooltip>}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {StringUtil.parseRole(role)}
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
+                                <Box className={classes.notificationBox}
+                                style={{
+                                    backgroundBlendMode: props.darkMode && "soft-light"
+                                }}>
+                                    <img alt="notifications" src={notificationIcon} style={{ display: "block", padding: "1rem" }} />
+                                </Box>
                             </Paper>
                         </Grid>
                     </Grid>}

@@ -55,18 +55,7 @@ export default function Options(props) {
 
     const [interacted, setInteracted] = useState(false);
     const classes = useStyles();
-
-    useEffect(() => {
-        if (interacted === true) {
-            changeOptions(characterOptions);
-        }
-    }, [characterOptions, interacted, settings]);
-
-    useEffect(() => {
-        if (settings) {
-            setCharacterOptions(settings)
-        }
-    }, [settings])
+    console.log(settings)
 
     const changeOptions = (key, value) => {
         if (!interacted) {
@@ -75,6 +64,21 @@ export default function Options(props) {
 
         setCharacterOptions({ ...characterOptions, generalOptions: { ...characterOptions.generalOptions, [key]: value } })
     }
+
+    useEffect(() => {
+        console.log("USEFFECT 1")
+        if (interacted === true) {
+            props.changeOptions(characterOptions);
+        }
+    }, [characterOptions]);
+
+    useEffect(() => {
+        console.log("USEFFECT 1")
+        if (settings) {
+            setCharacterOptions(settings)
+        }
+    }, [settings])
+
 
     return (
         <div className={classes.root}>

@@ -10,8 +10,6 @@ import Box from '@material-ui/core/Box';
 
 
 export default function Update(props) {
-    const [open, setOpen] = React.useState(false);
-
     return (
         <Dialog
             open={props.update}

@@ -67,8 +67,6 @@ export default function CharacterInfo(props) {
             .then(res => setPlayer(res))
     }, [props.race])
 
-    console.log(player)
-
     return (
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper}>

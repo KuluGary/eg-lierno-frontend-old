@@ -27,7 +27,6 @@ const useStyles = makeStyles({
         paddingLeft: "4px"
     },
     paper: {
-        margin: 0,
         padding: "1rem",
         height: "100%",
         margin: ".1rem 0"
@@ -314,7 +313,7 @@ function Features(props) {
                                     const extendedData = classOptions.filter(item => item._id === characterClass.classId)[0];
                                     return (
                                         <Box>
-                                            {width !== "xs" && <img className={classes.image} src={extendedData.icon} />}
+                                            {width !== "xs" && <img alt="class" className={classes.image} src={extendedData.icon} />}
                                             <Box style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
                                                 <Box>
                                                     <Select
