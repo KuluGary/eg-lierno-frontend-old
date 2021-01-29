@@ -12,10 +12,12 @@ import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { FormControl } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { FormControl, Table, TableBody } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles({
     root: {
@@ -88,7 +90,7 @@ export default function AdditionalAbilities(props) {
 
     const generateAdditionalAbilities = () => {
         const additionalAbility = {
-            name: additionalAbilitiesName,            
+            name: additionalAbilitiesName,
             description: additionalAbilitiesDescription
         }
 
@@ -108,7 +110,7 @@ export default function AdditionalAbilities(props) {
             // newAdditionalAbilities[editModeIndex] = newAdditionalAbilities;
             props.modifyItem(newAdditionalAbilities, editModeIndex, additionalAbility, "additionalAbilities");
         }
-        
+
         setDialogOpen(!dialogOpen)
         resetState();
     }
@@ -221,20 +223,20 @@ export default function AdditionalAbilities(props) {
             {dialogue()}
             <Paper variant="outlined" className={classes.paper}>
                 <Box style={{ position: "relative" }}>
-                    <Box>
-                        {props.additionalAbilities.map((additionalAbilities, index) => props.generateRow(additionalAbilities, index, props.additionalAbilities, "additionalAbilities", editFunc))}
+                    <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <Box />
+                        <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'HABILIDADES Y RASGOS'}</Typography>
+                        {props.editable ?
+                            <IconButton size="small" onClick={openDialog} style={{}}>
+                                <AddIcon />
+                            </IconButton> : <Box />
+                        }
                     </Box>
-                    <Typography style={{ fontSize: 11, textAlign: "center" }}>HABILIDADES ADICIONALES</Typography>
-                    <Box style={{ position: "absolute", bottom: 3, right: 20 }}>
-                        <Button variant="outlined"
-                            disabled={!props.editable}
-                            onClick={openDialog}
-                        >
-                            <Typography variant="subtitle2" style={{ fontSize: "8px", textAlign: "left" }} >
-                                {'+ Añadir'}
-                            </Typography>
-                        </Button>
-                    </Box>
+                    <Table size="small" style={{ width: "100%" }}>
+                        <TableBody>
+                            {props.additionalAbilities.map((additionalAbilities, index) => props.generateRow(additionalAbilities, index, props.additionalAbilities, "additionalAbilities", editFunc))}
+                        </TableBody>
+                    </Table>
                 </Box>
             </Paper>
         </>

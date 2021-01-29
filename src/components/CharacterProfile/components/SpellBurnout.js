@@ -9,7 +9,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 const useStyles = makeStyles({
     root: {
         // margin: "0 .1rem .2rem .1rem",
-        margin: ".1rem",
+        // margin: ".1rem",
+        height: "100%",
         width: "100%"
     },
     paper: {
@@ -59,7 +60,7 @@ export default function SpellBurnout(props) {
                         onChange={(event) => props.changeStats("spellBurnout", event.target.value)}>
                         {options.map(option => <MenuItem value={option}>{option}</MenuItem>)}
                     </Select>
-                    <Typography variant="subtitle2" style={{ fontSize: "8px" }} >{'AGOTAMIENTO DE HECHIZOS'}</Typography>
+                    <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'AGOTAMIENTO DE HECHIZOS'}</Typography>
                 </Box>
             </Paper>
         </div>

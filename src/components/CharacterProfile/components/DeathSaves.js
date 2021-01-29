@@ -14,9 +14,9 @@ const useStyles = makeStyles({
         // margin: ".1rem"
         // marginTop: ".2rem"
         // padding: ".1rem",
-        marginLeft: ".1rem",
-        paddingTop: ".2rem",
-        paddingRight: ".1rem",
+        // marginLeft: ".1rem",
+        // paddingTop: ".2rem",
+        // paddingRight: ".1rem",
 
     },
     paper: {
@@ -27,10 +27,10 @@ const useStyles = makeStyles({
         justifyContent: 'space-around',
         alignItems: 'center',
         width: "100%",
-        marginBottom: ".1rem"
+        // marginBottom: ".1rem"
     },
     stat: {
-        margin: "0 1.5rem",
+        // margin: "0 1.5rem",
         textAlign: "center"
     },
     link: {

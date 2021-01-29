@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -93,6 +93,8 @@ const useStyles = makeStyles((theme) => ({
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
+  const location = useLocation()
+  console.log(location)
 
   return (
     <div className={classes.root}>
@@ -118,7 +120,7 @@ export default function MiniDrawer(props) {
         <Divider />
         <List>
           <Link to="/characters" className={classes.link}>
-            <ListItem button>
+            <ListItem button selected={location.pathname.includes('/characters')}>
               <ListItemIcon>
                 <AccountCircleIcon />
               </ListItemIcon>
@@ -126,7 +128,7 @@ export default function MiniDrawer(props) {
             </ListItem>
           </Link>
           <Link to="/campaigns" className={classes.link}>
-            <ListItem button>
+            <ListItem button selected={location.pathname.includes('/campaigns')}>
               <ListItemIcon>
                 <MenuBookIcon />
               </ListItemIcon>
@@ -134,7 +136,7 @@ export default function MiniDrawer(props) {
             </ListItem>
           </Link>
           <Link to="/reference" className={classes.link}>
-            <ListItem button>
+            <ListItem button selected={location.pathname.includes('/reference')}>
               <ListItemIcon>
                 <BookIcon />
               </ListItemIcon>

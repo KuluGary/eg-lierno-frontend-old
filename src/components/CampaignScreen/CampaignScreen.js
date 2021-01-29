@@ -143,24 +143,25 @@ function CampaignScreen(props) {
                                 .map(campaign => {
                                     const dungeonMaster = dms.filter(dm => campaign.dm === dm.id)[0]
                                     return (
-                                    <TableRow hover component={Link} to={'/campaigns/' + campaign._id} className={classes.link}>
-                                        <TableCell className={classes.cell}>{campaign.name}</TableCell>                                        
-                                        {(width !== "xs") && <TableCell className={classes.cell}>{campaign.flavor.game}</TableCell>}
-                                        <TableCell className={classes.cell}>{dungeonMaster && dungeonMaster["name"]}</TableCell>                                        
-                                        {(width !== "xs") && <TableCell>{campaign.flavor.synopsis}</TableCell>}
-                                        <TableCell align="right">
-                                            {props.profile && props.profile._id === campaign.dm &&
-                                                <Link>
-                                                    <IconButton onClick={(e) => {
-                                                        setSelectedData(campaign._id)
-                                                        return handleMenu(e)
-                                                    }}>
-                                                        <MoreVertIcon />
-                                                    </IconButton>
-                                                </Link>}
-                                        </TableCell>
-                                    </TableRow>
-                                )})}
+                                        <TableRow hover component={Link} to={'/campaigns/' + campaign._id} className={classes.link}>
+                                            <TableCell className={classes.cell}>{campaign.name}</TableCell>
+                                            {(width !== "xs") && <TableCell className={classes.cell}>{campaign.flavor.game}</TableCell>}
+                                            <TableCell className={classes.cell}>{dungeonMaster && dungeonMaster["name"]}</TableCell>
+                                            {(width !== "xs") && <TableCell>{campaign.flavor.synopsis}</TableCell>}
+                                            <TableCell align="right">
+                                                {props.profile && props.profile._id === campaign.dm &&
+                                                    <Link>
+                                                        <IconButton onClick={(e) => {
+                                                            setSelectedData(campaign._id)
+                                                            return handleMenu(e)
+                                                        }}>
+                                                            <MoreVertIcon />
+                                                        </IconButton>
+                                                    </Link>}
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                })}
                         </TableBody>
                         <TableFooter>
                             <TableRow>

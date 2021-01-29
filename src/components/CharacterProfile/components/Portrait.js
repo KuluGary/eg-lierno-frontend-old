@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
-import ModalImage from "react-modal-image";
+import Image from '../../ItemsUi/Image';
 
 const useStyles = makeStyles({
     root: {
         height: "100%",
         width: "100%",
-        margin: "0 .1rem .1rem .1rem",
+        // margin: "0 .1rem .1rem .1rem",
         display: "flex",
         flexDirection: "column",
-        marginTop: 0
+        // marginTop: 0
     },
     paper: {
         padding: ".5rem",
@@ -27,7 +27,8 @@ const useStyles = makeStyles({
     stat: {
         // margin: "0 1.5rem",
         textAlign: "center",
-        width: "100%"
+        width: "100%",
+        height: "100%"
     },
     link: {
         color: 'inherit',
@@ -46,13 +47,12 @@ export default function Portrait(props) {
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
-                    <ModalImage
-                        hideDownload
-                        align="left"                        
-                        className={classes.image}
-                        small={props.image}
-                        large={props.image}
-                    />
+                    <Image
+                        usage="avatar"
+                        errorStyle={{ width: "100%", height: "75%", margin: "1rem 0" }}
+                        style={{ width: "100%" }}
+                        mode="modal"
+                        src={props.image} />
                     <TextField
                         InputProps={{
                             classes: {

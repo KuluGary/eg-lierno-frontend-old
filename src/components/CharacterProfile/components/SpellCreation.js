@@ -106,7 +106,7 @@ export default function SpellCreation(props) {
     return (
         <div className={classes.container}>
             <DialogTitle>Añade un hechizo</DialogTitle>
-            <DialogContent style={{ width: "40vw" }}>
+            <DialogContent>
                 <Box style={{ width: "100%" }}>
                     <Box component="p" style={{ display: "flex", alignItems: "center" }}>
                         <Typography>
@@ -155,7 +155,7 @@ export default function SpellCreation(props) {
                                         },
                                         inputProps: { min: 0, max: 9 }
                                     }}
-                                    onChange={(event) => addNewSpell("stats", { ...spellToAdd.stats, level: event.target.value })} />
+                                    onChange={(event) => addNewSpell("stats", { ...spellToAdd.stats, level: parseInt(event.target.value) })} />
                                 <FormControl style={{ width: "80%" }} required>
                                     <InputLabel id="typology-label">Escuela</InputLabel>
                                     <Select
@@ -232,7 +232,6 @@ export default function SpellCreation(props) {
                                 />
                             </Box>
                             <TextField
-                                required
                                 fullWidth
                                 multiline
                                 label={'Descripción de los componentes'}
@@ -259,10 +258,10 @@ export default function SpellCreation(props) {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => props.setDialogOpen(false)} color="primary">
+                <Button onClick={() => props.setDialogOpen(false)} color="default">
                     Cerrar
                 </Button>
-                <Button onClick={saveNewSpell} color="primary">
+                <Button variant={"outlined"} onClick={saveNewSpell} color="default">
                     Guardar
                 </Button>
             </DialogActions>

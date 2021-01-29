@@ -80,7 +80,6 @@ function Header(props) {
   const { history } = props;
 
   useEffect(() => {
-    console.log(history.location.pathname, Auth.loggedIn())
     if (Auth.loggedIn()) {
       if (!props.profile) {
         Api.fetchInternal('/auth/me')

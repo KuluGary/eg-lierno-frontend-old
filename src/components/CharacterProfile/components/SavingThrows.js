@@ -10,11 +10,12 @@ import Radio from '@material-ui/core/Radio';
 
 const useStyles = makeStyles({
     root: {
-        height: "100%"
+        height: "100%",
+        width: "100%"
     },
     paper: {
         // margin: "0 .2rem 0 .2rem",
-        margin: ".1rem",
+        // margin: ".1rem",
         padding: ".2rem",
         display: "flex",
         flexDirection: "row",
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
         // height: "100%"
     },
     stat: {
-        margin: "0 1.5rem",
+        // margin: "0 1.5rem",
         textAlign: "center"
     },
     link: {
@@ -32,10 +33,10 @@ const useStyles = makeStyles({
 
     },
     smallCell: {
-        width: "2rem"
+        // width: "2rem"
     },
     radio: {
-        padding: 0
+        // padding: 0
     }
 });
 

@@ -6,7 +6,8 @@ import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles({
     root: {
-        margin: ".1rem",
+        // margin: ".1rem",
+        height: "100%",
         width: "100%"
     },
     paper: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
         height: "100%"
     },
     stat: {
-        margin: "0 1.5rem",
+        // margin: "0 1.5rem",
         textAlign: "center"
     },
     link: {
@@ -56,10 +57,7 @@ export default function SpellDC(props) {
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
                     <Typography variant="h6">{spellDC}</Typography>
-                    {/* <Box style={{ display: "flex" }}>
-                        <Radio /><Radio /><Radio />
-                    </Box> */}
-                    <Typography variant="subtitle2" style={{ fontSize: "8px" }} >{'CD DE HECHIZOS'}</Typography>
+                    <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'CD DE HECHIZOS'}</Typography>
                 </Box>
             </Paper>
         </div>

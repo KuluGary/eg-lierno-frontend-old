@@ -24,6 +24,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import FormControl from '@material-ui/core/FormControl';
+import Image from '../ItemsUi/Image';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -168,14 +169,30 @@ function BestiaryScreen(props) {
                                     {(width !== "xs") &&
                                         <>
                                             <TableCell>
-                                                <div style={{
+                                                <Image
+                                                    src={monster.flavor.imageUrl}
+                                                    mode="background"
+                                                    style={{
+                                                        backgroundImage: `url(${monster.flavor.imageUrl})`,
+                                                        width: "5vw",
+                                                        height: "5vw",
+                                                        backgroundSize: "cover",
+                                                        borderRadius: 10,
+                                                        backgroundColor: "white"
+                                                    }}
+                                                    errorStyle={{
+                                                        width: "5vw",
+                                                        height: "5vw",
+                                                        borderRadius: 10
+                                                    }} />
+                                                {/* <div style={{
                                                     backgroundImage: `url(${monster.flavor.imageUrl})`,
                                                     width: "5vw",
                                                     height: "5vw",
                                                     backgroundSize: "cover",
                                                     borderRadius: 10,
                                                     backgroundColor: "white"
-                                                }} />
+                                                }} /> */}
                                             </TableCell>
                                         </>}
                                     <TableCell>{monster.name}</TableCell>

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     minWidth: "100%",
-    margin:  theme.spacing(0.5)
+    margin: theme.spacing(0.5)
   },
   chip: {
     margin: theme.spacing(0.5),
@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Core(props) {
-  const { addToCreatureStats } = props;
   const classes = useStyles();
   const [savingThrows, setSavingThrows] = useState(props.creature.stats.savingThrows || []);
   const [proficiencyBonus, setProficiencyBonus] = useState(props.creature.stats.proficiencyBonus);
@@ -73,29 +72,30 @@ export default function Core(props) {
   ];
 
   useEffect(() => {
-      addToCreatureStats(abilityScores, "abilityScores");
-      addToCreatureStats(proficiencyBonus, "proficiencyBonus");
-      addToCreatureStats({
-        strength: calculateAbilityScoreModifiers(abilityScores["strength"]),
-        dexterity: calculateAbilityScoreModifiers(abilityScores["dexterity"]),
-        constitution: calculateAbilityScoreModifiers(abilityScores["constitution"]),
-        intelligence: calculateAbilityScoreModifiers(abilityScores["intelligence"]),
-        wisdom: calculateAbilityScoreModifiers(abilityScores["wisdom"]),
-        charisma: calculateAbilityScoreModifiers(abilityScores["charisma"]),
-      }, "abilityScoreModifiers")
-            
-      const newSavingThrows = savingThrows.map(savingThrow => ({
-        ability: savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].label,
-        proficient: true,
-        modifier: calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].label])),
-        modifierStr: `${savingThrow.label || abilities.filter(ability => ability.key === savingThrow.ability)[0].label} ${(calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].key]), parseInt(proficiencyBonus)) >= 0 && '+') + calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability]), parseInt(proficiencyBonus))}`
-      }))
+    props.addToCreatureStats(abilityScores, "abilityScores");
+    props.addToCreatureStats(proficiencyBonus, "proficiencyBonus");
+    props.addToCreatureStats({
+      strength: calculateAbilityScoreModifiers(abilityScores["strength"]),
+      dexterity: calculateAbilityScoreModifiers(abilityScores["dexterity"]),
+      constitution: calculateAbilityScoreModifiers(abilityScores["constitution"]),
+      intelligence: calculateAbilityScoreModifiers(abilityScores["intelligence"]),
+      wisdom: calculateAbilityScoreModifiers(abilityScores["wisdom"]),
+      charisma: calculateAbilityScoreModifiers(abilityScores["charisma"]),
+    }, "abilityScoreModifiers")
 
-      addToCreatureStats(newSavingThrows, 'savingThrows')
-      addToCreatureStats(skills, 'skills')
-  }, [abilityScores, proficiencyBonus, savingThrows, skills, abilities, addToCreatureStats])
+    const newSavingThrows = savingThrows.map(savingThrow => ({
+      ability: savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].label,
+      proficient: true,
+      modifier: calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].label])),
+      modifierStr: `${savingThrow.label || abilities.filter(ability => ability.key === savingThrow.ability)[0].label} ${(calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].key]), parseInt(proficiencyBonus)) >= 0 && '+') + calculateAbilityScoreModifiers(parseInt(abilityScores[savingThrow.ability]), parseInt(proficiencyBonus))}`
+    }))
+
+    props.addToCreatureStats(newSavingThrows, 'savingThrows')
+    props.addToCreatureStats(skills, 'skills')
+  }, [abilityScores, proficiencyBonus, savingThrows, skills])
 
   const calculateAbilityScoreModifiers = (ability, proficiency = 0) => {
+    console.log(ability)
     return Math.floor((ability - 10) / 2 + proficiency);
   }
 
@@ -110,7 +110,7 @@ export default function Core(props) {
 
   const addSkill = () => {
     const indexOf = skillList.findIndex(item => skills.every(skill => skill.name !== item));
-    skills.length < skillList.length && setSkills([...skills,  {
+    skills.length < skillList.length && setSkills([...skills, {
       name: skillList[indexOf < 0 ? 0 : indexOf],
       proficient: true
     }])
@@ -122,7 +122,7 @@ export default function Core(props) {
       ability: event.target.value,
       proficient: true,
       label: abilities.filter(ability => ability.key === event.target.value)[0].label
-    }      
+    }
 
     const newSavingThrows = [...savingThrows]
     newSavingThrows[indexOf] = newSavingThrow;
@@ -132,19 +132,19 @@ export default function Core(props) {
 
   const handleSkillChange = (event, skillToChange) => {
     const indexOf = skills.findIndex(skill => skill.name === skillToChange.name);
-    const newSkill =  {
+    const newSkill = {
       name: event.target.value,
       proficient: true
     }
 
-    const newSkills  = [...skills];
+    const newSkills = [...skills];
     newSkills[indexOf] = newSkill;
 
     setSkills(newSkills);
   }
 
   const removeSavingThrow = (savingThrowToRemove) => {
-    const newSavingThrows  = [...savingThrows].filter(savingThrow => savingThrow.ability !== savingThrowToRemove.ability)
+    const newSavingThrows = [...savingThrows].filter(savingThrow => savingThrow.ability !== savingThrowToRemove.ability)
 
     setSavingThrows(newSavingThrows)
   }
@@ -171,7 +171,7 @@ export default function Core(props) {
             label="FUE"
             type="number"
             value={abilityScores['strength']}
-            onChange={(e) => setAbilityScores({...abilityScores, strength: e.target.value})}
+            onChange={(e) => setAbilityScores({ ...abilityScores, strength: e.target.value })}
             fullWidth
           />
         </Grid>
@@ -182,7 +182,7 @@ export default function Core(props) {
             label="DES"
             type="number"
             value={abilityScores['dexterity']}
-            onChange={(e) => setAbilityScores({...abilityScores, dexterity: e.target.value})}
+            onChange={(e) => setAbilityScores({ ...abilityScores, dexterity: e.target.value })}
             fullWidth
           />
         </Grid>
@@ -193,7 +193,7 @@ export default function Core(props) {
             label="CON"
             type="number"
             value={abilityScores['constitution']}
-            onChange={(e) => setAbilityScores({...abilityScores, constitution: e.target.value})}
+            onChange={(e) => setAbilityScores({ ...abilityScores, constitution: e.target.value })}
             fullWidth
           />
         </Grid>
@@ -204,7 +204,7 @@ export default function Core(props) {
             label="INT"
             type="number"
             value={abilityScores['intelligence']}
-            onChange={(e) => setAbilityScores({...abilityScores, intelligence: e.target.value})}
+            onChange={(e) => setAbilityScores({ ...abilityScores, intelligence: e.target.value })}
             fullWidth
           />
         </Grid>
@@ -215,7 +215,7 @@ export default function Core(props) {
             label="SAB"
             type="number"
             value={abilityScores['wisdom']}
-            onChange={(e) => setAbilityScores({...abilityScores, wisdom: e.target.value})}
+            onChange={(e) => setAbilityScores({ ...abilityScores, wisdom: e.target.value })}
             fullWidth
           />
         </Grid>
@@ -226,7 +226,7 @@ export default function Core(props) {
             label="CAR"
             type="number"
             value={abilityScores['charisma']}
-            onChange={(e) => setAbilityScores({...abilityScores, charisma: e.target.value})}
+            onChange={(e) => setAbilityScores({ ...abilityScores, charisma: e.target.value })}
             fullWidth
           />
         </Grid>
@@ -243,30 +243,29 @@ export default function Core(props) {
         </Grid>
         <Grid item sm={12}>
           <Button onClick={addSavingThrow}>
-            AÑADIR TIRADA DE SALVACIÓN            
+            AÑADIR TIRADA DE SALVACIÓN
           </Button>
         </Grid>
         {savingThrows.map(savingThrow => (
           <>
             <Grid item sm={10}>
               <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">Tirada de Salvación</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={(e) => handleSavingThrowChange(e, savingThrow)}
-                    value={savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].key}
-                  >
-                    {abilities
-                      .map(ability =>  (
-                        <MenuItem 
-                          value={ability.key}
-                          disabled={savingThrows.filter(savingThrow => savingThrow.ability === ability.key).length > 0}>
-                            {ability.label}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
+                <InputLabel id="demo-simple-select-label">Tirada de Salvación</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  onChange={(e) => handleSavingThrowChange(e, savingThrow)}
+                  value={savingThrow.ability || abilities.filter(ability => ability.label === savingThrow.name)[0].key}>
+                  {abilities
+                    .map(ability => (
+                      <MenuItem
+                        value={ability.key}
+                        disabled={savingThrows.filter(savingThrow => savingThrow.ability === ability.key).length > 0}>
+                        {ability.label}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item sm={2}>
               <IconButton onClick={() => removeSavingThrow(savingThrow)}>
@@ -274,43 +273,42 @@ export default function Core(props) {
               </IconButton>
             </Grid>
           </>
-          ))}
-     
+        ))}
+
         <Grid item sm={12}>
           <Button onClick={addSkill}>
-            AÑADIR habilidad            
+            AÑADIR habilidad
           </Button>
         </Grid>
-          {skills.map(skill => (
-            <>
-              <Grid item sm={10}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">Habilidad</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={(e) => handleSkillChange(e, skill)}
-                    value={skill.name}
-                  >
-                    {skillList
-                      .map(item =>  (
-                        <MenuItem 
-                          value={item}
-                          disabled={skills.filter(skill => skill.name === item).length > 0}>
-                            {item}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                </FormControl>
-              </Grid>
-              <Grid item sm={2}>
-                <IconButton onClick={() => removeSkill(skill)}>
-                  <ClearIcon />
-                </IconButton>
-              </Grid>
-            </>
-          ))}          
-    </Grid> 
+        {skills.map(skill => (
+          <>
+            <Grid item sm={10}>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-simple-select-label">Habilidad</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  onChange={(e) => handleSkillChange(e, skill)}
+                  value={skill.name}>
+                  {skillList
+                    .map(item => (
+                      <MenuItem
+                        value={item}
+                        disabled={skills.filter(skill => skill.name === item).length > 0}>
+                        {item}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item sm={2}>
+              <IconButton onClick={() => removeSkill(skill)}>
+                <ClearIcon />
+              </IconButton>
+            </Grid>
+          </>
+        ))}
+      </Grid>
     </>
   );
 }

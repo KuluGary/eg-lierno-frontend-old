@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     root: {
         height: "100%",
         display: "flex",
-        marginTop: ".2rem"
+        // marginTop: ".2rem"
     },
     paper: {
         padding: "1rem",
@@ -18,14 +18,14 @@ const useStyles = makeStyles({
         justifyContent: 'space-around',
         alignItems: 'center',
         width: "100%",
-        marginBottom:  ".1rem"
+        // marginBottom:  ".1rem"
     },
     stat: {
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        margin: "0 .5rem"
+        // margin: "0 .5rem"
     },
     link: {
         color: 'inherit',
@@ -69,9 +69,9 @@ export default function HitDice(props) {
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper} style={{
                 width: "100%", padding: ".5rem",
-                margin: "0 .1rem .2rem .1rem",
+                // margin: "0 .1rem .2rem .1rem",
                 flexDirection: "column", justifyContent: "center",
-                marginBottom: ".3rem"
+                // marginBottom: ".3rem"
             }}>
                 <Box style={{ textAlign: "center" }}>
                     <Typography variant="subtitle2" style={{ fontSize: '11px' }}>{'DADOS DE GOLPE'}</Typography>

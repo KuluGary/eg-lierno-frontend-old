@@ -15,14 +15,13 @@ const useStyles = makeStyles({
     },
     paper: {
         // margin: ".2rem .2rem 0 .2rem",
-        margin: ".1rem",
-        marginBottom: 0,
+        // marginTop: ".5rem",
         padding: ".2rem",
         display: "flex",
         flexDirection: "row",
         justifyContent: 'center',
         // alignItems: 'center',
-        height: "100%"
+        // height: "100%"
     },
     stat: {
         // margin: "0 1.5rem",

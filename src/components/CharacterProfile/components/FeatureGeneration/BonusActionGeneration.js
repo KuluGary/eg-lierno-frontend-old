@@ -12,10 +12,12 @@ import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { FormControl } from '@material-ui/core';
+import { FormControl, Table, TableBody } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles({
     root: {
@@ -25,7 +27,6 @@ const useStyles = makeStyles({
     paper: {
         padding: "1rem",
         height: "100%",
-        margin: ".1rem 0"
     },
     action: {
         margin: "1rem 0",
@@ -88,7 +89,7 @@ export default function BonusActionGeneration(props) {
 
     const generateBonusAction = () => {
         const bonusAction = {
-            name: bonusActionName,            
+            name: bonusActionName,
             description: bonusActionDescription
         }
 
@@ -214,20 +215,22 @@ export default function BonusActionGeneration(props) {
             </Dialog>
             <Paper variant="outlined" className={classes.paper}>
                 <Box style={{ position: "relative" }}>
-                    <Box>
-                        {props.bonusActions.map((bonusAction, index) => props.generateRow(bonusAction, index, props.bonusActions, "bonusActions", editFunc))}
+                    <Box style={{ position: "relative" }}>
+                        <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <Box />
+                            <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'ACCIONES ADICIONALES'}</Typography>
+                            {props.editable ?
+                                <IconButton size="small" onClick={openDialog} style={{}}>
+                                    <AddIcon />
+                                </IconButton> : <Box />
+                            }
+                        </Box>
                     </Box>
-                    <Typography style={{ fontSize: 11, textAlign: "center" }}>ACCIONES ADICIONALES</Typography>
-                    <Box style={{ position: "absolute", bottom: 3, right: 20 }}>
-                        <Button variant="outlined"
-                            disabled={!props.editable}
-                            onClick={openDialog}
-                        >
-                            <Typography variant="subtitle2" style={{ fontSize: "8px", textAlign: "left" }} >
-                                {'+ Añadir'}
-                            </Typography>
-                        </Button>
-                    </Box>
+                    <Table size="small" style={{ width: "100%" }}>
+                        <TableBody>
+                            {props.bonusActions.map((bonusAction, index) => props.generateRow(bonusAction, index, props.bonusActions, "bonusActions", editFunc))}
+                        </TableBody>
+                    </Table>
                 </Box>
             </Paper>
         </>

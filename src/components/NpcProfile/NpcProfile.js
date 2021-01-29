@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ModalImage from "react-modal-image";
 import Stats from '../CharacterProfile/components/Stats';
 import Slide from '@material-ui/core/Slide';
 import { StringUtil } from '../../helpers/string-util';
@@ -21,6 +20,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ShareIcon from '@material-ui/icons/Share';
+import Image from '../ItemsUi/Image';
 import {
     EmailShareButton,
     FacebookShareButton,
@@ -203,7 +203,7 @@ function NpcProfile(props) {
                                             </IconButton>
                                             <Box component="span" style={{ height: "100%" }}>
                                                 {/* <Typography variant={'h2'} > */}
-                                                    {npc.name}
+                                                {npc.name}
                                                 {/* </Typography> */}
                                             </Box>
                                         </Typography>
@@ -244,7 +244,9 @@ function NpcProfile(props) {
 
                                     <Divider className={classes.divider} />
 
-                                    <Stats stats={npc.stats.abilityScores} modifiers={npc.stats.abilityScoreModifiers} mode="npc" />
+                                    <Grid container spacing={1}>
+                                        <Stats stats={npc.stats.abilityScores} modifiers={npc.stats.abilityScoreModifiers} mode="npc" />
+                                    </Grid>
 
                                     <Divider className={classes.divider} />
 
@@ -396,7 +398,19 @@ function NpcProfile(props) {
                                 <Box component="p">
                                     {npc.flavor.description}
                                 </Box>
-                                <ModalImage
+                                <Image
+                                    className={classes.image}
+                                    mode="modal"
+                                    usage="avatar"
+                                    style={{
+                                        float: "left",
+                                        margin: ".5rem",
+                                        marginLeft: 0,
+                                        padding: "0 1em 0 0"
+                                    }}
+                                    src={npc.flavor.imageUrl}
+                                />
+                                {/* <ModalImage
                                     hideDownload
                                     align="left"
                                     style={{
@@ -407,7 +421,7 @@ function NpcProfile(props) {
                                     className={classes.image}
                                     small={npc.flavor.imageUrl}
                                     large={npc.flavor.imageUrl}
-                                />
+                                /> */}
 
                                 <Box component="p" style={{
                                     textAlign: "justify",

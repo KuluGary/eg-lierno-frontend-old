@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles({
     root: {
@@ -97,7 +97,7 @@ export default function Conditions(props) {
                     {/* <Typography variant="subtitle2">{'BONO DE'}</Typography> */}
                     <Typography variant="subtitle2" style={{ fontSize: "8px" }} >{'EFECTOS Y CONDICIONES'}</Typography>
                     <Divider style={{ margin: ".3rem 0" }} />
-                    <Box style={{ display: "flex", flexDirection: "column" }}>
+                    <Box style={{ display: "flex", flexDirection: "column", minHeight: "90%" }}>
                         {condtitions.map((condition, index) => {
                             return (
                                 <Box style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
@@ -122,8 +122,8 @@ export default function Conditions(props) {
                                             }}></TextField>
                                     </Box>
                                     {props.editable &&
-                                        <IconButton onClick={() => removeWound(index)}>
-                                            <CancelIcon fontSize="small" />
+                                        <IconButton size="small" onClick={() => removeWound(index)}>
+                                            <CloseIcon fontSize="small" />
                                         </IconButton>
                                     }
                                 </Box>

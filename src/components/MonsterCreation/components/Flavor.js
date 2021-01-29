@@ -14,7 +14,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
-import Api from '../../../helpers/api'
+import Api from '../../../helpers/api';
+import Image from '../../ItemsUi/Image';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -158,7 +159,7 @@ function Flavor(props) {
                 checked={props.creature.flavor.nameIsProper}
                 onChange={() => props.addToCreatureFlavor(!props.creature.flavor.nameIsProper, "nameIsProper")}
                 name="checkedB"
-                color="primary"
+                color="default"
               />
             }
             label="¿Nombre propio?"
@@ -179,7 +180,7 @@ function Flavor(props) {
           </FormControl>
         </Grid>
         <Grid item xs={3} style={{ display: (image && image.length > 0) ? 'block' : 'none' }}>
-        <img alt={'class'} className={classes.image} src={image} />
+          <Image style={{ width: "100%" }} errorStyle={{ width: "50%", height: "100%", margin: "0 auto" }} src={image} />
         </Grid>
         <Grid item sm={(image && image.length > 0) ? 9 : 12}>
           <FormControl className={classes.formControl}>

@@ -6,17 +6,12 @@ import Radio from '@material-ui/core/Radio';
 import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles({
-    root: {
-        // height: "100%"
-        // margin: "0 .1rem .2rem .1rem",
-        margin: ".1rem"
-    },
     paper: {
-        // padding: "1rem",
         display: "flex",
         flexDirection: "row",
         alignItems: 'center',
-        // alignSelf: "stretch"    ,
+        margin: ".5rem 0",
+        height: "100%"
     },
     stat: {
         margin: "0 1.0rem",

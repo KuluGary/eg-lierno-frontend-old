@@ -16,6 +16,8 @@ import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Api from '../../helpers/api'
+import Auth from '../../helpers/auth';
+import { StreamApp, NotificationFeed, Notification } from 'react-activity-feed';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import RoomIcon from '@material-ui/icons/Room';
@@ -77,13 +79,15 @@ const mapDispatchToProps = dispatch => {
 
 function ProfileScreen(props) {
     const classes = useStyles();
-    // const theme = useTheme();
     const [user, setUser] = useState();
     const [avatar] = useState();
     const [newPassword, setNewPassword] = useState();
     const [metadata, setMetadata] = useState();
+    const [streamToken, setStreamToken] = useState();
 
     useEffect(() => {
+        setStreamToken(Auth.getStreamToken());
+
         if (!props.profile) {
             Api.fetchInternal('/auth/me')
                 .then(res => {
@@ -228,12 +232,37 @@ function ProfileScreen(props) {
 
                         <Grid item md={9} style={{ position: "relative" }}>
                             <Paper variant="outlined" style={{ height: "100%" }}>
-                                <Box className={classes.notificationBox}
-                                style={{
-                                    backgroundBlendMode: props.darkMode && "soft-light"
-                                }}>
-                                    <img alt="notifications" src={notificationIcon} style={{ display: "block", padding: "1rem" }} />
-                                </Box>
+                                {streamToken ?
+                                    <StreamApp
+                                        apiKey={process.env.REACT_APP_STREAM_KEY}
+                                        appId={process.env.REACT_APP_STREAM_ID}
+                                        token={streamToken}>
+                                        <NotificationFeed
+                                            notify
+                                            Group={(props) => (
+                                                <Notification
+                                                    {...props}
+                                                    onClickUser={user => console.log(user)}
+                                                    onClickNotification={(notification) => console.log(notification)}
+                                                />
+                                            )}
+                                            Placeholder={() => (
+                                                <Box className={classes.notificationBox}
+                                                    style={{
+                                                        backgroundBlendMode: props.darkMode && "soft-light"
+                                                    }}>
+                                                    <img alt="notifications" src={notificationIcon} style={{ display: "block", padding: "1rem" }} />
+                                                </Box>
+                                            )} />
+                                    </StreamApp>
+                                    :
+                                    <Box className={classes.notificationBox}
+                                        style={{
+                                            backgroundBlendMode: props.darkMode && "soft-light"
+                                        }}>
+                                        <img alt="notifications" src={notificationIcon} style={{ display: "block", padding: "1rem" }} />
+                                    </Box>
+                                }
                             </Paper>
                         </Grid>
                     </Grid>}

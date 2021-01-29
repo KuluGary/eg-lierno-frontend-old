@@ -48,6 +48,15 @@ const useStyles = makeStyles({
     resize: {
         fontSize: 21,
         textAlign: 'center'
+    },
+    textField: {
+        "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+            display: "none"
+        },
+
+        "& input[type=number]": {
+            "-moz-appearance": "textfield"
+        }
     }
 });
 
@@ -60,8 +69,10 @@ export default function Proficiency(props) {
                 <Box component="span" className={classes.stat}>
                     <Typography variant="subtitle2" style={{ fontSize: '11px' }}>{'PUNTOS DE VIDA'}</Typography>
                     <TextField
+                        type="number"
                         value={props.hp.hp_max}
                         disabled={!props.editable}
+                        className={classes.textField}
                         onChange={(event) => props.changeStats("hitPoints", { ...props.hp, hp_max: event.target.value })}
                         InputProps={{
                             classes: {

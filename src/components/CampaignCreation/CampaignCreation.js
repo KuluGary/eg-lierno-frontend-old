@@ -98,7 +98,6 @@ function CampaignCreation(props) {
     useEffect(() => {
         if (players.length > 0) {
             const userIds = campaignData.players.map((player) => player._id)
-            console.log(userIds)
             Api.fetchInternal("/usercharacter", {
                 method: "POST",
                 body: JSON.stringify({
@@ -106,7 +105,6 @@ function CampaignCreation(props) {
                 })
             })
                 .then(res => {
-                    console.log(res);
                     setCharacters(res)
                     // setCharacters(res.map(item => item.name))
                 })
@@ -316,22 +314,17 @@ function CampaignCreation(props) {
                                 multiple
                                 id="tags-outlined"
                                 value={campaignData.characters}
-                                onChange={(event, newValue) => {
-                                    console.log(event.target.value, newValue)
-                                    setData("characters", newValue)
-                                }}
+                                onChange={(event, newValue) => setData("characters", newValue)}
                                 options={characters}
                                 getOptionLabel={(option) => option.name}
                                 filterSelectedOptions
                                 renderTags={(tagValue, getTagProps) =>
-                                    tagValue.map((option, index) => {
-                                        console.log(option)
-                                        return (
+                                    tagValue.map((option, index) =>  (
                                         <Chip
                                             label={option.name}
                                             {...getTagProps({ index })}
                                         />
-                                    )})}
+                                    ))}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}

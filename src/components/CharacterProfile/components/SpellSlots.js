@@ -7,7 +7,8 @@ import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
     root: {
-        margin: "0 .1rem .2rem .1rem",
+        // margin: "0 .1rem .2rem .1rem",
+        height: "100%",
         width: "100%"
     },
     paper: {
@@ -16,11 +17,10 @@ const useStyles = makeStyles({
         flexDirection: "row",
         justifyContent: 'center',
         alignItems: 'center',
-        // alignSelf: "stretch"    ,
         height: "100%"
     },
     stat: {
-        margin: "0 1.5rem",
+        // margin: "0 1.5rem",
         textAlign: "center"
     },
     link: {
@@ -113,7 +113,7 @@ export default function SpellSlots(props) {
         let classLevel = 0;
         const casterType = {
             fullcaster: ["Druida", "Bardo", "Clérigo", "Mago", "Hechicero", "Brujo"],
-            halfcaster: ["Paladín", "Explorador"]
+            halfcaster: ["Paladín", "Montaraz"]
         }
         const spellLevel = props.spellLevel - 1;
 
@@ -167,7 +167,7 @@ export default function SpellSlots(props) {
                             {'N/A'}
                         </Typography>
                     }                    
-                    <Typography variant="subtitle2" style={{ marginTop: ".5rem", fontSize: 8, textAlign: "center" }}>{'HUECOS DE HECHIZO'}</Typography>
+                    <Typography variant="subtitle2" style={{ fontSize: 11, textAlign: "center" }}>{'HUECOS DE HECHIZO'}</Typography>
                 </Box>
             </Paper>
         </div>

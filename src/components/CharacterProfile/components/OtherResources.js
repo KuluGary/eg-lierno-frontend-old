@@ -4,33 +4,33 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles({
     root: {
-        height: "100%",
+        // height: "100%",
+        width: "95%",
+        height: "100%"
+        // margin: ".1rem",
+        // marginBottom: ".5rem",
         // margin: "0 .1rem .2rem .1rem",
-        margin: ".1rem",
-        paddingBottom: ".2rem"
-        // width: "100%"
     },
     paper: {
         padding: "1rem",
         display: "flex",
         flexDirection: "row",
+        justifyContent: 'center',
         height: "100%",
         width: "100%"
     },
     stat: {
-        margin: "0 1.5rem",
-        // textAlign: "center",
+        // margin: "0 1.5rem",
+        textAlign: "center",
         width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between"
+        // position: "relative"
     },
     link: {
         color: 'inherit',
@@ -53,6 +53,7 @@ const useStyles = makeStyles({
     }
 });
 
+
 export default function OtherResources(props) {
     const { otherResource, changeStats } = props;
     const classes = useStyles();
@@ -64,6 +65,10 @@ export default function OtherResources(props) {
             changeStats("otherResource", resources)
         }
     }, [resources, otherResource, changeStats, interacted])
+
+    useEffect(() => {
+        setResources(otherResource)
+    }, [])
 
     const changeName = (event, index) => {
         let newItems = [...resources];
@@ -102,22 +107,30 @@ export default function OtherResources(props) {
     }
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} style={{ width: "100%" }}>
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
-                    <Typography variant="subtitle2" style={{ fontSize: "11px", textAlign: "center" }} >{'OTROS RECURSOS'}</Typography>
+                <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <Box/>
+                        <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'OTROS RECURSOS'}</Typography>
+                        {props.editable ?
+                            <IconButton size="small" onClick={addResource} style={{}}>
+                                <AddIcon />
+                            </IconButton> : <Box/>
+                        }
+                    </Box>
                     <Divider style={{ margin: ".3rem 0" }} />
-                    <Box style={{ display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
-                        {resources.map((resource, index) => (
+                    <Box style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", minHeight: "75%" }}>
+                        {resources?.map((resource, index) => (
                             <Box>
-                                <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                    <Box style={{ display: "flex", alignItems: "center", width: "50%" }}>
+                                <Box style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
+                                     <Box style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", margin: ".5rem", width: "100%" }}>
                                         <Box style={{ width: "50%" }}>
                                             <TextField
                                                 type="number"
                                                 disabled={!props.editable}
                                                 className={classes.textField}
-                                                style={{ width: "40%" }}
+                                                style={{ width: "40%", }}
                                                 value={resource.min}
                                                 InputProps={{
                                                     classes: {
@@ -142,6 +155,7 @@ export default function OtherResources(props) {
                                                 onChange={(event) => changeValue(event, index, "max")} />
                                         </Box>
                                         <TextField
+                                            fullWidth
                                             value={resource.name}
                                             disabled={!props.editable}
                                             placeholder={'Recurso'}
@@ -153,8 +167,8 @@ export default function OtherResources(props) {
                                             onChange={(event) => changeName(event, index)} />
                                     </Box>
                                     {props.editable &&
-                                        <IconButton onClick={() => removeItem(index)}>
-                                            <CancelIcon fontSize="small" />
+                                        <IconButton disabled={!props.editable} size="small" onClick={() => removeItem(index)}>
+                                            <CloseIcon fontSize="small" />
                                         </IconButton>
                                     }
                                 </Box>
@@ -162,17 +176,6 @@ export default function OtherResources(props) {
                         ))}
                     </Box>
                     <Divider style={{ margin: ".3rem 0" }} />
-                    <Box style={{ float: "left" }}>
-                        {props.editable &&
-                            <Button
-                                variant="outlined"
-                                onClick={addResource}>
-                                <Typography variant="subtitle2" style={{ fontSize: "8px", textAlign: "left" }} >
-                                    {'+ Añadir'}
-                                </Typography>
-                            </Button>
-                        }
-                    </Box>
                 </Box>
             </Paper>
         </div>

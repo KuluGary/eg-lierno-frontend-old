@@ -10,6 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Avatar from '@material-ui/core/Avatar';
 import { toHTML } from 'discord-markdown';
 import { MenuItem, Select } from '@material-ui/core';
+import Image from '../../ItemsUi/Image';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -149,7 +150,9 @@ function CampaignLogs(props) {
                 <Paper variant="outlined" style={{ padding: "1rem", width: "100%", }} >
                     <Box style={{ display: "flex", justifyContent: "space-between" }}>
                         <Box style={{ display: "flex" }}>
-                            <img alt={'avatar-icon'} src={logs[selectedCategory].discordData.guild.iconUrl} style={{ padding: ".5rem", maxWidth: "100px", maxHeight: "100px" }} />
+                            <Image
+                                src={logs[selectedCategory].discordData.guild.iconUrl}
+                                style={{ padding: ".5rem", maxWidth: "100px", maxHeight: "100px" }} />
                             <Box>
                                 <Typography variant="h6">
                                     {logs[selectedCategory].discordData.guild.name}

@@ -14,6 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { StringUtil } from "../../../helpers/string-util";
 import { useWidth } from '../../../helpers/media-query';
+import Image from "../../ItemsUi/Image";
 
 const useStyles = makeStyles({
     root: {
@@ -42,8 +43,9 @@ const useStyles = makeStyles({
 export default function CharacterTable(props) {
     const classes = useStyles();
     const [selectedData, setSelectedData] = useState();
-    const [page] = useState(0);
-    const [rowsPerPage] = useState(5);
+    // const [page] = useState(0);
+    const { page } = props
+    // const [rowsPerPage] = useState(5);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const { characters, profile, handleChangePage, handleChangeRowsPerPage } = props;
     const open = Boolean(anchorEl);
@@ -65,8 +67,9 @@ export default function CharacterTable(props) {
                     <TableRow>
                         {(width !== "xs") && <TableCell className={classes.smallCell}></TableCell>}
                         <TableCell>Nombre</TableCell>
+                        {(width !== "xs" && props.index === 1) && <TableCell>Jugador</TableCell>}
                         <TableCell>Clase</TableCell>
-                        {(width !== "xs") && <TableCell>Alineamiento</TableCell>}
+                        {(width !== "xs" && props.index === 0) && <TableCell>Alineamiento</TableCell>}
                         {(width !== "xs") && <TableCell>Trasfondo</TableCell>}
                         {(width !== "xs") && <TableCell></TableCell>}
                         <TableCell></TableCell>
@@ -74,35 +77,41 @@ export default function CharacterTable(props) {
                 </TableHead>
                 <TableBody>
                     {(characters && profile) && characters.length > 0 && characters
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .slice(page * props.rowsPerPage, page * props.rowsPerPage + props.rowsPerPage)
                         .map(char => (
                             <TableRow hover key={char._id} component={Link} to={'/characters/' + char._id} className={classes.link}>
                                 {(width !== "xs") &&
                                     <TableCell className={classes.smallCell}>
-                                        <div style={{
-                                            backgroundImage: `url(${char.flavor.portrait})`,
-                                            width: "5vw",
-                                            height: "5vw",
-                                            backgroundSize: "cover",
-                                            borderRadius: 10
-                                        }} />
+                                        <Image
+                                            mode="background"
+                                            usage="avatar"
+                                            src={char.flavor.portrait}
+                                            style={{
+                                                backgroundImage: `url(${char.flavor.portrait})`,
+                                                width: "5vw",
+                                                height: "5vw",
+                                                backgroundSize: "cover",
+                                                borderRadius: 10
+                                            }}
+                                        />
                                     </TableCell>}
                                 <TableCell>{char.flavor.traits.name}</TableCell>
+                                {(width !== "xs" && props.index === 1) && <TableCell>{char.player_name}</TableCell>}
                                 <TableCell>{char.stats.classes.map(charClass => StringUtil.generizaClase(charClass.className, char.flavor.traits.pronoun)).join(", ")}</TableCell>
-                                {(width !== "xs") && <TableCell>{char.stats.alignment}</TableCell>}
+                                {(width !== "xs" && props.index === 0) && <TableCell>{char.stats.alignment}</TableCell>}
                                 {(width !== "xs") && <TableCell>{char.stats.background.name}</TableCell>}
                                 {(width !== "xs") && <TableCell>{char.flavor.personality.personalityTraits}</TableCell>}
                                 <TableCell align="right">
                                     {props.profile && props.profile._id === char.player &&
                                         <Link>
                                             <IconButton onClick={(e) => {
-                                                console.log(char._id)
                                                 setSelectedData(char._id)
                                                 return handleMenu(e)
                                             }}>
                                                 <MoreVertIcon />
                                             </IconButton>
-                                        </Link>}
+                                        </Link>
+                                    }
                                 </TableCell>
                             </TableRow>))}
                 </TableBody>
@@ -118,7 +127,7 @@ export default function CharacterTable(props) {
                                 }
                             }
                             count={characters.length}
-                            rowsPerPage={rowsPerPage}
+                            rowsPerPage={props.rowsPerPage}
                             page={page}
                             onChangePage={handleChangePage}
                             onChangeRowsPerPage={handleChangeRowsPerPage} />
@@ -141,7 +150,10 @@ export default function CharacterTable(props) {
                 onClose={handleClose}
             >
                 <MenuItem onClick={() => props.history.push('/characters/' + selectedData)}>Editar</MenuItem>
-                {/* <MenuItem onClick={() => handleDeleteCharacter(selectedData)}>Eliminar</MenuItem> */}
+                <MenuItem onClick={() => {
+                    handleClose();
+                    props.deleteCharacter(selectedData)
+                }}>Eliminar</MenuItem>
             </Menu>
         </div>
     )

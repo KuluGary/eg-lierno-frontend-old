@@ -13,6 +13,7 @@ import CreatureList from './components/CreatureList'
 import MapScreen from '../MapScreen/MapScreen';
 import DiaryScreen from './components/DiaryScreen';
 import CampaignStats from './components/CampaignStats';
+import FactionScreen from '../FactionScreen/FactionScreen';
 
 const mapStateToProps = state => {
     return {
@@ -24,7 +25,7 @@ const mapStateToProps = state => {
 
 function CampaignProfile(props) {
     const [campaign, setCampaign] = useState();
-    const [categories] = useState(["Detalles", "Diario de campaña", "PNJs", "Mapas", "Estadísticas", "Logs"]);
+    const [categories] = useState(["Detalles", "Diario de campaña", "PNJs", "Facciones", "Mapas", "Estadísticas", "Logs"]);
     const [selectedCategory, setSelectedCategory] = useState(0);
 
     useEffect(() => {
@@ -92,21 +93,23 @@ function CampaignProfile(props) {
                 history={props.history}
                 dm={campaign.dm}
                 campaignId={campaign._id} />
-            case 3: return <MapScreen campaignId={campaign._id} history={props.history} />
-            case 4: return <CampaignStats
+            case 3: return <FactionScreen
+                campaignId={campaign._id} />
+            case 4: return <MapScreen campaignId={campaign._id} history={props.history} />
+            case 5: return <CampaignStats
                 campaignId={campaign._id}
                 name={campaign.name}
                 players={campaign.players}
                 dm={campaign.dm}
                 characters={campaign.characters}
                 description={campaign.flavor.synopsis} />
-            case 5: return <CampaignLogs
+            case 6: return <CampaignLogs
                 name={campaign.name}
                 players={campaign.players}
                 dm={campaign.dm}
                 characters={campaign.characters}
                 campaignId={campaign._id} />
-            case 6: return <Grid item component={Paper} variant="outlined" xs={12}>5</Grid>
+            case 7: return <Grid item component={Paper} variant="outlined" xs={12}>5</Grid>
             default: return <Grid item component={Paper} variant="outlined" xs={12}>5</Grid>
         }
     }

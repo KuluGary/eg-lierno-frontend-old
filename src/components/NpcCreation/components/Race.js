@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Race(props) {
-  const { addToCreatureStats } = props;
   const classes = useStyles();
   const [senses, setSenses] = useState(props.creature.stats.senses || []);
   const [senseAux, setSenseAux] = useState('');
@@ -65,12 +64,12 @@ export default function Race(props) {
   const [selectedSize, setSelectedSize] = useState(props.creature.stats.size || sizes[1]);
 
   useEffect(() => {
-    addToCreatureStats(senses, "senses");
-    addToCreatureStats(languages, "languages");
-    addToCreatureStats(selectedRace, "race");
-    addToCreatureStats(selectedSize, "size");
-    addToCreatureStats(speed, "speed");
-  }, [senses, languages, selectedRace, selectedSize, speed, addToCreatureStats])
+    props.addToCreatureStats(senses, "senses");
+    props.addToCreatureStats(languages, "languages");
+    props.addToCreatureStats(selectedRace, "race");
+    props.addToCreatureStats(selectedSize, "size");
+    props.addToCreatureStats(speed, "speed");
+  }, [senses, languages, selectedRace, selectedSize, speed])
 
   const handleKeyDown = (e, type) => {
     if (e.key === 'Enter') {
@@ -115,7 +114,7 @@ export default function Race(props) {
             <Select
               labelId="race-select-label"
               id="race-select"
-              value={selectedRace || races[1]}
+              value={selectedRace || races[0]}
               onChange={(e) => setSelectedRace(e.target.value)}
             >
               {races.map((race, index) =>
@@ -129,7 +128,7 @@ export default function Race(props) {
             <Select
               labelId="size-select-label"
               id="size-select"
-              value={selectedSize || sizes[2]}
+              value={selectedSize || sizes[0]}
               onChange={(e) => setSelectedSize(e.target.value)}
             >
               {sizes.map((size, index) =>

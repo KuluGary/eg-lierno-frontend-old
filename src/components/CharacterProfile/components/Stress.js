@@ -62,7 +62,7 @@ export default function Stress(props) {
                         value={props.stress}
                         defaultValue={0}
                         className={classes.textField}
-                        onChange={(event) => props.changeStats("stress", event.target.value)}
+                        onChange={(event) => props.changeStats("stress", parseInt(event.target.value))}
                         InputProps={{
                             classes: {
                                 input: classes.resize,

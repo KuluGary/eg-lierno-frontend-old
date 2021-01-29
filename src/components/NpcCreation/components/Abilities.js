@@ -68,7 +68,7 @@ export default function Abilities(props) {
         StringUtil.generiza("Brujo", "Bruja", "Bruje", props.pronoun),
         StringUtil.generiza("Clérigo", "Clériga", "Clérigue", props.pronoun),
         "Druida",
-        StringUtil.generiza("Explorador", "Exploradora", "Exploradore", props.pronoun),
+        "Montaraz",
         StringUtil.generiza("Hechicero", "Hechicera", "Hechicere", props.pronoun),
         StringUtil.generiza("Mago", "Maga", "Mague", props.pronoun),
         StringUtil.generiza("Paladín", "Paladina", "Paladine", props.pronoun)
@@ -237,7 +237,7 @@ export default function Abilities(props) {
                 }
             }
         },
-        [StringUtil.generiza("Explorador", "Exploradora", "Exploradore", props.pronoun)]: {
+        "Montaraze": {
             "components": {
                 "material": true,
                 "somatic": true,
@@ -377,7 +377,7 @@ export default function Abilities(props) {
                 }
             }
         },
-        [StringUtil.generiza("Explorador", "Exploradora", "Exploradore", props.pronoun)]: {
+        "Montaraz": {
             "components": {
                 "material": true,
                 "somatic": true,
@@ -816,7 +816,7 @@ export default function Abilities(props) {
 
     const modifyActions = (key, value, index) => {
         let newActions = [...actions];
-        newActions[index][key] = value;
+        newActions[index][key] = value.replace(/\n/g, "<br />");
         setActions(newActions);
     }
 
@@ -1706,7 +1706,7 @@ export default function Abilities(props) {
                                 <TextField
                                     fullWidth
                                     multiline
-                                    value={action.description}
+                                    value={action.description.replace(/<br \/>/gi, "\n")}
                                     onChange={(e) => modifyActions("description", e.target.value, index)}
                                     placeholder="Descripción" />
                             </Grid>

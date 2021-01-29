@@ -80,19 +80,12 @@ function CharacterProfile(props) {
     const [dialogOpen, setDialogOpen] = useState(false);
 
     useEffect(() => {
-        if (!props.characters) {
-            Api.fetchInternal('/characters/' + props.match.params.id)
-                .then(res => {
-                    setCharacter(res)
-                    setEditedCharacter(res)
-                    setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", (res && res.stats.spells.length > 0) && "Hechizos", "Opciones"].filter(el => el))
-                })
-        } else {
-            const selectedCharacter = props.characters.filter(character => character._id === props.match.params.id)[0];
-            selectedCharacter && setCharacter(selectedCharacter)
-            selectedCharacter && setEditedCharacter(selectedCharacter)
-            setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", (selectedCharacter && selectedCharacter.stats.spells.length > 0) && "Hechizos", "Opciones"].filter(el => el))
-        }
+        Api.fetchInternal('/characters/' + props.match.params.id)
+            .then(res => {
+                setCharacter(res)
+                setEditedCharacter(res)
+                setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", "Hechizos", "Opciones"].filter(el => el))
+            })
 
         const headers = {
             'Authorization': `Bearer ${process.env.REACT_APP_BITLY_ACCESS_TOKEN}`,
@@ -103,15 +96,15 @@ function CharacterProfile(props) {
             "group_guid": process.env.REACT_APP_BITLY_ACCESS_GROUP
         }
 
-        fetch("https://api-ssl.bitly.com/v4/shorten", {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(body)
-        })
-        .then(res => res.json())
-            .then(res => {
-                console.log(res.link, res)
-                setShortUrl(res.link)})
+        if (!Api.isDev()) {
+            fetch("https://api-ssl.bitly.com/v4/shorten", {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(body)
+            })
+                .then(res => res.json())
+                .then(res => setShortUrl(res.link))
+        }
     }, [])
 
     useEffect(() => {
@@ -189,14 +182,18 @@ function CharacterProfile(props) {
                 editable={editable} />
             case 1: return <Background
                 character={editedCharacter.flavor}
+                features={editedCharacter.stats}
                 settings={editedCharacter.config}
                 changeFlavor={changeFlavor}
+                changeStats={changeStats}
+                pronoun={editedCharacter.flavor.traits.pronoun}
                 editable={editable} />
             case 2: return <Features
                 features={editedCharacter.stats}
                 changeStats={changeStats}
-                raceId={editedCharacter.stats.race}
-                subraceIndex={editedCharacter.stats.subrace}
+                race={editedCharacter.stats.race}
+                // raceId={editedCharacter.stats.race}
+                // subraceIndex={editedCharacter.stats.subrace}
                 pronoun={editedCharacter.flavor.traits.pronoun}
                 editable={editable} />
             case 3: return <Items
@@ -210,18 +207,12 @@ function CharacterProfile(props) {
                 settings={editedCharacter.config}
                 changeStats={changeStats}
                 editable={editable} />
-            case 4: return (editedCharacter && editedCharacter.stats.spells.length > 0) ?
-                <Spells
-                    spellIds={editedCharacter.stats.spells}
-                    features={editedCharacter.stats}
-                    proficiencyBonus={proficiencyBonus}
-                    changeStats={changeStats}
-                    editable={editable} /> :
-                <Options
-                    settings={editedCharacter.config}
-                    editable={editable}
-                    changeOptions={changeOptions}
-                />
+            case 4: return <Spells
+                spellIds={editedCharacter.stats.spells}
+                features={editedCharacter.stats}
+                proficiencyBonus={proficiencyBonus}
+                changeStats={changeStats}
+                editable={editable} />
             default: return <Options
                 settings={editedCharacter.config}
                 editable={editable}
@@ -258,12 +249,15 @@ function CharacterProfile(props) {
                                 charClass={editedCharacter.stats.classes}
                                 pronoun={editedCharacter.flavor.traits.pronoun}
                                 playerId={editedCharacter.player}
+                                character={character}
                                 edited={edited}
+                                editable={editable}
                                 save={save}
                                 openDialog={openDialog} />
                         </Grid>
                         <Tabs
                             variant="scrollable"
+                            scrollButtons="on"
                             value={selectedCategory}
                             onChange={handleChange}
                             aria-label="simple tabs example">

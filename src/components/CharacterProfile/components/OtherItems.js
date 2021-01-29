@@ -7,12 +7,12 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles({
     root: {
-        height: "98.5%",
-        margin: "0 .1rem .2rem .1rem",
+        height: "100%",
+        width: "100%"
     },
     paper: {
         padding: "1rem",
@@ -133,8 +133,8 @@ export default function OtherItems(props) {
                                         }}></TextField>
                                 </Box>
                                 {props.editable &&
-                                    <IconButton onClick={() => removeItem(index)} style={{ maxWidth: "20%" }}>
-                                        <CancelIcon fontSize="small" />
+                                    <IconButton size="small" onClick={() => removeItem(index)} style={{ maxWidth: "20%" }}>
+                                        <CloseIcon fontSize="small" />
                                     </IconButton>
                                 }
                             </Box>

@@ -35,7 +35,6 @@ const mapStateToProps = state => {
 
 function Flavor(props) {
   const classes = useStyles();
-  const { addToCreatureFlavor, changeName, addToCreatureStats } = props;
   const alignments = [
     "Sin alineamiento",
     StringUtil.generiza("Legal bueno", "Legal buena", "Legal buene", props.pronoun),
@@ -61,6 +60,9 @@ function Flavor(props) {
     (props.creature.flavor.personality.personality && props.creature.flavor.personality.personality.replace(/<br \/>/gi, "\n")) || '');
   const [physical, setPhysical] = useState(
     (props.creature.flavor.personality.physical && props.creature.flavor.personality.physical.replace(/<br \/>/gi, "\n")) || '');
+  // const [ideals, setIdeals] = useState(props.creature.flavor.personality.ideals || '');
+  // const [bonds, setBonds] = useState(props.creature.flavor.personality.bonds || '');
+  // const [flaws, setFlaws] = useState(props.creature.flavor.personality.flaws || '');
   const [story, setStory] = useState(
     (props.creature.flavor.personality.backstory && props.creature.flavor.personality.backstory.replace(/<br \/>/gi, "\n")) || '');
   const [faction, setFaction] = useState(props.creature.flavor.faction);
@@ -75,28 +77,35 @@ function Flavor(props) {
 
   useEffect(() => {
     if (campaignAvailable.length > 0) {
-      changeName(name);
-      addToCreatureFlavor(pronoun, "pronoun");
-      addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
-      addToCreatureFlavor(image, "imageUrl");
-      addToCreatureFlavor(faction, "faction");
-      addToCreatureStats(alignment, "alignment");
-      addToCreatureFlavor(gender, "gender");
-      addToCreatureFlavor(characterClass, "class")
-      addToCreatureFlavor(campaigns.map(campaign => ({
+      props.changeName(name);
+      props.addToCreatureFlavor(pronoun, "pronoun");
+      props.addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
+      props.addToCreatureFlavor(image, "imageUrl");
+      props.addToCreatureFlavor(faction, "faction");
+      props.addToCreatureStats(alignment, "alignment");
+      props.addToCreatureFlavor(gender, "gender");
+      props.addToCreatureFlavor(characterClass, "class")
+      props.addToCreatureFlavor(campaigns.map(campaign => ({
         campaignId: campaign.id || campaignAvailable.filter(campaignA => campaignA._id === campaign.campaignId)[0]._id,
         unlocked: campaign.unlocked
       })), "campaign")
-      const perso = {
+      // const personality = {
+      //   // personalityTrait1,
+      //   // personalityTrait2,
+      //   // ideals,
+      //   // bonds,
+      //   // flaws,
+      //   personality: 
+      //   backstory: story.replace(/\n/g, "<br />")
+      // }
+      props.addToCreatureFlavor({
         personality: personality.replace(/\n/g, "<br />"),
         physical: physical.replace(/\n/g, "<br />"),
         backstory: story.replace(/\n/g, "<br />")
-      }
-      
-      addToCreatureFlavor(perso, "personality")
+      }, "personality")
       // props.addToCreatureFlavor(props.profile._id, "owner")
     }
-  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, personality, physical, story, campaignAvailable, changeName, addToCreatureFlavor, addToCreatureStats])
+  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, personality, physical, story])
 
   const addCampaign = () => {
     const indexOf = campaignAvailable.findIndex(campaignAvailable => campaigns.every(campaign => campaign.id !== campaignAvailable._id))
@@ -171,7 +180,7 @@ function Flavor(props) {
                 checked={props.creature.flavor.nameIsProper}
                 onChange={() => props.addToCreatureFlavor(!props.creature.flavor.nameIsProper, "nameIsProper")}
                 name="checkedB"
-                color="primary"
+                color="default"
               />
             }
             label="¿Nombre propio?"
@@ -192,7 +201,7 @@ function Flavor(props) {
           </FormControl>
         </Grid>
         <Grid item xs={3} style={{ display: (image && image.length > 0) ? 'block' : 'none' }}>
-          <img alt={'class'} className={classes.image} src={image} />
+          <img className={classes.image} src={image} />
         </Grid>
         <Grid item sm={(image && image.length > 0) ? 9 : 12}>
           <FormControl className={classes.formControl}>
@@ -259,18 +268,9 @@ function Flavor(props) {
         </Grid>
         <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
-            {/* <TextField
+            <TextField
               id="personalityTrait1"
               name="personalityTrait1"
-              onChange={(e) => setPersonalityTrait1(e.target.value)}
-              value={personalityTrait1}
-              multiline
-              label="Rasgo de personalidad I"
-              fullWidth
-            /> */}
-            <TextField
-              id="personality"
-              name="personality"
               onChange={(e) => setPersonality(e.target.value)}
               value={personality}
               multiline
@@ -282,8 +282,8 @@ function Flavor(props) {
         <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
             <TextField
-              id="physical"
-              name="physical"
+              id="personalityTrait2"
+              name="personalityTrait2"
               onChange={(e) => setPhysical(e.target.value)}
               value={physical}
               multiline
@@ -291,46 +291,7 @@ function Flavor(props) {
               fullWidth
             />
           </FormControl>
-        </Grid>
-        {/* <Grid item xs={12} sm={12}>
-          <FormControl className={classes.formControl}>
-            <TextField
-              id="ideals"
-              name="ideals"
-              onChange={(e) => setIdeals(e.target.value)}
-              value={ideals}
-              multiline
-              label="Ideales"
-              fullWidth
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <FormControl className={classes.formControl}>
-            <TextField
-              id="bonds"
-              name="bonds"
-              onChange={(e) => setBonds(e.target.value)}
-              value={bonds}
-              multiline
-              label="Vínculos"
-              fullWidth
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <FormControl className={classes.formControl}>
-            <TextField
-              id="flaws"
-              name="flaws"
-              onChange={(e) => setFlaws(e.target.value)}
-              value={flaws}
-              multiline
-              label="Defectos"
-              fullWidth
-            />
-          </FormControl>
-        </Grid> */}
+        </Grid>     
         <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
             <TextField

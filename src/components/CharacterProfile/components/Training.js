@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box';
 const useStyles = makeStyles({
     root: {
         // height: "100%"
-        margin: ".1rem 0 .1rem .1rem",
+        // margin: ".1rem 0 .1rem .1rem",
     },
     paper: {
         padding: ".4rem 0",
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
         // alignSelf: "stretch"    ,
     },
     stat: {
-        margin: "0 1.5rem",
+        // margin: "0 1.5rem",
         textAlign: "center",
         display: "flex",
         alignItems: "center",

@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Slide from '@material-ui/core/Slide';
 import { Map, ImageOverlay, LayersControl } from 'react-leaflet'
+import Image from '../ItemsUi/Image';
 import 'leaflet/dist/leaflet.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -99,7 +100,21 @@ function Location(props) {
                                     <Typography variant="subtitle1">
                                         {location.flavor.subtitle}
                                     </Typography>}
-                                <img alt="banner" className={classes.image} src={location.flavor.banner} />
+                                <Image
+                                    style={{
+                                        maxHeight: "50vh",
+                                        maxWidth: "100%",
+                                        display: "block",
+                                        margin: "0 auto"
+                                    }}
+                                    errorStyle={{
+                                        height: "15vh",
+                                        maxWidth: "100%",
+                                        display: "block",
+                                        margin: "0 auto"
+                                    }}
+                                    src={location.flavor.banner}
+                                />
                                 {Object.keys(location.flavor.information).map((key, index) => (
                                     Array.isArray(location.flavor.information[key]) ?
                                         location.flavor.information[key].map(item => (

@@ -16,7 +16,6 @@ const useStyles = makeStyles({
         paddingLeft: "4px",
     },
     paper: {
-        margin: 0,
         padding: "1rem",
         height: "100%"
     },
@@ -63,27 +62,28 @@ export default function Armor(props) {
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={1} >
-                <Grid item container lg={8} xs={12}>
+            <Grid container spacing={1}>
+                <Grid item container spacing={1} lg={8} xs={12}>
                     <Grid item lg={4} xs={12}>
                         <CharacterDetails
                             traits={character["traits"]}
+                            features={props.features}
+                            changeFlavor={props.changeFlavor}
+                            changeStats={props.changeStats}
+                            editable={props.editable}
+                            pronoun={props.pronoun} />
+                    </Grid>
+                    <Grid item container lg={4} xs={12} style={{ gap: 8 }}>
+                        <Personality
+                            traits={character["personality"]}
                             changeFlavor={props.changeFlavor}
                             editable={props.editable} />
                     </Grid>
-                    <Grid item container lg={8} xs={12}>
-                        <Grid item lg={7} xs={12}>
-                            <Personality
-                                traits={character["personality"]}
-                                changeFlavor={props.changeFlavor}
-                                editable={props.editable} />
-                        </Grid>
-                        <Grid item lg={5} xs={12}>
-                            <Portrait
-                                image={character.portrait}
-                                changeFlavor={props.changeFlavor}
-                                editable={props.editable} />
-                        </Grid>
+                    <Grid item lg={4}>
+                        <Portrait
+                            image={character.portrait}
+                            changeFlavor={props.changeFlavor}
+                            editable={props.editable} />
                     </Grid>
                     <Grid item lg={6} xs={12}>
                         <PsychDescription
@@ -91,25 +91,33 @@ export default function Armor(props) {
                             changeFlavor={props.changeFlavor}
                             editable={props.editable} />
                     </Grid>
-                    <Grid item lg={6} xs={12} style={{ display: "flex", flexDirection: "column" }}>
+                    <Grid container item lg={6} xs={12} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                         {(props.settings && props.settings.generalOptions.experience) &&
-                            <Experience
-                                editable={props.editable} />
+                            <Grid item lg={12}>
+                                <Experience
+                                    editable={props.editable} />
+                            </Grid>
                         }
                         {(props.settings && props.settings.generalOptions.training) &&
-                            <Training
-                                editable={props.editable} />
+                            <Grid item lg={12}>
+                                <Training
+                                    editable={props.editable} />
+                            </Grid>
                         }
-                        <PhysicalDescription
-                            description={character.physicalDescription}
-                            changeFlavor={props.changeFlavor}
-                            editable={props.editable} />
+                        <Grid item lg={12}>
+                            <PhysicalDescription
+                                description={character.physicalDescription}
+                                changeFlavor={props.changeFlavor}
+                                editable={props.editable} />
+                        </Grid>
                     </Grid>
                 </Grid>
-                <Grid item lg={4} xs={12}>
+                <Grid item lg={4} xs={12} container spacing={1}>
+                    <Grid item lg={12} xs={12}>                        
                     <Backstory
                         story={character["backstory"]}
                         editable={props.editable} />
+                        </Grid>
                 </Grid>
                 {/* <Grid item lg={12} sm={12} md={6} className={classes.traitBox}>
                     <Paper variant="outlined" className={classes.paper}>

@@ -11,10 +11,10 @@ const useStyles = makeStyles({
         width: "100%",
         // display: "flex",
         flexDirection: "column",
-        margin: ".2rem .1rem .1rem 0",
+        // margin: ".2rem .1rem .1rem 0",
     },
     paper: {
-        margin: ".1rem",
+        // margin: ".1rem",
         padding: ".5rem",
         display: "flex",
         flexDirection: "row",
@@ -50,7 +50,7 @@ export default function PsychDescription(props) {
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
-                    <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'Descripción psicológica'}</Typography>
+                    <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'DESCRIPCIÓN PSICOLÓGICA'}</Typography>
                     <TextField
                         style={{ height: "100%" }}
                         fullWidth

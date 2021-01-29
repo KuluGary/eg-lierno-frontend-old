@@ -10,9 +10,9 @@ import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ModalImage from "react-modal-image";
 import Stats from '../CharacterProfile/components/Stats';
 import Slide from '@material-ui/core/Slide';
+import Image from '../ItemsUi/Image';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -82,8 +82,8 @@ function MonsterProfile(props) {
                         <Grid item xs={12} sm={12} md={6} className={classes.gridItem}>
                             <Paper variant="outlined" className={classes.profileBox}>
                                 <Box>
-                                    <Typography variant={'h5'} className={classes.title}>
-                                    <   IconButton onClick={props.history.goBack} className={classes.link}>
+                                    <Typography variant={'h2'} className={classes.title}>
+                                        <   IconButton onClick={props.history.goBack} className={classes.link}>
                                             <ArrowBackIosIcon />
                                         </IconButton>
                                         <Box component="span" style={{ height: "100%" }}>
@@ -119,7 +119,9 @@ function MonsterProfile(props) {
 
                                     <Divider className={classes.divider} />
 
-                                    <Stats mode="npc" stats={monster.stats.abilityScores} modifiers={monster.stats.abilityScoreModifiers} />
+                                    <Grid container spacing={1}>
+                                        <Stats mode="npc" stats={monster.stats.abilityScores} modifiers={monster.stats.abilityScoreModifiers} />
+                                    </Grid>
 
                                     <Divider className={classes.divider} />
 
@@ -249,12 +251,27 @@ function MonsterProfile(props) {
                         <Grid item xs={12} sm={12} md={6} className={classes.gridItem}>
                             <Paper variant="outlined" className={classes.profileBox}>
                                 <Box className={classes.imageBox}>
-                                    <ModalImage
+                                    {/* <ModalImage
                                         hideDownload
                                         className={classes.image}
                                         small={monster.flavor.imageUrl}
                                         large={monster.flavor.imageUrl}
-                                    />
+                                    /> */}
+                                    <Image
+                                        // mode=""
+                                        src={monster.flavor.imageUrl}
+                                        mode="modal"
+                                        style={{
+                                            height: "65vh",
+                                            maxWidth: "100%",
+                                            display: "block",
+                                            margin: "0 auto",
+                                            backgroundColor: "white"
+                                        }}
+                                        errorStyle={{
+                                            height: "65vh",
+                                            width: "100%",
+                                        }} />
                                 </Box>
                                 <span dangerouslySetInnerHTML={{ __html: monster.flavor.description }} />
 

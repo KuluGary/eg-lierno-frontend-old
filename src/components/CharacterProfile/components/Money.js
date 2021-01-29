@@ -9,7 +9,8 @@ const useStyles = makeStyles({
         // height: "100%"
         margin: "0 .1rem .2rem .1rem",
         display: "flex",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
+        height:"100%"
     },
     paper: {
         padding: ".5rem",
@@ -19,7 +20,8 @@ const useStyles = makeStyles({
         justifyContent: "center",
         // alignSelf: "stretch"  
         width: "32%",
-        margin: ".1rem"
+        margin: ".1rem",
+        height:"100%"
     },
     stat: {
         // margin: "0 1.5rem",
@@ -59,7 +61,7 @@ export default function Money(props) {
 
     return (
         <div className={classes.root}>
-            <Paper variant="outlined" className={classes.paper}>
+            <Paper elevation={0} className={classes.paper}>
                 <Box component="span" className={classes.stat}>
                     <TextField
                         type="number"
@@ -79,7 +81,7 @@ export default function Money(props) {
                         }} />
                 </Box>
             </Paper>
-            <Paper variant="outlined" className={classes.paper}>
+            <Paper elevation={0} className={classes.paper}>
                 <Box component="span" className={classes.stat}>
                     {/* <TextField variant="outlined" size="small" label="Plata" /> */}
                     <TextField
@@ -100,7 +102,7 @@ export default function Money(props) {
                         }} />
                 </Box>
             </Paper>
-            <Paper variant="outlined" className={classes.paper}>
+            <Paper elevation={0} className={classes.paper}>
                 <Box component="span" className={classes.stat}>
                     {/* <TextField variant="outlined" size="small" label="Oro" /> */}
                     <TextField

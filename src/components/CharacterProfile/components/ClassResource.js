@@ -8,9 +8,9 @@ import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles({
     root: {
         width: "100%",
-        // height: "100%",
+        height: "100%",
         // margin: "0 .1rem .2rem .1rem"
-        margin: ".1rem"
+        // margin: ".1rem"
     },
     paper: {
         padding: "1rem",
@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 
     },
     resize: {
-        fontSize: 8,
+        fontSize: 11,
         textAlign: 'center'
     },
     textField: {

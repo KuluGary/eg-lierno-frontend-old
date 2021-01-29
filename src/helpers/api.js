@@ -35,4 +35,8 @@ export default class Api {
             throw error;
         }
     };
+
+    static isDev = () => {
+        return process.env.NODE_ENV === "development";
+    }    
 }

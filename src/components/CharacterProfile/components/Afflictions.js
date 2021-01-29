@@ -6,14 +6,14 @@ import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import { Select, MenuItem, Table, TableBody, TableRow, TableCell, IconButton } from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles({
     root: {
-        height: "100%",
+        // height: "100%",
         // margin: "0 .1rem .2rem .1rem",
         margin: ".1rem",
-        width: "100%",
+        width: "95%",
         paddingTop: ".1rem"
     },
     paper: {
@@ -177,8 +177,8 @@ export default function Afflictions(props) {
                                     </TableCell>
                                     <TableCell>
                                         {props.editable &&
-                                            <IconButton onClick={() => removeAffliction(index)}>
-                                                <CancelIcon fontSize="small" />
+                                            <IconButton size="small" onClick={() => removeAffliction(index)}>
+                                                <CloseIcon fontSize="small" />
                                             </IconButton>
                                         }
                                     </TableCell>

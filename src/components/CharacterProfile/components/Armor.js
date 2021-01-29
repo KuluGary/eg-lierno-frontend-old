@@ -7,9 +7,8 @@ import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
     root: {
-        // height: "100%"
-        marginBottom: ".1rem",
-        marginTop: 0,
+        height: "100%",
+        // margin: ".2rem .1rem",
         paddingLeft: ".1rem",
         width: "100%"
     },
@@ -23,7 +22,6 @@ const useStyles = makeStyles({
         height: "100%"
     },
     stat: {
-        margin: "0 1.5rem",
         textAlign: "center"
     },
     link: {
@@ -61,7 +59,7 @@ export default function Armor(props) {
                         value={props.ac}
                         className={classes.textField}
                         disabled={!props.editable}
-                        onChange={(event) => props.changeStats("armorClass", event.target.value)}
+                        onChange={(event) => props.changeStats("armorClass", parseInt(event.target.value))}
                         InputProps={{
                             classes: {
                                 input: classes.resize,

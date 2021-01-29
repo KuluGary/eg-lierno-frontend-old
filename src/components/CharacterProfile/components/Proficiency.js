@@ -7,22 +7,24 @@ import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
     root: {
-        // height: "100%"
+        height: "100%",
+        width: "100%"
     },
     paper: {
         // margin: "0 .2rem .2rem .2rem",
-        margin: ".1rem",
-        marginTop: 0,
+        height: "100%",
+        // margin: ".2rem .1rem",
         padding: ".2rem",
         display: "flex",
         flexDirection: "row",
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center',
     },
     stat: {
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between"
+        width: "100%"
+        // justifyContent: "space-between"
     },
     link: {
         color: 'inherit',
@@ -37,7 +39,7 @@ const useStyles = makeStyles({
         "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
             display: "none"
         },
-        maxWidth: "25%",
+        width: "25%",
 
         "& input[type=number]": {
             "-moz-appearance": "textfield"
@@ -56,7 +58,6 @@ export default function Proficiency(props) {
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
-                    {/* <Typography style={{ fontSize: "14px" }}>{props.proficiency}</Typography> */}
                     <TextField
                         type="number"
                         className={classes.textField}

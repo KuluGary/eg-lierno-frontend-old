@@ -308,6 +308,7 @@ class MonsterCreation extends Component {
                     disabled = true
                 }
                 break;
+            default: break;
         }
 
         return disabled;
@@ -321,6 +322,7 @@ class MonsterCreation extends Component {
             case "error":
                 toast.error(msg);
                 break;
+            default: break;
         }
     }
 

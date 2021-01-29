@@ -9,8 +9,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 const useStyles = makeStyles({
     root: {
         width: "100%",
+        height: "100%",
         // margin: "0 .1rem .2rem .1rem"
-        margin: ".1rem"
+        // margin: ".1rem"
     },
     paper: {
         padding: "1rem",
@@ -22,7 +23,7 @@ const useStyles = makeStyles({
         height: "100%"
     },
     stat: {
-        margin: "0 1.5rem",
+        // margin: "0 1.5rem",
         textAlign: "center"
     },
     link: {
@@ -61,7 +62,7 @@ export default function SpellCasting(props) {
                     >
                         {options.map(item => <MenuItem value={item}>{item}</MenuItem>)}
                     </Select>
-                    <Typography variant="subtitle2" style={{ fontSize: "8px" }} >{'HAB. DE HECHIZOS'}</Typography>
+                    <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'HAB. DE HECHIZOS'}</Typography>
                 </Box>
             </Paper>
         </div>

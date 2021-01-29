@@ -58,7 +58,9 @@ export default function Race(props) {
     addToCreatureStats(selectedRace, "race");
     addToCreatureStats(selectedSize, "size");
     addToCreatureStats(speed, "speed");
-  }, [senses, languages, selectedRace, selectedSize, speed, addToCreatureStats])
+  }, [senses, languages, selectedRace, selectedSize, speed, 
+    // addToCreatureStats
+  ])
 
   const handleKeyDown = (e, type) => {
     if (e.key === 'Enter') {

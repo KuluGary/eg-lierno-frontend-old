@@ -93,7 +93,7 @@ export default function Core(props) {
 
       addToCreatureStats(newSavingThrows, 'savingThrows')
       addToCreatureStats(skills, 'skills')
-  }, [abilityScores, proficiencyBonus, savingThrows, skills, abilities, addToCreatureStats])
+  }, [abilityScores, proficiencyBonus, savingThrows, skills])
 
   const calculateAbilityScoreModifiers = (ability, proficiency = 0) => {
     return Math.floor((ability - 10) / 2 + proficiency);

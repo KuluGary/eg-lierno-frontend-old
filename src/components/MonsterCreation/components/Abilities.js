@@ -68,7 +68,8 @@ export default function Abilities(props) {
         StringUtil.generiza("Brujo", "Bruja", "Bruje", props.pronoun),
         StringUtil.generiza("Clérigo", "Clériga", "Clérigue", props.pronoun),
         "Druida",
-        StringUtil.generiza("Explorador", "Exploradora", "Exploradore", props.pronoun),
+        // StringUtil.generiza("Explorador", "Exploradora", "Exploradore", props.pronoun),
+        "Montaraz",
         StringUtil.generiza("Hechicero", "Hechicera", "Hechicere", props.pronoun),
         StringUtil.generiza("Mago", "Maga", "Mague", props.pronoun),
         StringUtil.generiza("Paladín", "Paladina", "Paladine", props.pronoun)
@@ -237,7 +238,7 @@ export default function Abilities(props) {
                 }
             }
         },
-        [StringUtil.generiza("Explorador", "Exploradora", "Exploradore", props.pronoun)]: {
+        "Montaraze": {
             "components": {
                 "material": true,
                 "somatic": true,
@@ -377,7 +378,7 @@ export default function Abilities(props) {
                 }
             }
         },
-        [StringUtil.generiza("Explorador", "Exploradora", "Exploradore", props.pronoun)]: {
+        "Montaraz": {
             "components": {
                 "material": true,
                 "somatic": true,

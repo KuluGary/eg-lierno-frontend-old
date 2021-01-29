@@ -8,9 +8,23 @@ export default class Auth {
         all: ["SUPER_ADMIN", "USER"]
     }
     
+    static setToken = (token) => {
+        return new Promise ((resolve, reject) => {
+            if (this.isValidUser(token)) {
+                try {
+                    localStorage.setItem("token", token);
+                    resolve();
+                } catch (e) {
+                    reject(e)
+                }
+            } else {
+                reject("Token inválido.")
+            }
+        })
+    }
 
     static loggedIn = () => {
-        if (!!this.getToken() && this.isValidUser()) {
+        if (!!this.getToken() && this.isValidUser() && !this.isTokenExpired()) {
             return true;
         }
 
@@ -18,12 +32,9 @@ export default class Auth {
     }
 
     static isTokenExpired = token => {
-        try {
-            const decoded = decode(token);
-            return (decoded.exp < Date.now() / 1000)
-        } catch (err) {
-            return false;
-        }
+        const decoded = decode(token || this.getToken());
+
+        return (decoded.exp < Date.now() / 1000)
     }
 
     static getToken = () => {
@@ -36,15 +47,26 @@ export default class Auth {
         if (token) {
             const decoded = decode(token);
             const role = decoded.role || "USER";
-            console.log(checkRole, role)
 
             return role === checkRole;
         }
+    }
+
+    static getStreamToken = () => {
+        const { streamToken } = decode(this.getToken());
+
+        return streamToken;
     }
 
     static isValidUser = (token) => {
         const decoded = decode(token || this.getToken());
 
         return decoded.isActive;
+    }
+
+    static me = () => {
+        const decoded = decode(this.getToken());
+
+        return decoded;
     }
 }

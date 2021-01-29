@@ -4,17 +4,19 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles({
     root: {
-        height: "100%",
-        margin: ".1rem",
-        paddingBottom: ".2rem"
+        // height: "100%",
+        width: "100%",
+        // margin: ".1rem",
+        // marginBottom: ".5rem",
+        height: "100%"
         // margin: "0 .1rem .2rem .1rem",
     },
     paper: {
@@ -26,9 +28,10 @@ const useStyles = makeStyles({
         width: "100%"
     },
     stat: {
-        margin: "0 1.5rem",
+        // margin: "0 1.5rem",
         textAlign: "center",
-        width: "100%"
+        width: "100%",
+        // position: "relative"
     },
     link: {
         color: 'inherit',
@@ -51,6 +54,10 @@ export default function Wounds(props) {
         }
 
     }, [wounds])
+
+    useEffect(() => {
+        setWounds(props.wounds);
+    }, [])
 
     const changeDescription = (event, index) => {
         let newItems = [...wounds];
@@ -88,16 +95,24 @@ export default function Wounds(props) {
     }
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} style={{ width: "100%" }}>
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
-                    <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'HERIDAS'}</Typography>
+                    <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <Box/>
+                        <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'HERIDAS'}</Typography>
+                        {props.editable ?
+                            <IconButton size="small" onClick={addWound} style={{}}>
+                                <AddIcon />
+                            </IconButton> : <Box/>
+                        }
+                    </Box>
                     <Divider style={{ margin: "0" }} />
                     <Box style={{ display: "flex", flexDirection: "column", minHeight: "75%" }}>
                         {wounds.map((wound, index) => {
                             return (
                                 <Box style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
-                                    <Box style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", margin: ".5rem" }}>
+                                    <Box style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", margin: ".5rem", width: "100%" }}>
                                         <Radio
                                             size="small"
                                             disabled={!props.editable}
@@ -118,8 +133,8 @@ export default function Wounds(props) {
                                             }}></TextField>
                                     </Box>
                                     {props.editable &&
-                                        <IconButton onClick={() => removeWound(index)}>
-                                            <CancelIcon fontSize="small" />
+                                        <IconButton disabled={!props.editable} onClick={() => removeWound(index)}>
+                                            <CloseIcon fontSize="small" />
                                         </IconButton>
                                     }
                                 </Box>
@@ -127,7 +142,7 @@ export default function Wounds(props) {
                         })}
                     </Box>
                     <Divider style={{ margin: ".3rem 0" }} />
-                    {props.editable &&
+                    {/* {props.editable &&
                         <Box style={{ float: "left" }}>
                             <Button
                                 variant="outlined"
@@ -135,7 +150,7 @@ export default function Wounds(props) {
                                 <Typography variant="subtitle2" style={{ fontSize: "8px", textAlign: "left" }} >{'+ Añadir'}</Typography>
                             </Button>
                         </Box>
-                    }
+                    } */}
                 </Box>
             </Paper>
         </div>

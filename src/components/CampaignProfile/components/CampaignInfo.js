@@ -23,19 +23,25 @@ function CampaignProfile(props) {
     const classes = useStyles();
 
     return (
-        <Box>
-            <Box className={classes.container}>
-                <NavLink to={'/campaigns'} className={classes.link}>
-                    <ArrowBackIosIcon fontSize="small" />
-                </NavLink>
-                <Typography variant="h5" inline>
-                    {props.name}
-                </Typography>
-            </Box>
-            <Box className={classes.game}>
-                <Typography variant="caption">
-                    {props.game}
-                </Typography>
+        <Box style={{ padding: ".5rem" }}>
+            <Box style={{ display: "flex", alignItems: "center" }}>
+                <Box style={{ margin: "0 .5rem" }}>
+                    <NavLink to={'/campaigns'} className={classes.link}>
+                        <ArrowBackIosIcon fontSize="small" />
+                    </NavLink>
+                </Box>
+                <Box>
+                    <Box>
+                        <Typography variant="h5" inline>
+                            {props.name}
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Typography variant="caption">
+                            {props.game}
+                        </Typography>
+                    </Box>
+                </Box>
             </Box>
         </Box>
     )

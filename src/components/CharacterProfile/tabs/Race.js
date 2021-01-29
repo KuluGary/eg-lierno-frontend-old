@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid'
 import Api from "../../../helpers/api";
+import Image from '../../ItemsUi/Image';
 
 const useStyles = makeStyles({
     root: {
@@ -76,7 +77,7 @@ function Race(props) {
                                         {race.name}
                                     </Typography>
                                     <Typography variant="subtitle1">
-                                        {race.subraces[subraceIndex].name}
+                                        {race.subraces[subraceIndex]?.name}
                                     </Typography>
                                 </Box>
                             </Box>
@@ -100,9 +101,9 @@ function Race(props) {
                                 </Box>}
                         </Grid>
                         <Grid item md={6}>
-                            <img
-                                className={classes.image}
-                                src={race.imageUrl} />
+                            <Image
+                                style={{ ...classes.image }}
+                                src={race.imageUrl}/>
                         </Grid>
                     </Grid>
                 </Paper>}

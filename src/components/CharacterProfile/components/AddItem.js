@@ -94,6 +94,7 @@ export default function AddItem(props) {
 
     const addItem = () => {
         let item = {};
+        console.log(itemToAdd)
 
         if (addNew) {
             Api.fetchInternal("/item", {
@@ -132,7 +133,7 @@ export default function AddItem(props) {
     return (
         <div className={classes.container}>
             <DialogTitle>Añade un item</DialogTitle>
-            <DialogContent style={{ width: "40vw" }}>
+            <DialogContent>
                 <Box style={{ width: "100%" }}>
                     <Box component="p" style={{ display: "flex", alignItems: "center" }}>
                         <Typography>
@@ -246,10 +247,10 @@ export default function AddItem(props) {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => props.setDialogOpen(false)} color="primary">
+                <Button onClick={() => props.setDialogOpen(false)} color="default">
                     Cerrar
                      </Button>
-                <Button onClick={addItem} color="primary">
+                <Button variant={"outlined"} onClick={addItem} color="default">
                     Guardar
                      </Button>
             </DialogActions>

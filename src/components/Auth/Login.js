@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +20,7 @@ import { toast } from 'react-toastify';
 import { GoogleLogin } from 'react-google-login';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
+import { Divider } from '@material-ui/core';
 
 function Copyright(props) {
     return (
@@ -53,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         textDecoration: 'none',
-        color: !localStorage.getItem("theme") ? theme.palette.primary.main : theme.palette.primary.light
+        color: !localStorage.getItem("theme") ? theme.palette.primary.main : theme.palette.primary.light,
+        float: "right"
     },
     progress: {
         color: grey[400]
@@ -92,22 +93,20 @@ function Login(props) {
                 },
                 body: JSON.stringify(user)
             })
-                .then(res => {
-                    if (res.token) {
-                        const token = res.token;
-
-                        if (Auth.isValidUser(token)) {
-                            localStorage.setItem('token', token);
-
-                            console.log(props.location)
-                            props.authenticated();
-                            props.history.push(props.location.state?.requestedPath ?? "/");
-                        } else {
-                            toast.error("Este usuario no está activado. Revisa tu bandeja de entrada.")
-                            setLoading(false);
-                        }
+                .then(({ token, message }) => {
+                    if (token) {
+                        Auth.setToken(token)
+                            .then(() => {
+                                props.authenticated();
+                                props.history.push(props.location.state?.requestedPath ?? "/");
+                            })
+                            .catch(() => {
+                                toast.error("Este usuario no está activado. Revisa tu bandeja de entrada.");
+                                setLoading(false);
+                            })
                     } else {
-                        setError(res.message)
+                        setError(message);
+                        setLoading(false);
                     }
                 })
                 .catch(err => {
@@ -140,29 +139,25 @@ function Login(props) {
                 },
                 body: JSON.stringify(user)
             })
-                .then(res => {
-                    if (res.token) {
-                        const token = res.token;
-
-                        if (Auth.isValidUser(token)) {
-                            localStorage.setItem('token', token);
-
-                            props.authenticated();
-                            props.history.push("/")
-                        } else {
-                            toast.error("Este usuario no está activado. Revisa tu bandeja de entrada.")
-                            setLoading(false);
-                        }
+                .then(({ token, message }) => {
+                    if (token) {
+                        Auth.setToken(token)
+                            .then(() => {
+                                props.authenticated();
+                                props.history.push(props.location.state?.requestedPath ?? "/");
+                            })
+                            .catch(() => {
+                                toast.error("Este usuario no está activado. Revisa tu bandeja de entrada.");
+                                setLoading(false);
+                            })
                     } else {
-                        setError(res.message)
+                        setError(message)
                     }
                 })
                 .catch(err => {
                     setError(err.message)
                     setLoading(false);
                 })
-
-            console.log(user);
         }
     }
 
@@ -176,7 +171,34 @@ function Login(props) {
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">Entrar</Typography>
+                        <GoogleLogin
+                            clientId={"586863595362-p9idqhg5t832kl4l9pclj3o3knpvi7br.apps.googleusercontent.com"}
+                            className={classes.google}
+                            onSuccess={responseGoogle}
+                            onFailure={responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                            render={renderProps => (
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="outlined"
+                                    color="default"
+                                    onClick={renderProps.onClick}
+                                    disabled={renderProps.disabled}
+                                    className={classes.submit}
+                                    startIcon={
+                                        <FontAwesomeIcon style={{ color: "red" }} size="sm" icon={faGoogle} />
+                                    }>
+                                    {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar con Google'}
+                                </Button>
+                            )}
+                        />
                         <form className={classes.form} noValidate onSubmit={login}>
+                            <Box style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                <Divider style={{ width: "30%" }} />
+                                <Box style={{ margin: "0 1rem", opacity: .5 }}>O</Box>
+                                <Divider style={{ width: "30%" }} />
+                            </Box>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -204,6 +226,9 @@ function Login(props) {
                                 autoComplete="current-password"
                                 onChange={(e) => setPassWord(e.target.value)}
                             />
+                            <Link to="/recover" className={classes.link} variant="span">
+                                {"Recuperar contraseña"}
+                            </Link>
                             <FormControlLabel
                                 control={
                                     <Checkbox
@@ -214,6 +239,8 @@ function Login(props) {
                             />
                             <Button
                                 type="submit"
+                                // variant="outlined"
+                                // autoFocus
                                 fullWidth
                                 variant="contained"
                                 color="primary"
@@ -221,36 +248,6 @@ function Login(props) {
                                 className={classes.submit}>
                                 {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar'}
                             </Button>
-                            <Grid container>
-                                <Grid item>
-                                    <Link to="/recover" className={classes.link} variant="span">
-                                        {"¿Has olvidado tu contraseña?"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
-                            <GoogleLogin
-                                clientId={"586863595362-p9idqhg5t832kl4l9pclj3o3knpvi7br.apps.googleusercontent.com"}
-                                // buttonText="Login"
-                                className={classes.google}
-                                onSuccess={responseGoogle}
-                                onFailure={responseGoogle}
-                                cookiePolicy={'single_host_origin'}
-                                render={renderProps => (
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        color="secondary"
-                                        onClick={renderProps.onClick}
-                                        disabled={renderProps.disabled}
-                                        className={classes.submit}
-                                        startIcon={
-                                            <FontAwesomeIcon size="sm" icon={faGoogle} />
-                                        }>
-                                        {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar con Google'}
-                                    </Button>
-                                )}
-                            />
                         </form>
                     </div>
                     <Box mt={8}>

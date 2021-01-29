@@ -7,7 +7,8 @@ import Box from '@material-ui/core/Box';
 const useStyles = makeStyles({
     root: {
         // margin: "0 .1rem .2rem .1rem",
-        margin: ".1rem",
+        // margin: ".1rem",
+        height: "100%",
         width: "100%"
     },
     paper: {
@@ -58,7 +59,7 @@ export default function SpellBonus(props) {
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
                     <Typography variant="h6">{spellBonus}</Typography>
-                    <Typography variant="subtitle2" style={{ fontSize: "8px" }} >{'BONO DE HECHIZOS'}</Typography>
+                    <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'BONO DE HECHIZOS'}</Typography>
                 </Box>
             </Paper>
         </div>
