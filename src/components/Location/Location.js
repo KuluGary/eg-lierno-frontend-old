@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Slide from '@material-ui/core/Slide';
 import { Map, ImageOverlay, LayersControl } from 'react-leaflet'
-import Image from '../ItemsUi/Image';
-import 'leaflet/dist/leaflet.css';
+import Image from '../Image/Image';
+import '../../../node_modules/leaflet/dist/leaflet.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {

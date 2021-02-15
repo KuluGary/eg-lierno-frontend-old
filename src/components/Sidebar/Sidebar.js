@@ -16,7 +16,7 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDiscord } from '@fortawesome/free-brands-svg-icons'
-import BookIcon from '@material-ui/icons/Book';
+import ExploreIcon from '@material-ui/icons/Explore';
 import Auth from '../../helpers/auth';
 
 const drawerWidth = 240;
@@ -94,11 +94,9 @@ export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const location = useLocation()
-  console.log(location)
 
   return (
     <div className={classes.root}>
-
       <Drawer
         variant={"permanent"}
         className={clsx(classes.drawer, {
@@ -134,13 +132,13 @@ export default function MiniDrawer(props) {
               </ListItemIcon>
               <ListItemText primary={'Partidas'} />
             </ListItem>
-          </Link>
-          <Link to="/reference" className={classes.link}>
-            <ListItem button selected={location.pathname.includes('/reference')}>
+          </Link>  
+          <Link to="/explore" className={classes.link}>
+            <ListItem button selected={location.pathname.includes('/explore')}>
               <ListItemIcon>
-                <BookIcon />
+                <ExploreIcon />
               </ListItemIcon>
-              <ListItemText primary={'Referencias'} />
+              <ListItemText primary={'Explorar'} />
             </ListItem>
           </Link>   
           {Auth.hasRole("SUPER_ADMIN") &&

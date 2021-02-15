@@ -43,6 +43,7 @@
     "deploy": "npm run build && electron-builder --publish=always"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.7",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-brands-svg-icons": "^5.15.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
@@ -62,6 +63,7 @@
     "electron-is-dev": "^1.2.0",
     "electron-log": "^4.1.2",
     "electron-updater": "^4.3.1",
+    "graphql": "^15.5.0",
     "iframe-resizer-react": "^1.0.3",
     "jwt-decode": "^2.2.0",
     "leaflet": "^1.6.0",

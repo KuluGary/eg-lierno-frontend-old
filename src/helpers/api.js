@@ -1,8 +1,11 @@
 import Auth from './auth';
+import { ApolloClient, InMemoryCache, HttpLink, from } from "@apollo/client";
+import { onError } from '@apollo/client/link/error'
 
 export default class Api {
-    static async fetchInternal(url, options) {
-        url = process.env.REACT_APP_ENDPOINT + url;
+    static async fetchInternal(url, options, version = "v1") {
+        console.log(url, options, version)
+        url = process.env.REACT_APP_ENDPOINT + version + url;
 
         const headers = {
             Accept: 'application/json',
@@ -13,14 +16,14 @@ export default class Api {
             headers["Authorization"] = "Bearer " + await Auth.getToken();
 
         }
-        
+
         return fetch(url, {
             headers,
             ...options
         })
             .then(response => response.json())
             .then(response => response.payload || response)
-    }
+    }    
 
     static _checkStatus = response => {
         if (response.status >= 200 && response.status < 300) {
@@ -38,5 +41,26 @@ export default class Api {
 
     static isDev = () => {
         return process.env.NODE_ENV === "development";
-    }    
+    }
 }
+
+
+const errorLink = onError(({ graphqlErrors, networkError }) => {
+    if (graphqlErrors) {
+        graphqlErrors.map(({ message, location, path }) => {
+            return alert(`Graphql error ${message}`)
+        })
+    }
+})
+
+const apolloLink = from([
+    errorLink,
+    new HttpLink({ uri: "http://localhost:3001/api/v2" })
+])
+
+export const apolloClient = new ApolloClient({
+    cache: new InMemoryCache({
+        addTypename: false
+    }),
+    link: apolloLink
+})

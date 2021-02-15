@@ -4,8 +4,7 @@ export default class Auth {
     static token = null;
     static userRoles = {
         admins: ["SUPER_ADMIN"],
-        users: ["USER"],
-        all: ["SUPER_ADMIN", "USER"]
+        users: ["USER", "SUPER_ADMIN"]
     }
     
     static setToken = (token) => {

@@ -1,0 +1,825 @@
+{
+    "action": [
+        {
+            "title": "Atacar",
+            "icon": "crossed-swords",
+            "subtitle": "Ataque cuerpo a cuerpo o a distacia",
+            "description": "Realiza con tu arma un ataque cuerpo a cuerpo o a distancia",
+            "reference": "PHB, pgs. 192,194-195.",
+            "bullets": [
+                "Ciertos rasgos, como el rasgo <i> Ataque Adicional </i> del guerrero, te permiten realizar más de un ataque con esta acción. Cada uno de estos ataques es una tirada a parte y puede ser a diferentes criaturas. Puedes moverte entre estos ataques.",
+                "Cuando atacas con un arma cuerpo a cuerpo ligera, puedes usar una acción adicional para atacar con la otra mano (ver la acción adicional <i>Ataque con dos armas</i>).",
+                "Puedes reemplazar uno de tus ataques cuerpo a cuerpo con un <i> Agarrar </i> o un <i> Empujar </i>.",
+                "Algunas condiciones dan ventaja en el ataque: ataques contra objetivos cegados, paralizados, petrificados, apresados, aturdidos o inconscientes; ataques cuerpo a cuerpo contra objetivos derribados; ataques de atacantes invisibles u ocultos.",
+                "Algunas condiciones ponen en desventaja el ataque: ataques contra objetivos invisibles u ocultos; ataques a distancia contra objetivos derribados; ataques de atacantes cegados, asustados, envenenados o apresados."
+            ]
+        },
+        {
+            "title": "Agarrar (Grapple)",
+            "icon": "grab",
+            "subtitle": "Ataque especial cuerpo a cuerpo",
+            "description": "Intentas agarrar a una criatura o luchar con ella",
+            "reference": "PHB, pg. 195.",
+            "bullets": [
+                "Puedes usar la acción <i> Atacar </i> para realizar un ataque cuerpo a cuerpo especial, un agarre. Si eres capaz de realizar múltiples ataques con la acción <i>Atacar</i>, este ataque reemplaza a uno de ellos.",
+                "El objetivo de tu agarre debe estar dentro de tu alcance y tener un tamaño que esté, como mucho, una categoría por encima de la tuya.",
+                "Utilizando al menos una mano libre, intentas sujetar al objetivo mediante una prueba de agarrar en lugar de una tirada de ataque: haz una prueba de Fuerza (Atletismo) enfrentada a una prueba de Fuerza (Atletismo) o Destreza (Acrobacia) del objetivo, según elija este último.",
+                "Si tienes éxito, sometes al objetivo al estado Agarrado."
+            ]
+        },
+        {
+            "title": "Empujar (Shove)",
+            "icon": "hand",
+            "subtitle": "Ataque especial cuerpo a cuerpo",
+            "description": "Empuja a una criatura, ya sea para derribarla o para alejarla de ti",
+            "reference": "PHB, pg. 195.",
+            "bullets": [
+                "Utilizando la acción de <i>Atacar</i>, puedes realizar un ataque cuerpo a cuerpo especial para empujar a un criatura. Si eres capaz de realizar múltiples ataques con la acción Atacar, este ataque reemplaza a uno de ellos.",
+                "El objetivo de tu empuje no debe ser más de un tamaño más grande que tú, y debe estar a tu alcance.",
+                "Realiza una prueba de Fuerza (Atletismo) enfrentada por la Fuerza (Atletismo) o Destreza (Acrobacia) del objetivo (el objetivo elige la habilidad a usar).",
+                "Si tienes éxito, ya sea que derribles al objetivo o lo empujes 5 pies lejos de ti."
+            ]
+        },
+        {
+            "title": "Lanzar un conjuro",
+            "icon": "magic-swirl",
+            "subtitle": "Tiempo de lanzamiento de 1 acción",
+            "description": "Lanza un conjuro con un tiempo de lanzamiento de 1 acción",
+            "reference": "PHB, pg. 192.",
+            "bullets": [
+                "No puedes lanzar un conjuro con tu acción y un conjuro diferente con tu acción adicional en el mismo turno, excepto si la acción se usa para lanzar un truco.",
+                "El objetivo de un conjuro debe estar dentro del rango del conjuro. Para apuntar a algo, debes tener un camino claro hacia él, de modo que no pueda estar detrás de la cobertura total.",
+                "Los conjuros con componentes materiales no consumen el material a menos que se indique explícitamente. A menos que se indique el costo de un material, puedes suponer que el costo es insignificante y que el material simplemente está disponible en una bolsa de componentes.",
+                "Algunos conjuros requieren que mantengas la concentración para mantener su magia activa. Si pierdes la concentración, tal conjuro termina. Pierdes la concentración en un conjuro si lanzas otro conjuro que requiere concentración o cuando estás incapacitado. Cada vez que tomas daño, debes hacer una tirada de salvación de Constitución para mantener tu concentración. La CD es igual a 10 o la mitad del daño que recibes, el que sea mayor."
+            ]
+        },
+        {
+            "title": "Correr (Dash)",
+            "icon": "sprint",
+            "subtitle": "Velocidad de movimiento doble",
+            "description": "Obtienes movimiento adicional para el turno en curso",
+            "reference": "PHB, pg. 192.",
+            "bullets": [
+                "El incremento es igual a tu velocidad, después de aplicarle cualquier modificador."
+            ]
+        },
+        {
+            "title": "Destrabarse (Disengage)",
+            "icon": "journey",
+            "subtitle": "Previene ataques de oportunidad",
+            "description": "Tu movimiento no provoca ataques de oportunidad durante el resto del turno",
+            "reference": "PHB, pg. 192.",
+            "bullets": [
+            ]
+        },
+        {
+            "title": "Esquivar (Dodge)",
+            "icon": "aura",
+            "subtitle": "Incrementa la defensa",
+            "description": "Te enfocas por completo en evitar ataques",
+            "reference": "PHB, pg. 192.",
+            "bullets": [
+                "Hasta el comienzo de tu siguiente turno, cualquier tirada de ataque hecha contra ti tiene una desventaja si puedes ver al atacante, y haces lanzamientos de salvación de Destreza con ventaja.",
+                "Pierdes este beneficio si estás <i> incapacitado </i> o si tu velocidad cae a 0."
+            ]
+        },
+        {
+            "title": "Escapar de un agarre (Escape)",
+            "icon": "manacles",
+            "subtitle": "Liberarte de un agarre",
+            "description": "Escapas de un agarre",
+            "reference": "PHB, pg. 195.",
+            "bullets": [
+                "Para escapar de un agarre, debes tener éxito en una prueba de Fuerza (Atletismo) o Destreza (Acrobacia) enfrentado por la Fuerza (Atletismo) de quien te sujeta.",
+                "Escapar de otras condiciones que te limitan (como esposas) puede requerir una prueba de Destreza o Fuerza, según lo especifique la condición."
+            ]
+        },
+        {
+            "title": "Ayudar (Help)",
+            "icon": "telepathy",
+            "subtitle": "Le proporcionas ventaja a un aliado",
+            "description": "Propoprcionas a un aliado ventaja en una prueba de habilidad o de ataque",
+            "reference": "PHB, pg. 192.",
+            "bullets": [
+                "El objetivo obtiene ventaja en la siguiente prueba de habilidad para realizar la tarea con la que lo estás ayudando.",
+                "Alternativamente, el objetivo gana ventaja en la siguiente tirada de ataque contra una criatura a menos de 5 pies de ti.",
+                "La ventaja dura hasta el comienzo de tu próximo turno."
+            ]
+        },
+        {
+            "title": "Usar un objeto",
+            "icon": "snatch",
+            "subtitle": "Interactuar con un segundo objeto",
+            "description": "Interactuar con un segundo objeto o usar habilidades de objetos especiales",
+            "reference": "PHB, pg. 193.",
+            "bullets": [
+                "Puedes interactuar con un objeto de forma gratuita durante tu turno (como sacar un arma o abrir una puerta). Si deseas interactuar con un segundo objeto, usa esta acción.",
+                "Cuando un objeto requiere tu acción para su uso, también realizas esta acción"
+            ]
+        },
+        {
+            "title": "Usar un escudo",
+            "icon": "round-shield",
+            "subtitle": "Equipar o desequipar un escudo",
+            "description": "Equipar o desequipar un escudo",
+            "reference": "PHB, pgs. 144-146.",
+            "bullets": [
+                "Un escudo siempre toma una acción para equipar o desequipar",
+                "La armadura tarda varios minutos en equiparse o desequiparse."
+            ]
+        },
+        {
+            "title": "Esconderse",
+            "icon": "hood",
+            "subtitle": "",
+            "description": "Intentar ocultarse",
+            "reference": "PHB, pg. 192.",
+            "bullets": [
+                "No puedes esconderte de una criatura que puede verte. Debes tener una cobertura total, estar en un área muy obscura, ser invisible o bloquear la visión del enemigo.",
+                "Si haces ruido (como gritar una advertencia o derribar un jarrón), te descubrirás.",
+                "Cuando intentes esconderte, haz una prueba de Destreza (Sigilo) y anota el resultado. Hasta que te descubran o dejes de esconderte, el total de esa tirada será enfrentado por una prueba de Sabiduría (Percepción) de cualquier criatura que busque activamente las señales de tu presencia.",
+                "Una criatura te advierte incluso si no está buscando, a menos que tu pruebda de Sigilo sea más alta que su Percepción Pasiva.",
+                "Fuera de combate, también puedes realizar una prueba de Destreza (Sigilo) para ocultarte de los enemigos, escabullirte de los guardias, escabullirte sin ser notado, o acechar a alguien sin ser visto o escuchado."
+            ]
+        },
+        {
+            "title": "Buscar",
+            "icon": "magnifying-glass",
+            "subtitle": "",
+            "description": "Dedicas tu atención a encontrar algo",
+            "reference": "PHB, pg. 193.",
+            "bullets": [
+                "Dependiendo de la naturaleza de tu búsqueda, el DM puede pedirte que realices una prueba de Sabiduría (Percepción) o una prueba de Inteligencia (Investigación)."
+            ]
+        },
+        {
+            "title": "Preparar una acción (Ready)",
+            "icon": "stopwatch",
+            "subtitle": "Elige una circunstancia y una acción",
+            "description": "Elige una circunstancia y una acción de respuesta",
+            "reference": "PHB, pg. 193.",
+            "bullets": [
+                "Primero, decide qué circunstancia (que puedas percibir) activará tu reacción.",
+                "Luego, elige la acción que realizarás en respuesta a dicha activación. Como alternativa, en vez de una acción puedes decidir moverte hasta tu velocidad.",
+                "Cuando ocurra la circunstancia de activación, podrás elegir entre usar tu reacción al terminar esta o ignorarla.",
+                "Cuando te preparas para lanzar un conjuro, lo lanzas con normalidad pero retienes su energía, que liberarás usando tu reacción cuando se produzca la circunstancia activadora. Sólo los conjuros cuyo tiempo de lanzamiento sea de 1 acción pueden formar parte de una acción preparada. Además, el esfuerzo que implica contener las energías mágicas hasta el momento de liberarlas exige concentración."
+            ]
+        },
+        {
+            "title": "Usar un rasgo de clase",
+            "icon": "embrassed-energy",
+            "subtitle": "Algunos rasgos utilizan acciones",
+            "description": "Utiliza un rasgo racial o de clase que use una acción",
+            "reference": "Revisa la página de tu clase para más información.",
+            "bullets": [
+    
+            ]
+        },
+        {
+            "title": "Estabilizar a una criatura",
+            "icon": "first-aid",
+            "subtitle": "Primeros auxilios a criatura moribunda",
+            "description": "Evita que una criatura moribunda tenga que realizar tiradas de salvacion contra muerte",
+            "reference": "PHB, pg. 197.",
+            "bullets": [
+                "Realiza un prueba de Sabiduría (Medicina) CD 10.",
+                "Con éxito, la criatura está estable y ya no necesita realizar tiradas de salvación contra muerte.",
+                "Una criatura estable recupera 1 punto de vida después de 1d4 horas."
+            ]
+        },
+        {
+            "title": "Improvisar",
+            "icon": "juggler",
+            "subtitle": "Cualquier acción no en esta lista",
+            "description": "Realiza cualquier acción que puedas imaginar",
+            "reference": "PHB, pg. 193.",
+            "bullets": [
+                "Cuando describes una acción no detallada en las reglas, el DM te dirá si la acción es posible y que prueba requieres hacer, si la hay, para determinar el éxito o el fallo."
+            ]
+        }
+    ],
+    "bonus_action": [
+        {
+            "title": "Ataque con dos armas",
+            "icon": "crossed-swords",
+            "subtitle": "Se usa con la acción de Ataque",
+            "description": "Ataca con una arma en tu otra mano",
+            "reference": "PHB, pgs. 192,194-195.",
+            "bullets": [
+                "Sólo utilizable si tomas la acción de <i>Atacar</i> y atacas con un arma cuerpo a cuerpo ligera que estés sosteniendo en una mano.",
+                "Realiza un sólo ataque con una arma cuerpo a cuerpo ligera distinta que estés sosteniendo en la otra mano.",
+                "No agregas tu modificador de característica al daño del ataque adicional, salvo que este sea negativo.",
+                "Si alguna de las armas tiene la propiedad de arrojadiza, puedes lanzarla en lugar de hacer el ataque cuerpo a cuerpo con ella."
+            ]
+        },
+        {
+            "title": "Lanzar un conjuro",
+            "icon": "magic-swirl",
+            "subtitle": "Lanzamiento de 1 acción adicional",
+            "description": "Lanza un conjuro con un tiempo de lanzamiento de 1 acción adicional",
+            "reference": "PHB, pg. 192.",
+            "bullets": [
+                "No puedes lanzar un conjuro con tu acción y un conjuro distinto con tu acción adicional en el mismo turno, salvo que la acción se use para lanzar un truco.",
+                "Para más detalles ve la accion de  <i>Lanzar un conjuro</i>."
+            ]
+        },
+        {
+            "title": "Usar un rasgo de clase",
+            "icon": "embrassed-energy",
+            "subtitle": "Rasgos que utilizan 1 acción adicional",
+            "description": "Utiliza un rasgo racial o de clase que use una acción adicional",
+            "reference": "Revisa la página de tu clase para más información.",
+            "bullets": [
+    
+            ]
+        }
+    ],
+    "condition": [
+        {
+            "title": "Cegado (Blinded)",
+            "icon": "one-eyed",
+            "subtitle": "No puedes ver",
+            "description": "No puedes ver",
+            "reference": "PHB, pg. 290.",
+            "bullets": [
+                "Una criatura cegada no puede ver y falla automáticamente todas las pruebas de característica que requieran vista.",
+                "Las tiradas de ataque contra la criatura tienen ventaja y las tiradas de ataque hechas por la criatura tienen desventaja."
+            ]
+        },
+        {
+            "title": "Hechizado (Charmed)",
+            "icon": "smitten",
+            "subtitle": "Estás hechizado",
+            "description": "Estás hechizado por otra criatura",
+            "reference": "PHB, pg. 290.",
+            "bullets": [
+                "Una criatura hechizada no puede atacar ni elegir como objetivo de efectos dañinos o mágicos a quien la hechizó.",
+                "Quien hechizó a la criatura tiene ventaja en las pruebas de característica para interactuar socialmente con ella."
+            ]
+        },
+        {
+            "title": "Ensordecido (Deafened)",
+            "icon": "elf-ear",
+            "subtitle": "No puedes oír",
+            "description": "No puedes oír",
+            "reference": "PHB, pg. 290.",
+            "bullets": [
+                "Una criatura ensordecida no puede oír y falla automáticamente todas las pruebas de característica que requieran el oído."
+            ]
+        },
+        {
+            "title": "Cansancio (Exhaustion)",
+            "icon": "crawl",
+            "subtitle": "Estás cansado",
+            "description": "El cansansio se mide en seis niveles",
+            "reference": "PHB, pg. 291.",
+            "bullets": [
+                "<table><tr><th>Nivel</th><th></th><th></th><th style='text-align:left'>Consecuencia</th></tr><tr><td>1</td><td></td><td></td><td>Desventaja en pruebas de característica</td></tr><tr><td>2</td><td></td><td></td><td>Velocidad reducida a la mitad</td></tr><tr><td>3</td><td></td><td></td><td>Desventaja en tiradas de ataque y de salvación</td></tr><tr><td>4</td><td></td><td></td><td>Puntos de golpe máximos reducidos a la mitad</td></tr><tr><td>5</td><td></td><td></td><td>Velocidad reducida a 0</td></tr><tr><td>6</td><td></td><td></td><td>Muerte</td></tr></table>",
+                "En cada nivel de cansancio sufres tanto la consecuencia del mismo como todas las de los niveles inferiores.",
+                "Finalizar un descanso largo reduce el nivel de cansancio en 1, siempre y cuando hayas comido y bebido algo durante el mismo.",
+                "También, ser resucitado de entre los muertos reduce el nivel de cansancio por 1."
+            ]
+        },
+        {
+            "title": "Asustado (Frightened)",
+            "icon": "sharp-smile",
+            "subtitle": "Estás asustado",
+            "description": "Estás asustado",
+            "reference": "PHB, pg. 290.",
+            "bullets": [
+                "Una criatura asustada tiene desventaja en las pruebas de característica y tiradas de ataque mientras pueda ver a la fuente de su miedo.",
+                "La criatura no puede acercarse a la fuente de su miedo voluntariamente."
+            ]
+        },
+        {
+            "title": "Agarrado (Grappled)",
+            "icon": "grab",
+            "subtitle": "Te han agarrado",
+            "description": "Estás agarrado",
+            "reference": "PHB, pg. 290.",
+            "bullets": [
+                "La velocidad de una criatura agarrada es 0 y no puede aumentar por encima de ese valor.",
+                "Este estado termina si quien agarra queda incapacitado (consulta Incapacitado).",
+                "Este estado también termina si algún efecto aleja a la criatura de quien (o lo que) la tiene agarrada, como cuando el conjuro ola atronadora hace salir despedida a una criatura."
+            ]
+        },
+        {
+            "title": "Incapacitado (Incapacited)",
+            "icon": "internal-injury",
+            "subtitle": "No tienes acciones ni reacciones",
+            "description": "Una criatura incapacitada no puede llevar a cabo acciones ni reacciones",
+            "reference": "PHB, pg. 290.",
+            "bullets": [
+            ]
+        },
+        {
+            "title": "Invisible",
+            "icon": "invisible",
+            "subtitle": "No te pueden ver",
+            "description": "No pueden verte sin la ayuda de magia o sentidos especiales.",
+            "reference": "PHB, pg. 291.",
+            "bullets": [
+                "Es imposible ver a una criatura invisible sin la ayuda de magia o sentidos especiales.",
+                "En lo que a esconderse respecta, se considera que la criatura se encuentra en una zona muy oscura, aunque se puede determinar su ubicación si esta hace algún ruido o deja huellas.",
+                "Las tiradas de ataque contra la criatura tienen desventaja y las tiradas de ataque hechas por la criatura tienen ventaja."
+            ]
+        },
+        {
+            "title": "Paralizado (Paralyzed)",
+            "icon": "internal-injury",
+            "subtitle": "Estás paralizado",
+            "description": "No puedes hacer nada",
+            "bullets": [
+                "Una criatura paralizada está incapacitada (consulta Incapacitado) y no puede moverse ni hablar.",
+                "La criatura falla automáticamente las tiradas de salvación de Fuerza y Destreza.",
+                "Las tiradas de ataque contra la criatura tienen ventaja.",
+                "Todos los ataques que impacten a la criatura son críticos si el atacante está a 5 pies o menos de ella."
+            ]
+        },
+        {
+            "title": "Petrificado (Petrified)",
+            "icon": "stone-pile",
+            "subtitle": "Te has transfomado en piedra",
+            "description": "Te transformas, junto con todos los objetos no mágicos que llevas encima o tengas puestos, en una sustancia sólida e inanimada (normalmente piedra).",
+            "reference": "PHB, pg. 291.",
+            "bullets": [
+                "Tu peso se multiplica por diez y dejas de envejecer.",
+                "Estás incapacitado, no puedes moverse ni hablar y no eres consciente de tu entorno.",
+                "Attack rolls against you have advantage.",
+                "Fallas automáticamente las tiradas de salvación de Fuerza y Destreza.",
+                "Tienes resistencia contra todo el daño.",
+                "Eres inmune al veneno y la enfermedad. Sin embargo, cualquier enfermedad o veneno que ya estuviera presente en tu cuerpo queda suspendido, pero no neutralizado."
+            ]
+        },
+        {
+            "title": "Envenenado (Poisoned)",
+            "icon": "deathcab",
+            "subtitle": "Estás envenenado",
+            "description": "Estás envenenado",
+            "reference": "PHB, pg. 292.",
+            "bullets": [
+                "Tienes desventaja en las tiradas de ataque y pruebas de característica."
+            ]
+        },
+        {
+            "title": "Derribado (Prone)",
+            "icon": "crawl",
+            "subtitle": "Estás derribado",
+            "description": "Estás derribado",
+            "reference": "PHB, pg. 292.",
+            "bullets": [
+                "Tu única opción de movimineto es arrastarte, a menos que te levantes.",
+                "Tienes desventaja en las tiradas de ataque.",
+                "Las tiradas de ataque contra ti tienen ventaja si el atacante está a 5 pies de ti, de lo contrario el ataque tiene desventaja."
+            ]
+        },
+        {
+            "title": "Apresado (Restrained)",
+            "icon": "imprisoned",
+            "subtitle": "Estás apresado",
+            "description": "Estás apresado",
+            "reference": "PHB, pg. 292.",
+            "bullets": [
+                "La velocidad de una criatura apresada es 0 y no puede aumentar por encima de este valor.",
+                "Las tiradas de ataque contra la criatura tienen ventaja y las tiradas de ataque hechas por la criatura tienen desventaja.",
+                "La criatura tiene desventaja en las tiradas de salvación de Destreza."
+            ]
+        },
+        {
+            "title": "Aturdido (Stunned)",
+            "icon": "internal-injury",
+            "subtitle": "Estás aturdido",
+            "description": "Estás aturdido",
+            "reference": "PHB, pg. 292.",
+            "bullets": [
+                "Una criatura aturdida está incapacitada (consulta Incapacitado), no puede moverse y sólo es capaz de hablar con voz entrecortada.",
+                "La criatura falla automáticamente las tiradas de salvación de Fuerza y Destreza.",
+                "las tiradas de ataque contra la criatura tienen ventaja."
+            ]
+        },
+        {
+            "title": "Inconsciente (Unconscious)",
+            "icon": "coma",
+            "subtitle": "Estás inconsciente",
+            "description": "Estás inconsciente",
+            "reference": "PHB, pg. 292.",
+            "bullets": [
+                "Un criatura inconsciente está incapacitada (consulta Incapacitado), no puede moverse o hablar y no es consciente de su entorno.",
+                "La criatura deja caer cualquier cosa que esté sujetando y cae derribada.",
+                "La criatura falla automáticamente las tiradas de salvación de Fuerza y Destreza.",
+                "Las tiradas de ataque contra la criatura tienen ventaja.",
+                "Todos los ataques que impacten a la criatura son críticos si el atacante está a 5 pies o menos de ella"
+            ]
+        },
+        {
+            "title": "Muriendo (Dying)",
+            "icon": "dead-head",
+            "subtitle": "Estás muriendo",
+            "description": "Has alcanzado los 0 puntos de golpe y estás muriendo",
+            "reference": "PHB, pg. 197.",
+            "bullets": [
+                "Si el daño que no te mata te reduce a 0 puntos de golpe, caes inconsciente y comienzas a morir.",
+                "Si recibes sanación, inmediatamente recuperas la consciencia y dejas de morir.",
+                "Cuando estás muriendo, al inicio de cada uno de tus turnos realizas una tirada de salvación contra muerte. Tira un d20 sin sumar ningún modificador.",
+                "Si sacas 10 o más es un éxito, 9 o menos es un fallo.",
+                "En tu tercer éxito te estabilizas.",
+                "En tu tercer fallo mueres.",
+                "Sacar 1 en la tirada cuenta como 2 fallos.",
+                "Sacar 20 en la tirada inmediatamente te recupera 1 punto de golpe.",
+                "Pueden estabilizarte utilizando la acción de Estabilizar y superando una prueba de Sabiduría (Medicina) CD 10.",
+                "Una vez estable recuperas 1 punto de golpe después de 1d4 horas."
+            ]
+        }
+    ],
+    "environment" : [
+        {
+            "title": "Ligeramente obscuro",
+            "icon": "bleeding-eye",
+            "subtitle": "Desventaja en Percepción",
+            "description": "Luz tenue, neblinas dispersas, follaje moderado",
+            "reference": "PHB, pg. 183.",
+            "bullets": [
+                "Las criaturas tienen <b>desventaja en pruebas de Sabiduría (Percepción)</b> que se basen en la vista."
+            ]
+        },
+        {
+            "title": "Muy obscuro",
+            "icon": "lightning-tear",
+            "subtitle": "Considerado Cegado",
+            "description": "Obscuridad, niebla opaca, follaje denso",
+            "reference": "PHB, pg. 183.",
+            "bullets": [
+                "Una criatura en una área muy obscura sufre los efectos del <b>estado cegado</b>."
+            ]
+        },
+        {
+            "title": "Luz brillante",
+            "icon": "star-pupil",
+            "subtitle": "Visión normal",
+            "description": "La luz brillante permite ver con normalidad a la mayoría de la criaturas",
+            "reference": "PHB, pg. 183.",
+            "bullets": [
+                "Incluso los días grises proporcionan luz brillante, al igual que hacen antorchas, linternas, hogueras y otras fuentes de iluminación que especifíquen un radio de luz."
+            ]
+        },
+        {
+            "title": "Luz tenue",
+            "icon": "semi-closed-eye",
+            "subtitle": "Ligeramente obscuro",
+            "description": "Luz tenue también llamada sombras",
+            "reference": "PHB, pg. 183.",
+            "bullets": [
+                "Hace que la zona esté <b>ligeramente obscura</b>.",
+                "Una zona de este tipo suele hacer de frontera entre una de luz brillante, como la que crea una antorcha, y la obscuridad circundante.",
+                "La luz suave del ocaso o el amanecer se considera luz tenue. Una noche de luna llena especialmente brillante bañará la tierra de luz tenue."
+            ]
+        },
+        {
+            "title": "Obscuridad",
+            "icon": "worried-eyes",
+            "subtitle": "Muy obscuro",
+            "description": "La obscuridad hace que la zona esté muy obscura",
+            "reference": "PHB, pg. 183.",
+            "bullets": [
+                "Crea una zona <b>muy obscura</b>.",
+                "Los personajes se encuentran con la obscuridad cuando están en exteriores por la noche (incluso en la mayoría de las noches con la luna visible), en el interior de una mazmorra sin iluminar o cirpta subterránea, o en una zona de obscuridad mágica."
+            ]
+        },
+        {
+            "title": "Visión ciega",
+            "icon": "one-eyed",
+            "subtitle": "Percibir sin ver",
+            "description": "Percibes el entorno sin tener que recurrir a la vista dentro de un radio determinado",
+            "reference": "PHB, pg. 183.",
+            "bullets": [
+                "Las criaturas que carecen de ojos, como los cienos y aquellas que recurren a la ecolocación o a sentidos agudizados, como los murciélagos o los verdaderos dragones poseen esta capacidad."
+            ]
+        },
+        {
+            "title": "Visión en la obscuridad",
+            "icon": "semi-closed-eye",
+            "subtitle": "Vision limitada en la obscuridad",
+            "description": "Una criatura con visión en la obscuridad puede ver mejor en lo obscuro o con poca luz dentro de cierto radio",
+            "reference": "PHB, pgs. 183-184.",
+            "bullets": [
+                "Una criatura con visión en la obscuridad puede ver, dentro del alcance especificado, <i>con luz tenue como si hubiera luz brillante y con obscuridad como si hubiera luz tenue</b>,por lo que las zonas sin luz únicamente estarán ligeramente obscuras en lo que a dicha criatura respecta.",
+                "Sin embargo, no puede distinguir colores en la obscuridad, sólo tonos de gris.",
+                "Muchas criaturas de los mundos de D&D, y en especial aquellas que viven bajo tierra, poseen visión en la obscuridad."
+            ]
+        },
+        {
+            "title": "Visión veradera",
+            "icon": "eye-shield",
+            "subtitle": "Ver en la osbcuridad",
+            "description": "Una criatura con visión verdadera puede ver todo en su forma verdadera, independientemente del entorno",
+            "reference": "PHB, pg. 184.",
+            "bullets": [
+                "Una criatura con visión verdadera puede ver en la osbcuridad hasta el alcance especificado, tanto si esta es mágica como mundana; observar criaturas y objetos invisibles; detectar ilusiones visuales como tales, teniendo éxito de forma automática en las tiradas de salvación contra ellas; percibir la verdadera forma de los cambiaformas o las criaturas transformadas mediante magia.",
+                "Incluso puede ver en el Plano Etéreo."
+            ]
+        },
+        {
+            "title": "Cobertura media",
+            "icon": "broken-shield",
+            "subtitle": "Muro bajo, mueble grande, criaturas",
+            "description": "Un objetivo tiene cobertura media si un obstáculo tapa al menos la mitad de su cuerpo",
+            "reference": "PHB, pg. 196.",
+            "bullets": [
+                "Dicho obstáculo puede ser un muro bajo, un mueble grande, un tronco estrecho o una criatura, ya sea esta amiga o enemiga.",
+                "Un objetivo con cobertura media posee un <b> bonificador de +2 a su CA y a sus tiradas de salvación de Destreza</b>.",
+                "Si el objetivo está tras varios obstáculos que podrían ofrecer cobertura, únicamente el nivel más alto se aplica."
+            ]
+        },
+        {
+            "title": "Cobertura tres cuartos",
+            "icon": "cracked-shield",
+            "subtitle": "Rastrillo, aspillera",
+            "description": "Un objetivo tiene cobertura tres cuertos si un obstáculo lo tapa aproximadamente tres cuartas partes del cuerpo",
+            "reference": "PHB, pg. 196.",
+            "bullets": [
+                "El obstáculo puede ser un rastrillo, una aspillera o un tronco grueso.",
+                "Un objetivo con cobertura tres cuartos tien  un <b>bonificador de +5 a su CA y a sus tiradas de salvación de Destreza</b>.",
+                "Si el objetivo está tras varios obstáculos que podrían ofrecer cobertura, únicamente el nivel más alto se aplica."
+            ]
+        },
+        {
+            "title": "Cobertura completa",
+            "icon": "shield",
+            "subtitle": "Completamente oculto",
+            "description": "Un objetivo tiene cobertura completa si está totalmente oculto por un obstáculo",
+            "reference": "PHB, pg. 196.",
+            "bullets": [
+                "Un objetivo con cobertura total <b>no puede ser elegido directamente como objetivo</b> de un ataque o conjuro, aunque ciertos conjurospodrían alcanzarlo gracias a su área de efecto.",
+                "Si el objetivo está tras varios obstáculos que podrían ofrecer cobertura, únicamente el nivel más alto se aplica."
+            ]
+        }
+    ],
+    "rest" : [
+        {
+            "title": "Descanso corto",
+            "icon": "sands-of-time",
+            "subtitle": "Al menos una hora",
+            "description": "Periodo de relativa tranquilidad, de al menos una hora, durante el cual no se hace nada más extenuante que comer, beber, leer o atender las heridas",
+            "reference": "PHB, pg. 186.",
+            "bullets": [
+                "Durante un descanso corto, cada personaje puede gastar uno o más Dados de Golpe, hasta su máximo.",
+                "Un personaje tiene tantos Dados de Golpe como su nivel.",
+                "Por cada Dado de Golpe invertido, el personaje tirará un dado y añadirá al resultado su modificador de Constitución. Se recuperarán tantos puntos de golpe como el total (mínimo 0).",
+                "Se podrá decidir si se gasta otro Dado de Golpe tras cada tirada."
+            ]
+        },
+        {
+           "title": "Descanso largo",
+            "icon": "campfire",
+            "subtitle": "Al menos ocho horas",
+            "description": "Periodo de inactividad prolongada, de al menos ocho horas, en el que se duerme al menos seis horas y se lleva a cabo como mucho dos horas de actividades poco intensas, como leer, hablar, comer o montar guardia.",
+            "reference": "PHB, pg. 186.",
+            "bullets": [
+                "Si el descanso se ve interrumpido por un periodo de actividad más intensa (caminando al menos una hora, luchando, lanzando conjuros o esfuerzos similares), se tandrá que volver a comenzar el descanso desde el inicio para beneficiarse de sus efectos.",
+                "Al final de un descanso largo se recuperan todos los puntos de golpe perdidos.",
+                "También se recupera tantos Dados de golpe gastados como la mitad de su total (mínimo 1).",
+                "No puedes beneficiarte de los efectos de más un descanso largo en un periodo de veinticuatro horas.",
+                "Debes iniciar el descanso largo con al menos 1 punto de golpe para que el descanso surja algún efecto."
+            ]
+        }
+    ],
+    "movement" : [
+        {
+            "title": "Moverse",
+            "icon": "run",
+            "subtitle": "Costo: 5 pies por 5 pies",
+            "description": "Costo de movimiento: 5 pies por cada 5 pies movidos",
+            "reference": "PHB, pg. 190.",
+            "bullets": [
+                "Si posees más de una velocidad (como velocidad caminando y velocidad volando) puedes cambiar entre una y otra durante tu movimiento. Cada vez que lo hagas, resta la distancia que ya te has movido de la nueva velocidad.",
+                "Puedes moverte atravesando el espacio ocupado por otra criatura no hostil.",
+                "Puedes moverte a través del espacio de una criatura hostil si su tamaño es al menos dos categorías superior o inferior al tuyo.",
+                "El espacio de otra criatura es un terreno difícil para ti.",
+                "Ya sea que una criatura sea amiga o enemiga, no puedes terminar voluntariamente tu movimiento en su espacio."
+            ]
+        },
+        {
+            "title": "Escalar",
+            "icon": "crags",
+            "subtitle": "Costo: 10 pies por 5 pies",
+            "description": "Costo de movimiento: 10 pies por cada 5 pies escalados",
+            "reference": "PHB, pg. 182.",
+            "bullets": [
+                "Puede implicar una prueba de Fuerza (Atletismo) si la subida es difícil."
+            ]
+        },
+        {
+            "title": "Nadar",
+            "icon": "at-sea",
+            "subtitle": "Costo: 10 pies por 5 pies",
+            "description": "Costo de movimiento: 10 pies por cada 5 pies nadados",
+            "reference": "PHB, pg. 182.",
+            "bullets": [
+                "Puede implicar una prueba de Fuerza (Atletismo) si es difícil nadar."
+            ]
+        },
+        {
+            "title": "Tirarte al piso (Drop Prone)",
+            "icon": "falling",
+            "subtitle": "Costo: 0 pies",
+            "description": "Costo de movimiento: 0 pies (gratis)",
+            "reference": "PHB, pgs. 190-191,292.",
+            "bullets": [
+                "Puedes tirate al suelo sin usar tu velocidad.",
+                "Para moverte mientras derribado, debes arrastrate o usar magia como teletransportación.",
+                "Tirarte al piso te agrega el estado de <i> Derribado </i> (los ataques cuerpo a cuerpo contra ti tienen ventaja, los ataques a distancia contra ti tienen desventaja, tus propios ataques tienen desventaja)."
+            ]
+        },
+        {
+            "title": "Arrastrarse",
+            "icon": "crawl",
+            "subtitle": "Costo: 10 pies por 5 pies",
+            "description": "Costo de movimiento: 10 pies por cada 5 pies arrastrados",
+            "reference": "PHB, pg. 182.",
+            "bullets": [
+    
+            ]
+        },
+        {
+            "title": "Levantarse",
+            "icon": "strong",
+            "subtitle": "Costo: la mitad de velocidad",
+            "description": "Costo de movimiento: la mitad de tu velocidad",
+            "reference": "PHB, pg. 190-191.",
+            "bullets": [
+                "No puedes levantarte si no te queda suficiente movimiento o si tu velocidad es 0."
+            ]
+        },
+        {
+            "title": "Salto de altura",
+            "icon": "wingfoot",
+            "subtitle": "Costo: 5 pies por 5 pies",
+            "description": "Costo de movimiento: 5 pies por cada 5 pies saltados",
+            
+            "reference": "PHB, pg. 182.",
+            "bullets": [
+                "Saltas al aire una cantidad de pies igual a <b> 3 + tu modificador de Fuerza </b> si te mueves al menos 10 pies a pie inmediatamente antes del salto.",
+                "Cuando haces un salto alto de pie, puedes saltar sólo la mitad de esa distancia.",
+                "Puedes extender tus brazos a la mitad de tu altura por encima de ti mismo durante el salto.",
+                "En algunas circunstancias, tu DM puede permitirte hacer una prueba de Fuerza (Atletismo) para saltar más alto de lo que normalmente puedes."
+            ]
+        },
+        {
+            "title": "Salto de longitud",
+            "icon": "wingfoot",
+            "subtitle": "Costo: 5 pies por 5 pies",
+            "description": "Costo de movimiento: 5 pies por cada 5 pies saltados",
+            "reference": "PHB, pg. 182.",
+            "bullets": [
+                "Cubres una cantidad de pies hasta tu <b> puntaje de fuerza </b> si te mueves al menos 10 pies a pie inmediatamente antes del salto.",
+                "Cuando haces un salto largo de pie, puedes saltar sólo la mitad de esa distancia.",
+                "Puede involucrar una prueba de Fuerza (Atletismo) CD 10 para librar un obstáculo bajo (no más alto que un cuarto de la distancia del salto). Pegas contra el obstáculo en una prueba fallida.",
+                "Puede implicar una prueba de Destreza (Acrobacia) CD 10 para aterrizar de pie en terrenos difíciles. Caes derribado en una prueba fallida."
+            ]
+        },
+        {
+            "title": "Improvisar",
+            "icon": "juggler",
+            "subtitle": "Cualquier otro movimiento",
+            "description": "Realiza cualquier movimiento o truco que puedas imaginar.",
+            "bullets": [
+                "Cuando describes un tipo de movimiento que no se detalla en ninguna otra parte de las reglas, el DM te dice si es posible y qué tipo de tirada necesitas hacer, si corresponde, para determinar el éxito o el fracaso."
+            ]
+        },
+        {
+            "title": "Terreno difícil",
+            "icon": "stone-pile",
+            "subtitle": "Costo: +5 pies por 5 pies",
+            "reference": "PHB, pg. 182.",
+            "description": "Moverse en terrenos difíciles cuesta 5 pies adicionales por cada 5 pies de movimiento",
+            "bullets": [
+            ]
+        },
+        {
+            "title": "Mover a una criatura agarrada",
+            "icon": "grab",
+            "subtitle": "Velocidad reducida a la mitad",
+            "description": "Arrastra o carga a la criatura mientras te mueves",
+            "reference": "PHB, pg. 195.",
+            "bullets": [
+                "Puedes arrastrar o transportar a la criatura agarrada, pero tu velocidad se reducirá a la mitad salvo si dicha criatura está dos o más categorías de tamaño por debajo de la tuya.",
+                "Ve la acción de <i>atacar</i> para ver cómo <i>agarrar</i> a una criatura."
+            ]
+        }
+    ],
+    "optional" : [
+        {
+            "title": "Subirse a una criatura más grande",
+            "icon": "inner-self",
+            "subtitle": "Ataque cuerpo a cuerpo o a distacia",
+            "description": "Acción especial",
+            "reference": "DMG, pg. 271.",
+            "bullets": [
+                "Si una criatura quiere saltar encima de otra, puede hacerlo usando las reglas para agarrar. Sin embargo, una criatura Pequeña o Mediana tiene pocas probabilidades, salvo que la magia intervenga, de agarrar con éxito a otra criatura Enorme o Gargantuesca.",
+                "Una alternativa es tratar a cualquier oponente lo bastante grande como un elemento de terreno a efectos de saltar sobre su espalda o trepar por una de sus extremidades.",
+                "Tras realizar cualquier prueba de característica que sea necesaria para situarse sobre la criatura más grande, la criatura más pequeña utilizará su acción para hacer una tirada de Fuerza (Atletismo) o Destreza (Acrobacia) enfrentada a una de Destreza (Acrobacia) de su oponente.",
+                "Si gana la tirada enfrentada, la criatura más pequeña logrará moverse al espacio de la más grande y aferrarse a su cuerpo. Mientras permanezca en el espacio de su objetivo, la criatura más pequeña se moverá con él y tendrá ventaja en las tiradas de ataque contra la criatura más grande.",
+                "La criatura más pequeña podrá moverse dentro del espacio de la más grande, pero considerando este espacio como terreno difícil.",
+                "Que la criatura más grande pueda atacar o no a la más pequeña dependerá del DM. El juzgará en función de dónde se encuentre esta con respecto a aquella.",
+                "La criatura más grande puede utilizar una acción para librarse de la más pequeña: derribándola, golpeándola contra una pared o agarrándola y arrojándola lejos. Para ello tendrá que vencer en una tirada enfrentada de su Fuerza (Atletismo) contra la Fuerza (Atletismo) o Destreza (Acrobacia) de la criatura más pequeña. Esta última elige cuál de las dos opciones."
+            ]
+        },
+        {
+            "title": "Desarmar",
+            "icon": "palm",
+            "subtitle": "Ataque especial cuerpo a cuerpo",
+            "description": "Intentas tirar el arma o cualquier objeto de las manos del oponente",
+            "reference": "DMG, pg. 271.",
+            "bullets": [
+                "Realiza una tirada de ataque enfrentada por la Fuerza (Atletismo) o la Destreza (Acrobacia) del oponente",
+                "Si tienes éxito el ataque no causa daño pero el defensor tira lo que tenía en las manos.",
+                "El atacante tiene desventaja en la tirada de ataque si el defensor está sosteniendo el objeto con dos o más manos.",
+                "El defensor tiene ventaja en la tirada de habilidad si es  más grande que el atacante o desventaja si es más pequeño."
+            ]
+        },
+        {
+            "title": "Marcar",
+            "icon": "two-shadows",
+            "subtitle": "Ataque cuerpo a cuerpo",
+            "description": "Mantienes la marca en una criatura, obteniendo ventaja en tu ataque de oportunidad",
+            "reference": "DMG, pg. 271.",
+            "bullets": [
+                "Cuando utilizas la acción de <i>Atacar</i> para realizar un ataque cuerpo a cuerpo, también puedes marcar al objetivo.",
+                "Hasta el final de tu siguiete turno obtienes ventaja en cualquier ataque de oportunidad contra el objetivo.",
+                "El ataque de oportunidad no gasta tu reacción, pero no puedes realizarlo si algo te prohibe tomar reacciones.",
+                "Sigues limitado a un sólo ataque de oportunidad por turno."
+            ]
+        },
+        {
+            "title": "Abrirse Paso (Overrun)",
+            "icon": "revolt",
+            "subtitle": "Acción o Acción adicional",
+            "description": "Tratas de abrite paso a través del espacio que ocupa una criatura hostil",
+            "reference": "DMG, pg. 272.",
+            "bullets": [
+                "Como una Acción o Acción Adicional, realizas una tirada de Fuerza (Atletismo) opuesta por la Fuerza (Atletismo) de la criatura hostil.",
+                "La criatura tratando de abrirse paso tiene ventaja en la tirada si es más grande que la criatura hostil y desvantaja si es más pequeña.",
+                "Si ganas la tirada, puedes moverte a través del espacio de la criatura hostil una vez durante el turno."
+            ]
+        },
+        {
+            "title": "Empujar a un lado",
+            "icon": "hand",
+            "subtitle": "Ataque especial cuerpo a cuerpo",
+            "description": "Empujas a una criatura hacia un lado en lugar de hacia adelante",
+            "reference": "DMG, pg. 272",
+            "bullets": [
+                "Utilizas la acción de <i>Empujar (Shove)</i> para forzar al objetivo hacia un lado en lugar de hacia adelante.",
+                "Tienes desventaja en la tirada de Fuerza (Atletismo).",
+                "Si superas la tirada mueves al objetivo a un espacio distinto dentro de 5 pies de tu alcance."
+            ]
+        },
+        {
+            "title": "Rodar (Tumble)",
+            "icon": "white-cat",
+            "subtitle": "Acción o Acción adicional",
+            "description": "Tratas de escabullirte, agachándote y zigzagueando a través del espacio que ocupa una criatura hostil",
+            "reference": "DMG, pg. 272",
+            "bullets": [
+            "Como una Acción o Acción Adicional, realizas una tirada de Destreza (Acrobacia) opuesta por la Destreza (Acrobacia) de la criatura hostil.",
+            "Si ganas la tirada, puedes moverte a través del espacio de la criatura hostil una vez durante el turno."
+            ]
+        }
+    ],
+    "reaction" : [
+        {
+            "title": "Ataque de oportunidad",
+            "icon": "crossed-swords",
+            "subtitle": "El enemigo sale de tu alcance",
+            "description": "Rara vez puedes moverte despreocupadamente junto a tus enemigos sin ponerte en peligro",
+            "reference": "PHB, pg. 195.",
+            "bullets": [
+                "Circunstancia de activación: la criatura enemiga que puedas ver sale de tu alcance.",
+                "Realiza un ataque cuerpo a cuerpo contra la criatura provocadora.",
+                "El ataque interrumpe el movimiento de la criatura provocadora, ocurriendo justo antes de que la criatura deje tu alcance.",
+                "Las criaturas no provocan ataques de oportunidad cuando se teletransportan o cuando alguien o algo las mueve sin usar su movimiento, acción o reacción."
+            ]
+        },
+        {
+            "title": "Acción preparada (Readied action)",
+            "icon": "stopwatch",
+            "subtitle": "Parte de Preparar una acción",
+            "description": "Ejecuta la reacción especificada por Preparar una acción",
+            "reference": "PHB, pg. 193.",
+            "bullets": [
+                "Circunstancia de activación: especificada por tu acción de <i>Preparar una acción</i>."
+            ]
+        },
+        {
+            "title": "Lanzar un conjuto",
+            "icon": "magic-swirl",
+            "subtitle": "Tiempo de lanzamiento de 1 reacción",
+            "description": "Lanza un conjuto cuyo tiempo de lanzamiento sea de 1 reacción",
+            "reference": "PHB, pg. 192.",
+            "bullets": [
+                "Circunstancia de activación: Especificada por el conjuro.",
+                "Para más detalles, ve la acción de <i>Lanzar un conjuro</i>."
+            ]
+        }
+    ]
+}

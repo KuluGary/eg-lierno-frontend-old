@@ -73,6 +73,7 @@ export const StringUtil = {
             "modifier": "wisdom"
         }
     ],
+    classMatrix: [],
     getRandomInt(min = 1, max = 20) {
         return Math.floor(Math.random() * max) + min
     },
@@ -125,9 +126,10 @@ export const StringUtil = {
 
     generizaClase(clase, pronoun) {
         let claseToReturn = clase;
-        let replaceVowel = pronoun.toLowerCase() === 'la' ? 'a' : pronoun.toLowerCase() === 'le' ? 'e' : null;
+        // let replaceVowel = pronoun.toLowerCase() === 'la' ? 'a' : pronoun.toLowerCase() === 'le' ? 'e' : null;
+        let replaceVowel = null;        
 
-        if (replaceVowel) {
+        if (replaceVowel && clase) {
             if (clase.charAt(clase.length - 1) === 'o') {
                 if (clase.charAt(clase.length - 2) === 'g' && replaceVowel === 'e') {
                     replaceVowel = "u" + replaceVowel;
@@ -171,5 +173,9 @@ export const StringUtil = {
         })
 
         return this.returnStringFromObjectArray(newArray, "modifierStr")
+    },
+
+    parseHTML(str) {
+        return str.replaceAll("\n", "<br/>")
     }
 }

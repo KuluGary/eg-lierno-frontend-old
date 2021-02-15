@@ -9,7 +9,7 @@ module.exports = {
                 "react-hooks/exhaustive-deps": "off",
                 "no-useless-escape": "off",
                 "jsx-a11y/alt-text": "off",
-                "react/style-prop-object": "off",
+                "react/style-prop-object": "off"
             }
         }
 
