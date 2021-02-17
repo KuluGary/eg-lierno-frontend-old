@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import Image from 'components/Image/Image';
+import ImageUploader from 'components/ImageUploader/ImageUploader';
+import IconButton from '@material-ui/core/IconButton';
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 
 const useStyles = makeStyles({
     root: {
@@ -41,11 +44,16 @@ const useStyles = makeStyles({
 });
 
 export default function Portrait(props) {
+    const [openUploader, setOpenUploader] = useState();
     const classes = useStyles();
     const theme = useTheme();
 
     return (
         <div className={classes.root}>
+            <ImageUploader
+                open={openUploader}
+                setOpen={setOpenUploader}
+                setImage={(event) => props.changeFlavor("portrait", event)} />
             <Paper variant="outlined" className={classes.paper}>
                 <Box component="span" className={classes.stat}>
                     <Image
@@ -64,6 +72,13 @@ export default function Portrait(props) {
                         value={props.image}
                         disabled={!props.editable}
                         onChange={(event) => props.changeFlavor("portrait", event.target.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <IconButton onClick={() => setOpenUploader(true)}>
+                                    <AddPhotoAlternateIcon />
+                                </IconButton>
+                            )
+                        }}
                         variant="outlined" />
                     <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'Retrato'}</Typography>
                 </Box>

@@ -17,6 +17,7 @@ import ImageUploader from 'components/ImageUploader/ImageUploader';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Api from 'helpers/api'
+import Image from 'components/Image/Image';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -195,7 +196,7 @@ function Flavor(props) {
           </FormControl>
         </Grid>
         <Grid item xs={3} style={{ display: (image && image.length > 0) ? 'block' : 'none' }}>
-          <img className={classes.image} src={image} />
+          <Image style={{ width: "100%" }} errorStyle={{ width: "50%", height: "100%", margin: "0 auto" }} src={image} />
         </Grid>
         <Grid item sm={(image && image.length > 0) ? 9 : 12}>
           <FormControl className={classes.formControl}>

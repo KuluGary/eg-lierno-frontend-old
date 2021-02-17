@@ -12,6 +12,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
+import ImageUploader from 'components/ImageUploader/ImageUploader';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Api from 'helpers/api';
@@ -60,6 +62,7 @@ function Flavor(props) {
 
   const [faction, setFaction] = useState(props.creature.flavor.faction);
   const [alignment, setAlignment] = useState(props.creature.stats.alignment || alignments[0]);
+  const [openUploader, setOpenUploader] = useState();
 
   useEffect(() => {
     Api.fetchInternal('/campaigns')
@@ -120,6 +123,10 @@ function Flavor(props) {
   return (
     campaignAvailable.length > 0 &&
     <>
+      <ImageUploader
+        open={openUploader}
+        setOpen={setOpenUploader}
+        setImage={setImage} />
       <Typography variant="h6" gutterBottom>
         Detalles básicos
       </Typography>
@@ -191,6 +198,13 @@ function Flavor(props) {
               onChange={(e) => setImage(e.target.value)}
               value={image}
               fullWidth
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={() => setOpenUploader(true)}>
+                    <AddPhotoAlternateIcon />
+                  </IconButton>
+                )
+              }}
             />
           </FormControl>
         </Grid>
