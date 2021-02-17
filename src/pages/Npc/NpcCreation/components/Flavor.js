@@ -12,6 +12,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
+import ImageUploader from 'components/ImageUploader/ImageUploader';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Api from 'helpers/api'
@@ -60,13 +62,11 @@ function Flavor(props) {
     (props.creature.flavor.personality.personality && props.creature.flavor.personality.personality.replace(/<br \/>/gi, "\n")) || '');
   const [physical, setPhysical] = useState(
     (props.creature.flavor.personality.physical && props.creature.flavor.personality.physical.replace(/<br \/>/gi, "\n")) || '');
-  // const [ideals, setIdeals] = useState(props.creature.flavor.personality.ideals || '');
-  // const [bonds, setBonds] = useState(props.creature.flavor.personality.bonds || '');
-  // const [flaws, setFlaws] = useState(props.creature.flavor.personality.flaws || '');
   const [story, setStory] = useState(
     (props.creature.flavor.personality.backstory && props.creature.flavor.personality.backstory.replace(/<br \/>/gi, "\n")) || '');
   const [faction, setFaction] = useState(props.creature.flavor.faction);
   const [alignment, setAlignment] = useState(props.creature.stats.alignment || alignments[0]);
+  const [openUploader, setOpenUploader] = useState();
 
   useEffect(() => {
     Api.fetchInternal('/campaigns')
@@ -89,21 +89,11 @@ function Flavor(props) {
         campaignId: campaign.id || campaignAvailable.filter(campaignA => campaignA._id === campaign.campaignId)[0]._id,
         unlocked: campaign.unlocked
       })), "campaign")
-      // const personality = {
-      //   // personalityTrait1,
-      //   // personalityTrait2,
-      //   // ideals,
-      //   // bonds,
-      //   // flaws,
-      //   personality: 
-      //   backstory: story.replace(/\n/g, "<br />")
-      // }
       props.addToCreatureFlavor({
         personality: personality.replace(/\n/g, "<br />"),
         physical: physical.replace(/\n/g, "<br />"),
         backstory: story.replace(/\n/g, "<br />")
       }, "personality")
-      // props.addToCreatureFlavor(props.profile._id, "owner")
     }
   }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, personality, physical, story])
 
@@ -141,6 +131,10 @@ function Flavor(props) {
   return (
     campaignAvailable.length > 0 &&
     <>
+      <ImageUploader
+        open={openUploader}
+        setOpen={setOpenUploader}
+        setImage={setImage} />
       <Typography variant="h6" gutterBottom>
         Detalles básicos
       </Typography>
@@ -212,6 +206,13 @@ function Flavor(props) {
               onChange={(e) => setImage(e.target.value)}
               value={image}
               fullWidth
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={() => setOpenUploader(true)}>
+                    <AddPhotoAlternateIcon />
+                  </IconButton>
+                )
+              }}
             />
           </FormControl>
         </Grid>
@@ -291,7 +292,7 @@ function Flavor(props) {
               fullWidth
             />
           </FormControl>
-        </Grid>     
+        </Grid>
         <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
             <TextField

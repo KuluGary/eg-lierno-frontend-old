@@ -9,6 +9,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -16,11 +18,14 @@ import { grey } from '@material-ui/core/colors';
 import Api from "../../helpers/api";
 import Auth from "../../helpers/auth";
 import Slide from '@material-ui/core/Slide';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { toast } from 'react-toastify';
 import { GoogleLogin } from 'react-google-login';
+// import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+// import TwitterLogin from "react-twitter-login";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'
-import { Divider } from '@material-ui/core';
+import { faGoogle, /* faFacebook */ } from '@fortawesome/free-brands-svg-icons'
+import { Divider, IconButton } from '@material-ui/core';
 
 function Copyright(props) {
     return (
@@ -68,6 +73,7 @@ function Login(props) {
     const [remember, setRemember] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errorState, setError] = useState();
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         if (Auth.loggedIn()) {
@@ -161,6 +167,24 @@ function Login(props) {
         }
     }
 
+    // const responseFacebook = (profile) => {
+    //     if (profile && typeof profile === "object") {
+    //         const user = {
+    //             id: profile.userID,
+    //             username: profile.name,
+    //             remember,
+    //             metadata: {
+    //                 first_name: profile.givenName,
+    //                 last_name: profile.familyName,
+    //                 email: profile.email,
+    //                 avatar: profile.imageUrl
+    //             }
+    //         }
+
+    //         console.log(user)
+    //     }
+    // }
+
     return (
         <>
             <Slide direction="up" in={true} mountOnEnter unmountOnExit>
@@ -193,6 +217,46 @@ function Login(props) {
                                 </Button>
                             )}
                         />
+                        {/* <FacebookLogin
+                            appId="125379062817537"
+                            fields="id,name,email,picture"
+                            onClick={() => console.log("CLICKED")}
+                            callback={responseFacebook}
+                            render={renderProps => (
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="outlined"
+                                    color="default"
+                                    onClick={renderProps.onClick}
+                                    disabled={renderProps.disabled}
+                                    className={classes.submit}
+                                    startIcon={
+                                        <FontAwesomeIcon style={{ color: "blue" }} size="sm" icon={faFacebook} />
+                                    }>
+                                    {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar con Facebook'}
+                                </Button>
+                            )} />
+                        <TwitterLogin
+                            authCallback={(res) => console.log(res)}
+                            consumerKey={process.env.REACT_APP_TWITTER_KEY}
+                            consumerSecret={process.env.REACT_APP_TWITTER_SECRET}
+                            children={renderProps => (
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="outlined"
+                                    color="default"
+                                    onClick={renderProps.onClick}
+                                    disabled={renderProps.disabled}
+                                    className={classes.submit}
+                                    startIcon={
+                                        <FontAwesomeIcon style={{ color: "blue" }} size="sm" icon={faFacebook} />
+                                    }>
+                                    {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar con Facebook'}
+                                </Button>
+                            )}
+                        /> */}
                         <form className={classes.form} noValidate onSubmit={login}>
                             <Box style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                 <Divider style={{ width: "30%" }} />
@@ -221,10 +285,22 @@ function Login(props) {
                                 error={errorState}
                                 name="password"
                                 label="Contraseña"
-                                type="password"
+                                // type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 id="password"
                                 autoComplete="current-password"
                                 onChange={(e) => setPassWord(e.target.value)}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">
+                                    <IconButton
+                                      aria-label="toggle password visibility"
+                                      onClick={() => setShowPassword(!showPassword)}
+                                      edge="end"
+                                    >
+                                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                  </InputAdornment>
+                                }}
                             />
                             <Link to="/recover" className={classes.link} variant="span">
                                 {"Recuperar contraseña"}

@@ -29,9 +29,7 @@ export default class Api {
         if (response.status >= 200 && response.status < 300) {
             return response;
         } else {
-            response.json().then((decodedResponse) => {
-                console.log(decodedResponse);
-            });
+            response.json()
 
             const error = new Error(response.statusText);
             error.response = response;
@@ -41,6 +39,10 @@ export default class Api {
 
     static isDev = () => {
         return process.env.NODE_ENV === "development";
+    }
+
+    static envVar = (name) => {
+        return process.env[`REACT_APP_${name}`];
     }
 }
 

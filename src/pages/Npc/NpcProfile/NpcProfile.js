@@ -75,6 +75,7 @@ function NpcProfile(props) {
     }, [npcs, match])
 
     useEffect(() => {
+        console.log(npc?.createdBy, props.profile?._id);
         if (npc) {
             if (npc.createdBy === props.profile._id) {
                 setEditable(true);

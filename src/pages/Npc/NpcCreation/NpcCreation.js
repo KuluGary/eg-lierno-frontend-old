@@ -167,7 +167,7 @@ class NpcCreation extends Component {
                     legendaryActions: [],
                     legendaryActionsPerRound: 3
                 },
-                createdBy: props.profile?._id 
+                createdBy: this.props.profile?._id 
             }
         }
     }
