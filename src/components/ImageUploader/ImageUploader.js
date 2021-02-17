@@ -1,7 +1,6 @@
 import React from 'react';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import { toast } from 'react-toastify';
-import Api from "helpers/api";
 
 export default function ImageUploader({ open, setOpen, setImage }) {
     const handleSave = (files) => {
@@ -11,7 +10,7 @@ export default function ImageUploader({ open, setOpen, setImage }) {
             const headers = new Headers();
             const formData = new FormData();
 
-            headers.append("Authorization", `Client-ID ${Api.envVar("IMGUR_CLIENT_ID")}`);
+            headers.append("Authorization", `Client-ID ${"546c25a59c58ad7"}`);
             headers.append("content-length", files[0]?.size)
             formData.append('image', files[0]);
             formData.append('type', "file");            
