@@ -24,9 +24,8 @@ export default function ImageUploader({ open, setOpen, setImage }) {
 
             fetch(apiUrl, requestOptions)
                 .then(res => res.json())
-                .then(({ data, status }) => {
-                    if (status.success) {     
-                        console.log(data.link, setImage)
+                .then(({ data, success }) => {
+                    if (success) {     
                         setImage(data?.link)
                         toast.success("Imagen subida correctamente.")
                     } else {
