@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -55,10 +56,11 @@ const mapStateToProps = state => {
     }
 }
 
-const CharacterTable = ({ faction, dense, history }) => {
+const CharacterTable = ({ faction, dense, history, profile }) => {
     const [characters, setCharacters] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const location = useLocation();
 
     const theme = useTheme();
     const query = gql`
@@ -69,19 +71,24 @@ const CharacterTable = ({ faction, dense, history }) => {
                 flavor {
                     imageUrl
                     class
+                    campaign {
+                        campaignId
+                        unlocked
+                    }
                 }
                 stats {
                     race
                     challengeRatingStr
                     experiencePoints
                 }
+                createdBy
             }
             getCharactersById(characterIds: $characterIds) {
                 _id
                 flavor {
                     traits {
                         name
-                    }
+                    }                    
                     portrait
                 }
                 stats {
@@ -100,12 +107,17 @@ const CharacterTable = ({ faction, dense, history }) => {
                 flavor {
                     imageUrl
                     class
+                    campaign {
+                        campaignId
+                        unlocked
+                    }
                 }
                 stats {
                     race
                     challengeRatingStr
                     experiencePoints
                 }
+                createdBy
             }
         }
     `
@@ -117,15 +129,40 @@ const CharacterTable = ({ faction, dense, history }) => {
             monsterIds: faction.members?.monsters?.map(member => member.id)
         }
     });
-
+    
     useEffect(() => {
         if (!loading && !error) {
             setCharacters([
                 ...data.getCharactersById.map(item => { return { ...item, type: "characters" } }),
-                ...data.getNpcsById.map(item => { return { ...item, type: "npc" } }),
-                ...data.getMonstersById.map(item => { return { ...item, type: "bestiary" } })])
+                ...data.getNpcsById
+                    .filter((item) => filterOutLockedItems(item))
+                    .map(item => { return { ...item, type: "npc" } }),
+                ...data.getMonstersById
+                    .filter((item) => filterOutLockedItems(item))
+                    .map(item => { return { ...item, type: "bestiary" } })])
         }
     }, [data])
+
+    const filterOutLockedItems = (item) => {
+        const createdBy = item.createdBy;
+        
+        if (createdBy === profile._id) {
+            return true;
+        }
+
+        if (isLockedItem(item)) {
+            return false;
+        }
+
+    }
+
+    const isLockedItem = (item) => {
+        if (Object.keys(item.flavor).includes("campaign")) {
+            return !item.flavor?.campaign?.filter(item => item.campaignId === location.campaignId)[0]?.unlocked;
+        }
+        
+        return false;
+    }
 
     const handleChangePage = (_, newPage) => {
         setPage(newPage);
@@ -138,7 +175,7 @@ const CharacterTable = ({ faction, dense, history }) => {
 
     if (loading) {
         return <Box style={{ display: "flex", justifyContent: "center" }}>
-            <CircularProgress color="default" />
+            <CircularProgress color="inherit" />
         </Box>
     }
 
@@ -158,7 +195,7 @@ const CharacterTable = ({ faction, dense, history }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map(character => {
                         return (
-                            <TableRow hover dense={dense}>
+                            <TableRow hover style={{ opacity: !isLockedItem(character) ? 1 : .5 }}>
                                 <TableCell style={{ padding: !dense ? "1.5rem" : ".5rem" }}>
                                     <Box style={{ display: "flex", alignItems: "center" }}>
                                     {!dense &&
@@ -181,7 +218,7 @@ const CharacterTable = ({ faction, dense, history }) => {
                                             }} />}
                                         <Box style={{ margin: "0 1rem" }}>
                                             <Box component="div" >
-                                                <Typography variant="body" style={{ fontWeight: "500", fontSize: "1rem" }}>
+                                                <Typography variant="body1" style={{ fontWeight: "500", fontSize: "1rem" }}>
                                                     {character.flavor?.traits?.name || character.name}
                                                 </Typography>
                                             </Box>

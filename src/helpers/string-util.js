@@ -124,10 +124,9 @@ export const StringUtil = {
         }
     },
 
-    generizaClase(clase, pronoun) {
+    generizaClase(clase, pronoun = "el") {
         let claseToReturn = clase;
-        // let replaceVowel = pronoun.toLowerCase() === 'la' ? 'a' : pronoun.toLowerCase() === 'le' ? 'e' : null;
-        let replaceVowel = null;        
+        let replaceVowel = pronoun.toLowerCase() === 'la' ? 'a' : pronoun.toLowerCase() === 'le' ? 'e' : null;       
 
         if (replaceVowel && clase) {
             if (clase.charAt(clase.length - 1) === 'o') {
@@ -136,7 +135,9 @@ export const StringUtil = {
                 }
                 claseToReturn = claseToReturn.replace(/.$/, replaceVowel);
             } else {
-                claseToReturn = claseToReturn + replaceVowel;
+                if (replaceVowel !== clase.charAt(clase.length - 1)) {
+                    claseToReturn = claseToReturn + replaceVowel;
+                }
             }
         }
 

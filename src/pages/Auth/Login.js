@@ -167,24 +167,6 @@ function Login(props) {
         }
     }
 
-    // const responseFacebook = (profile) => {
-    //     if (profile && typeof profile === "object") {
-    //         const user = {
-    //             id: profile.userID,
-    //             username: profile.name,
-    //             remember,
-    //             metadata: {
-    //                 first_name: profile.givenName,
-    //                 last_name: profile.familyName,
-    //                 email: profile.email,
-    //                 avatar: profile.imageUrl
-    //             }
-    //         }
-
-    //         console.log(user)
-    //     }
-    // }
-
     return (
         <>
             <Slide direction="up" in={true} mountOnEnter unmountOnExit>
@@ -216,47 +198,7 @@ function Login(props) {
                                     {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar con Google'}
                                 </Button>
                             )}
-                        />
-                        {/* <FacebookLogin
-                            appId="125379062817537"
-                            fields="id,name,email,picture"
-                            onClick={() => console.log("CLICKED")}
-                            callback={responseFacebook}
-                            render={renderProps => (
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="outlined"
-                                    color="default"
-                                    onClick={renderProps.onClick}
-                                    disabled={renderProps.disabled}
-                                    className={classes.submit}
-                                    startIcon={
-                                        <FontAwesomeIcon style={{ color: "blue" }} size="sm" icon={faFacebook} />
-                                    }>
-                                    {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar con Facebook'}
-                                </Button>
-                            )} />
-                        <TwitterLogin
-                            authCallback={(res) => console.log(res)}
-                            consumerKey={process.env.REACT_APP_TWITTER_KEY}
-                            consumerSecret={process.env.REACT_APP_TWITTER_SECRET}
-                            children={renderProps => (
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="outlined"
-                                    color="default"
-                                    onClick={renderProps.onClick}
-                                    disabled={renderProps.disabled}
-                                    className={classes.submit}
-                                    startIcon={
-                                        <FontAwesomeIcon style={{ color: "blue" }} size="sm" icon={faFacebook} />
-                                    }>
-                                    {loading ? <CircularProgress className={classes.progress} size={24} /> : 'Entrar con Facebook'}
-                                </Button>
-                            )}
-                        /> */}
+                        />                        
                         <form className={classes.form} noValidate onSubmit={login}>
                             <Box style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                 <Divider style={{ width: "30%" }} />

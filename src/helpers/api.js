@@ -4,7 +4,6 @@ import { onError } from '@apollo/client/link/error'
 
 export default class Api {
     static async fetchInternal(url, options, version = "v1") {
-        console.log(url, options, version)
         url = process.env.REACT_APP_ENDPOINT + version + url;
 
         const headers = {

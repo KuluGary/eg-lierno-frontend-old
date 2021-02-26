@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import Radio from '@material-ui/core/Radio';
 
 export default function Durability(props) {
-    // const [checked, setChecked] = useState(props.index);
     const [checked, setChecked] = useState(props.durability || 0)
 
     const modifyDurability = (item, index) => {
-        const tableIndex = props.tableItems.findIndex(tableItem => tableItem._id === item.data.id);
         setChecked(index);
+
+
+        const tableIndex = props.index;
 
         const handlePropItems = (index) => {
             let newItems = { ...props.items };

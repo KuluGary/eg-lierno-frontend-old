@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
+import _ from "lodash";
 import Api from "helpers/api";
 
 import CharacterInfo from "./components/CharacterInfo";
@@ -56,29 +57,10 @@ function CharacterProfile(props) {
     useEffect(() => {
         Api.fetchInternal('/characters/' + props.match.params.id)
             .then(res => {
-                setCharacter(res)
-                setEditedCharacter(res)
+                setCharacter(_.cloneDeep(res))
+                setEditedCharacter(_.cloneDeep(res))
                 setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", "Hechizos", "Opciones"].filter(el => el))
             })
-
-        // const headers = {
-        //     'Authorization': `Bearer ${process.env.REACT_APP_BITLY_ACCESS_TOKEN}`,
-        //     'Content-Type': 'application/json'
-        // };
-        // const body = {
-        //     "long_url": window.location.href,
-        //     "group_guid": process.env.REACT_APP_BITLY_ACCESS_GROUP
-        // }
-
-        // if (!Api.isDev()) {
-        //     fetch("https://api-ssl.bitly.com/v4/shorten", {
-        //         method: "POST",
-        //         headers: headers,
-        //         body: JSON.stringify(body)
-        //     })
-        //         .then(res => res.json())
-        //         .then(res => setShortUrl(res.link))
-        // }
     }, [])
 
     useEffect(() => {
@@ -96,7 +78,7 @@ function CharacterProfile(props) {
     }, [editedCharacter])
 
     useEffect(() => {
-        if (!Object.is(editedCharacter, character)) {
+        if (!_.isEqual(editedCharacter, character)) {
             if (!edited) {
                 setEdited(true)
             }

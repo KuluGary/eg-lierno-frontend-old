@@ -216,7 +216,7 @@ export default function Information(props) {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid container spacing={1} item lg={3} xs={12}>
+                        <Grid container spacing={1} item lg={3} xs={12} style={{ marginRight: 0 }}>
                             <Grid item xs={12}>
                                 <SavingThrows
                                     proficiency={props.proficiencyBonus}
@@ -231,7 +231,8 @@ export default function Information(props) {
                                     stats={character["stats"]["abilityScores"]}
                                     proficiency={props.proficiencyBonus}
                                     changeStats={props.changeStats}
-                                    editable={props.editable} />
+                                    editable={props.editable}
+                                    settings={props.settings} />
                             </Grid>
                         </Grid>
                     </Grid>

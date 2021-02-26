@@ -8,6 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Radio from '@material-ui/core/Radio';
+import { MenuItem, Select } from '@material-ui/core';
 
 const useStyles = makeStyles({
     root: {
@@ -37,7 +38,10 @@ const useStyles = makeStyles({
     },
     radio: {
         padding: 0
-    }
+    },
+    resize: {
+        fontSize: 11
+    },
 });
 
 const HtmlTooltip = withStyles((theme) => ({
@@ -54,9 +58,10 @@ const HtmlTooltip = withStyles((theme) => ({
 
 export default function Skills(props) {
     const classes = useStyles();
+    const statStr = ["Fuerza", "Destreza", "Constitución", "Inteligencia", "Sabiduría", "Carisma"]
 
     const handleClick = (check) => {
-        let newItems = {...props.skills};
+        let newItems = { ...props.skills };
 
         if (props.skills[check].expertise) {
             newItems[check].expertise = false;
@@ -70,12 +75,20 @@ export default function Skills(props) {
         props.changeStats("skills", newItems)
     }
 
+    const changeStat = (stat, check) => {
+        const newSkills = { ...props.skills };
+
+        newSkills[check].modifier = stat;
+
+        props.changeStats("skills", newSkills);
+    }
+
     return (
         <Paper variant="outlined" className={classes.paper}>
             <Table className={classes.table} size="small">
                 <TableHead>
                     <TableRow>
-                        <TableCell size="small" colSpan={3}>
+                        <TableCell size="small" colSpan={4}>
                             <div style={{ fontSize: "12px", textAlign: 'center' }}>
                                 {'HABILIDADES'}
                             </div>
@@ -91,36 +104,57 @@ export default function Skills(props) {
                             if (props.skills[check].expertise) {
                                 bonus = Math.floor((props.stats[props.skills[check].modifier] - 10) / 2) + (props.proficiency * 2)
                             } else if (props.skills[check].proficient) {
-                               bonus = Math.floor((props.stats[props.skills[check].modifier] - 10) / 2) + (props.proficiency)
+                                bonus = Math.floor((props.stats[props.skills[check].modifier] - 10) / 2) + (props.proficiency)
                             } else {
-                               bonus = Math.floor((props.stats[props.skills[check].modifier] - 10) / 2)
+                                bonus = Math.floor((props.stats[props.skills[check].modifier] - 10) / 2)
                             }
 
                             return (
-                                <HtmlTooltip className={classes.tooltip} title={props.skills[check].description}>
-                                    <TableRow key={index}>
-                                        <TableCell size="small" padding="none" className={classes.smallCell}>
-                                            <Radio
-                                                checked={props.skills[check].proficient}
-                                                size="small"
-                                                onClick={() => handleClick(check)}
-                                                color="default"
-                                                disabled={!props.editable}
-                                            />
-                                        </TableCell>
+
+                                <TableRow key={index}>
+                                    <TableCell size="small" padding="none" className={classes.smallCell}>
+                                        <Radio
+                                            checked={props.skills[check].proficient}
+                                            size="small"
+                                            onClick={() => handleClick(check)}
+                                            color="default"
+                                            disabled={!props.editable}
+                                        />
+                                    </TableCell>
+                                    <HtmlTooltip className={classes.tooltip} title={props.skills[check].description}>
                                         <TableCell>
                                             <div style={{ fontSize: "12px" }}>
                                                 {props.skills[check].name}
                                             </div>
                                         </TableCell>
-                                        <TableCell align="right">
-                                            <div style={{ fontSize: "14px" }}>
-                                                {/* {props.stats[props.skills[check].modifier] + (props.skills[check].proficient && props.proficiency * (props.skills[check].expertise ? 2 : 1))} */}
-                                                {bonus}
-                                            </div>
+                                    </HtmlTooltip>
+                                    {(props.settings && props.settings.generalOptions.openSkills) &&
+                                        <TableCell>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                value={props.skills[check].modifier}
+                                                disabled={!props.editable}
+                                                onChange={(e) => changeStat(e.target.value, check)}
+                                                inputProps={{
+                                                    classes: {
+                                                        select: classes.resize,
+                                                    },
+                                                }}
+                                            >
+                                                {Object.keys(props.stats).map((stat, index) => (
+                                                    <MenuItem value={stat}>{statStr[index]}</MenuItem>
+                                                ))}
+                                            </Select>
                                         </TableCell>
-                                    </TableRow>
-                                </HtmlTooltip>
+                                    }
+                                    <TableCell align="right">
+                                        <div style={{ fontSize: "14px" }}>
+                                            {bonus}
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+
                             )
                         })}
                 </TableBody>

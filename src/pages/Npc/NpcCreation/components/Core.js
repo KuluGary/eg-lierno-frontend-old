@@ -95,7 +95,6 @@ export default function Core(props) {
   }, [abilityScores, proficiencyBonus, savingThrows, skills])
 
   const calculateAbilityScoreModifiers = (ability, proficiency = 0) => {
-    console.log(ability)
     return Math.floor((ability - 10) / 2 + proficiency);
   }
 

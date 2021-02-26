@@ -67,18 +67,16 @@ export default function Portrait(props) {
                             classes: {
                                 input: classes.resize,
                             },
-                        }}
-                        fullWidth
-                        value={props.image}
-                        disabled={!props.editable}
-                        onChange={(event) => props.changeFlavor("portrait", event.target.value)}
-                        InputProps={{
                             endAdornment: (
                                 <IconButton onClick={() => setOpenUploader(true)}>
                                     <AddPhotoAlternateIcon />
                                 </IconButton>
                             )
                         }}
+                        fullWidth
+                        value={props.image}
+                        disabled={!props.editable}
+                        onChange={(event) => props.changeFlavor("portrait", event.target.value)}
                         variant="outlined" />
                     <Typography variant="subtitle2" style={{ fontSize: "11px" }} >{'Retrato'}</Typography>
                 </Box>

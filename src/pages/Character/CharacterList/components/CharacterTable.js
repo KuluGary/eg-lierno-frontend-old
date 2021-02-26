@@ -98,7 +98,7 @@ export default function CharacterTable(props) {
                                                     </Box>
                                                     <Box component="div">
                                                         <Typography variant="caption">
-                                                            {char.stats.race && char.stats.race.name && (StringUtil.generizaClase(char.stats.race.name, props.pronoun) + ', ')}
+                                                            {char.stats.race && char.stats.race.name + ', '}
                                                             {char.stats.classes.map(charClass => `${StringUtil.generizaClase(charClass.className, char.flavor.traits.pronoun)} (${charClass.classLevel})`).join(", ")}
                                                         </Typography>
                                                     </Box>

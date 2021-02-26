@@ -146,7 +146,10 @@ function FactionList(props) {
                         {factionsToDisplay.length > 0 && factionsToDisplay
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map(faction => (
-                                <TableRow hover component={Link} to={'/factions/' + faction._id} className={classes.link}>
+                                <TableRow hover component={Link} to={{
+                                    pathname: '/factions/' + faction._id,
+                                    campaignId: props.campaignId
+                                    }} className={classes.link} style={{ opacity: faction.unlocked ? 1 : .5 }}>
                                     <TableCell style={{ padding: "1.5rem" }}>
                                         <Box style={{ display: "flex", alignItems: "center" }}>
                                             <Image

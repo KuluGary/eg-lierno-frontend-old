@@ -18,7 +18,6 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
         // alignSelf: "stretch"    ,
-        height: "100%"
     },
     stat: {
         margin: "0 1.5rem",
@@ -54,7 +53,7 @@ export default function HitDice(props) {
 
     useEffect(() => {
         Api.fetchInternal('/race/' + race)
-            .then(res => setSize(res.racialFeatures.filter(item => item.name === "Tamaño")[0].value))
+            .then(res => setSize("Mediano"))
     }, [race])
 
     useEffect(() => {

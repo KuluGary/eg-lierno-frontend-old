@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid'
-import { Checkbox, FormControlLabel } from '@material-ui/core';
+import { Checkbox, Divider, FormControlLabel, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
     root: {
@@ -38,18 +38,13 @@ export default function Options(props) {
     const { settings } = props;
     const [characterOptions, setCharacterOptions] = useState({
         generalOptions: {
-            inventory: "simple", // ["simple", "darker-dungeons"] 
-            encumberance: false, // [true, false]
             exhaustionTable: false, // [true, false]
             stress: false, // [true,false]
-            afflictions: false, // [true,false]
-            survivalConditions: false, // [true,false]
             inventorySlots: false, // [true,false]
-            deathSaveSuccess: false,
-            health: false,
             experience: false,
             training: false,
-            durability: false
+            durability: false,
+            openSkills: false
         }
     })
 
@@ -80,122 +75,95 @@ export default function Options(props) {
     return (
         <div className={classes.root}>
             <Paper variant="outlined" className={classes.paper}>
-                <Grid container spacing={1}>
-                    <Grid item md={6} sm={12}>
-                        <Box component="p">
-                            <FormControlLabel
-                                labelPlacement="start"
-                                control={
-                                    <Checkbox
-                                        checked={characterOptions.generalOptions.encumberance}
-                                        onClick={() => changeOptions("encumberance", !characterOptions.generalOptions.encumberance)}
-                                        disabled={!props.editable}
-                                        color="default"
-                                    />
-                                }
-                                label={'Traba'}
+                <Typography variant="h6">
+                    General
+                </Typography>
+                <Divider style={{ margin: "1rem 0" }} />
+                <Box component="p">
+                    <Typography variant="body2">
+                        Estas opciones tienen un impacto mínimo en el juego y sirven como información adicional de tu personaje.
+                    </Typography>
+                </Box>
+                <Box component="p">
+                    <FormControlLabel
+                        labelPlacement="start"
+                        control={
+                            <Checkbox
+                                checked={characterOptions.generalOptions.exhaustionTable}
+                                onClick={() => changeOptions("exhaustionTable", !characterOptions.generalOptions.exhaustionTable)}
+                                disabled={!props.editable}
+                                color="default"
                             />
-                        </Box>
-                        <Box component="p">
-                            <FormControlLabel
-                                labelPlacement="start"
-                                control={
-                                    <Checkbox
-                                        checked={characterOptions.generalOptions.exhaustionTable}
-                                        onClick={() => changeOptions("exhaustionTable", !characterOptions.generalOptions.exhaustionTable)}
-                                        disabled={!props.editable}
-                                        color="default"
-                                    />
-                                }
-                                label={'Tabla de exhausto'}
+                        }
+                        label={'Tabla de exhausto'}
+                    />
+                </Box>
+                <Box component="p">
+                    <FormControlLabel
+                        labelPlacement="start"
+                        control={
+                            <Checkbox
+                                checked={characterOptions.generalOptions.openSkills}
+                                onClick={() => changeOptions("openSkills", !characterOptions.generalOptions.openSkills)}
+                                disabled={!props.editable}
+                                color="default"
                             />
-                        </Box>
-                        <Box component="p">
-                            <FormControlLabel
-                                labelPlacement="start"
-                                control={
-                                    <Checkbox
-                                        checked={characterOptions.generalOptions.stress}
-                                        onClick={() => changeOptions("stress", !characterOptions.generalOptions.stress)}
-                                        disabled={!props.editable}
-                                        color="default"
-                                    />
-                                }
-                                label={'Estrés'}
+                        }
+                        label={'Modificadores de habilidad libres'}
+                    />
+                </Box>
+                <Divider style={{ margin: "1rem 0" }} />
+                <Typography variant="h6">
+                    Dificultad
+                </Typography>
+                <Divider style={{ margin: "1rem 0" }} />
+                <Box component="p">
+                    <Typography variant="body2">
+                        Estas opciones modifican la ficha de personaje para añadir un grado de dificultad superior a tu campaña.
+                    </Typography>
+                </Box>
+                <Box component="p">
+                    <FormControlLabel
+                        labelPlacement="start"
+                        control={
+                            <Checkbox
+                                checked={characterOptions.generalOptions.stress}
+                                onClick={() => changeOptions("stress", !characterOptions.generalOptions.stress)}
+                                disabled={!props.editable}
+                                color="default"
                             />
-                        </Box>
-                        <Box component="p">
-                            <FormControlLabel
-                                labelPlacement="start"
-                                control={
-                                    <Checkbox
-                                        checked={characterOptions.generalOptions.afflictions}
-                                        onClick={() => changeOptions("afflictions", !characterOptions.generalOptions.afflictions)}
-                                        disabled={!props.editable}
-                                        color="default"
-                                    />
-                                }
-                                label={'Aflicciones'}
+                        }
+                        label={'Estrés'}
+                    />
+                </Box>
+                <Box component="p">
+                    <FormControlLabel
+                        labelPlacement="start"
+                        control={
+                            <Checkbox
+                                checked={characterOptions.generalOptions.inventorySlots}
+                                onClick={() => changeOptions("inventorySlots", !characterOptions.generalOptions.inventorySlots)}
+                                disabled={!props.editable}
+                                color="default"
                             />
-                        </Box>
-                        <Box component="p">
-                            <FormControlLabel
-                                labelPlacement="start"
-                                control={
-                                    <Checkbox
-                                        checked={characterOptions.generalOptions.health}
-                                        onClick={() => changeOptions("health", !characterOptions.generalOptions.health)}
-                                        disabled={!props.editable}
-                                        color="default"
-                                    />
-                                }
-                                label={'Salud'}
+                        }
+                        label={'Huecos de inventario'}
+                    />
+                </Box>
+                <Box component="p">
+                    <FormControlLabel
+                        labelPlacement="start"
+                        control={
+                            <Checkbox
+                                checked={characterOptions.generalOptions.durability}
+                                onClick={() => changeOptions("durability", !characterOptions.generalOptions.durability)}
+                                disabled={!props.editable}
+                                color="default"
                             />
-                        </Box>
-                        <Box component="p">
-                            <FormControlLabel
-                                labelPlacement="start"
-                                control={
-                                    <Checkbox
-                                        checked={characterOptions.generalOptions.survivalConditions}
-                                        onClick={() => changeOptions("survivalConditions", !characterOptions.generalOptions.survivalConditions)}
-                                        disabled={!props.editable}
-                                        color="default"
-                                    />
-                                }
-                                label={'Condiciones de supervivencia'}
-                            />
-                        </Box>
-                        <Box component="p">
-                            <FormControlLabel
-                                labelPlacement="start"
-                                control={
-                                    <Checkbox
-                                        checked={characterOptions.generalOptions.inventorySlots}
-                                        onClick={() => changeOptions("inventorySlots", !characterOptions.generalOptions.inventorySlots)}
-                                        disabled={!props.editable}
-                                        color="default"
-                                    />
-                                }
-                                label={'Huecos de inventario'}
-                            />
-                        </Box>
-                        <Box component="p">
-                            <FormControlLabel
-                                labelPlacement="start"
-                                control={
-                                    <Checkbox
-                                        checked={characterOptions.generalOptions.durability}
-                                        onClick={() => changeOptions("durability", !characterOptions.generalOptions.durability)}
-                                        disabled={!props.editable}
-                                        color="default"
-                                    />
-                                }
-                                label={'Durabilidad'}
-                            />
-                        </Box>
-                    </Grid>
-                </Grid>
+                        }
+                        label={'Durabilidad'}
+                    />
+                </Box>
             </Paper>
         </div >
     );

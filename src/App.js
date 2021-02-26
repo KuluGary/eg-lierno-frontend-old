@@ -41,10 +41,14 @@ import NpcProfile from './pages/Npc/NpcProfile/NpcProfile';
 import NpcList from './pages/Npc/NpcList/NpcList';
 
 
-const electron = window && window.process && window.process.type && window.require('electron');
+const electron = window?.process?.type && window.require('electron');
 const ipcRenderer = electron && electron.ipcRenderer;
 
 const styles = theme => ({
+  '@font-face': {
+    "font-family": "JSL Ancient",
+    src: 'local("JSL Ancient"), url("assets/fonts/jacnient.ttf") format("truetype")'
+  },
   '@global': {
     b: {
       fontWeight: 500

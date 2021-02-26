@@ -114,6 +114,15 @@ function Flavor(props) {
 
   }
 
+  const toggleLockCampaign = (index) => {
+    const newCampaigns = [...campaigns];
+
+    newCampaigns[index].unlocked = !newCampaigns[index].unlocked;
+
+    setCampaigns(newCampaigns);
+
+  }
+
   const removeCampaign = (campaignToRemove) => {
     const newCampaigns = [...campaigns].filter(campaign => campaign.id !== campaignToRemove.id)
 
@@ -290,7 +299,7 @@ function Flavor(props) {
                 control={
                   <Checkbox
                     checked={campaign.unlocked}
-                    onChange={() => handleCampaignChange(campaign.id, campaign, !campaign.unlocked)}
+                    onChange={() => toggleLockCampaign(index)}
                     name="checkedB"
                     color="primary"
                   />

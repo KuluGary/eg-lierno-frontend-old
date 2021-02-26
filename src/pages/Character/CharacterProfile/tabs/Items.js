@@ -92,7 +92,6 @@ export default function Items(props) {
         const categoryNames = ["Objetos", "Armadura", "Objetos Mágicos", "Armas", "Vehículos", "Armas mágicas"];
 
         Object.keys(props.items).forEach((block, index) => {
-            console.log(block)
             if (props.items[block]) {
                 cats.push(block)
                 selectedCategoryNames.push(categoryNames[index])
@@ -111,7 +110,6 @@ export default function Items(props) {
 
         })
             .then(async res => {
-                // setAllItems(res)
                 let itemsToSet = [];
 
                 cats.forEach(cat => {
@@ -147,7 +145,6 @@ export default function Items(props) {
                 const j = item.data.properties.findIndex(it => it.key === "Capacidad");
 
                 if (j >= 0) {
-                    // setMaxSlotModifier(maxSlotModifier + item.data.properties[j].value);
                     const capacity = item.data.properties[j].value;
                     maxSlotModifier += capacity * item.quantity;
                 }
@@ -170,7 +167,6 @@ export default function Items(props) {
 
         categories.forEach(cat => {
             props.items[cat].forEach(item => {
-                console.log(item, allItems)
                 const itemToSet = {
                     equipped: item["equipped"] ? item["equipped"] : false,
                     quantity: item["quantity"] ? item["quantity"] : 0,
@@ -183,7 +179,6 @@ export default function Items(props) {
         })
 
         setItems(itemsToSet);
-        console.log(itemsToSet)
         setTableItems(itemsToSet.filter(items => items.data.type === categories[selectedCategory]));
     }, [props.items])
 
@@ -518,7 +513,7 @@ export default function Items(props) {
                     </Paper>
                 </Grid>
                 {(props.settings && props.settings.generalOptions.inventorySlots) &&
-                    <Paper variant="outlined" style={{ minWidth: "25%", padding: "1rem",  height: "100%" }}>
+                    <Paper variant="outlined" style={{ minWidth: "25%", padding: "1rem"}}>
                         <Box>
                             <Inventory
                                 changeStats={props.changeStats}

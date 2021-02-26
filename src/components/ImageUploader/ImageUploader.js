@@ -5,7 +5,6 @@ import Api from 'helpers/api';
 
 export default function ImageUploader({ open, setOpen, setImage }) {
     const handleSave = (files) => {
-        console.log(files)
         if (files.length) {
             const apiUrl = `https://api.imgur.com/3/image`;
             const headers = new Headers();

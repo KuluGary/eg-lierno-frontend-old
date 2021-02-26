@@ -62,7 +62,6 @@ export default function Race(props) {
     StringUtil.generiza("Gigantesco", "Gigantesca", "Gigantesque", props.pronoun)
   ]
 
-  console.log(props.creature.stats)
   const [selectedSize, setSelectedSize] = useState(props.creature.stats.size || sizes[2]);
 
   useEffect(() => {

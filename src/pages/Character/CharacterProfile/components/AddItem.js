@@ -94,7 +94,6 @@ export default function AddItem(props) {
 
     const addItem = () => {
         let item = {};
-        console.log(itemToAdd)
 
         if (addNew) {
             Api.fetchInternal("/item", {

@@ -114,7 +114,6 @@ export default function Spells(props) {
     };
 
     const addNewSpell = (id, item) => {
-        console.log(spellIds)
         if (!spellIds.includes(id)) {
 
             props.changeStats("spells", [...spellIds, { spellId: id, prepared: false }]);

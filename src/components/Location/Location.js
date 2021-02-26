@@ -7,7 +7,7 @@ import Api from '../../helpers/api'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Slide from '@material-ui/core/Slide';
-import { Map, ImageOverlay, LayersControl } from 'react-leaflet'
+import { MapContainer, ImageOverlay, LayersControl } from 'react-leaflet'
 import Image from '../Image/Image';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 
@@ -69,7 +69,7 @@ function Location(props) {
                     <Grid container spacing={1} style={{ alignItems: "stretch" }}>
                         {location.flavor.layers && <Grid item xs={12} sm={12} md={6} className={classes.gridItem}>
                             <Paper variant="outlined" className={classes.profileBox}>
-                                <Map center={location.mapStats.center}
+                                <MapContainer center={location.mapStats.center}
                                     bounds={location.mapStats.bounds}
                                     zoom={location.mapStats.zoom}
                                     minZoom={location.mapStats.zoom.minZoom}
@@ -90,7 +90,7 @@ function Location(props) {
                                         }
                                     </LayersControl>
 
-                                </Map>
+                                </MapContainer>
                             </Paper>
                         </Grid>}
                         <Grid item xs={12} sm={12} md={location.flavor.layers ? 6 : 8} className={classes.gridItem}>
