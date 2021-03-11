@@ -198,8 +198,8 @@ function CharacterProfile(props) {
                 {editedCharacter &&
                     <Grid container spacing={1}>
                         <Helmet>
-                            <title>{`${editedCharacter.flavor.traits["name"]} | Lierno App`}</title>
-                            {/* <meta property="og:image" content={editedCharacter.flavor.portrait} /> */}
+                            <title>{`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}</title>
+                            <meta name="twitter:title" content={`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}/>                            
                         </Helmet>
                         <Grid item xs={12}>
                             <CharacterInfo
