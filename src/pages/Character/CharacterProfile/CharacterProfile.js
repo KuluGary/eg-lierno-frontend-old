@@ -199,8 +199,9 @@ function CharacterProfile(props) {
                     <Grid container spacing={1}>
                         <Helmet>
                             <title>{`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}</title>
-                            <meta name="twitter:title" content={`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}/>                            
-                            <meta name="twitter:title" content={`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}/>                            
+                            <meta name="twitter:title" content={`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}/>                                                                                    
+                            <meta name="twitter:description" content={editedCharacter.flavor.psychologicalDescription}/>
+                            <meta name="twitter:image" content={editedCharacter.flavor.portrait}/>
                         </Helmet>
                         <Grid item xs={12}>
                             <CharacterInfo
