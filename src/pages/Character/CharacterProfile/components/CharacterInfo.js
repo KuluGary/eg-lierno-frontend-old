@@ -137,7 +137,7 @@ export default function CharacterInfo(props) {
                                 </Box>
                                 :
                                 <Box component="span">
-                                    {race && race.name && (StringUtil.generizaClase(race.name, props.pronoun) + ',')}
+                                    {race?.name && race.name + ','}
                                     {" " + (background.name ? background.name : "") + " " + (alignment ? alignment : "") + ", "}
                                     {charClass.map((charClass, index) => <span key={index}>{" " + StringUtil.generizaClase(charClass["className"], props.pronoun) + " (" + charClass["classLevel"] + ") " + (charClass["subclassName"] ? (" " + charClass["subclassName"]) : " ")}</span>)}
                                 </Box>

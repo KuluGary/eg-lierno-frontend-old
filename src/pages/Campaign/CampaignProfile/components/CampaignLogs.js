@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     },
     messageContainer: {
         overflow: "auto",
-        height: "80vh",
+        height: "50vh",
         '&::-webkit-scrollbar': {
             width: "10px",
             opacity: .5

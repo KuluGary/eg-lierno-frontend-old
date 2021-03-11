@@ -32,7 +32,7 @@ function CampaignProfile(props) {
                 </Box>
                 <Box>
                     <Box>
-                        <Typography variant="h5" inline>
+                        <Typography variant="h5" display="inline">
                             {props.name}
                         </Typography>
                     </Box>

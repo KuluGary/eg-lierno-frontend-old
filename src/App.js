@@ -52,6 +52,21 @@ const styles = theme => ({
   '@global': {
     b: {
       fontWeight: 500
+    },
+    '::-webkit-scrollbar': {
+      width: "6px",
+      opacity: .5
+    },
+    '::-webkit-scrollbar-track': {
+      backgroundColor: "rgba(0,0,0,0.2)",
+      borderRadius: "20px"
+    },
+    '::-webkit-scrollbar-thumb': {
+      backgroundColor: "rgba(255,255,255,0.5)",
+      borderRadius: "20px"
+    },
+    '::-webkit-scrollbar-thumb:hover': {
+      backgroundColor: "rgba(255,255,255,0.8)",
     }
   }
 });

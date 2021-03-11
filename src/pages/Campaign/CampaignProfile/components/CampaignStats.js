@@ -86,7 +86,7 @@ function CampaignStats(props) {
             const userData = {};
 
             logs.forEach((log, index) => {
-                Object.keys(log.data.damageDealt).forEach(key => {
+                log.data && Object.keys(log.data.damageDealt).forEach(key => {
                     if (key !== dm.metadata.discordId) {
                         userData[key] = userData[key] ? [...userData[key], ...log.data.damageDealt[key]] : [...log.data.damageDealt[key]]
                     }

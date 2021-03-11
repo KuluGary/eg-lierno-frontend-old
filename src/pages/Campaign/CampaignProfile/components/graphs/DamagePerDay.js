@@ -10,11 +10,11 @@ function DamagePerDay(props) {
             const userData = {};
 
             props.logs.forEach(log => {
-                Object.keys(log.data.damageDealt).forEach(key => {
-                    if (key !== props.dm.metadata.discordId) {
-                        userData[key] = userData[key] ? [...userData[key], ...log.data.damageDealt[key]] : [...log.data.damageDealt[key]]
-                    }
-                })
+                // Object.keys(log.data.damageDealt).forEach(key => {
+                //     if (key !== props.dm.metadata.discordId) {
+                //         userData[key] = userData[key] ? [...userData[key], ...log.data.damageDealt[key]] : [...log.data.damageDealt[key]]
+                //     }
+                // })
             })
 
             Object.keys(userData).forEach(key => {

@@ -12,7 +12,7 @@ function CritFails(props) {
             const userData = {};
 
             props.logs.forEach(log => {
-                if (log.data.nat1) {
+                if (log.data?.nat1) {
                     Object.keys(log.data.nat1).forEach(key => {
 
                         if (key !== props.dm.metadata.discordId) {

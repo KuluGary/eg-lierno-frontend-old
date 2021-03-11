@@ -113,11 +113,12 @@ export default function Armor(props) {
                     </Grid>
                 </Grid>
                 <Grid item lg={4} xs={12} container spacing={1}>
-                    <Grid item lg={12} xs={12}>                        
-                    <Backstory
-                        story={character["backstory"]}
-                        editable={props.editable} />
-                        </Grid>
+                    <Grid item lg={12} xs={12}>
+                        <Backstory
+                            story={character["backstory"]}
+                            changeFlavor={props.changeFlavor}
+                            editable={props.editable} />
+                    </Grid>
                 </Grid>
                 {/* <Grid item lg={12} sm={12} md={6} className={classes.traitBox}>
                     <Paper variant="outlined" className={classes.paper}>

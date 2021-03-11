@@ -58,6 +58,7 @@ export default function Backstory(props) {
                         multiline
                         rowsMax={1}
                         disabled={!props.editable}
+                        onChange={(event) => props.changeFlavor("backstory", event.target.value)}
                         value={props.story?.replace(/<br \/>|<br\/>/gi, '\n')}
                         inputProps={{
                             style: { minHeight: "92.5%", fontSize: "11px" },

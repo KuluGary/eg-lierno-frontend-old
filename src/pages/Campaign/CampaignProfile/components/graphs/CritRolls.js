@@ -12,8 +12,8 @@ function CritRolls(props) {
             const userData = {};
 
             props.logs.forEach(log => {
-                if (log.data.nat20) {
-                    Object.keys(log.data.nat20).forEach(key => {                        
+                if (log.data?.nat20) {
+                    Object.keys(log.data?.nat20).forEach(key => {                        
                         if (key !== props.dm.metadata.discordId) {
                             userData[key] += log.data.nat20[key];
                         }

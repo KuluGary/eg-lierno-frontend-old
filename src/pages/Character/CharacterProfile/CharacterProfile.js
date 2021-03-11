@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import _ from "lodash";
 import Api from "helpers/api";
+import {Helmet} from "react-helmet";
 
 import CharacterInfo from "./components/CharacterInfo";
 import Information from './tabs/Information';
@@ -196,6 +197,10 @@ function CharacterProfile(props) {
             <div className={classes.root}>
                 {editedCharacter &&
                     <Grid container spacing={1}>
+                        <Helmet>
+                            <title>{`${editedCharacter.flavor.traits["name"]} | Lierno App`}</title>
+                            <meta property="og:image" content={editedCharacter.flavor.portrait} />
+                        </Helmet>
                         <Grid item xs={12}>
                             <CharacterInfo
                                 name={editedCharacter.flavor.traits["name"]}
