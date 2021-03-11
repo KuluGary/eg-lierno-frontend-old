@@ -200,6 +200,7 @@ function CharacterProfile(props) {
                         <Helmet>
                             <title>{`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}</title>
                             <meta name="twitter:title" content={`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}/>                            
+                            <meta name="twitter:title" content={`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}/>                            
                         </Helmet>
                         <Grid item xs={12}>
                             <CharacterInfo
