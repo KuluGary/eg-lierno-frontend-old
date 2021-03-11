@@ -199,7 +199,7 @@ function CharacterProfile(props) {
                     <Grid container spacing={1}>
                         <Helmet>
                             <title>{`${editedCharacter.flavor.traits["name"]} | Lierno App`}</title>
-                            <meta property="og:image" content={editedCharacter.flavor.portrait} />
+                            {/* <meta property="og:image" content={editedCharacter.flavor.portrait} /> */}
                         </Helmet>
                         <Grid item xs={12}>
                             <CharacterInfo
