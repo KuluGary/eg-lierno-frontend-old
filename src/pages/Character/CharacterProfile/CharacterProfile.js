@@ -65,10 +65,6 @@ function CharacterProfile(props) {
     }, [])
 
     useEffect(() => {
-        console.log(props.location.query.charName)
-    }, [])
-
-    useEffect(() => {
         if (editedCharacter) {
             let proficiencyBonus = 0;
             let totalLevel = 0;
