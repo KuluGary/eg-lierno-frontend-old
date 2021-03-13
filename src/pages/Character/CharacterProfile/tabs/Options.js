@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid'
 import { Checkbox, Divider, FormControlLabel, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -38,9 +37,9 @@ export default function Options(props) {
     const { settings } = props;
     const [characterOptions, setCharacterOptions] = useState({
         generalOptions: {
-            exhaustionTable: false, // [true, false]
-            stress: false, // [true,false]
-            inventorySlots: false, // [true,false]
+            exhaustionTable: false,
+            stress: false,
+            inventorySlots: false,
             experience: false,
             training: false,
             durability: false,

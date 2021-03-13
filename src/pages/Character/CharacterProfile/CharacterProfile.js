@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import _ from "lodash";
 import Api from "helpers/api";
-import {Helmet} from "react-helmet";
 
 import CharacterInfo from "./components/CharacterInfo";
 import Information from './tabs/Information';
@@ -62,6 +61,10 @@ function CharacterProfile(props) {
                 setEditedCharacter(_.cloneDeep(res))
                 setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", "Hechizos", "Opciones"].filter(el => el))
             })
+    }, [])
+
+    useEffect(() => {
+        console.log(props.location.query.charName)
     }, [])
 
     useEffect(() => {

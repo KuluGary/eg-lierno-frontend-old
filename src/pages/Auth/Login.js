@@ -99,7 +99,8 @@ function Login(props) {
                 },
                 body: JSON.stringify(user)
             })
-                .then(({ token, message }) => {
+                .then(({ token, message, ...res }) => {
+                    console.log(res)
                     if (token) {
                         Auth.setToken(token)
                             .then(() => {
@@ -212,7 +213,7 @@ function Login(props) {
                                 fullWidth
                                 error={errorState}
                                 id="email"
-                                label="Cuenta de usuario"
+                                label="Nombre de usuario"
                                 name="username"
                                 autoComplete="username"
                                 autoFocus

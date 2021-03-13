@@ -4,12 +4,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 
 
 function Notifications() {
-    const [response, setResponse] = useState(false);
 
-    // useEffect(() => {
-    //     const data = socket.listenToApi("FromApi");
-
-    // }, [])
     return (
         <>
             <NotificationsIcon />

@@ -68,7 +68,7 @@ export default function CharacterTable(props) {
                     {(characters && profile) && characters.length > 0 && characters
                         .slice(page * props.rowsPerPage, page * props.rowsPerPage + props.rowsPerPage)
                         .map(char => (
-                            <TableRow hover key={char._id} component={Link} to={'/characters/' + char._id} className={classes.link}>
+                            <TableRow hover key={char._id} component={Link} to={{pathname: '/characters/' + char._id, query: { charName: char.flavor.traits.name }}} className={classes.link}>
                                 {(width !== "xs") &&
                                     <TableCell style={{ padding: "1.5rem" }}>
                                         <Box style={{ display: "flex", justifyContent: "space-between" }}>

@@ -5,9 +5,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { connect } from "react-redux";
 import L, { divIcon } from "leaflet";
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, ImageOverlay, Marker, useMapEvent, useMap, Rectangle, Polyline } from 'react-leaflet'
+import { MapContainer, ImageOverlay, Marker, useMapEvent, useMap, Polyline } from 'react-leaflet'
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Paper, Collapse, Typography } from '@material-ui/core';
+import { Box, Paper, Typography } from '@material-ui/core';
 import Api from "helpers/api";
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -96,7 +96,6 @@ function MapScreen({ campaignId }) {
     const classes = useStyles();
     const [locations, setLocation] = useState();
     const [parentLocation, setParentLocation] = useState();
-    const [sideBarInfo, setSideBarInfo] = useState();
 
     useEffect(() => {
         Api.fetchInternal('/campaignmap/' + campaignId)
@@ -219,7 +218,6 @@ function MapScreen({ campaignId }) {
         const [sideBarInfo, setSideBarInfo] = useState();
         const map = useMap();
         const zoomLength = [];
-        const polyPoints = [];
 
         useEffect(() => controlLabelZoom(), []);
 
@@ -297,10 +295,6 @@ function MapScreen({ campaignId }) {
         useMapEvent('zoomend', controlLabelZoom);
 
         useMapEvent('click', (e) => console.log(Object.values(e.latlng)));
-        // useMapEvent('click', (e) => {
-        //     polyPoints.push(Object.values(e.latlng));
-        //     console.log(polyPoints)
-        // })
 
         return (
             <>
