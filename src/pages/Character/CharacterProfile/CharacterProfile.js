@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import _ from "lodash";
 import Api from "helpers/api";
-import Helmet from "react-helmet";
 
 import CharacterInfo from "./components/CharacterInfo";
 import Information from './tabs/Information';
@@ -19,6 +18,7 @@ import Tab from '@material-ui/core/Tab';
 import Slide from '@material-ui/core/Slide';
 
 import ShareComponent from 'components/ShareComponent/ShareComponent';
+import SEO from 'components/SEO/SEO';
 
 const useStyles = makeStyles({
     container: {
@@ -197,12 +197,12 @@ function CharacterProfile(props) {
             <div className={classes.root}>
                 {editedCharacter &&
                     <Grid container spacing={1}>
-                        <Helmet>
+                        <SEO>
                             <title>{`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}</title>
                             <meta name="twitter:title" content={`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`} data-react-helmet="true"/>                                                                                    
                             <meta name="twitter:description" content={editedCharacter.flavor.psychologicalDescription} data-react-helmet="true"/>
                             <meta name="twitter:image" content={editedCharacter.flavor.portrait} data-react-helmet="true"/>
-                        </Helmet>
+                        </SEO>
                         <Grid item xs={12}>
                             <CharacterInfo
                                 name={editedCharacter.flavor.traits["name"]}

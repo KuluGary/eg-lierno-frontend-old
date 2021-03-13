@@ -38,7 +38,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "react-snap",
     "dev": "concurrently \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "npm run build && electron-builder --publish=never",
     "deploy": "npm run build && electron-builder --publish=always"
@@ -96,7 +95,6 @@
     "concurrently": "^5.2.0",
     "electron": "^9.4.0",
     "electron-builder": "^22.6.0",
-    "react-snap": "^1.23.0",
     "react-snapshot": "^1.3.0",
     "wait-on": "^5.0.0"
   },
