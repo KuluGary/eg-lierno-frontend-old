@@ -10,6 +10,7 @@ import ItemScreen from './components/ItemScreen';
 import SpellScreen from './components/SpellScreen';
 // import ClassScreen from './components/ClassScreen';
 import ReferenceScreen from './components/ReferenceScreen';
+import SEO from 'components/SEO/SEO';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -112,6 +113,9 @@ function ExploreScreen() {
         <>
             <Slide direction="right" in={true} mountOnEnter unmountOnExit>
                 <Paper variant="outlined">
+                    <SEO>
+                        <title>{"Referencias | Lierno App"}</title>
+                    </SEO>
                     <Box style={{ display: "flex", justifyContent: "space-between" }}>
                         <Tabs variant="scrollable" value={value} onChange={handleChange} aria-label="simple tabs example">
                             <Tab label="Objetos" {...a11yProps(0)} />

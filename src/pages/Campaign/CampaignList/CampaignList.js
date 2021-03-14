@@ -20,6 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Box from '@material-ui/core/Box';
 import Api from 'helpers/api'
+import SEO from 'components/SEO/SEO';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -119,6 +120,9 @@ function CampaignList(props) {
     return (
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             <div className={classes.root}>
+                <SEO>
+                    <title>{"Campañas | Lierno App"}</title>
+                </SEO>
                 <Paper variant="outlined" className={classes.profileBox}>
                     <Box className={classes.addButton}>
                         <IconButton

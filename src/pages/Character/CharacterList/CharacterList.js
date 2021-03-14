@@ -15,6 +15,7 @@ import BackupIcon from '@material-ui/icons/Backup';
 import character_template from "../../../assets/json/character_template.json";
 import { DropzoneDialog } from 'material-ui-dropzone';
 import { Divider } from '@material-ui/core';
+import SEO from 'components/SEO/SEO';
 
 const mapStateToProps = state => {
     return {
@@ -184,6 +185,9 @@ function CharacterList(props) {
             {characters &&
                 <Slide direction="right" in={true} mountOnEnter unmountOnExit>
                     <Paper variant="outlined">
+                        <SEO>
+                            <title>{"Personajes | Lierno App"}</title>
+                        </SEO>
                         <DropzoneDialog
                             open={open}
                             dropzoneText={'Arrastra un fichero de personaje'}
