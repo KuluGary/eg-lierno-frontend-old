@@ -56,7 +56,7 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
 
 const apolloLink = from([
     errorLink,
-    new HttpLink({ uri: process.env.REACT_APP_ENDPOINT + "/v2" })
+    new HttpLink({ uri: process.env.REACT_APP_ENDPOINT + "v2" })
 ])
 
 export const apolloClient = new ApolloClient({
