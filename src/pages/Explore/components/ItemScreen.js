@@ -116,6 +116,7 @@ const ItemTable = ({ data }) => {
                     </TableHead>
                     <TableBody>
                         {data
+                            .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase(), "en", { 'sensitivity': 'base' }))
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((item, index) => (
                                 <>

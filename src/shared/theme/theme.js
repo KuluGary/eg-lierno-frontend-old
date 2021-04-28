@@ -1,4 +1,4 @@
-export const theme = {
+export const theme = (darkMode) => ({
     typography: {
         h1: {
             fontSize:"2.1rem"
@@ -44,6 +44,15 @@ export const theme = {
                     color: "inherit"
                 }
             }
+        },
+        MuiTableRow: {
+            root: {
+                "&$selected": {
+                    "&$hover": {
+                        backgroundColor: darkMode ? "rgba(255, 255, 255, 0.16)" : "rgba(0, 0, 0, 0.08)"
+                    }
+                }
+            }
         }
     },
-}
+})

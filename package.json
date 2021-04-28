@@ -5,7 +5,7 @@
   "author": "Gabriel Cuétara",
   "main": "public/electron.js",
   "homepage": "./",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "private": true,
   "repository": {
     "type": "git",
@@ -66,6 +66,7 @@
     "graphql": "^15.5.0",
     "iframe-resizer-react": "^1.0.3",
     "imgur-uploader": "^4.2.1",
+    "immutable": "^4.0.0-rc.12",
     "jwt-decode": "^2.2.0",
     "leaflet": "^1.6.0",
     "lodash": "^4.17.21",

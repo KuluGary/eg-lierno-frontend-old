@@ -14,8 +14,8 @@ export default function ModalImage(props) {
                 scroll="body"
                 >
                 <img
-                    src={imgSrc}
-                    style={{ height: "100%", maxHeight: "100vh" }} />
+                    src={imgSrc || imgSrc}
+                    style={{ height: "100%", maxHeight: "100vh", minHeight: "80vh" }} />
             </Dialog>
             <img
                 src={imgSrc}

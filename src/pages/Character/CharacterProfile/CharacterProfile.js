@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import Api from "helpers/api";
 
-import CharacterInfo from "./components/CharacterInfo";
-import Information from './tabs/Information';
-import Background from './tabs/Background';
-import Features from './tabs/Features';
-import Items from "./tabs/Items";
-import Options from "./tabs/Options";
-import Spells from "./tabs/Spells";
+import Background from './components/Background/Background';
+import CharacterInfo from "./components/CharacterInfo/CharacterInfo";
+import Features from './components/Features/Features';
+import Items from "./components/Items/Items";
+import Options from "./components/Options/Options";
+import Spells from "./components/Spells/Spells";
+import Information from './components/Information/Information';
 
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
@@ -42,7 +42,7 @@ const mapStateToProps = state => {
         characters: state.characters,
         profile: state.profile
     }
-}
+};
 
 function CharacterProfile(props) {
     const classes = useStyles();
@@ -161,6 +161,7 @@ function CharacterProfile(props) {
                 rations={editedCharacter.stats.rations}
                 money={editedCharacter.stats.money}
                 inventory={editedCharacter.stats.inventory}
+                otheritems={editedCharacter.stats.otheritems}
                 abilityScores={editedCharacter.stats.abilityScores}
                 race={editedCharacter.stats.race}
                 settings={editedCharacter.config}

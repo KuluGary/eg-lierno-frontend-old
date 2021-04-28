@@ -120,6 +120,7 @@ export default function ReferenceScreen() {
                         </TableHead>
                         <TableBody>
                             {handleFilter(data)
+                                .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase(), "en", { 'sensitivity': 'base' }))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((item, index) => (
                                     <>

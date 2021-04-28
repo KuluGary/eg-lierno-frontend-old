@@ -21,8 +21,6 @@ import Slide from '@material-ui/core/Slide';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { toast } from 'react-toastify';
 import { GoogleLogin } from 'react-google-login';
-// import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-// import TwitterLogin from "react-twitter-login";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle, /* faFacebook */ } from '@fortawesome/free-brands-svg-icons'
 import { Divider, IconButton } from '@material-ui/core';

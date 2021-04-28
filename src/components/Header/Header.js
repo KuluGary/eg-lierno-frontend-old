@@ -147,9 +147,6 @@ function Header(props) {
               </Link>
             </Typography>
             <div>
-              {/* <IconButton>
-                <Notifications />
-              </IconButton> */}
               {Auth.loggedIn() ?
                 <IconButton
                   aria-label="account of current user"
@@ -158,9 +155,9 @@ function Header(props) {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  {avatar || (user && user.metadata.avatar) ?
+                  {avatar || user?.metadata.avatar ?
                     <Avatar
-                      src={avatar || (user && user.metadata.avatar)}
+                      src={avatar || user?.metadata.avatar}
                       className={classes.avatar}
                       alt={user && user.metadata.first_name + ' ' + user.metadata.last_name}
                     /> :
@@ -170,7 +167,6 @@ function Header(props) {
                       {user && (user.metadata.first_name + ' ' + user.metadata.last_name).match(/\b(\w)/g).join('')}
                     </Avatar>
                   }
-                  {/* <AccountCircle fontSize="large" /> */}
                 </IconButton>
                 : <>
                   <Link to={'/register'} style={{ marginRight: "1rem" }} className={classes.link}>

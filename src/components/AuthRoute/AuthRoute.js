@@ -4,6 +4,7 @@ import Auth from "../../helpers/auth"
 
 function AuthRoute({ Component, path, exact = false, requiredRoles }) {
     const isAuthed = Auth.loggedIn();
+    console.log(isAuthed)
     const userHasRequiredRole = requiredRoles.some(Auth.hasRole);
     const message = userHasRequiredRole ? 'Por favor accede a tu cuenta para ver esta página.'
         : "No estás autorizado para entrar en esta página.";

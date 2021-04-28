@@ -72,6 +72,7 @@ const styles = theme => ({
 });
 
 toast.configure();
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -88,7 +89,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    if (window && window.process && window.process.type) {
+    if (window?.process?.type) {
       ipcRenderer.on('update_available', () => {
         this.setState({
           update: true,
@@ -156,7 +157,7 @@ class App extends Component {
       palette: {
         type: this.state.darkMode ? 'dark' : 'light',
       },
-      ...theme
+      ...theme(this.state.darkMode)
     })
 
     return (
@@ -207,10 +208,8 @@ class App extends Component {
                   <AuthRoute exact path="/campaigns" Component={CampaignList} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute path="/campaigns/add/:id?" Component={CampaignCreation} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute exact path="/characters" Component={CharacterList} requiredRoles={Auth.userRoles.users} />
-                  {/* <AuthRoute path="/characters/:id" Component={CharacterProfile} requiredRoles={Auth.userRoles.users} /> */}
                   <AuthRoute exact path="/npcs" Component={NpcList} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute path="/npc/add/:id?" Component={NpcCreation} requiredRoles={Auth.userRoles.users} />
-                  {/* <AuthRoute exact path="/campaigns" Component={CampaignScreen} requiredRoles={Auth.userRoles.users} /> */}
                   <AuthRoute exact path="/bestiary" Component={MonsterList} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute path="/bestiary/add/:id?" Component={MonsterCreation} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute exact path="/map" Component={MapScreen} requiredRoles={Auth.userRoles.users} />
@@ -218,13 +217,13 @@ class App extends Component {
                   <AuthRoute path="/alignments" Component={AlignmentScreen} requiredRoles={Auth.userRoles.admins} />
                   <AuthRoute path="/initiative" Component={InitiativeTracker} requiredRoles={Auth.userRoles.admins} />
                   <AuthRoute exact path="/" Component={CharacterList} requiredRoles={Auth.userRoles.users} />
+                  <AuthRoute exact path="/explore" Component={ExploreScreen} requiredRoles={Auth.userRoles.users} />
 
                   <Route path="/characters/:id" component={CharacterProfile} />
                   <Route exact path="/npc/:id" component={NpcProfile} />
                   <Route exact path="/bestiary/:id" component={MonsterProfile} />
                   <Route exact path="/campaigns/:id" component={CampaignProfile} />
                   <Route exact path="/factions/:id" component={FactionProfile} />
-                  <Route exact path="/explore" component={ExploreScreen} />
                 </Switch>
               </Box>
             </Router>

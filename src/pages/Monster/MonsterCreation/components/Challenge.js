@@ -165,7 +165,7 @@ export default function Challenge(props) {
               modifyStep(e);
             }}
             value={challengeRating}
-            delaultValue={step}
+            defaultValue={step}
             inputProps={{
               step: step,
               min: 0,

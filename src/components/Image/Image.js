@@ -50,6 +50,7 @@ export default function Image(props) {
                     <ModalImage
                         style={{ ...props.style }}
                         imgSrc={props.src}
+                        bigImg={props.bigImg}
                         className={props.className}
                         onError={onError}
                     />

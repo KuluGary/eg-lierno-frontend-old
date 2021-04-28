@@ -1,3 +1,6 @@
+import character_template from 'assets/json/character_template';
+import customizable_stats from 'assets/json/customizable_stats';
+
 export const StringUtil = {
     abilityMatrix: [
         {
@@ -153,27 +156,39 @@ export const StringUtil = {
 
     returnModifierStr(arr, creature) {
         const newArray = arr.map(item => {
-            if (item.modifierStr) {
-                return item
-            } else {
-                const typeIndex = this.abilityMatrix.findIndex(el => el.name === item.name)
-                if (typeIndex >= 0) {
-                    const type = this.abilityMatrix[typeIndex].modifier
+            const modifierType = item.modifier ?? 
+                character_template.stats.skills[Object.keys(character_template.stats.skills).findIndex(el => el === item.id)].modifier
+
+            const proficiencyToAdd = parseInt(creature.stats.proficiencyBonus);
+
+            const modifier = parseInt(creature.stats.abilityScoreModifiers[modifierType]) + (item.expertise ? proficiencyToAdd * 2 : (item.proficient ? proficiencyToAdd : 0));
+            const modifierName = customizable_stats.stats[modifierType].name
+            const name = customizable_stats.skills[item.id].name;
+
+            return `${name} (${modifierName}) ${(modifier >= 0 && '+') + modifier}`
+            
+
+            // if (item.modifierStr) {
+            //     return item
+            // } else {
+            //     const typeIndex = this.abilityMatrix.findIndex(el => el.name === item.name)
+            //     if (typeIndex >= 0) {
+            //         const type = this.abilityMatrix[typeIndex].modifier
                     
-                    const modifier = parseInt(creature.stats.abilityScoreModifiers[type]) + parseInt(creature.stats.proficiencyBonus);
-                    return {
-                        name: item.name,
-                        profient: true,
-                        modifier,
-                        modifierStr: `${item.name} ${(modifier >= 0 && '+') + modifier}`
-                    }
-                } else {
-                    return item
-                }
-            }
+            //         const modifier = parseInt(creature.stats.abilityScoreModifiers[type]) + parseInt(creature.stats.proficiencyBonus);
+            //         return {
+            //             name: item.name,
+            //             profient: true,
+            //             modifier,
+            //             modifierStr: `${item.name} ${(modifier >= 0 && '+') + modifier}`
+            //         }
+            //     } else {
+            //         return item
+            //     }
+            // }
         })
 
-        return this.returnStringFromObjectArray(newArray, "modifierStr")
+        return newArray.join(", ");
     },
 
     parseHTML(str) {

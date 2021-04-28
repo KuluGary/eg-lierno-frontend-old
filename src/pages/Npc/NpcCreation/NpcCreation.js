@@ -10,12 +10,16 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
-import Flavor from './components/Flavor';
-import Race from './components/Race';
-import Core from './components/Core';
-import Defense from './components/Defense';
-import Abilities from './components/Abilities';
-import Challenge from './components/Challenge';
+
+import {
+    Flavor,
+    Race,
+    Core,
+    Defense,
+    Abilities,
+    Challenge
+} from './components'
+
 import MuiAlert from '@material-ui/lab/Alert';
 import { toast } from 'react-toastify';
 import Api from 'helpers/api';
@@ -133,7 +137,7 @@ class NpcCreation extends Component {
                 },
                 stats: {
                     size: "Mediano",
-                    race: "Humanoide",
+                    race: "Humano",
                     alignment: "Sin alineamiento",
                     armorClass: 10,
                     numHitDie: 1,

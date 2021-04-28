@@ -175,7 +175,7 @@ function CampaignProfile(props) {
                                                         }} />
                                                     <Box style={{ margin: "0 1rem" }}>
                                                         <Box component="div" >
-                                                            <Typography variant="body" style={{ fontWeight: "500", fontSize: "1rem" }}>
+                                                            <Typography variant="body1" style={{ fontWeight: "500", fontSize: "1rem" }}>
                                                                 {dm.name}
                                                             </Typography>
                                                         </Box>
@@ -214,7 +214,7 @@ function CampaignProfile(props) {
                                                             }} />
                                                         <Box style={{ margin: "0 1rem" }}>
                                                             <Box component="div" >
-                                                                <Typography variant="body" style={{ fontWeight: "500", fontSize: "1rem" }}>
+                                                                <Typography variant="body1" style={{ fontWeight: "500", fontSize: "1rem" }}>
                                                                     {char.flavor.traits.name}
                                                                 </Typography>
                                                             </Box>

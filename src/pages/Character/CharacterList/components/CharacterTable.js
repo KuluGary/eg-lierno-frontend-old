@@ -92,14 +92,17 @@ export default function CharacterTable(props) {
                                                     }} />
                                                 <Box style={{ margin: "0 1rem" }}>
                                                     <Box component="div" >
-                                                        <Typography variant="body" style={{ fontWeight: "500", fontSize: "1rem" }}>
+                                                        <Typography variant="body1" style={{ fontWeight: "500", fontSize: "1rem" }}>
                                                             {char.flavor.traits.name}
                                                         </Typography>
                                                     </Box>
                                                     <Box component="div">
                                                         <Typography variant="caption">
-                                                            {char.stats.race && char.stats.race.name + ', '}
-                                                            {char.stats.classes.map(charClass => `${StringUtil.generizaClase(charClass.className, char.flavor.traits.pronoun)} (${charClass.classLevel})`).join(", ")}
+                                                            {char.stats.race?.name && char.stats.race.name + ', '}
+                                                            {char.stats.classes.length > 0 ?
+                                                                char.stats.classes.map(charClass => `${StringUtil.generizaClase(charClass.className, char.flavor.traits.pronoun)} nivel ${charClass.classLevel}`).join(", ") :
+                                                                `${StringUtil.generizaClase("Novato", char.flavor.traits.pronoun)} nivel 0`
+                                                            }
                                                         </Typography>
                                                     </Box>
                                                     <Box component="div">

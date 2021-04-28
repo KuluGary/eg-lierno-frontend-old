@@ -145,7 +145,7 @@ function CampaignList(props) {
                                                 <Box style={{ display: "flex", justifyContent: "space-between" }}>
                                                     <Box style={{ margin: "0 1rem 0 0" }}>
                                                         <Box component="div" >
-                                                            <Typography variant="body" style={{ fontWeight: "500", fontSize: "1rem" }}>
+                                                            <Typography variant="body1" style={{ fontWeight: "500", fontSize: "1rem" }}>
                                                                 {campaign.name}
                                                             </Typography>
                                                         </Box>

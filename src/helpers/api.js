@@ -22,7 +22,7 @@ export default class Api {
         })
             .then(response => response.json())
             .then(response => response.payload || response)
-    }    
+    }
 
     static _checkStatus = response => {
         if (response.status >= 200 && response.status < 300) {

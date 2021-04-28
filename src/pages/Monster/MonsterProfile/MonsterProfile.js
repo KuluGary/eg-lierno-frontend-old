@@ -10,7 +10,7 @@ import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import Stats from 'pages/Character/CharacterProfile/components/Stats';
+import Stats from './components/Stats';
 import Slide from '@material-ui/core/Slide';
 import Image from 'components/Image/Image';
 import ShareIcon from '@material-ui/icons/Share';

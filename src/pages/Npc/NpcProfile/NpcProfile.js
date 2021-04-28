@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import Stats from 'pages/Character/CharacterProfile/components/Stats';
+import Stats from './components/Stats';
 import Slide from '@material-ui/core/Slide';
 import { StringUtil } from 'helpers/string-util';
 import ShareIcon from '@material-ui/icons/Share';
