@@ -3,9 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
-import { InputAdornment, Divider } from "@material-ui/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDice } from "@fortawesome/free-solid-svg-icons";
+import { Divider } from "@material-ui/core";
 import useStyles from "./ClassResource.styles";
 
 export function ClassResource(props) {

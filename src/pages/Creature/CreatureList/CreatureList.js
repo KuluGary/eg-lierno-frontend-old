@@ -4,7 +4,7 @@ import Image from 'components/Image/Image'
 import { Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { connect } from "react-redux";
-import { addNpcs } from "shared/actions/index";
+import { addNpcs, addMonsters } from "shared/actions/index";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableFooter from '@material-ui/core/TableFooter';
@@ -62,17 +62,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const mapStateToProps = state => {
-    return { npcs: state.npcs, profile: state.profile }
+    return { npcs: state.npcs, monsters: state.monsters, profile: state.profile }
 }
 
 const mapDispatchToProps = dispatch => {
-    return { addNpcs: npcs => dispatch(addNpcs(npcs)) };
+    return { 
+        addNpcs: npcs => dispatch(addNpcs(npcs)),
+        addMonsters: monsters => dispatch(addMonsters(monsters))
+    };
 }
 
-function NpcList(props) {
+function CreatureList(props) {
     const classes = useStyles();
-    const [npcs, setNpcs] = useState([]);
-    const [npcsToDisplay, setNpcsToDisplay] = useState([]);
+    const [creatures, setCreatures] = useState([]);
+    const [creaturesToDisplay, setCreaturesToDisplay] = useState([]);
+    const [type, setType] = useState("npc");
     const [selectedData, setSelectedData] = useState();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [page, setPage] = React.useState(0);
@@ -81,14 +85,14 @@ function NpcList(props) {
     const [step, setStep] = useState(0.125)
     const width = useWidth();
     const theme = useTheme();
-    const [npcSizes] = useState([
+    const [creatureSizes] = useState([
         "Diminuto",
         "Pequeño",
         "Mediano",
         "Grande",
         "Gigantesco"
     ]);
-    const [npcTypes] = useState([
+    const [creatureTypes] = useState([
         "Humano",
         "Aberración", "Bestia", "Celestial",
         "Construcción", "Dragón", "Elemental",
@@ -117,14 +121,14 @@ function NpcList(props) {
     };
 
     const filterData = () => {
-        let newMonsters = [...npcs];
+        let newCreatures = [...creatures];
 
         if (filter.name) {
-            newMonsters = newMonsters.filter(item => item.name.includes(filter.name));
+            newCreatures = newCreatures.filter(item => item.name.includes(filter.name));
         }
 
         if (filter.size) {
-            newMonsters = newMonsters.filter(item => {
+            newCreatures = newCreatures.filter(item => {
                 let nonGenderedSize = item.stats.size;
 
                 const sizes = [["Diminuto", "Diminuta", "Diminute"],
@@ -148,7 +152,7 @@ function NpcList(props) {
         }
 
         if (filter.type) {
-            newMonsters = newMonsters.filter(item => {
+            newCreatures = newCreatures.filter(item => {
                 let check = item.stats.race;
                 if (["Humano", "Humana", "Humane"].includes(item.stats.race)) {
                     check = "Humano";
@@ -159,10 +163,10 @@ function NpcList(props) {
         }
 
         if (filter.cr) {
-            newMonsters = newMonsters.filter(item => item.stats.challengeRating === filter.cr)
+            newCreatures = newCreatures.filter(item => item.stats.challengeRating === filter.cr)
         }
 
-        setNpcsToDisplay(newMonsters);
+        setCreaturesToDisplay(newCreatures);
     }
 
     useEffect(() => filterData(), [filter])
@@ -184,11 +188,12 @@ function NpcList(props) {
     }
 
     useEffect(() => {
-        if (!props.npcs) {
-            Api.fetchInternal('/npc')
+        setType(props.type);
+        
+        if ((props.type === "npc" && !props.npcs) || (props.type === "bestiary" && !props.bestiary)) {
+            Api.fetchInternal(`/${props.type}`)
                 .then(res => {
-
-                    const npcs = res.sort((a, b) => {
+                    const creatures = res.sort((a, b) => {
                         if (a.stats.challengeRating > b.stats.challengeRating) {
                             return 1
                         } else if (a.stats.challengeRating < b.stats.challengeRating) {
@@ -202,15 +207,22 @@ function NpcList(props) {
                         }
                     })
 
-                    props.addNpcs(npcs)
-                    setNpcs(props.campaign ? npcs.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : npcs)
-                    setNpcsToDisplay(props.campaign ? npcs.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : npcs)
+                    if (props.type === "npc") {
+                        props.addNpcs(creatures);
+                    } else {
+                        props.addMonsters(creatures);
+                    }
+
+                    setCreatures(props.campaign ? creatures.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : creatures)
+                    setCreaturesToDisplay(props.campaign ? creatures.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : creatures)
                 });
         } else {
-            setNpcs(props.campaign ? props.npcs.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : props.npcs)
-            setNpcsToDisplay(props.campaign ? props.npcs.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : props.npcs)
+            const creatures = props.type === "npc" ? props.npcs : props.monsters;
+
+            setCreatures(props.campaign ? creatures.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : creatures)
+            setCreaturesToDisplay(props.campaign ? creatures.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : creatures)
         }
-    }, [])
+    }, [props.type])
 
     return (
         <div className={classes.root}>
@@ -222,9 +234,9 @@ function NpcList(props) {
                             onChange={(e) => {
                                 const value = e.target.value;
                                 if (value.length > 3) {
-                                    setNpcsToDisplay(npcs.filter(i => i.name.includes(value)))
+                                    setCreaturesToDisplay(creatures.filter(i => i.name.includes(value)))
                                 } else {
-                                    setNpcsToDisplay(npcs);
+                                    setCreaturesToDisplay(creatures);
                                 }
                             }}
                             endAdornment={
@@ -240,7 +252,7 @@ function NpcList(props) {
                     <IconButton
                         component="span"
                         className={classes.addButton}
-                        onClick={() => props.history.push("/npc/add")}>
+                        onClick={() => props.history.push(`/${type}/add`)}>
                         <AddIcon />
                     </IconButton>
                 </Box>
@@ -251,9 +263,9 @@ function NpcList(props) {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={filter.type || npcTypes[0]}
+                            value={filter.type || creatureTypes[0]}
                             onChange={(e) => setFilter({ ...filter, type: e.target.value })}>
-                            {npcTypes.map(item => <MenuItem value={item}>{item}</MenuItem>)}
+                            {creatureTypes.map(item => <MenuItem value={item}>{item}</MenuItem>)}
                         </Select>
                     </FormControl>
                     <FormControl className={classes.formControl}>
@@ -261,9 +273,9 @@ function NpcList(props) {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={filter.size || npcSizes[0]}
+                            value={filter.size || creatureSizes[0]}
                             onChange={(e) => setFilter({ ...filter, size: e.target.value })}>
-                            {npcSizes.map(item => <MenuItem value={item}>{item}</MenuItem>)}
+                            {creatureSizes.map(item => <MenuItem value={item}>{item}</MenuItem>)}
                         </Select>
                     </FormControl>
                     <FormControl className={classes.formControl}>
@@ -297,20 +309,20 @@ function NpcList(props) {
                 </Collapse>
                 <Table className={classes.table}>
                     <TableBody>
-                        {npcsToDisplay.length > 0 && npcsToDisplay
+                        {creaturesToDisplay.length > 0 && creaturesToDisplay
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map(npc => (
-                                <TableRow hover component={Link} to={'/npc/' + npc._id} className={classes.link} style={{
-                                    opacity: npc.flavor.campaign[npc.flavor.campaign.findIndex(campaign => props.campaign === campaign.campaignId)].unlocked ? 1 : .5
+                            .map(creature => (
+                                <TableRow hover component={Link} to={`/${type}/${creature._id}`} className={classes.link} style={{
+                                    opacity: creature.flavor.campaign[creature.flavor.campaign.findIndex(campaign => props.campaign === campaign.campaignId)].unlocked ? 1 : .5
                                 }}>
                                     {(width !== "xs") &&
                                         <>
-                                            <TableCell style={{ padding :"1.5rem" }}>
+                                            <TableCell style={{ padding: "1.5rem" }}>
                                                 <Box style={{ display: "flex", alignItems: "center" }}>
                                                     <Image
                                                         mode="background"
                                                         usage="avatar"
-                                                        src={npc.flavor.imageUrl}
+                                                        src={creature.flavor.imageUrl}
                                                         containerStyle={{
                                                             border: `1px solid ${theme.palette.divider}`,
                                                             borderRadius: "100%",
@@ -318,7 +330,7 @@ function NpcList(props) {
                                                             height: "4vw",
                                                         }}
                                                         style={{
-                                                            backgroundImage: `url(${npc.flavor.imageUrl})`,
+                                                            backgroundImage: `url(${creature.flavor.imageUrl})`,
                                                             width: "4vw",
                                                             height: "4vw",
                                                             backgroundSize: "cover",
@@ -327,30 +339,30 @@ function NpcList(props) {
                                                     <Box style={{ margin: "0 1rem" }}>
                                                         <Box component="div" >
                                                             <Typography variant="body" style={{ fontWeight: "500", fontSize: "1rem" }}>
-                                                                {npc.name}
+                                                                {creature.name}
                                                             </Typography>
                                                         </Box>
                                                         <Box component="div">
                                                             <Typography variant="caption">
-                                                            {[npc.stats.race, npc.flavor.class].filter(item => item).join(", ")}
+                                                                {[creature.stats.race, creature.flavor.class].filter(item => item).join(", ")}
                                                             </Typography>
                                                         </Box>
                                                         <Box component="div">
                                                             <Typography variant="caption">
-                                                                {"Dificultad " + npc.stats.challengeRatingStr + (npc.stats.experiencePoints && ' (' + npc.stats.experiencePoints + ' XP)')}
+                                                                {"Dificultad " + creature.stats.challengeRatingStr + (creature.stats.experiencePoints && ' (' + creature.stats.experiencePoints + ' XP)')}
                                                             </Typography>
                                                         </Box>
                                                     </Box>
                                                 </Box>
                                                 <Box style={{ marginTop: "1rem", maxHeight: "4em", overflow: "hidden", }}>
-                                                    <span dangerouslySetInnerHTML={{ __html: npc.flavor.description }} />
+                                                    <span dangerouslySetInnerHTML={{ __html: creature.flavor.description }} />
                                                 </Box>
                                             </TableCell>
                                         </>}
                                     {(props.profile && props.dm) && props.profile._id === props.dm && <TableCell>
                                         <Link>
                                             <IconButton onClick={(e) => {
-                                                setSelectedData(npc._id)
+                                                setSelectedData(creature._id)
                                                 return handleMenu(e)
                                             }}>
                                                 <MoreVertIcon />
@@ -371,7 +383,7 @@ function NpcList(props) {
                                         return '' + from + '-' + to + ' de ' + count
                                     }
                                 }
-                                count={npcsToDisplay.length}
+                                count={creaturesToDisplay.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 onChangePage={handleChangePage}
@@ -401,4 +413,4 @@ function NpcList(props) {
     )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NpcList);
+export default connect(mapStateToProps, mapDispatchToProps)(CreatureList);

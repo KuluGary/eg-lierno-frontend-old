@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Radio from '@material-ui/core/Radio';
-import { InputAdornment, Divider } from '@material-ui/core';
+import { Divider } from '@material-ui/core';
 import useStyles from "./DeathSaves.styles";
 
 export function DeathSaves(props) {

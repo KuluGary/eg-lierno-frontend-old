@@ -4,24 +4,16 @@ import { useWidth } from 'helpers/media-query';
 
 import {
     Stats,
-    Proficiency,
-    Speed,
-    Armor,
     Attacks,
     SavingThrows,
     Skills,
-    Initiative,
-    Inspiration,
     HitDice,
-    DeathSaves,
     Wounds,
     ClassResource,
     StressLevels,
     ExhaustionEffects,
     OtherResources,
     HitPoints,
-    PassivePerception,
-
     StatComponent
 } from './components';
 import { faShieldAlt, faShoePrints, faEye, faSkull, faMedal, faSortNumericUp, faHandSparkles } from '@fortawesome/free-solid-svg-icons';

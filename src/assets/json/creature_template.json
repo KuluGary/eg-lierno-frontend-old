@@ -1,0 +1,51 @@
+{
+                "name": "Nuevo personaje",
+                "flavor": {
+                    "faction": "",
+                    "gender": "",
+                    "pronoun": "",
+                    "environment": "",
+                    "description": "",
+                    "nameIsProper": false,
+                    "imageUrl": "",
+                    "class": "",
+                    "campaign": [],
+                    "personality": {}
+                },
+                "stats": {
+                    "size": "Mediano",
+                    "race": "Humano",
+                    "alignment": "Sin alineamiento",
+                    "armorClass": 10,
+                    "numHitDie": 1,
+                    "hitDieSize": 8,
+                    "proficiencyBonus": 0,
+                    "speed": "30 ft.",
+                    "abilityScores": {
+                        "strength": 10,
+                        "dexterity": 10,
+                        "constitution": 10,
+                        "intelligence": 10,
+                        "wisdom": 10,
+                        "charisma": 10
+                    },
+                    "savingThrows": [],
+                    "skills": [],
+                    "damageVulnerabilities": [],
+                    "damageResistances": [],
+                    "damageImmunities": [],
+                    "conditionImmunities": [],
+                    "senses": [],
+                    "languages": ["Común"],
+                    "additionalAbilities": [],
+                    "challengeRating": 0.125,
+                    "experiencePoints": 50,
+                    "actions": [{
+                        "name": "Espada corta",
+                        "description": "<i>Ataque de arma a melé:</i> +0 a golpear, alcance 5 ft., un objetivo. <i>Daño:</i> 3 (1d6 + 0) daño perforante."
+                    }],
+                    "reactions": [],
+                    "legendaryActions": [],
+                    "legendaryActionsPerRound": 3
+                }
+            }

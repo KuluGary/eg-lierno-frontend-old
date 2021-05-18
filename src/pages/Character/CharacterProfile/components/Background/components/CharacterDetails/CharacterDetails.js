@@ -6,7 +6,6 @@ import Divider from '@material-ui/core/Divider';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Table, TableBody, TableCell, TableRow, TextField } from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import { StringUtil } from "helpers/string-util";
 import useStyles from "./CharacterDetails.styles";
 

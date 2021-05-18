@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { StringUtil } from "helpers/string-util";
 import Grid from '@material-ui/core/Grid';
@@ -16,29 +15,16 @@ import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import ImageUploader from 'components/ImageUploader/ImageUploader';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
-import Api from 'helpers/api';
+import Api from 'helpers/api'
 import Image from 'components/Image/Image';
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    // margin: theme.spacing(1),
-    minWidth: "100%",
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  image: {
-    width: "100%"
-  }
-}));
+import useStyles from './NpcFlavor.styles';
 
 const mapStateToProps = state => {
   return { profile: state.profile }
 }
 
-function Flavor(props) {
+function NpcFlavor(props) {
   const classes = useStyles();
-  const { addToCreatureStats, changeName, addToCreatureFlavor, profile } = props;
   const alignments = [
     "Sin alineamiento",
     StringUtil.generiza("Legal bueno", "Legal buena", "Legal buene", props.pronoun),
@@ -60,6 +46,12 @@ function Flavor(props) {
   const [campaignAvailable, setCampaignAvailable] = useState([]);
   const [campaigns, setCampaigns] = useState(props.creature.flavor.campaign || []);
 
+  const [personality, setPersonality] = useState(
+    (props.creature.flavor.personality.personality && props.creature.flavor.personality.personality.replace(/<br \/>/gi, "\n")) || '');
+  const [physical, setPhysical] = useState(
+    (props.creature.flavor.personality.physical && props.creature.flavor.personality.physical.replace(/<br \/>/gi, "\n")) || '');
+  const [story, setStory] = useState(
+    (props.creature.flavor.personality.backstory && props.creature.flavor.personality.backstory.replace(/<br \/>/gi, "\n")) || '');
   const [faction, setFaction] = useState(props.creature.flavor.faction);
   const [alignment, setAlignment] = useState(props.creature.stats.alignment || alignments[0]);
   const [openUploader, setOpenUploader] = useState();
@@ -67,27 +59,31 @@ function Flavor(props) {
   useEffect(() => {
     Api.fetchInternal('/campaigns')
       .then(campaignList => {
-        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === profile._id))
+        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === props.profile._id))
       })
-  }, [profile])
+  }, [props.profile])
 
   useEffect(() => {
     if (campaignAvailable.length > 0) {
-      changeName(name);
-      addToCreatureFlavor(pronoun, "pronoun");
-      addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
-      addToCreatureFlavor(image, "imageUrl");
-      addToCreatureFlavor(faction, "faction");
-      addToCreatureStats(alignment, "alignment")
-      addToCreatureFlavor(gender, "gender");
-      addToCreatureFlavor(characterClass, "class")
-      addToCreatureFlavor(campaigns.map(campaign => ({
+      props.changeName(name);
+      props.addToCreatureFlavor(pronoun, "pronoun");
+      props.addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
+      props.addToCreatureFlavor(image, "imageUrl");
+      props.addToCreatureFlavor(faction, "faction");
+      props.addToCreatureStats(alignment, "alignment");
+      props.addToCreatureFlavor(gender, "gender");
+      props.addToCreatureFlavor(characterClass, "class")
+      props.addToCreatureFlavor(campaigns.map(campaign => ({
         campaignId: campaign.id || campaignAvailable.filter(campaignA => campaignA._id === campaign.campaignId)[0]._id,
         unlocked: campaign.unlocked
       })), "campaign")
-      addToCreatureFlavor(profile._id, "owner")
+      props.addToCreatureFlavor({
+        personality: personality.replace(/\n/g, "<br />"),
+        physical: physical.replace(/\n/g, "<br />"),
+        backstory: story.replace(/\n/g, "<br />")
+      }, "personality")
     }
-  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, campaignAvailable, profile])
+  }, [pronoun, name, gender, description, image, faction, alignment, campaigns, characterClass, personality, physical, story])
 
   const addCampaign = () => {
     const indexOf = campaignAvailable.findIndex(campaignAvailable => campaigns.every(campaign => campaign.id !== campaignAvailable._id))
@@ -140,7 +136,7 @@ function Flavor(props) {
         Detalles básicos
       </Typography>
       <Typography variant="subtitle2" gutterBottom>
-        Por favor detalla los datos básicos de tu monstruo.
+        Por favor detalla los datos básicos de tu personaje no jugable.
       </Typography>
       <Grid container spacing={3}>
         <Grid item sm={2}>
@@ -196,74 +192,119 @@ function Flavor(props) {
           </FormControl>
         </Grid>
         <Grid item xs={3} style={{ display: (image && image.length > 0) ? 'block' : 'none' }}>
-          <Image style={{ width: "100%" }} errorStyle={{ width: "50%", height: "100%", margin: "0 auto" }} src={image} />
+          <Image
+            className={classes.image}
+            errorStyle={{ width: "50%", height: "100%", margin: "0 auto" }}
+            src={image}
+            mode="modal" />
         </Grid>
-        <Grid item sm={(image && image.length > 0) ? 9 : 12}>
+        <Grid item xs={(image && image.length > 0) ? 9 : 12} container spacing={3}>
+          <Grid item sm={12}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="image"
+                name="image"
+                label="URL de imagen"
+                onChange={(e) => setImage(e.target.value)}
+                value={image}
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <IconButton onClick={() => setOpenUploader(true)}>
+                      <AddPhotoAlternateIcon />
+                    </IconButton>
+                  )
+                }}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="faction"
+                name="faction"
+                onChange={(e) => setFaction(e.target.value)}
+                value={faction}
+                label="Facción"
+                fullWidth
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-simple-select-label">Alineamiento</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={alignment}
+                onChange={(e) => setAlignment(e.target.value)}
+              >
+                {alignments.map((alignment, index) =>
+                  <MenuItem key={index} value={alignment}>{alignment}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="class"
+                name="class"
+                onChange={(e) => setCharacterClass(e.target.value)}
+                value={characterClass}
+                label="Clase"
+                fullWidth
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                required
+                id="gender"
+                name="gender"
+                onChange={(e) => setGender(e.target.value)}
+                value={gender}
+                label="Género"
+                fullWidth
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
             <TextField
-              id="image"
-              name="image"
-              label="URL de imagen"
-              onChange={(e) => setImage(e.target.value)}
-              value={image}
+              id="personalityTrait1"
+              name="personalityTrait1"
+              onChange={(e) => setPersonality(e.target.value)}
+              value={personality}
+              multiline
+              label="Descripción psicológica"
               fullWidth
-              InputProps={{
-                endAdornment: (
-                  <IconButton onClick={() => setOpenUploader(true)}>
-                    <AddPhotoAlternateIcon />
-                  </IconButton>
-                )
-              }}
             />
           </FormControl>
         </Grid>
-        <Grid item xs={6} sm={6}>
+        <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
             <TextField
-              id="faction"
-              name="faction"
-              onChange={(e) => setFaction(e.target.value)}
-              value={faction}
-              label="Facción"
+              id="personalityTrait2"
+              name="personalityTrait2"
+              onChange={(e) => setPhysical(e.target.value)}
+              value={physical}
+              multiline
+              label="Descripción física"
               fullWidth
             />
           </FormControl>
         </Grid>
-        <Grid item xs={6} sm={6}>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Alineamiento</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={alignment}
-              onChange={(e) => setAlignment(e.target.value)}
-            >
-              {alignments.map((alignment, index) =>
-                <MenuItem key={index} value={alignment}>{alignment}</MenuItem>)}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={6} sm={6}>
+        <Grid item xs={12} sm={12}>
           <FormControl className={classes.formControl}>
             <TextField
-              id="class"
-              name="class"
-              onChange={(e) => setCharacterClass(e.target.value)}
-              value={characterClass}
-              label="Clase"
-              fullWidth
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <FormControl className={classes.formControl}>
-            <TextField
-              required
-              id="gender"
-              name="gender"
-              onChange={(e) => setGender(e.target.value)}
-              value={gender}
-              label="Género"
+              id="story"
+              name="story"
+              onChange={(e) => setStory(e.target.value)}
+              value={story}
+              multiline
+              label="Historia"
               fullWidth
             />
           </FormControl>
@@ -320,8 +361,8 @@ function Flavor(props) {
   );
 }
 
-Flavor = connect(
+NpcFlavor = connect(
   mapStateToProps
-)(Flavor);
+)(NpcFlavor);
 
-export { Flavor };
+export { NpcFlavor };

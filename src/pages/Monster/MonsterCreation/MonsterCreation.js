@@ -10,7 +10,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
-import Flavor from './components/Flavor';
+import {Flavor} from './components/Flavor';
 import Race from './components/Race';
 import Core from './components/Core';
 import Defense from './components/Defense';

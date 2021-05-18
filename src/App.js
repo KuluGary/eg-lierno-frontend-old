@@ -33,12 +33,9 @@ import CharacterProfile from "./pages/Character/CharacterProfile/CharacterProfil
 import CharacterList from "./pages/Character/CharacterList/CharacterList";
 import FactionList from './pages/Faction/FactionList/FactionList';
 import FactionProfile from './pages/Faction/FactionProfile/FactionProfile';
-import MonsterList from './pages/Monster/MonsterList/MonsterList';
-import MonsterCreation from './pages/Monster/MonsterCreation/MonsterCreation';
-import MonsterProfile from './pages/Monster/MonsterProfile/MonsterProfile';
-import NpcCreation from './pages/Npc/NpcCreation/NpcCreation';
-import NpcProfile from './pages/Npc/NpcProfile/NpcProfile';
-import NpcList from './pages/Npc/NpcList/NpcList';
+import NpcCreation from './pages/Creature/CreatureCreation/CreatureCreation';
+import NpcProfile from './pages/Creature/CreatureProfile/CreatureProfile';
+import NpcList from './pages/Creature/CreatureList/CreatureList';
 
 
 const electron = window?.process?.type && window.require('electron');
@@ -210,8 +207,8 @@ class App extends Component {
                   <AuthRoute exact path="/characters" Component={CharacterList} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute exact path="/npcs" Component={NpcList} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute path="/npc/add/:id?" Component={NpcCreation} requiredRoles={Auth.userRoles.users} />
-                  <AuthRoute exact path="/bestiary" Component={MonsterList} requiredRoles={Auth.userRoles.users} />
-                  <AuthRoute path="/bestiary/add/:id?" Component={MonsterCreation} requiredRoles={Auth.userRoles.users} />
+                  <AuthRoute exact path="/bestiary" Component={NpcList} requiredRoles={Auth.userRoles.users} />
+                  <AuthRoute path="/bestiary/add/:id?" Component={NpcCreation} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute exact path="/map" Component={MapScreen} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute exact path="/location/:id" Component={Location} requiredRoles={Auth.userRoles.users} />
                   <AuthRoute path="/alignments" Component={AlignmentScreen} requiredRoles={Auth.userRoles.admins} />
@@ -221,7 +218,7 @@ class App extends Component {
 
                   <Route path="/characters/:id" component={CharacterProfile} />
                   <Route exact path="/npc/:id" component={NpcProfile} />
-                  <Route exact path="/bestiary/:id" component={MonsterProfile} />
+                  <Route exact path="/bestiary/:id" component={NpcProfile} />
                   <Route exact path="/campaigns/:id" component={CampaignProfile} />
                   <Route exact path="/factions/:id" component={FactionProfile} />
                 </Switch>

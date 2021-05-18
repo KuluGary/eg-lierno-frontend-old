@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { addNpcs } from "shared/actions/index";
+import { addNpcs, addMonsters } from "shared/actions/index";
 import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -10,9 +10,11 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
+import creature_template from 'assets/json/creature_template.json';
 
 import {
-    Flavor,
+    NpcFlavor,
+    MonsterFlavor,
     Race,
     Core,
     Defense,
@@ -61,7 +63,9 @@ const useStyles = (theme) => ({
 
 const steps = ['Detalles', 'Raza', 'Estadísticas', 'Defensa', 'Habilidades', 'Desafío'];
 
-function getStepContent(step, changeName, setPronoun, addToCreatureFlavor, addToCreatureStats, defaultCreature, pronoun) {
+function getStepContent(step, changeName, setPronoun, addToCreatureFlavor, addToCreatureStats, defaultCreature, pronoun, type) {
+    const Flavor = type === "npc" ? NpcFlavor : MonsterFlavor;
+
     switch (step) {
         case 0:
             return <Flavor
@@ -104,15 +108,21 @@ function Alert(props) {
 }
 
 const mapDispatchToProps = dispatch => {
-    return { addNpcs: npcs => dispatch(addNpcs(npcs)) };
+    return {
+        addNpcs: npcs => dispatch(addNpcs(npcs)),
+        addMonsters: monsters => dispatch(addMonsters(monsters))
+    };
 }
 
 const mapStateToProps = state => {
-    return { npcs: state.npcs, profile: state.profile }
+    return {
+        npcs: state.npcs,
+        monsters: state.monsters,
+        profile: state.profile
+    }
 }
 
-
-class NpcCreation extends Component {
+class CreatureCreation extends Component {
     constructor(props) {
         super(props)
 
@@ -122,74 +132,26 @@ class NpcCreation extends Component {
             open: false,
             snack: 'success',
             defaultCreature: {
-                name: "Nuevo personaje",
-                flavor: {
-                    faction: "",
-                    gender: "",
-                    pronoun: "",
-                    environment: "",
-                    description: "",
-                    nameIsProper: false,
-                    imageUrl: "",
-                    class: "",
-                    campaign: [],
-                    personality: {}
-                },
-                stats: {
-                    size: "Mediano",
-                    race: "Humano",
-                    alignment: "Sin alineamiento",
-                    armorClass: 10,
-                    numHitDie: 1,
-                    hitDieSize: 8,
-                    proficiencyBonus: 0,
-                    speed: "30 ft.",
-                    abilityScores: {
-                        strength: 10,
-                        dexterity: 10,
-                        constitution: 10,
-                        intelligence: 10,
-                        wisdom: 10,
-                        charisma: 10
-                    },
-                    savingThrows: [],
-                    skills: [],
-                    damageVulnerabilities: [],
-                    damageResistances: [],
-                    damageImmunities: [],
-                    conditionImmunities: [],
-                    senses: [],
-                    languages: ["Común"],
-                    additionalAbilities: [],
-                    challengeRating: .125,
-                    experiencePoints: 50,
-                    actions: [{
-                        name: "Espada corta",
-                        description: "<i>Ataque de arma a melé:</i> +0 a golpear, alcance 5 ft., un objetivo. <i>Daño:</i> 3 (1d6 + 0) daño perforante."
-                    }],
-                    reactions: [],
-                    legendaryActions: [],
-                    legendaryActionsPerRound: 3
-                },
+                ...creature_template,                
                 createdBy: this.props.profile?._id 
             }
         }
     }
 
     componentDidMount() {
-        if (this.props.match.params && this.props.match.params.id) {
-            Api.fetchInternal('/npc/' + this.props.match.params.id)
+        const type = this.props.match.url.includes("npc") ? "npc" : "bestiary"
+        if (this.props.match.params && this.props.match.params.id) {            
+            this.setState({ type })
+
+            Api.fetchInternal(`/${type}/${this.props.match.params.id}`)
                 .then(res => {
-                    // setNpc(res)
                     this.setState({
                         defaultCreature: res,
                         loaded: true
                     })
-                });
+                }, () => console.log(this.state.type));
         } else {
-            this.setState({
-                loaded: true
-            })
+            this.setState({ loaded: true, type }, () => console.log(this.state.type));
         }
     }
 
@@ -210,7 +172,6 @@ class NpcCreation extends Component {
             open: true,
             snack: type
         })
-        // setOpen(true);
     };
 
     handleClose = (event, reason) => {
@@ -254,23 +215,28 @@ class NpcCreation extends Component {
     }
 
     saveMonster() {
-        Api.fetchInternal('/npc', {
+        Api.fetchInternal(`/${this.state.type}`, {
             method: this.props.match.params.id ? "PUT" : "POST",
             body: JSON.stringify(this.state.defaultCreature)
         })
             .then(() => {
                 this.notify("success", "El npc ha sido añadido a la lista.")
-                Api.fetchInternal('/npc')
+                Api.fetchInternal(`/${this.state.type}`)
                     .then(res => {
-                        const npcs = res.sort((a, b) => (a.stats.challengeRating > b.stats.challengeRating) ? 1 : -1)
-                        this.props.addNpcs(npcs)
-                        this.props.history.goBack()
+                        const creatures = res.sort((a, b) => (a.stats.challengeRating > b.stats.challengeRating) ? 1 : -1);
+
+                        if (this.state.type === "npc") {
+                            this.props.addNpcs(creatures);
+                        } else if (this.state.type === "bestiary") {
+                            this.props.addMonsters(creatures);
+                        }
+
+                        this.props.history.goBack();
                     });
             })
             .catch(() => {
-                this.notify("error", "El npc no ha podido ser añadido.")
-                // this.props.history.push("/npcs")
-                this.props.history.goBack()
+                this.notify("error", "El npc no ha podido ser añadido.");
+                this.props.history.goBack();
             })
     }
 
@@ -379,7 +345,8 @@ class NpcCreation extends Component {
                                         this.addToCreatureFlavor.bind(this),
                                         this.addToCreatureStats.bind(this),
                                         this.state.defaultCreature,
-                                        this.state.defaultCreature.flavor.pronoun)}
+                                        this.state.defaultCreature.flavor.pronoun,
+                                        this.state.type)}
                                     <div className={classes.buttons}>
                                         {this.state.activeStep !== 0 && (
                                             <Button onClick={this.handleBack} className={classes.button}>
@@ -408,4 +375,4 @@ class NpcCreation extends Component {
 export default compose(
     withStyles(useStyles),
     connect(mapStateToProps, mapDispatchToProps)
-)(NpcCreation)
+)(CreatureCreation)

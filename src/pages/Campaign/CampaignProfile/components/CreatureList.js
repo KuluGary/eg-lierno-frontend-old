@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
-import NpcList from "pages/Npc/NpcList/NpcList";
-import MonsterList from "pages/Monster/MonsterList/MonsterList";
+import CreatureListComponent from "pages/Creature/CreatureList/CreatureList";
 
 function CreatureList(props) {
     const [categories] = useState(["PNJs", "Criaturas"]);
@@ -22,8 +21,8 @@ function CreatureList(props) {
 
     function tabData() {
         switch (selectedCategory) {
-            case 0: return <NpcList history={props.history} dm={props.dm} campaign={props.campaignId} />
-            default: return <MonsterList history={props.history} dm={props.dm} campaign={props.campaignId} />
+            case 0: return <CreatureListComponent type="npc" history={props.history} dm={props.dm} campaign={props.campaignId} />
+            default: return <CreatureListComponent type="bestiary" history={props.history} dm={props.dm} campaign={props.campaignId} />
         }
     }
 
@@ -33,7 +32,6 @@ function CreatureList(props) {
                 variant="scrollable"
                 value={selectedCategory}
                 onChange={handleChange}
-                // style={{ position: "relative" }}
                 aria-label="simple tabs example">
                 {categories.map((category, index) => {
                     return <Tab key={index} label={category} {...a11yProps(category)} />

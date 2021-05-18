@@ -9,18 +9,32 @@ export default function ModalImage(props) {
         <>
             <Dialog
                 open={open}
-                onClose={() => setOpen(false)} 
+                onClose={() => setOpen(false)}
                 PaperComponent={'span'}
                 scroll="body"
-                >
-                <img
-                    src={imgSrc || imgSrc}
-                    style={{ height: "100%", maxHeight: "100vh", minHeight: "80vh" }} />
+                maxWidth={false}>
+                <div
+                    onClick={() => setOpen(false)}
+                    style={{
+                        height: "90vh",
+                        width: "90vw",
+                        display: "flex",
+                        justifyContent: "center"
+                    }}>
+
+                    <img
+                        src={imgSrc || imgSrc}
+                        style={{
+                            maxHeight: "100%",
+                            maxWidth: "100%",
+                            objectFit: "contain"
+                        }} />
+                </div>
             </Dialog>
             <img
                 src={imgSrc}
                 onClick={setOpen}
-                style={{...style, cursor: "pointer"}}
+                style={{ ...style, cursor: "pointer" }}
                 onError={onError}
                 className={className} />
         </>
