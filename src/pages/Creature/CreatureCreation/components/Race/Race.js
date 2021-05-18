@@ -105,23 +105,14 @@ function Race(props) {
               id="free-solo-demo"
               freeSolo
               options={races}
-              value={selectedRace}
-              inputValue={selectedRace}
+              value={selectedRace || ""}
+              inputValue={selectedRace || ""}
               onChange={(_, newValue) => setSelectedRace(newValue)}
               onInputChange={(_, newValue) => setSelectedRace(newValue)}
               renderInput={(params) => (
                 <TextField {...params} label="Raza" margin="normal" className={classes.formControlMargin} />
               )}
              />
-            {/* <Select
-              labelId="race-select-label"
-              id="race-select"
-              value={selectedRace || races[0]}
-              onChange={(e) => setSelectedRace(e.target.value)}
-            >
-              {races.map((race, index) =>
-                <MenuItem key={index} value={race}>{race}</MenuItem>)}
-            </Select> */}
           </FormControl> 
         </Grid>
         <Grid item xs={12} sm={4}>
