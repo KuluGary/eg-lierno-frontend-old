@@ -37,26 +37,6 @@ function Core(props) {
   ];
 
   const [skills, setSkills] = useState(props.creature.stats.skills || []);
-  // const skillList = [
-  //   "Acrobacias",
-  //   "Atletismo",
-  //   "C.Arcano",
-  //   "Engaño",
-  //   "Historia",
-  //   "Interpretación",
-  //   "Intimidación",
-  //   "Investigación",
-  //   "Juego de Manos",
-  //   "Medicina",
-  //   "Naturaleza",
-  //   "Percepción",
-  //   "Perspicacia",
-  //   "Persuasión",
-  //   "Religión",
-  //   "Sigilo",
-  //   "Supervivencia",
-  //   "T. con Animales"
-  // ];
 
   const skillList = character_template.stats.skills;
 

@@ -8,6 +8,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './Race.styles';
 
 function Race(props) {
@@ -16,7 +17,7 @@ function Race(props) {
   const [senseAux, setSenseAux] = useState('');
   const [languages, setLanguages] = useState(props.creature.stats.languages || []);
   const [languageAux, setLanguageAux] = useState('');
-  const races = [
+  const races = props.type === "npc" ? [
     "Humanoide",
     StringUtil.generiza("Humano", "Humana", "Humane", props.pronoun),
     StringUtil.generiza("Medio-elfo", "Medio-elfa", "Medio-elfe", props.pronoun),
@@ -31,7 +32,15 @@ function Race(props) {
     "Aarakocra", "Bullywug", "Gnoll", "Hobgoblin",
     StringUtil.generiza("Sirénido", "Sirénida", "Sirénide", props.pronoun),
     StringUtil.generiza("Orco", "Orca", "Orque", props.pronoun), "Esqueleto", "Zombie"
-  ]
+  ] : [
+    StringUtil.generiza("Humano", "Humana", "Humane", props.pronoun),
+    "Aberración", "Bestia", "Celestial",
+    "Construcción", "Dragón", "Elemental",
+    "Hada", "Felón", "Gigante",
+    "Humanoide", "Goblinoide", "Monstruosidad",
+    "Viscoso", "Planta", "No-muerto"
+  ];
+
   const [selectedRace, setSelectedRace] = useState(props.creature.stats.race || races[0]);
   const [speed, setSpeed] = useState(props.creature.stats.speed);
 
@@ -91,9 +100,20 @@ function Race(props) {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
-          <FormControl required className={classes.formControl}>
-            <InputLabel id="race-select-label">Raza</InputLabel>
-            <Select
+          <FormControl required className={classes.formControl} >
+            <Autocomplete
+              id="free-solo-demo"
+              freeSolo
+              options={races}
+              value={selectedRace}
+              inputValue={selectedRace}
+              onChange={(_, newValue) => setSelectedRace(newValue)}
+              onInputChange={(_, newValue) => setSelectedRace(newValue)}
+              renderInput={(params) => (
+                <TextField {...params} label="Raza" margin="normal" className={classes.formControlMargin} />
+              )}
+             />
+            {/* <Select
               labelId="race-select-label"
               id="race-select"
               value={selectedRace || races[0]}
@@ -101,8 +121,8 @@ function Race(props) {
             >
               {races.map((race, index) =>
                 <MenuItem key={index} value={race}>{race}</MenuItem>)}
-            </Select>
-          </FormControl>
+            </Select> */}
+          </FormControl> 
         </Grid>
         <Grid item xs={12} sm={4}>
           <FormControl className={classes.formControl}>

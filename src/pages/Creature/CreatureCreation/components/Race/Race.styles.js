@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
         // margin: theme.spacing(1),
         minWidth: "100%",
     },
+    formControlMargin: {
+        marginTop: 0
+    },
     chip: {
         margin: theme.spacing(0.5),
     },

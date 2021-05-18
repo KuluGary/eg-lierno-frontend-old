@@ -79,7 +79,8 @@ function getStepContent(step, changeName, setPronoun, addToCreatureFlavor, addTo
             return <Race
                 addToCreatureStats={addToCreatureStats}
                 creature={defaultCreature}
-                pronoun={pronoun} />;
+                pronoun={pronoun}
+                type={type} />;
         case 2:
             return <Core
                 addToCreatureStats={addToCreatureStats}
