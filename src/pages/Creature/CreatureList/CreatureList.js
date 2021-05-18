@@ -407,7 +407,7 @@ function CreatureList(props) {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={() => props.history.push("/npc/add/" + selectedData)}>Editar</MenuItem>
+                <MenuItem onClick={() => props.history.push(`/${type}/add/${selectedData}`)}>Editar</MenuItem>
             </Menu>
         </div>
     )
