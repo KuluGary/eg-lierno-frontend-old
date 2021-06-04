@@ -6,16 +6,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       textDecoration: 'none'
     },
+    textDecoration: 'none',
     cursor: "pointer"
   },
   table: {
     width: "100%"
-  },
-  link: {
-    color: 'inherit',
-    textDecoration: 'none',
-
-  },
+  }
 }));
 
 export default useStyles;

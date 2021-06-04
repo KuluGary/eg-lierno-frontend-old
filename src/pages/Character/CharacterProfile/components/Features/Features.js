@@ -9,7 +9,6 @@ import Divider from '@material-ui/core/Divider';
 import Api from "helpers/api";
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import Grid from '@material-ui/core/Grid';

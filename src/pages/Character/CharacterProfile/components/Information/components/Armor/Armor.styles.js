@@ -12,7 +12,6 @@ const useStyles = makeStyles({
         flexDirection: "column", 
         alignItems: "center", 
         justifyContent: "start", 
-        height: "100%"
     },
     header: {
         width: "100%",

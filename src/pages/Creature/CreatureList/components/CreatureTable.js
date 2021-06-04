@@ -19,7 +19,6 @@ import Image from 'components/Image/Image';
 import { useWidth } from 'hooks/media-query';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import useStyles from './CreatureTable.styles';
-import Api from 'helpers/api';
 
 export default function CreatureTable({
   creaturesToDisplay,

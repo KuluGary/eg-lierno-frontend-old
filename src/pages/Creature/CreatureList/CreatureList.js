@@ -53,9 +53,10 @@ function CreatureList(props) {
     const [filter, setFilter] = useState({});
 
     useEffect(() => {
+        const type = props.type === "bestiary" ? "monsters" : props.type + "s";
         setType(props.type);
 
-        if (!props[props.type]) {
+        if (!props[type]) {
             fetchCreaturesFromAPI();
         } else {
             filterCreatures(props.type === "npc" ? props.npcs : props.monsters);
@@ -65,6 +66,7 @@ function CreatureList(props) {
     const fetchCreaturesFromAPI = () => Api.fetchInternal(`/${props.type}`).then(filterCreatures);
 
     const filterCreatures = (creaturesRaw) => {
+        const type = props.type === "bestiary" ? "monsters" : props.type + "s";
         const creaturesSorted = creaturesRaw.sort((a, b) => {
             if (a.stats.challengeRating > b.stats.challengeRating) {
                 return 1
@@ -79,7 +81,7 @@ function CreatureList(props) {
             }
         })
 
-        if (!props[props.type]) {
+        if (props[type]) {
             if (props.type === "npc") {
                 props.addNpcs(creaturesSorted);
             } else {

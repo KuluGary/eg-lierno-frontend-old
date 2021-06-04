@@ -102,47 +102,7 @@ export function ItemGeneration(props) {
 
     const getProperty = (name) => {
         return itemToAdd.properties[itemToAdd.properties.findIndex(property => property.name === name)];
-    }
-
-    const ArmorProperties = () => (
-        <>
-            <Grid item lg={4}>
-                <TextField
-                    variant="outlined"
-                    label="Tipo de protección" />
-            </Grid>
-            <Grid item lg={4}>
-                <TextField
-                    variant="outlined"
-                    label="Clase de armadura" />
-            </Grid>
-            <Grid item lg={4}>
-                <TextField
-                    variant="outlined"
-                    label="Penalización" />
-            </Grid>
-            <Grid item lg={4}>
-                <TextField
-                    variant="outlined"
-                    label="Precio" />
-            </Grid>
-            <Grid item lg={4}>
-                <TextField
-                    variant="outlined"
-                    label="Peso" />
-            </Grid>
-            <Grid item lg={4}>
-                <TextField
-                    variant="outlined"
-                    label="Tamaño" />
-            </Grid>
-            <Grid item lg={4}>
-                <TextField
-                    variant="outlined"
-                    label="Requisitos" />
-            </Grid>
-        </>
-    )
+    }    
 
     return (
         <div className={classes.container}>
