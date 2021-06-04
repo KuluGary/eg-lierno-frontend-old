@@ -10,7 +10,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import Grow from '@material-ui/core/Grow';
 import IconButton from '@material-ui/core/IconButton';
 import { StringUtil } from "helpers/string-util";
-import { useWidth } from 'helpers/media-query';
+import { useWidth } from 'hooks/media-query';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';

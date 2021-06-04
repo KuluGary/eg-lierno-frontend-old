@@ -59,7 +59,7 @@ function NpcFlavor(props) {
   useEffect(() => {
     Api.fetchInternal('/campaigns')
       .then(campaignList => {
-        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === props.profile._id))
+        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === props.profile?._id))
       })
   }, [props.profile])
 

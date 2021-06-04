@@ -3,10 +3,11 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
 import CreatureListComponent from "pages/Creature/CreatureList/CreatureList";
+import { useHistoryState } from "hooks/useHistoryState";
 
 function CreatureList(props) {
     const [categories] = useState(["PNJs", "Criaturas"]);
-    const [selectedCategory, setSelectedCategory] = useState(0);
+    const [selectedCategory, setSelectedCategory] = useHistoryState("tab", 0);
 
     function a11yProps(index) {
         return {

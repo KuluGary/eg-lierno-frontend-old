@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -12,11 +12,11 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { StringUtil } from "helpers/string-util";
-import { useWidth } from 'helpers/media-query';
+import { useWidth } from 'hooks/media-query';
 import Image from "components/Image/Image";
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
-
+import { useHistoryState } from 'hooks/useHistoryState';
 
 const useStyles = makeStyles({
     root: {
@@ -45,12 +45,24 @@ const useStyles = makeStyles({
 export default function CharacterTable(props) {
     const classes = useStyles();
     const [selectedData, setSelectedData] = useState();
-    const { page } = props
+    const { characters, profile, index } = props;
+    const [page, setPage] = useHistoryState(`${index}`, 0);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const { characters, profile, handleChangePage, handleChangeRowsPerPage } = props;
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const open = Boolean(anchorEl);
     const width = useWidth();
     const theme = useTheme();
+
+    useEffect(() => {
+        if (characters.length > 0) {
+
+            const charsToShow = characters.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+            if (charsToShow.length === 0) {
+                setPage(0);
+            }
+        }
+    }, []);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -60,13 +72,21 @@ export default function CharacterTable(props) {
         setAnchorEl(null);
     };
 
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
 
     return (
         <div>
             <Table className={classes.table}>
                 <TableBody>
                     {(characters && profile) && characters.length > 0 && characters
-                        .slice(page * props.rowsPerPage, page * props.rowsPerPage + props.rowsPerPage)
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map(char => (
                             <TableRow hover key={char._id} component={Link} to={'/characters/' + char._id} className={classes.link}>
                                 {(width !== "xs") &&
@@ -135,13 +155,9 @@ export default function CharacterTable(props) {
                             rowsPerPageOptions={[5, 10, 15]}
                             colSpan={12}
                             labelRowsPerPage={'Filas por página: '}
-                            labelDisplayedRows={
-                                ({ from, to, count }) => {
-                                    return '' + from + '-' + to + ' de ' + count
-                                }
-                            }
+                            labelDisplayedRows={({ from, to, count }) => '' + from + '-' + to + ' de ' + count}
                             count={characters.length}
-                            rowsPerPage={props.rowsPerPage}
+                            rowsPerPage={rowsPerPage}
                             page={page}
                             onChangePage={handleChangePage}
                             onChangeRowsPerPage={handleChangeRowsPerPage} />

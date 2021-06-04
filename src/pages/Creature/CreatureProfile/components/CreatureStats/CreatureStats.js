@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import useStyles from './CreatureStats.styles';
 import { StringUtil } from 'helpers/string-util';
 import Stats from '../Stats';
@@ -8,54 +8,104 @@ import {
   Box,
   Divider,
   Paper,
-  IconButton,
+  Tabs,
+  Tab,
   Grid
 } from '@material-ui/core';
 
-import {
-  Share as ShareIcon,
-  Edit as EditIcon,
-  ArrowBackIos as ArrowBackIosIcon
-} from '@material-ui/icons';
-
 export default function CreatureFlavor({
-  history,
-  creature,
-  type,
-  editable,
-  openDialog
+  creature
 }) {
   const classes = useStyles();
-  
+  const [selectedCategory, setSelectedCategory] = useState(0);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const cats = [];
+
+    if (creature.stats.additionalAbilities.length > 0) {
+      cats.push({
+        label: "Habilidades",
+        value: "additionalAbilities"
+      });
+    }
+
+    if (creature.stats.actions.length > 0) {
+      cats.push({
+        label: "Acciones",
+        value: "actions"
+      })
+    }
+
+    if (creature.stats.reactions.length > 0) {
+      cats.push({
+        label: "Reacciones",
+        value: "reactions"
+      })
+    }
+
+    if (creature.stats.items?.length > 0) {
+      cats.push({
+        label: "Objetos",
+        value: "items"
+      })
+    }
+
+    if (creature.stats.legendaryActions?.length > 0) {
+      cats.push({
+        label: "Acciones legendarias",
+        value: "legendaryActions"
+      })
+    }
+
+    if (creature.stats.lairActions?.length > 0) {
+      cats.push({
+        label: "Acciones de guarida",
+        value: "lairActions"
+      })
+    }
+
+    if (creature.stats.regionalAbilities?.length > 0) {
+      cats.push({
+        label: "Efectos regionales",
+        value: "regionalAbilities"
+      })
+    }
+
+    setCategories(cats);
+
+  }, [])
+
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+  const handleChange = (event, newValue) => {
+    setSelectedCategory(newValue);
+  }
+
+  const selectedData = () => {
+    if (categories.length > 0) {
+
+      const res = creature.stats[categories[selectedCategory].value];
+      return res
+    }
+
+    return [];
+  }
+
   return (
     <Paper variant="outlined" className={classes.profileBox}>
-      <Box>
-        <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant={'h2'} className={classes.title}>
-            <IconButton onClick={history.goBack} className={classes.link}>
-              <ArrowBackIosIcon />
-            </IconButton>
-            <Box component="span" style={{ height: "100%" }}>
-              {creature.name}
-            </Box>
-          </Typography>
-          <Box>
-            <IconButton
-              disabled={!editable}
-              onClick={() => history.push(`/${type}/add/${creature._id}`)}>
-              <EditIcon />
-            </IconButton>
-            <IconButton onClick={openDialog}>
-              <ShareIcon />
-            </IconButton>
-          </Box>
-        </Box>
-        <Typography variant={'subtitle1'}>
-          {creature.flavor.gender + ' ' + creature.stats.race + ', ' + creature.flavor.class + ' ' + creature.stats.alignment}
-        </Typography>
-      </Box>
-      <Divider className={classes.divider} />
-      <Box>
+      <Box className={classes.content}>
+        <Grid container spacing={1}>
+          <Stats stats={creature.stats.abilityScores} modifiers={creature.stats.abilityScoreModifiers} mode="npc" />
+        </Grid>
+
+        <Divider className={classes.divider} />
+
         <Box>
           <Typography variant={'subtitle2'} display="inline">
             {'Armadura: '}
@@ -68,7 +118,6 @@ export default function CreatureFlavor({
           </Typography>
 
           {creature.stats.hitPointsStr}
-
         </Box>
         <Box>
           <Box>
@@ -80,12 +129,6 @@ export default function CreatureFlavor({
 
           </Box>
         </Box>
-
-        <Divider className={classes.divider} />
-
-        <Grid container spacing={1}>
-          <Stats stats={creature.stats.abilityScores} modifiers={creature.stats.abilityScoreModifiers} mode="npc" />
-        </Grid>
 
         <Divider className={classes.divider} />
 
@@ -167,65 +210,26 @@ export default function CreatureFlavor({
         </Box>
 
         <Divider className={classes.divider} />
-        {creature.stats.additionalAbilities.length > 0 &&
-          <Box>
-            <Box>
-              {creature.stats.additionalAbilities.map(ability => (
-                <Box component="p">
-                  <Typography display="inline" variant="subtitle2">{ability.name + '. '}</Typography>
-                  <span dangerouslySetInnerHTML={{ __html: ability.description }} />
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        }
 
-        {creature.stats.actions.length > 0 &&
-          <Box component="p">
-            <Typography variant={'h6'}>Acciones</Typography>
-            <Divider className={classes.fullWidthDivier} />
-            <Box>
-              {creature.stats.actions.map(action => (
-                <Box component="p">
-                  <Typography display="inline" variant="subtitle2">{action.name + '. '}</Typography>
-                  <span dangerouslySetInnerHTML={{ __html: action.description }} />
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        }
+        <Tabs
+          variant="scrollable"
+          value={selectedCategory}
+          onChange={handleChange}>
+          {categories.map((category, index) => (
+            <Tab key={index} label={category.label} {...a11yProps(category)} />
+          ))}
+        </Tabs>
 
-        {creature.stats.reactions.length > 0 &&
+        <Divider style={{ marginBottom: "1rem" }} />
+
+        {selectedData().map((ability, i) => (
           <Box>
-            <Typography variant={'h6'}>Reacciones</Typography>
-            <Divider className={classes.fullWidthDivier} />
-            <Box>
-              {creature.stats.reactions.map(reaction => (
-                <Box component="p">
-                  <Typography display="inline" variant="subtitle2">{reaction.name + '. '}</Typography>
-                  <span dangerouslySetInnerHTML={{ __html: reaction.description }} />
-                </Box>
-              ))}
-            </Box>
+            <span 
+              className={classes.abilityDescription} 
+              dangerouslySetInnerHTML={{ __html: `<b>${ability.name}.</b> ${ability.description}` }} />
+            {(i + 1 < selectedData().length) && <Divider className={classes.divider} />}
           </Box>
-        }
-        {creature.stats.legendaryActions.length > 0 &&
-          <Box>
-            <Typography variant={'h6'}>Acciones legendarias</Typography>
-            <Divider className={classes.fullWidthDivier} />
-            <Box>
-              {creature.stats.legendaryActionsDescription}
-            </Box>
-            <Box>
-              {creature.stats.legendaryActions.map(action => (
-                <Box component="p">
-                  <Typography display="inline" variant="subtitle2">{action.name + '. '}</Typography>
-                  <span dangerouslySetInnerHTML={{ __html: action.description }} />
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        }
+        ))}        
       </Box>
     </Paper>
   )

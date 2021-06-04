@@ -34,7 +34,7 @@ import {
     Add as AddIcon
 } from "@material-ui/icons"
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useWidth } from 'helpers/media-query';
+import { useWidth } from 'hooks/media-query';
 import skill_json from 'assets/json/customizable_stats.json';
 import useStyles from './Attacks.style';
 

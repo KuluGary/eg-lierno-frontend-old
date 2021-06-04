@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { StringUtil } from "helpers/string-util";
 import Grid from '@material-ui/core/Grid';
@@ -18,19 +17,7 @@ import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Api from 'helpers/api';
 import Image from 'components/Image/Image';
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    // margin: theme.spacing(1),
-    minWidth: "100%",
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  image: {
-    width: "100%"
-  }
-}));
+import useStyles from "./MonsterFlavor.styles";
 
 const mapStateToProps = state => {
   return { profile: state.profile }
@@ -67,7 +54,7 @@ function MonsterFlavor(props) {
   useEffect(() => {
     Api.fetchInternal('/campaigns')
       .then(campaignList => {
-        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === profile._id))
+        setCampaignAvailable(campaignList.filter(campaign => campaign.dm === profile?._id))
       })
   }, [profile])
 
@@ -196,77 +183,83 @@ function MonsterFlavor(props) {
           </FormControl>
         </Grid>
         <Grid item xs={3} style={{ display: (image && image.length > 0) ? 'block' : 'none' }}>
-          <Image style={{ width: "100%" }} errorStyle={{ width: "50%", height: "100%", margin: "0 auto" }} src={image} />
+          <Image
+            className={classes.image}
+            errorStyle={{ width: "50%", height: "100%", margin: "0 auto" }}
+            src={image}
+            mode="modal" />
         </Grid>
-        <Grid item sm={(image && image.length > 0) ? 9 : 12}>
-          <FormControl className={classes.formControl}>
-            <TextField
-              id="image"
-              name="image"
-              label="URL de imagen"
-              onChange={(e) => setImage(e.target.value)}
-              value={image}
-              fullWidth
-              InputProps={{
-                endAdornment: (
-                  <IconButton onClick={() => setOpenUploader(true)}>
-                    <AddPhotoAlternateIcon />
-                  </IconButton>
-                )
-              }}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <FormControl className={classes.formControl}>
-            <TextField
-              id="faction"
-              name="faction"
-              onChange={(e) => setFaction(e.target.value)}
-              value={faction}
-              label="Facción"
-              fullWidth
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Alineamiento</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={alignment}
-              onChange={(e) => setAlignment(e.target.value)}
-            >
-              {alignments.map((alignment, index) =>
-                <MenuItem key={index} value={alignment}>{alignment}</MenuItem>)}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <FormControl className={classes.formControl}>
-            <TextField
-              id="class"
-              name="class"
-              onChange={(e) => setCharacterClass(e.target.value)}
-              value={characterClass}
-              label="Clase"
-              fullWidth
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <FormControl className={classes.formControl}>
-            <TextField
-              required
-              id="gender"
-              name="gender"
-              onChange={(e) => setGender(e.target.value)}
-              value={gender}
-              label="Género"
-              fullWidth
-            />
-          </FormControl>
+        <Grid item xs={(image && image.length > 0) ? 9 : 12} container spacing={3}>
+          <Grid item sm={12}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="image"
+                name="image"
+                label="URL de imagen"
+                onChange={(e) => setImage(e.target.value)}
+                value={image}
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <IconButton onClick={() => setOpenUploader(true)}>
+                      <AddPhotoAlternateIcon />
+                    </IconButton>
+                  )
+                }}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="faction"
+                name="faction"
+                onChange={(e) => setFaction(e.target.value)}
+                value={faction}
+                label="Facción"
+                fullWidth
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-simple-select-label">Alineamiento</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={alignment}
+                onChange={(e) => setAlignment(e.target.value)}
+              >
+                {alignments.map((alignment, index) =>
+                  <MenuItem key={index} value={alignment}>{alignment}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="class"
+                name="class"
+                onChange={(e) => setCharacterClass(e.target.value)}
+                value={characterClass}
+                label="Clase"
+                fullWidth
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                required
+                id="gender"
+                name="gender"
+                onChange={(e) => setGender(e.target.value)}
+                value={gender}
+                label="Género"
+                fullWidth
+              />
+            </FormControl>
+          </Grid>
         </Grid>
         <Grid item sm={12}>
           <Button onClick={addCampaign}>

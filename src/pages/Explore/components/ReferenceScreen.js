@@ -25,7 +25,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import references from '../../../assets/json/references.json';
-import { useWidth } from '../../../helpers/media-query';
+import { useWidth } from '../../../hooks/media-query';
 
 const useStyles = makeStyles({
     root: {

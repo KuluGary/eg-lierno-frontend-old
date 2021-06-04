@@ -98,7 +98,6 @@ function Login(props) {
                 body: JSON.stringify(user)
             })
                 .then(({ token, message, ...res }) => {
-                    console.log(res)
                     if (token) {
                         Auth.setToken(token)
                             .then(() => {

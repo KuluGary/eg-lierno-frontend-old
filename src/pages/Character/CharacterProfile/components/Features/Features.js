@@ -194,7 +194,6 @@ function Features(props) {
     }
 
     const changeClass = (index, event) => {
-        console.log(index, event);
         if (event?.target.value) {
             let newItems = [...props.features.classes];
 

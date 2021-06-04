@@ -8,7 +8,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
-import { useWidth } from 'helpers/media-query';
+import { useWidth } from 'hooks/media-query';
 import useStyles from './StressLevels.styles';
 
 const Row = (props) => {

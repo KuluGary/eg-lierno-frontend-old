@@ -16,6 +16,7 @@ import character_template from "../../../assets/json/character_template.json";
 import { DropzoneDialog } from 'material-ui-dropzone';
 import { Divider } from '@material-ui/core';
 import SEO from 'components/SEO/SEO';
+import { useHistoryState } from 'hooks/useHistoryState';
 
 const mapStateToProps = state => {
     return {
@@ -58,9 +59,9 @@ function a11yProps(index) {
 function CharacterList(props) {
     const [characters, setCharacters] = useState([]);
     const [profile, setProfile] = useState([]);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useHistoryState("page", 0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useHistoryState("value", 0);
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -173,7 +174,6 @@ function CharacterList(props) {
                         setCharacters(res)
                     })
             })
-
     }
 
     const handleToggle = () => {
@@ -227,7 +227,8 @@ function CharacterList(props) {
                                     history={props.history}
                                     deleteCharacter={deleteCharacter}
                                     rowsPerPage={rowsPerPage}
-                                    index={0} />
+                                    index={0}
+                                    value={value} />
                             }
                         </TabPanel>
                         <TabPanel value={value} index={1}>
@@ -240,7 +241,8 @@ function CharacterList(props) {
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     rowsPerPage={rowsPerPage}
                                     history={props.history}
-                                    index={1} />
+                                    index={1}
+                                    value={value} />
                             }
                         </TabPanel>
 

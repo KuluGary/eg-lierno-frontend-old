@@ -50,6 +50,9 @@ const styles = theme => ({
     b: {
       fontWeight: 500
     },
+    strong: {
+      fontWeight: 500
+    },
     '::-webkit-scrollbar': {
       width: "6px",
       opacity: .5
@@ -60,7 +63,7 @@ const styles = theme => ({
     },
     '::-webkit-scrollbar-thumb': {
       backgroundColor: "rgba(255,255,255,0.5)",
-      borderRadius: "20px"
+      borderRadius: "20px",
     },
     '::-webkit-scrollbar-thumb:hover': {
       backgroundColor: "rgba(255,255,255,0.8)",
@@ -184,7 +187,7 @@ class App extends Component {
 
               <Box style={{
                 maxWidth: 1440,
-                margin: this.state.innerWidth > 1440 ? '5rem auto' : (this.state.innerWidth < 512 ? '5rem 1rem' : '5rem 1rem 1rem 5rem')
+                margin: this.state.innerWidth > 1440 ? '5rem auto 0 auto' : (this.state.innerWidth < 512 ? '5rem 1rem' : '5rem 1rem 1rem 5rem')
               }}>
                 <Switch>
                   <Route path="/login" render={() => (

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useWidth } from 'helpers/media-query';
+import { useWidth } from 'hooks/media-query';
 
 import {
     Stats,

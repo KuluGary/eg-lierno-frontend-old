@@ -6,7 +6,17 @@ const useStyles = makeStyles({
   },
   profileBox: {
     padding: "1rem",
-    height: "100%"
+    height: "90vh",
+    overflow: "auto",
+    scrollbarWidth: 'none',
+    '-ms-overflow-style': 'none',
+    '&::-webkit-scrollbar-track': {
+      '-webkit-box-shadow': 'none !important',
+      backgroundColor: 'transparent !important'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: "transparent !important"
+    }
   },
   title: {
     display: 'flex',

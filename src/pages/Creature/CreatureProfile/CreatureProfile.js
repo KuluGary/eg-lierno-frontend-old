@@ -81,7 +81,7 @@ function CreatureProfile(props) {
 
     useEffect(() => {
         if (creature) {
-            if (creature.createdBy === props.profile._id) {
+            if (creature.createdBy === props.profile?._id) {
                 setEditable(true);
             }
         }
@@ -95,18 +95,18 @@ function CreatureProfile(props) {
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             <div className={classes.root}>
                 {creature &&
-                    <Grid container spacing={1} style={{ alignItems: "stretch" }}>
-                        <Grid item xs={12} sm={12} md={6} className={classes.gridItem}>
-                            <CreatureStats
+                    <Grid container spacing={1}>
+                        <Grid item xs={12} sm={12} md={6}>
+                            <FlavorComponent
                                 history={props.history}
                                 creature={creature}
                                 type={type}
                                 editable={editable}
-                                openDialog={openDialog} />                            
+                                openDialog={openDialog} />
                         </Grid>
-                        <Grid item xs={12} sm={12} md={6} className={classes.gridItem}>
-                            <FlavorComponent
-                                creature={creature} />                        
+                        <Grid item xs={12} sm={12} md={6}>
+                            <CreatureStats                                
+                                creature={creature} />
                         </Grid>
                     </Grid>
                 }

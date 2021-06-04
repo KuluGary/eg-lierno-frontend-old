@@ -46,6 +46,7 @@
                     }],
                     "reactions": [],
                     "legendaryActions": [],
+                    "lairActions": [],
                     "legendaryActionsPerRound": 3
                 }
             }

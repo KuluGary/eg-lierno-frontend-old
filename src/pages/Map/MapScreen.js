@@ -166,7 +166,6 @@ function MapScreen({ campaignId }) {
                                                 }
 
                                                 if (item.flavor) {
-                                                    console.log(item.flavor, item.name)
                                                     setSideBarInfo({
                                                         name: item.name,
                                                         flavor: item.flavor
@@ -185,7 +184,6 @@ function MapScreen({ campaignId }) {
     }
 
     const Routes = ({ data }) => {
-        console.log(data);
         return (
             <>
                 {data.map(item => {

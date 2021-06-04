@@ -270,6 +270,7 @@ function Core(props) {
                     >
                       {Object.keys(skillList).map(item => (
                         <MenuItem
+                          disabled={skills.some(o => o.id === item)}
                           value={item}>
                           {customizable_stats.skills[item].name}
                         </MenuItem>
@@ -280,7 +281,6 @@ function Core(props) {
                 <TableCell>
                   <FormControl className={classes.formControl} fullWidth>
                     <InputLabel id="modifier">Modificador</InputLabel>
-                    {console.log(skill)}
                     <Select
                       fullWidth
                       onChange={(e) => handleSkillChange(e.target.value, skill, "modifier")}
@@ -306,7 +306,6 @@ function Core(props) {
                 <TableCell>
                   <FormControl className={classes.formControl}>
                     <FormLabel id="proficient">¿Pericia?</FormLabel>
-                    {console.log(skill)}
                     <Checkbox
                       checked={skill.expertise}
                       value={skill.expertise}

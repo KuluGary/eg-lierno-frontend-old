@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import _ from "lodash";
 import Api from "helpers/api";
-import { useWidth } from "helpers/media-query";
+import { useWidth } from "hooks/media-query";
 import useStyles from './Items.styles';
 import {
     Table,

@@ -1,11 +1,11 @@
 {
   "name": "lierno-client-app",
-  "productName": "lierno-client-app",
+  "productName": "Lierno App",
   "description": "Lierno frontend application",
   "author": "Gabriel Cuétara",
   "main": "public/electron.js",
   "homepage": "./",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "repository": {
     "type": "git",

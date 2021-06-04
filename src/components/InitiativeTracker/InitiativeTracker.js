@@ -24,7 +24,7 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Slide from '@material-ui/core/Slide';
 import Api from "../../helpers/api";
-import { useWidth } from "../../helpers/media-query";
+import { useWidth } from "../../hooks/media-query";
 import { StringUtil } from "../../helpers/string-util";
 
 const useStyles = makeStyles({

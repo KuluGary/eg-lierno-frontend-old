@@ -11,7 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import TableRow from '@material-ui/core/TableRow';
 import Radio from '@material-ui/core/Radio';
 import { MenuItem, Select } from '@material-ui/core';
-import { useWidth } from 'helpers/media-query';
+import { useWidth } from 'hooks/media-query';
 import skill_json from 'assets/json/customizable_stats.json';
 import useStyles from './Skills.styles';
 

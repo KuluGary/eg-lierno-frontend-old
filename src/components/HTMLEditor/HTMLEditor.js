@@ -1,40 +1,54 @@
-import { ContentState, DefaultDraftBlockRenderMap, Editor, EditorState, RichUtils, convertFromHTML, getSafeBodyFromHTML } from 'draft-js';
 import React, { useEffect, useState } from 'react'
 
-import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
-import FormatBoldIcon from '@material-ui/icons/FormatBold';
-import FormatItalicIcon from '@material-ui/icons/FormatItalic';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
-import { IconButton, Tooltip } from '@material-ui/core';
 import { Map } from "immutable";
-import Paper from '@material-ui/core/Paper';
-import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import TitleIcon from '@material-ui/icons/Title';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { stateToHTML } from 'draft-js-export-html';
+import useStyles from "./HTMLEditor.styles";
 
-const useStyles = makeStyles((theme) => ({
-    editor: {
-        padding: ".8rem",
-        "& .DraftEditor-root": {
-            "& .public-DraftEditorPlaceholder-root": {
-                fontSize: theme.typography.body1.fontSize,
-                color: theme.palette.text.secondary,
-                position: "absolute",
-                zIndex: 0
-            }
-        }
-    }
-}))
+import {
+    Box,
+    Divider,
+    Tooltip,
+    Paper,
+    Popper,
+    Fade,
+    InputBase
+} from "@material-ui/core";
+
+import {
+    ToggleButton,
+    ToggleButtonGroup
+} from '@material-ui/lab';
+
+import {
+    FormatBold as FormatBoldIcon,
+    FormatItalic as FormatItalicIcon,
+    FormatListBulleted as FormatListBulletedIcon,
+    FormatListNumbered as FormatListNumberedIcon,
+    FormatUnderlined as FormatUnderlinedIcon,
+    StrikethroughS as StrikethroughSIcon,
+    TextFields as TextFieldsIcon,
+    Title as TitleIcon,
+    Code as CodeIcon
+} from '@material-ui/icons';
+
+import {
+    ContentState,
+    DefaultDraftBlockRenderMap,
+    Editor,
+    EditorState,
+    RichUtils,
+    convertFromHTML,
+    getSafeBodyFromHTML
+} from 'draft-js';
 
 const blockRenderMap = Map({
     'small': {
         element: 'small',
         aliasedElements: ['small']
+    },
+    'html': {
+        element: 'html'
     }
 });
 
@@ -42,6 +56,9 @@ const options = {
     blockRenderers: {
         'small': (block) => {
             return "<p><small>" + block.getText() + "</small></p>"
+        },
+        'html': (block) => {
+            return block.getText()
         }
     }
 }
@@ -55,13 +72,129 @@ const HtmlTooltip = withStyles((theme) => ({
     },
 }))(Tooltip);
 
+const StyledToggleButtonGroup = withStyles((theme) => ({
+    grouped: {
+        borderRadius: 0,
+        borderTop: 'none',
+        borderBottom: 'none',
+        '&:first-child': {
+            borderLeft: 'none'
+        },
+        '&:last-child': {
+            borderRight: 'none'
+        }
+    },
+}))(ToggleButtonGroup);
+
+const ToolBar = ({
+    toggleInlineStyle,
+    toggleBlockType,
+    iconSize,
+    editorState,
+    showHtml
+}) => {
+    const blockType = RichUtils.getCurrentBlockType(editorState);
+    const inlineStyle = editorState.getCurrentInlineStyle();
+
+    return (
+        <>
+            <StyledToggleButtonGroup color="default">
+                <HtmlTooltip title="Negrita">
+                    <ToggleButton
+                        disabled={showHtml}
+                        selected={inlineStyle.has("BOLD")}
+                        data-style="BOLD"
+                        onMouseDown={toggleInlineStyle}>
+                        <FormatBoldIcon fontSize={iconSize} />
+                    </ToggleButton>
+                </HtmlTooltip>
+                <HtmlTooltip title="Itálica">
+                    <ToggleButton
+                        disabled={showHtml}
+                        selected={inlineStyle.has("ITALIC")}
+                        data-style="ITALIC"
+                        onMouseDown={toggleInlineStyle}>
+                        <FormatItalicIcon fontSize={iconSize} />
+                    </ToggleButton>
+                </HtmlTooltip>
+                <HtmlTooltip title="Tachado">
+                    <ToggleButton
+                        disabled={showHtml}
+                        selected={inlineStyle.has("STRIKETHROUGH")}
+                        data-style="STRIKETHROUGH"
+                        onMouseDown={toggleInlineStyle}>
+                        <StrikethroughSIcon fontSize={iconSize} />
+                    </ToggleButton>
+                </HtmlTooltip>
+                <HtmlTooltip title="Subrayado">
+                    <ToggleButton
+                        disabled={showHtml}
+                        selected={inlineStyle.has("UNDERLINE")}
+                        data-style="UNDERLINE"
+                        onMouseDown={toggleInlineStyle}>
+                        <FormatUnderlinedIcon fontSize={iconSize} />
+                    </ToggleButton>
+                </HtmlTooltip>
+                <HtmlTooltip title="Título">
+                    <ToggleButton
+                        disabled={showHtml}
+                        selected={blockType === "header-four"}
+                        data-block="header-four"
+                        onMouseDown={toggleBlockType}>
+                        <TitleIcon fontSize={iconSize} />
+                    </ToggleButton>
+                </HtmlTooltip>
+                <HtmlTooltip title="Lista desordenada">
+                    <ToggleButton
+                        disabled={showHtml}
+                        selected={blockType === "unordered-list-item"}
+                        data-block="unordered-list-item"
+                        onMouseDown={toggleBlockType}>
+                        <FormatListBulletedIcon fontSize={iconSize} />
+                    </ToggleButton>
+                </HtmlTooltip>
+                <HtmlTooltip title="Lista numérica">
+                    <ToggleButton
+                        disabled={showHtml}
+                        selected={blockType === "ordered-list-item"}
+                        data-block="ordered-list-item"
+                        onMouseDown={toggleBlockType}>
+                        <FormatListNumberedIcon fontSize={iconSize} />
+                    </ToggleButton>
+                </HtmlTooltip>
+                <HtmlTooltip title="Subtítulo">
+                    <ToggleButton
+                        disabled={showHtml}
+                        selected={blockType === "small"}
+                        data-block="small"
+                        onMouseDown={toggleBlockType}>
+                        <TextFieldsIcon fontSize={iconSize} />
+                    </ToggleButton>
+                </HtmlTooltip>
+                <HtmlTooltip title="Ver HTML">
+                    <ToggleButton
+                        selected={showHtml}
+                        data-block="html"
+                        onMouseDown={toggleBlockType}>
+                        <CodeIcon fontSize={iconSize} />
+
+                    </ToggleButton>
+                </HtmlTooltip>
+            </StyledToggleButtonGroup>
+        </>
+    )
+}
+
 export default function HTMLEditor({
     setState,
     value,
     iconSize = "default",
-    placeholder = ""
+    placeholder = "",
+    mode = "normal"
 }) {
     const classes = useStyles();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [openMiniEditor, setOpenMiniEditor] = useState(null);
     const [editorState, setEditorState] = useState(
         value ? EditorState.createWithContent(
             ContentState.createFromBlockArray(
@@ -70,14 +203,25 @@ export default function HTMLEditor({
             ))
             : EditorState.createEmpty()
     );
-
+    const [showHtml, setShowHtml] = useState(false);
+    const [parsedText, setParsedText] = useState(stateToHTML(editorState.getCurrentContent()))
 
     useEffect(() => {
         setState(stateToHTML(editorState.getCurrentContent(), options));
     }, [editorState])
 
     const onChange = (editorState) => {
-        setEditorState(editorState)
+        setEditorState(editorState);
+        setParsedText(stateToHTML(editorState.getCurrentContent()));
+    }
+
+    const onChangeHTML = (event) => {
+        const value = event.target.value;
+
+        setParsedText(value);
+        setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(
+            convertFromHTML(value, getSafeBodyFromHTML, extendedBlockRenderMap)
+        )))
     }
 
     const toggleInlineStyle = (event) => {
@@ -90,78 +234,83 @@ export default function HTMLEditor({
     const toggleBlockType = (event) => {
         event.preventDefault();
 
+
         let block = event.currentTarget.getAttribute('data-block');
-        setEditorState(RichUtils.toggleBlockType(editorState, block))
+        console.log(block)
+
+        if (block === "html") {
+            return setShowHtml(!showHtml);
+        } else {
+            setEditorState(RichUtils.toggleBlockType(editorState, block))
+        }
     }
 
+    const handleCloseMiniEditor = () => setOpenMiniEditor(false);
+
+    const handleOpenMiniEditor = () => {
+        const selection = window.getSelection();
+
+        // Resets when the selection has a length of 0
+        if (!selection || selection.anchorOffset === selection.focusOffset) {
+            handleCloseMiniEditor();
+            return;
+        }
+
+        const getBoundingClientRect = () => selection.getRangeAt(0).getBoundingClientRect();
+
+        setOpenMiniEditor(true);
+        setAnchorEl({
+            clientWidth: getBoundingClientRect().width,
+            clientHeight: getBoundingClientRect().height,
+            getBoundingClientRect,
+        });
+    };
+
+    const id = openMiniEditor ? 'faked-reference-popper' : undefined;
+
     return (
-        <Paper variant="outlined" className={classes.root}>
+        <Paper variant="outlined" className={classes.root} onMouseLeave={handleCloseMiniEditor}>
+            {mode === "dense" && <Popper id={id} open={openMiniEditor} anchorEl={anchorEl} transition placement="bottom-start">
+                {({ TransitionProps }) => (
+                    <Fade {...TransitionProps} timeout={350}>
+                        <Paper style={{ display: "flex", justifyContent: "center" }} variant="outlined">
+                            <ToolBar
+                                editorState={editorState}
+                                toggleInlineStyle={toggleInlineStyle}
+                                toggleBlockType={toggleBlockType}
+                                iconSize={iconSize}
+                                showHtml={showHtml} />
+                        </Paper>
+                    </Fade>
+                )}
+            </Popper>}
             <Paper variant="outlined" className={classes.editorBox}>
-                <Box style={{ display: "flex", justifyContent: "center" }}>
-                    <HtmlTooltip title="Negrita">
-                        <IconButton
-                            data-style="BOLD"
-                            onMouseDown={toggleInlineStyle}>
-                            <FormatBoldIcon fontSize={iconSize} />
-                        </IconButton>
-                    </HtmlTooltip>
-                    <HtmlTooltip title="Itálica">
-                        <IconButton
-                            data-style="ITALIC"
-                            onMouseDown={toggleInlineStyle}>
-                            <FormatItalicIcon fontSize={iconSize} />
-                        </IconButton>
-                    </HtmlTooltip>
-                    <HtmlTooltip title="Tachado">
-                        <IconButton
-                            data-style="STRIKETHROUGH"
-                            onMouseDown={toggleInlineStyle}>
-                            <StrikethroughSIcon fontSize={iconSize} />
-                        </IconButton>
-                    </HtmlTooltip>
-                    <HtmlTooltip title="Subrayado">
-                        <IconButton
-                            data-style="UNDERLINE"
-                            onMouseDown={toggleInlineStyle}>
-                            <FormatUnderlinedIcon fontSize={iconSize} />
-                        </IconButton>
-                    </HtmlTooltip>
-                    <HtmlTooltip title="Título">
-                        <IconButton
-                            data-block="header-four"
-                            onMouseDown={toggleBlockType}>
-                            <TitleIcon fontSize={iconSize} />
-                        </IconButton>
-                    </HtmlTooltip>
-                    <HtmlTooltip title="Lista desordenada">
-                        <IconButton
-                            data-block="unordered-list-item"
-                            onMouseDown={toggleBlockType}>
-                            <FormatListBulletedIcon fontSize={iconSize} />
-                        </IconButton>
-                    </HtmlTooltip>
-                    <HtmlTooltip title="Lista numérica">
-                        <IconButton
-                            data-block="ordered-list-item"
-                            onMouseDown={toggleBlockType}>
-                            <FormatListNumberedIcon fontSize={iconSize} />
-                        </IconButton>
-                    </HtmlTooltip>
-                    <HtmlTooltip title="Subtítulo">
-                        <IconButton
-                            data-block="small"
-                            onMouseDown={toggleBlockType}>
-                            <TextFieldsIcon fontSize={iconSize} />
-                        </IconButton>
-                    </HtmlTooltip>
-                </Box>
-                <Divider className={classes.divider} />
-                <Box className={classes.editor}>
-                    <Editor
+                {mode === "normal" &&
+                    <>
+                        <Box style={{ display: "flex", justifyContent: "center" }}>
+                            <ToolBar
+                                editorState={editorState}
+                                toggleInlineStyle={toggleInlineStyle}
+                                toggleBlockType={toggleBlockType}
+                                iconSize={iconSize}
+                                showHtml={showHtml} />
+                        </Box>
+                        <Divider className={classes.divider} />
+                    </>}
+                <Box className={classes.editor} onMouseUp={mode === "dense" && handleOpenMiniEditor}>
+                    {!showHtml && <Editor
                         placeholder={placeholder}
                         editorState={editorState}
                         onChange={onChange}
-                        blockRenderMap={extendedBlockRenderMap} />
+                        blockRenderMap={extendedBlockRenderMap} />}
+                    {showHtml && <InputBase
+                        fullWidth
+                        multiline
+                        onChange={onChangeHTML}
+                        className={classes.input}
+                        value={parsedText}
+                    />
+                    }
                 </Box>
             </Paper>
         </Paper>

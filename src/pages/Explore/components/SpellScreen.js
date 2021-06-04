@@ -22,7 +22,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
-import { useWidth } from '../../../helpers/media-query';
+import { useWidth } from '../../../hooks/media-query';
 
 const useStyles = makeStyles({
     root: {

@@ -17,7 +17,7 @@ import Box from '@material-ui/core/Box';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Api from 'helpers/api'
-import { useWidth } from 'helpers/media-query';
+import { useWidth } from 'hooks/media-query';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
