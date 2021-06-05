@@ -56,6 +56,7 @@ function CreatureList(props) {
         const type = props.type === "bestiary" ? "monsters" : props.type + "s";
         setType(props.type);
 
+        console.log(props)
         if (!props[type]) {
             fetchCreaturesFromAPI();
         } else {
@@ -66,7 +67,7 @@ function CreatureList(props) {
     const fetchCreaturesFromAPI = () => Api.fetchInternal(`/${props.type}`).then(filterCreatures);
 
     const filterCreatures = (creaturesRaw) => {
-        const type = props.type === "bestiary" ? "monsters" : props.type + "s";
+        const type = props.type === "bestiary" ? "monsters" : "npcs";
         const creaturesSorted = creaturesRaw.sort((a, b) => {
             if (a.stats.challengeRating > b.stats.challengeRating) {
                 return 1
@@ -81,7 +82,7 @@ function CreatureList(props) {
             }
         })
 
-        if (props[type]) {
+        if (!props[type]) {
             if (props.type === "npc") {
                 props.addNpcs(creaturesSorted);
             } else {
