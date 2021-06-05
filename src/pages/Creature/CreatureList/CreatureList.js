@@ -34,30 +34,29 @@ function CreatureList(props) {
     const [creaturesToDisplay, setCreaturesToDisplay] = useState([]);
     const [type, setType] = useState("npc");
     const [step, setStep] = useState(0.125);
-    const [creatureSizes] = useState([
+    const creatureSizes = [
         "Diminuto",
         "Pequeño",
         "Mediano",
         "Grande",
         "Gigantesco"
-    ]);
-    const [creatureTypes] = useState([
+    ];
+    const creatureTypes = [
         "Humano",
         "Aberración", "Bestia", "Celestial",
         "Construcción", "Dragón", "Elemental",
         "Hada", "Felón", "Gigante",
         "Humanoide", "Goblinoide", "Monstruosidad",
         "Viscoso", "Planta", "No-muerto"
-    ])
+    ]
     const [openFilter, setOpenFilter] = React.useState(false);
     const [filter, setFilter] = useState({});
 
     useEffect(() => {
-        const type = props.type === "bestiary" ? "monsters" : props.type + "s";
+        const t = props.type === "bestiary" ? "monsters" : props.type + "s";
         setType(props.type);
 
-        console.log(props)
-        if (!props[type]) {
+        if (!props[t]) {
             fetchCreaturesFromAPI();
         } else {
             filterCreatures(props.type === "npc" ? props.npcs : props.monsters);
@@ -67,8 +66,8 @@ function CreatureList(props) {
     const fetchCreaturesFromAPI = () => Api.fetchInternal(`/${props.type}`).then(filterCreatures);
 
     const filterCreatures = (creaturesRaw) => {
-        const type = props.type === "bestiary" ? "monsters" : "npcs";
-        const creaturesSorted = creaturesRaw.sort((a, b) => {
+        const t = props.type === "bestiary" ? "monsters" : "npcs";
+        const creaturesSorted = [...creaturesRaw].sort((a, b) => {
             if (a.stats.challengeRating > b.stats.challengeRating) {
                 return 1
             } else if (a.stats.challengeRating < b.stats.challengeRating) {
@@ -82,65 +81,74 @@ function CreatureList(props) {
             }
         })
 
-        if (!props[type]) {
+        if (!props[t]) {
             if (props.type === "npc") {
                 props.addNpcs(creaturesSorted);
             } else {
-                props.addMonsters(creaturesSorted);
+                props.addMonsters(creaturesSorted)
             }
         }
 
-        setCreaturesToDisplay(props.campaign ? creaturesSorted.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : creaturesSorted)
-        setCreatures(props.campaign ? creaturesSorted.filter(npc => npc.flavor.campaign.some(campaign => campaign.campaignId === props.campaign)) : creaturesSorted)
+        console.log(props)
+
+        const creaturesFiltered = creaturesSorted.filter(npc => (
+            npc.flavor.campaign.findIndex(campaign => campaign.campaignId === props.campaign) > -1
+        ))
+
+        setCreaturesToDisplay(creaturesFiltered)
+        setCreatures(creaturesFiltered)
     }
 
     const filterData = () => {
-        let newCreatures = [...creatures];
+        if (Object.keys(filter).length > 0) {
 
-        if (filter.name) {
-            newCreatures = newCreatures.filter(item => item.name.includes(filter.name));
-        }
+            let newCreatures = [...creaturesToDisplay];
 
-        if (filter.size) {
-            newCreatures = newCreatures.filter(item => {
-                let nonGenderedSize = item.stats.size;
+            if (filter.name) {
+                newCreatures = newCreatures.filter(item => item.name.includes(filter.name));
+            }
 
-                const sizes = [["Diminuto", "Diminuta", "Diminute"],
-                ["Pequeño", "Pequeña", "Pequeñe"],
-                ["Mediano", "Mediana", "Mediane"],
-                    "Grande",
-                    "Enorme",
-                ["Gigantesco", "Gigantesca", "Gigantesque"]];
+            if (filter.size) {
+                newCreatures = newCreatures.filter(item => {
+                    let nonGenderedSize = item.stats.size;
+
+                    const sizes = [["Diminuto", "Diminuta", "Diminute"],
+                    ["Pequeño", "Pequeña", "Pequeñe"],
+                    ["Mediano", "Mediana", "Mediane"],
+                        "Grande",
+                        "Enorme",
+                    ["Gigantesco", "Gigantesca", "Gigantesque"]];
 
 
-                sizes.forEach(size => {
-                    if (Array.isArray(size)) {
-                        if (size.includes(item.stats.size)) {
-                            nonGenderedSize = size[0];
+                    sizes.forEach(size => {
+                        if (Array.isArray(size)) {
+                            if (size.includes(item.stats.size)) {
+                                nonGenderedSize = size[0];
+                            }
                         }
+                    })
+
+                    return nonGenderedSize === filter.size;
+                });
+            }
+
+            if (filter.type) {
+                newCreatures = newCreatures.filter(item => {
+                    let check = item.stats.race;
+                    if (["Humano", "Humana", "Humane"].includes(item.stats.race)) {
+                        check = "Humano";
                     }
-                })
 
-                return nonGenderedSize === filter.size;
-            });
+                    return check === filter.type
+                });
+            }
+
+            if (filter.cr) {
+                newCreatures = newCreatures.filter(item => item.stats.challengeRating === filter.cr)
+            }
+
+            setCreaturesToDisplay(newCreatures);
         }
-
-        if (filter.type) {
-            newCreatures = newCreatures.filter(item => {
-                let check = item.stats.race;
-                if (["Humano", "Humana", "Humane"].includes(item.stats.race)) {
-                    check = "Humano";
-                }
-
-                return check === filter.type
-            });
-        }
-
-        if (filter.cr) {
-            newCreatures = newCreatures.filter(item => item.stats.challengeRating === filter.cr)
-        }
-
-        setCreaturesToDisplay(newCreatures);
     }
 
     useEffect(() => filterData(), [filter])
@@ -250,14 +258,14 @@ function CreatureList(props) {
                     </Box>
                     <Divider />
                 </Collapse>
-                {creaturesToDisplay.length > 0 && <CreatureTable
+                <CreatureTable
                     creaturesToDisplay={creaturesToDisplay}
                     campaign={props.campaign}
                     profile={props.profile}
                     dm={props.dm}
                     history={props.history}
                     deleteCreature={deleteCreature}
-                    type={type} />}
+                    type={type} />
             </Box>
         </div>
     )

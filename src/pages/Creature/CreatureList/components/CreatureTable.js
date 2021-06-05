@@ -39,6 +39,7 @@ export default function CreatureTable({
   const open = Boolean(anchorEl);
 
   useEffect(() => {
+    console.log(creaturesToDisplay)
     if (creaturesToDisplay.length > 0) {
 
       const charsToShow = creaturesToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
