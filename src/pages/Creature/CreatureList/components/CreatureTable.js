@@ -39,7 +39,6 @@ export default function CreatureTable({
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    console.log(creaturesToDisplay)
     if (creaturesToDisplay.length > 0) {
 
       const charsToShow = creaturesToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -50,7 +49,7 @@ export default function CreatureTable({
     }
   }, [type]);
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
 
@@ -96,7 +95,7 @@ export default function CreatureTable({
                       <Image
                         mode="background"
                         usage="avatar"
-                        src={creature.flavor.imageUrl}
+                        src={creature.flavor.image?.avatar}
                         containerStyle={{
                           border: `1px solid ${theme.palette.divider}`,
                           borderRadius: "100%",
@@ -104,7 +103,7 @@ export default function CreatureTable({
                           height: "4vw",
                         }}
                         style={{
-                          backgroundImage: `url(${creature.flavor.imageUrl})`,
+                          backgroundImage: `url(${creature.flavor.image?.avatar})`,
                           width: "4vw",
                           height: "4vw",
                           backgroundSize: "cover",

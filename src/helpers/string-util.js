@@ -1,5 +1,5 @@
 import character_template from 'assets/json/character_template';
-import customizable_stats from 'assets/json/customizable_stats';
+import { skills, saves } from 'assets/json/customizable_stats';
 
 export const StringUtil = {
     abilityMatrix: [
@@ -162,8 +162,8 @@ export const StringUtil = {
             const proficiencyToAdd = parseInt(creature.stats.proficiencyBonus);
 
             const modifier = parseInt(creature.stats.abilityScoreModifiers[modifierType]) + (item.expertise ? proficiencyToAdd * 2 : (item.proficient ? proficiencyToAdd : 0));
-            const modifierName = customizable_stats.stats[modifierType].name
-            const name = customizable_stats.skills[item.id].name;
+            const modifierName = saves[modifierType].name
+            const name = skills[item.id].name;
 
             return `${name} (${modifierName}) ${(modifier >= 0 && '+') + modifier}`
             

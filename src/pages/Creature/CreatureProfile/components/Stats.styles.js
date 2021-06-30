@@ -18,6 +18,8 @@ const useStyles = makeStyles({
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        cursor: "pointer",
+        textTransform: "uppercase"
     },
     link: {
         color: 'inherit',

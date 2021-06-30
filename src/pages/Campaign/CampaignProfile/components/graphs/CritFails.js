@@ -47,7 +47,7 @@ function CritFails(props) {
 
     }, [props.characters, props.players, props.logs])
     return (
-        <Paper variant="outlined" style={{ height: 420, width: (100 / 3) + "%" }}>
+        <Paper variant="outlined" style={{ height: 420, width: "100%" }}>
             <Typography style={{ textAlign: "center", fontSize: "1.1rem", paddingTop: ".2rem" }}>
                 Fallos críticos
             </Typography>

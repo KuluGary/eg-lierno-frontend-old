@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
 import { NavLink } from "react-router-dom";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
@@ -23,27 +25,31 @@ function CampaignProfile(props) {
     const classes = useStyles();
 
     return (
-        <Box style={{ padding: ".5rem" }}>
-            <Box style={{ display: "flex", alignItems: "center" }}>
-                <Box style={{ margin: "0 .5rem" }}>
-                    <NavLink to={'/campaigns'} className={classes.link}>
-                        <ArrowBackIosIcon fontSize="small" />
-                    </NavLink>
-                </Box>
-                <Box>
-                    <Box>
-                        <Typography variant="h5" display="inline">
-                            {props.name}
-                        </Typography>
+        <Paper variant="outlined">
+            <Box style={{ padding: "1rem" }}>
+                <Box style={{ display: "flex", alignItems: "center" }}>
+                    <Box style={{ margin: "0 .5rem" }}>
+                        <NavLink to={'/campaigns'} className={classes.link}>
+                            <ArrowBackIosIcon fontSize="small" />
+                        </NavLink>
                     </Box>
                     <Box>
-                        <Typography variant="caption">
-                            {props.game}
-                        </Typography>
+                        <Box>
+                            <Typography variant="h5" display="inline">
+                                {props.name}
+                            </Typography>
+                        </Box>
+                        <Box>
+                            <Typography variant="caption">
+                                {props.game}
+                            </Typography>
+                        </Box>
                     </Box>
                 </Box>
             </Box>
-        </Box>
+            <Divider />
+            {props.children}
+        </Paper>
     )
 
 }

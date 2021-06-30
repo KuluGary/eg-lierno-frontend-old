@@ -56,7 +56,6 @@ export default function Register(props) {
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [setRegistered] = useState(false);
     const [errorState, setError] = useState({});
 
     useEffect(() => {
@@ -107,7 +106,6 @@ export default function Register(props) {
             .then((res) => {
                 toast.success(res.message);
                 props.history.push("/");
-                setRegistered(true);
             })
             .catch(err => toast.error(err.message))
     }

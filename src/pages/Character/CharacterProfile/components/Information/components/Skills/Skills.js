@@ -12,7 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Radio from '@material-ui/core/Radio';
 import { MenuItem, Select } from '@material-ui/core';
 import { useWidth } from 'hooks/media-query';
-import skill_json from 'assets/json/customizable_stats.json';
+import { stats, skills } from 'assets/json/customizable_stats.json';
 import useStyles from './Skills.styles';
 
 const HtmlTooltip = withStyles((theme) => ({
@@ -24,7 +24,7 @@ const HtmlTooltip = withStyles((theme) => ({
 
 export function Skills(props) {
     const classes = useStyles();
-    const statStr = Object.keys(skill_json.stats).map(check => skill_json.stats[check].name);
+    const statStr = Object.keys(stats).map(check => stats[check].name);
     const width = useWidth();
 
     const handleClick = (check) => {
@@ -51,7 +51,7 @@ export function Skills(props) {
     }
 
     const replaceInDescription = (check, modifier) => {
-        const strArray = skill_json.skills[check].description.split(" ");
+        const strArray = skills[check].description.split(" ");
         const index = strArray.findIndex(i => statStr.includes(i));
         const indexString = Object.keys(props.stats).findIndex(stat => stat === modifier);
 
@@ -92,7 +92,7 @@ export function Skills(props) {
                 </TableHead> */}
                 <TableBody>
                     {Object.keys(props.skills)
-                        .sort((a, b) => skill_json.skills[a].name.localeCompare(skill_json.skills[b].name, 'en', { 'sensitivity': 'base' }))
+                        .sort((a, b) => skills[a].name.localeCompare(skills[b].name, 'en', { 'sensitivity': 'base' }))
                         .map((check, index) => {
                             let bonus = 0;
 
@@ -120,7 +120,7 @@ export function Skills(props) {
                                     <HtmlTooltip className={classes.tooltip} title={replaceInDescription(check, props.skills[check].modifier)}>
                                         <TableCell>
                                             <div style={{ fontSize: "12px" }}>
-                                                {skill_json.skills[check].name}
+                                                {skills[check].name}
                                             </div>
                                         </TableCell>
                                     </HtmlTooltip>

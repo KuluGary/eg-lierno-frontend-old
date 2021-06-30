@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Api from 'helpers/api'
-import Slide from '@material-ui/core/Slide';
+import {
+    Grid,
+    Slide,
+    Paper,
+    CircularProgress
+} from '@material-ui/core'
 import NpcFlavor from './components/NpcFlavor/NpcFlavor';
 import MonsterFlavor from './components/MonsterFlavor/MonsterFlavor';
 import ShareComponent from 'components/ShareComponent/ShareComponent';
@@ -52,9 +56,11 @@ function CreatureProfile(props) {
     const [type, setType] = useState("npc");
     const [dialogOpen, setDialogOpen] = useState(false);
     const [editable, setEditable] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const FlavorComponent = type === "npc" ? NpcFlavor : MonsterFlavor
 
     useEffect(() => {
+        setIsLoading(true);
         const type = match.url.includes("npc") ? "npc" : "bestiary";
         setType(type);
 
@@ -63,18 +69,25 @@ function CreatureProfile(props) {
                 Api.fetchInternal('/npc/' + match.params.id)
                     .then(res => {
                         setCreature(res)
+                        setIsLoading(false);
                     });
             } else {
                 const selectedNpc = npcs.filter(npc => npc._id === match.params.id)[0];
                 selectedNpc && setCreature(selectedNpc)
+                setIsLoading(false);
+
             }
         } else {
             if (!monsters) {
                 Api.fetchInternal('/bestiary/' + match.params.id)
-                    .then(res => setCreature(res))
+                    .then(res => {
+                        setCreature(res)
+                        setIsLoading(false)
+                    })
             } else {
                 const selectedMonster = monsters.filter(monster => monster._id === match.params.id)[0];
                 selectedMonster && setCreature(selectedMonster)
+                setIsLoading(false)
             }
         }
     }, [npcs, monsters, match])
@@ -89,6 +102,14 @@ function CreatureProfile(props) {
 
     const openDialog = () => {
         setDialogOpen(!dialogOpen);
+    }
+
+    if (isLoading) {
+        return (
+            <Paper variant="outlined" style={{ display: "flex", justifyContent: "center" }}>
+                <CircularProgress color="default" style={{ margin: "1rem" }} />
+            </Paper>
+        )
     }
 
     return (

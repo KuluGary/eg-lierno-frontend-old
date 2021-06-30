@@ -8,6 +8,7 @@ import Api from 'helpers/api';
 import SaveIcon from '@material-ui/icons/Save';
 import ShareIcon from '@material-ui/icons/Share';
 import Grow from '@material-ui/core/Grow';
+import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import { StringUtil } from "helpers/string-util";
 import { useWidth } from 'hooks/media-query';
@@ -56,7 +57,7 @@ export default function CharacterInfo(props) {
                     }
 
                     return classString + " " + subclassString;
-                }).join(", ");
+                }).join(" / ");
         } else {
             classes = `${StringUtil.generizaClase("Novato", props.pronoun)} nivel 0`;
         }
@@ -79,30 +80,30 @@ export default function CharacterInfo(props) {
                     </a>
                 </MenuItem>
             </Menu>
-            <Paper variant="outlined" className={classes.paper}>
-                <Box style={{ display: "flex", alignItems: "center" }}>
-                    <Image
-                        mode="background"
-                        usage="avatar"
-                        src={image}
-                        containerStyle={{
-                            border: `1px solid ${theme.palette.divider}`,
-                            borderRadius: "100%"
-                        }}
-                        style={{
-                            backgroundImage: `url(${image})`,
-                            width: "3vw",
-                            height: "3vw",
-                            backgroundSize: "cover",
-                            borderRadius: "100%"
-                        }} />
-                    <Box className={classes.info}>
-                        <Box>
-                            <Typography variant="h6">
-                                {name}
-                            </Typography>
-                        </Box>
-                        <Box>
+            <Paper variant="outlined">
+                <Box className={classes.paper}>
+                    <Box style={{ display: "flex", alignItems: "center" }}>
+                        <Image
+                            mode="background"
+                            usage="avatar"
+                            src={image}
+                            containerStyle={{
+                                border: `1px solid ${theme.palette.divider}`,
+                                borderRadius: "100%"
+                            }}
+                            style={{
+                                backgroundImage: `url(${image})`,
+                                width: "3vw",
+                                height: "3vw",
+                                backgroundSize: "cover",
+                                borderRadius: "100%"
+                            }} />
+                        <Box className={classes.info}>
+                            <Box>
+                                <Typography variant="h6">
+                                    {name}
+                                </Typography>
+                            </Box>
                             {player ?
                                 <Box component="span">
                                     {width === "xs" ? player.username : ("Personaje de " + player.username)}
@@ -113,33 +114,35 @@ export default function CharacterInfo(props) {
                                 {race?.name && race.name + ', '}
                                 {createStringDefinition()}
                             </Box>
+                            <Box>
+                            </Box>
                         </Box>
+                    </Box>
+                    <Box style={{ display: "flex" }}>
                         <Box>
+                            <IconButton onClick={handleClick} disabled={!props.editable}>
+                                <GetAppIcon />
+                            </IconButton>
+                            <IconButton onClick={openDialog}>
+                                <ShareIcon />
+                            </IconButton>
                         </Box>
-                    </Box>
-                </Box>
-                <Box style={{ display: "flex" }}>
-                    <Box>
-                        <IconButton onClick={handleClick} disabled={!props.editable}>
-                            <GetAppIcon />
-                        </IconButton>
-                        <IconButton onClick={openDialog}>
-                            <ShareIcon />
-                        </IconButton>
-                    </Box>
-                    {props.edited &&
-                        <Grow in={true} mountOnEnter unmountOnExit>
-                            {width !== "xs" ? <Alert variant="filled" severity="warning" action={
-                                <IconButton size="small" onClick={props.save}>
+                        {props.edited &&
+                            <Grow in={true} mountOnEnter unmountOnExit>
+                                {width !== "xs" ? <Alert variant="filled" severity="warning" action={
+                                    <IconButton size="small" onClick={props.save}>
+                                        <SaveIcon />
+                                    </IconButton>
+                                }>
+                                    {width !== "xs" && "Tienes cambios sin guardar. Por favor, guarda antes de salir de la página."}
+                                </Alert> : <IconButton size="small" onClick={props.save}>
                                     <SaveIcon />
-                                </IconButton>
-                            }>
-                                {width !== "xs" && "Tienes cambios sin guardar. Por favor, guarda antes de salir de la página."}
-                            </Alert> : <IconButton size="small" onClick={props.save}>
-                                <SaveIcon />
-                            </IconButton>}
-                        </Grow>}
+                                </IconButton>}
+                            </Grow>}
+                    </Box>
                 </Box>
+                <Divider />
+                {props.children}
             </Paper>
         </div>
     );

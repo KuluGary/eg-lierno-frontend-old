@@ -16,11 +16,12 @@ const useStyles = makeStyles(() => ({
     container: {
         display: "flex",
         minHeight: 0,
-        verticalAlign: "center"
+        verticalAlign: "center",
+        height: "100%"
     },
     messageContainer: {
         overflow: "auto",
-        height: "50vh",
+        height: "80%",
         '&::-webkit-scrollbar': {
             width: "10px",
             opacity: .5
@@ -132,7 +133,7 @@ function CampaignLogs(props) {
                 const selectedCharacter = characters.filter(character => character.player === selectedPlayer.id)[0]
 
                 if (selectedCharacter) {
-                    return selectedCharacter.flavor.portrait;
+                    return selectedCharacter.flavor.portrait?.avatar;
                 } else {
                     return null
                 }

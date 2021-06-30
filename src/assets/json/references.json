@@ -7,9 +7,9 @@
             "description": "Realiza con tu arma un ataque cuerpo a cuerpo o a distancia",
             "reference": "PHB, pgs. 192,194-195.",
             "bullets": [
-                "Ciertos rasgos, como el rasgo <i> Ataque Adicional </i> del guerrero, te permiten realizar más de un ataque con esta acción. Cada uno de estos ataques es una tirada a parte y puede ser a diferentes criaturas. Puedes moverte entre estos ataques.",
-                "Cuando atacas con un arma cuerpo a cuerpo ligera, puedes usar una acción adicional para atacar con la otra mano (ver la acción adicional <i>Ataque con dos armas</i>).",
-                "Puedes reemplazar uno de tus ataques cuerpo a cuerpo con un <i> Agarrar </i> o un <i> Empujar </i>.",
+                "Ciertos rasgos, como el rasgo <em> Ataque Adicional </em> del guerrero, te permiten realizar más de un ataque con esta acción. Cada uno de estos ataques es una tirada a parte y puede ser a diferentes criaturas. Puedes moverte entre estos ataques.",
+                "Cuando atacas con un arma cuerpo a cuerpo ligera, puedes usar una acción adicional para atacar con la otra mano (ver la acción adicional <em>Ataque con dos armas</em>).",
+                "Puedes reemplazar uno de tus ataques cuerpo a cuerpo con un <em> Agarrar </em> o un <em> Empujar </em>.",
                 "Algunas condiciones dan ventaja en el ataque: ataques contra objetivos cegados, paralizados, petrificados, apresados, aturdidos o inconscientes; ataques cuerpo a cuerpo contra objetivos derribados; ataques de atacantes invisibles u ocultos.",
                 "Algunas condiciones ponen en desventaja el ataque: ataques contra objetivos invisibles u ocultos; ataques a distancia contra objetivos derribados; ataques de atacantes cegados, asustados, envenenados o apresados."
             ]
@@ -21,7 +21,7 @@
             "description": "Intentas agarrar a una criatura o luchar con ella",
             "reference": "PHB, pg. 195.",
             "bullets": [
-                "Puedes usar la acción <i> Atacar </i> para realizar un ataque cuerpo a cuerpo especial, un agarre. Si eres capaz de realizar múltiples ataques con la acción <i>Atacar</i>, este ataque reemplaza a uno de ellos.",
+                "Puedes usar la acción <em> Atacar </em> para realizar un ataque cuerpo a cuerpo especial, un agarre. Si eres capaz de realizar múltiples ataques con la acción <em>Atacar</em>, este ataque reemplaza a uno de ellos.",
                 "El objetivo de tu agarre debe estar dentro de tu alcance y tener un tamaño que esté, como mucho, una categoría por encima de la tuya.",
                 "Utilizando al menos una mano libre, intentas sujetar al objetivo mediante una prueba de agarrar en lugar de una tirada de ataque: haz una prueba de Fuerza (Atletismo) enfrentada a una prueba de Fuerza (Atletismo) o Destreza (Acrobacia) del objetivo, según elija este último.",
                 "Si tienes éxito, sometes al objetivo al estado Agarrado."
@@ -34,7 +34,7 @@
             "description": "Empuja a una criatura, ya sea para derribarla o para alejarla de ti",
             "reference": "PHB, pg. 195.",
             "bullets": [
-                "Utilizando la acción de <i>Atacar</i>, puedes realizar un ataque cuerpo a cuerpo especial para empujar a un criatura. Si eres capaz de realizar múltiples ataques con la acción Atacar, este ataque reemplaza a uno de ellos.",
+                "Utilizando la acción de <em>Atacar</em>, puedes realizar un ataque cuerpo a cuerpo especial para empujar a un criatura. Si eres capaz de realizar múltiples ataques con la acción Atacar, este ataque reemplaza a uno de ellos.",
                 "El objetivo de tu empuje no debe ser más de un tamaño más grande que tú, y debe estar a tu alcance.",
                 "Realiza una prueba de Fuerza (Atletismo) enfrentada por la Fuerza (Atletismo) o Destreza (Acrobacia) del objetivo (el objetivo elige la habilidad a usar).",
                 "Si tienes éxito, ya sea que derribles al objetivo o lo empujes 5 pies lejos de ti."
@@ -80,7 +80,7 @@
             "reference": "PHB, pg. 192.",
             "bullets": [
                 "Hasta el comienzo de tu siguiente turno, cualquier tirada de ataque hecha contra ti tiene una desventaja si puedes ver al atacante, y haces lanzamientos de salvación de Destreza con ventaja.",
-                "Pierdes este beneficio si estás <i> incapacitado </i> o si tu velocidad cae a 0."
+                "Pierdes este beneficio si estás <em> incapacitado </em> o si tu velocidad cae a 0."
             ]
         },
         {
@@ -206,7 +206,7 @@
             "description": "Ataca con una arma en tu otra mano",
             "reference": "PHB, pgs. 192,194-195.",
             "bullets": [
-                "Sólo utilizable si tomas la acción de <i>Atacar</i> y atacas con un arma cuerpo a cuerpo ligera que estés sosteniendo en una mano.",
+                "Sólo utilizable si tomas la acción de <em>Atacar</em> y atacas con un arma cuerpo a cuerpo ligera que estés sosteniendo en una mano.",
                 "Realiza un sólo ataque con una arma cuerpo a cuerpo ligera distinta que estés sosteniendo en la otra mano.",
                 "No agregas tu modificador de característica al daño del ataque adicional, salvo que este sea negativo.",
                 "Si alguna de las armas tiene la propiedad de arrojadiza, puedes lanzarla en lugar de hacer el ataque cuerpo a cuerpo con ella."
@@ -220,7 +220,7 @@
             "reference": "PHB, pg. 192.",
             "bullets": [
                 "No puedes lanzar un conjuro con tu acción y un conjuro distinto con tu acción adicional en el mismo turno, salvo que la acción se use para lanzar un truco.",
-                "Para más detalles ve la accion de  <i>Lanzar un conjuro</i>."
+                "Para más detalles ve la accion de  <em>Lanzar un conjuro</em>."
             ]
         },
         {
@@ -502,7 +502,7 @@
             "description": "Una criatura con visión en la obscuridad puede ver mejor en lo oscuro o con poca luz dentro de cierto radio",
             "reference": "PHB, pgs. 183-184.",
             "bullets": [
-                "Una criatura con visión en la obscuridad puede ver, dentro del alcance especificado, <i>con luz tenue como si hubiera luz brillante y con obscuridad como si hubiera luz tenue</b>,por lo que las zonas sin luz únicamente estarán ligeramente oscuras en lo que a dicha criatura respecta.",
+                "Una criatura con visión en la obscuridad puede ver, dentro del alcance especificado, <em>con luz tenue como si hubiera luz brillante y con obscuridad como si hubiera luz tenue</b>,por lo que las zonas sin luz únicamente estarán ligeramente oscuras en lo que a dicha criatura respecta.",
                 "Sin embargo, no puede distinguir colores en la obscuridad, sólo tonos de gris.",
                 "Muchas criaturas de los mundos de D&D, y en especial aquellas que viven bajo tierra, poseen visión en la obscuridad."
             ]
@@ -627,7 +627,7 @@
             "bullets": [
                 "Puedes tirate al suelo sin usar tu velocidad.",
                 "Para moverte mientras derribado, debes arrastrate o usar magia como teletransportación.",
-                "Tirarte al piso te agrega el estado de <i> Derribado </i> (los ataques cuerpo a cuerpo contra ti tienen ventaja, los ataques a distancia contra ti tienen desventaja, tus propios ataques tienen desventaja)."
+                "Tirarte al piso te agrega el estado de <em> Derribado </em> (los ataques cuerpo a cuerpo contra ti tienen ventaja, los ataques a distancia contra ti tienen desventaja, tus propios ataques tienen desventaja)."
             ]
         },
         {
@@ -703,7 +703,7 @@
             "reference": "PHB, pg. 195.",
             "bullets": [
                 "Puedes arrastrar o transportar a la criatura agarrada, pero tu velocidad se reducirá a la mitad salvo si dicha criatura está dos o más categorías de tamaño por debajo de la tuya.",
-                "Ve la acción de <i>atacar</i> para ver cómo <i>agarrar</i> a una criatura."
+                "Ve la acción de <em>atacar</em> para ver cómo <em>agarrar</em> a una criatura."
             ]
         }
     ],
@@ -744,7 +744,7 @@
             "description": "Mantienes la marca en una criatura, obteniendo ventaja en tu ataque de oportunidad",
             "reference": "DMG, pg. 271.",
             "bullets": [
-                "Cuando utilizas la acción de <i>Atacar</i> para realizar un ataque cuerpo a cuerpo, también puedes marcar al objetivo.",
+                "Cuando utilizas la acción de <em>Atacar</em> para realizar un ataque cuerpo a cuerpo, también puedes marcar al objetivo.",
                 "Hasta el final de tu siguiete turno obtienes ventaja en cualquier ataque de oportunidad contra el objetivo.",
                 "El ataque de oportunidad no gasta tu reacción, pero no puedes realizarlo si algo te prohibe tomar reacciones.",
                 "Sigues limitado a un sólo ataque de oportunidad por turno."
@@ -769,7 +769,7 @@
             "description": "Empujas a una criatura hacia un lado en lugar de hacia adelante",
             "reference": "DMG, pg. 272",
             "bullets": [
-                "Utilizas la acción de <i>Empujar (Shove)</i> para forzar al objetivo hacia un lado en lugar de hacia adelante.",
+                "Utilizas la acción de <em>Empujar (Shove)</em> para forzar al objetivo hacia un lado en lugar de hacia adelante.",
                 "Tienes desventaja en la tirada de Fuerza (Atletismo).",
                 "Si superas la tirada mueves al objetivo a un espacio distinto dentro de 5 pies de tu alcance."
             ]
@@ -807,7 +807,7 @@
             "description": "Ejecuta la reacción especificada por Preparar una acción",
             "reference": "PHB, pg. 193.",
             "bullets": [
-                "Circunstancia de activación: especificada por tu acción de <i>Preparar una acción</i>."
+                "Circunstancia de activación: especificada por tu acción de <em>Preparar una acción</em>."
             ]
         },
         {
@@ -818,7 +818,7 @@
             "reference": "PHB, pg. 192.",
             "bullets": [
                 "Circunstancia de activación: Especificada por el conjuro.",
-                "Para más detalles, ve la acción de <i>Lanzar un conjuro</i>."
+                "Para más detalles, ve la acción de <em>Lanzar un conjuro</em>."
             ]
         }
     ]

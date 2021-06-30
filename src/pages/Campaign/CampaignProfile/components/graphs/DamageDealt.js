@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 export default function DamageDealt(props) {
 
     return (
-        <Paper variant="outlined" style={{ height: 420, marginRight: ".2rem", width: (100 / 3) + "%" }}>
+        <Paper variant="outlined" style={{ height: 420, marginRight: ".2rem", width: "100%" }}>
             <Typography style={{ textAlign: "center", fontSize: "1.1rem", paddingTop: ".2rem" }}>
                 Daño total causado
             </Typography>

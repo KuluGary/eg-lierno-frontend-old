@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import CreatureListComponent from "pages/Creature/CreatureList/CreatureList";
 import { useHistoryState } from "hooks/useHistoryState";
 
@@ -28,18 +29,20 @@ function CreatureList(props) {
     }
 
     return (
-        <Paper variant="outlined" style={{ position: "relative" }}>
-            <Tabs
-                variant="scrollable"
-                value={selectedCategory}
-                onChange={handleChange}
-                aria-label="simple tabs example">
-                {categories.map((category, index) => {
-                    return <Tab key={index} label={category} {...a11yProps(category)} />
-                })}
-            </Tabs>
-            {tabData()}
-        </Paper>
+        <Grid item xs={12}>
+            <Paper variant="outlined" style={{ position: "relative" }}>
+                <Tabs
+                    variant="scrollable"
+                    value={selectedCategory}
+                    onChange={handleChange}
+                    aria-label="simple tabs example">
+                    {categories.map((category, index) => {
+                        return <Tab key={index} label={category} {...a11yProps(category)} />
+                    })}
+                </Tabs>
+                {tabData()}
+            </Paper>
+        </Grid>
     )
 
 }

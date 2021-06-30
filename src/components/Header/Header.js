@@ -12,10 +12,10 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
-import Api from "../../helpers/api";
 import Menu from '@material-ui/core/Menu';
-import Auth from "../../helpers/auth";
 import Button from '@material-ui/core/Button';
+import { useMutation } from "@apollo/client";
+import { LOGOUT_MUT } from 'helpers/graphql/mutations/auth';
 
 const drawerWidth = 240;
 
@@ -72,26 +72,21 @@ const mapDispatchToProps = dispatch => {
 
 function Header(props) {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [hasLoggedOut, setLogout] = React.useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [hasLoggedOut, setLogout] = useState(false);
+  const [setLogout] = useMutation(LOGOUT_MUT);
   const [user, setUser] = useState();
   const [avatar] = useState();
   const open = Boolean(anchorEl);
-  const { history } = props;
+  const { history } = props
 
   useEffect(() => {
-    if (Auth.loggedIn()) {
-      if (!props.profile) {
-        Api.fetchInternal('/auth/me')
-          .then(res => {
-            props.addProfile(res)
-            setUser(res)
-          });
-      } else {
-        setUser(props.profile)
-      }
+    if (props.profile && !user) {
+      setUser(props.profile)
+      setIsLoggedIn(true);
     }
-  }, [history.location.pathname])
+  }, [props.profile, history.location.pathname, props.isAuthenticated]);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -102,24 +97,31 @@ function Header(props) {
   };
 
   const logout = () => {
-    if (sessionStorage.getItem('token')) {
-      sessionStorage.removeItem('token')
-    }
-
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token')
-    }
-
+    setUser();
+    setLogout();
+    setIsLoggedIn(false);
+    props.history.push("/login");
+    props.resetStore();
     handleClose();
-    setLogout(true);
     props.authenticated();
-    props.history.push("/login")
-    props.resetStore({});
+    // if (sessionStorage.getItem('token')) {
+    //   sessionStorage.removeItem('token')
+    // }
+
+    // if (localStorage.getItem('token')) {
+    //   localStorage.removeItem('token')
+    // }
+
+    // handleClose();
+    // setLogout(true);
+    // props.authenticated();
+    // props.history.push("/login")
+    // props.resetStore({});
   }
 
   return (
     <div className={classes.root}>
-      {hasLoggedOut && <Redirect to="/login" />}
+      {/* {hasLoggedOut && <Redirect to="/login" />} */}
       <AppBar
         color={props.mode ? 'inherit' : 'primary'}
         position="fixed"
@@ -127,7 +129,7 @@ function Header(props) {
           [classes.appBarShift]: props.open,
         })} >
         <Toolbar>
-          {Auth.loggedIn() &&
+          {isLoggedIn &&
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -147,7 +149,7 @@ function Header(props) {
               </Link>
             </Typography>
             <div>
-              {Auth.loggedIn() ?
+              {isLoggedIn ?
                 <IconButton
                   aria-label="account of current user"
                   aria-controls="menu-appbar"

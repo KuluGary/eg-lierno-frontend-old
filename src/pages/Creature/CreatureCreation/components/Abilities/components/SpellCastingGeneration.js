@@ -860,7 +860,7 @@ export default function SpellCastingGeneration({
     let text = "<li>" + type + ": ";
     for (let i = 0; i < spells.length; i++) {
       let spell = spells[i];
-      text = text + "<i>" + spell + "</i>";
+      text = text + "<em>" + spell + "</em>";
       if (i < (spells.length - 1)) {
         text = text + ", ";
       }

@@ -81,8 +81,8 @@ export default function RecoverPassword({ match, ...props }) {
             body: JSON.stringify(user)
         })
             .then((res) => {
-                toast.success(res.message);
-                props.history.push("/");
+                // toast.success(res.message);
+                props.history.push(res.url);
             })
             .catch(err => toast.error(err.message))
     }

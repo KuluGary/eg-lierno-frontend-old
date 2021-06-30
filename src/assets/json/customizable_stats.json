@@ -73,7 +73,7 @@
             "description": "El director de juego puede pedirte hacer una prueba de Sabiduría (Supervivencia) para seguir huellas, cazar, guiar a tu grupo por un yermo helado, identificar signos de osos lechuza que viven cerca, predecir el clima o evitar arenas movedizas u otros peligros naturales."
         }
     },
-    "stats": {
+    "saves": {
         "strength": {
             "name": "Fuerza",
             "description": "La tirada de salvación de Fuerza mide tu potencia física y capacidades atléticas."
@@ -97,6 +97,32 @@
         "charisma": {
             "name": "Carisma",
             "description": "La tirada de salvación de Carisma mide tu fuerza de personalidad y presencia."
+        }
+    },
+    "stats": {
+        "strength": {
+            "name": "Fuerza",
+            "description": "La puntuación de Fuerza mide la potencia física y capacidades atléticas."
+        },
+        "dexterity": {
+            "name": "Destreza",
+            "description": "La puntuación de Destreza mide la agilidad y reflejos."
+        },
+        "constitution": {
+            "name": "Constitución",
+            "description": "La puntuación de Constitución mide la resistencia y salud."
+        },
+        "intelligence": {
+            "name": "Inteligencia",
+            "description": "La puntuación de Inteligencia mide la razonamiento y memoria."
+        },
+        "wisdom": {
+            "name": "Sabiduría",
+            "description": "La puntuación de Sabiduría mide la perspicacia e intuición"
+        },
+        "charisma": {
+            "name": "Carisma",
+            "description": "La puntuación de Carisma mide la fuerza de personalidad y presencia."
         }
     }
 }

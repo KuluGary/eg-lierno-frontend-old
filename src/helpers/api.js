@@ -1,5 +1,5 @@
 import Auth from './auth';
-import { ApolloClient, InMemoryCache, HttpLink, from } from "@apollo/client";
+import { ApolloClient, InMemoryCache, HttpLink, from, createHttpLink } from "@apollo/client";
 import { onError } from '@apollo/client/link/error'
 
 export default class Api {
@@ -8,16 +8,17 @@ export default class Api {
 
         const headers = {
             Accept: 'application/json',
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         };
-
+        
         if (Auth.loggedIn()) {
             headers["Authorization"] = "Bearer " + await Auth.getToken();
-
+            
         }
-
+        
         return fetch(url, {
             headers,
+            credentials: "include",
             ...options
         })
             .then(response => response.json())
@@ -43,6 +44,26 @@ export default class Api {
     static envVar = (name) => {
         return process.env[`REACT_APP_${name}`];
     }
+
+    static getApolloErrors = (data) => {
+        const apolloErrors = {};
+
+        if (data) {
+            for (const key in data) {
+                const element = data[key];
+
+                if (!!element.errors) {
+                    apolloErrors[key] = element.errors;
+                }
+            }
+        }
+
+        return apolloErrors;
+    }
+
+    static hasApolloErrors = (data) => {
+        return Object.keys(this.getApolloErrors(data)).length > 0;
+    }
 }
 
 
@@ -54,10 +75,15 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
     }
 })
 
-const apolloLink = from([
-    errorLink,
-    new HttpLink({ uri: process.env.REACT_APP_ENDPOINT + "v2" })
-])
+const apolloLink = createHttpLink({
+    uri: process.env.REACT_APP_ENDPOINT + "v2",
+    credentials: "include"
+})
+
+// const apolloLink = from([
+//     errorLink,
+//     new HttpLink({ uri: process.env.REACT_APP_ENDPOINT + "v2" })
+// ])
 
 export const apolloClient = new ApolloClient({
     cache: new InMemoryCache({

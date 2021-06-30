@@ -131,102 +131,102 @@ function CampaignStats(props) {
 
     return (
         <>
-            <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} style={{ display: "flex" }}>
-                        <DamageDealt
-                            players={players}
-                            characters={characters}
-                            logs={logs}
-                            theme={theme}
-                            damageDealt={damageDone}
-                        />
-                        <CritRolls
-                            players={players}
-                            characters={characters}
-                            logs={logs}
-                            theme={theme}
-                            dm={dm}
-                        />
-                        <CritFails
-                            players={players}
-                            characters={characters}
-                            logs={logs}
-                            theme={theme}
-                            dm={dm}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Paper className={classes.profileBox} z variant="outlined">
-                            <Typography variant="h6" style={{ marginBottom: ".5rem" }}>
-                                Personajes
-                        </Typography>
-                            <Table style={{}}>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Nombre</TableCell>
-                                        <TableCell>Daño total hecho</TableCell>
-                                        <TableCell></TableCell>
-                                        <TableCell></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {characters && characters.map(character => {
-                                        let percentage = 0;
-                                        let currentCharacterDamage = 0;
-                                        if (damageDone.length > 0) {
-                                            let maxDamage = 0;
-                                            const currentCharacter = damageDone.filter(item => item.id === character.flavor.traits.name)[0];
+            <Grid item xs={4}>
+                <DamageDealt
+                    players={players}
+                    characters={characters}
+                    logs={logs}
+                    theme={theme}
+                    damageDealt={damageDone}
+                />
+            </Grid>
+            <Grid item xs={4}>
+                <CritRolls
+                    players={players}
+                    characters={characters}
+                    logs={logs}
+                    theme={theme}
+                    dm={dm}
+                />
+            </Grid>
+            <Grid item xs={4}>
+                <CritFails
+                    players={players}
+                    characters={characters}
+                    logs={logs}
+                    theme={theme}
+                    dm={dm}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Paper className={classes.profileBox} z variant="outlined">
+                    <Typography variant="h6" style={{ marginBottom: ".5rem" }}>
+                        Personajes
+                    </Typography>
+                    <Table style={{}}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Nombre</TableCell>
+                                <TableCell>Daño total hecho</TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {characters && characters.map(character => {
+                                let percentage = 0;
+                                let currentCharacterDamage = 0;
+                                if (damageDone.length > 0) {
+                                    let maxDamage = 0;
+                                    const currentCharacter = damageDone.filter(item => item.id === character.flavor.traits.name)[0];
 
-                                            if (currentCharacter) {
+                                    if (currentCharacter) {
 
-                                                currentCharacterDamage = currentCharacter.data[currentCharacter.data.length - 1].y;
+                                        currentCharacterDamage = currentCharacter.data[currentCharacter.data.length - 1].y;
 
-                                                damageDone.forEach(char => {
-                                                    if (char.data[char.data.length - 1].y > maxDamage) {
-                                                        maxDamage = char.data[char.data.length - 1].y
-                                                    }
-                                                })
-
-                                                percentage = (currentCharacterDamage / maxDamage) * 100;
+                                        damageDone.forEach(char => {
+                                            if (char.data[char.data.length - 1].y > maxDamage) {
+                                                maxDamage = char.data[char.data.length - 1].y
                                             }
-                                        }
+                                        })
 
-                                        return (
-                                            <TableRow>
-                                                <TableCell size="small" style={{ width: "180px" }}>
-                                                    <Box component="div" className={classes.name}>
-                                                        <Typography variant="subtitle1">
-                                                            {character.flavor.traits.name}
-                                                        </Typography>
-                                                    </Box>
-                                                </TableCell>
-                                                <TableCell style={{ width: "100px" }}>
-                                                    {currentCharacterDamage}
-                                                </TableCell>
-                                                <TableCell style={{ width: "180px" }}>
-                                                    <Box
-                                                        style={{ height: "15px", backgroundColor: "rgb(232, 193, 160)", width: percentage + "%" }} />
-                                                </TableCell>
-                                                <TableCell>
-                                                    <DamagePerDay
-                                                        players={players}
-                                                        characters={characters}
-                                                        dm={dm}
-                                                        logs={logs}
-                                                        theme={theme}
-                                                        character={character.flavor.traits.name} />
-                                                </TableCell>
-                                            </TableRow>)
-                                    })}
-                                </TableBody>
-                            </Table>
-                            <Box variant="div" className={classes.dataBox}>
-                            </Box>
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Slide >
+                                        percentage = (currentCharacterDamage / maxDamage) * 100;
+                                    }
+                                }
+
+                                return (
+                                    <TableRow>
+                                        <TableCell size="small" style={{ width: "180px" }}>
+                                            <Box component="div" className={classes.name}>
+                                                <Typography variant="subtitle1">
+                                                    {character.flavor.traits.name}
+                                                </Typography>
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell style={{ width: "100px" }}>
+                                            {currentCharacterDamage}
+                                        </TableCell>
+                                        <TableCell style={{ width: "180px" }}>
+                                            <Box
+                                                style={{ height: "15px", backgroundColor: "rgb(232, 193, 160)", width: percentage + "%" }} />
+                                        </TableCell>
+                                        <TableCell>
+                                            <DamagePerDay
+                                                players={players}
+                                                characters={characters}
+                                                dm={dm}
+                                                logs={logs}
+                                                theme={theme}
+                                                character={character.flavor.traits.name} />
+                                        </TableCell>
+                                    </TableRow>)
+                            })}
+                        </TableBody>
+                    </Table>
+                    <Box variant="div" className={classes.dataBox}>
+                    </Box>
+                </Paper>
+            </Grid>
         </>
     )
 

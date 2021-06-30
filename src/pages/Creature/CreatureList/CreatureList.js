@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import Paper from '@material-ui/core/Paper';
 import { connect } from "react-redux";
 import { addNpcs, addMonsters } from "shared/actions/index";
-import IconButton from '@material-ui/core/IconButton';
-import Box from '@material-ui/core/Box';
-import AddIcon from '@material-ui/icons/Add';
-import MenuItem from '@material-ui/core/MenuItem';
+import {
+    Paper,
+    IconButton,
+    Box,
+    MenuItem,
+    Input,
+    InputLabel,
+    InputAdornment,
+    FormControl,
+    Button,
+    Collapse,
+    Divider,
+    Select,
+    CircularProgress
+} from '@material-ui/core';
+import {
+    Add as AddIcon,
+    Search as SearchIcon,
+    FilterList as FilterListIcon
+} from '@material-ui/icons'
 import Api from 'helpers/api'
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import SearchIcon from '@material-ui/icons/Search';
-import FormControl from '@material-ui/core/FormControl';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { Button, Collapse, Divider, Select } from '@material-ui/core';
 import useStyles from './CreatureList.styles';
 import CreatureTable from './components/CreatureTable';
 
@@ -51,8 +59,11 @@ function CreatureList(props) {
     ]
     const [openFilter, setOpenFilter] = React.useState(false);
     const [filter, setFilter] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        setIsLoading(true);
+
         const t = props.type === "bestiary" ? "monsters" : props.type + "s";
         setType(props.type);
 
@@ -89,14 +100,13 @@ function CreatureList(props) {
             }
         }
 
-        console.log(props)
-
         const creaturesFiltered = creaturesSorted.filter(npc => (
             npc.flavor.campaign.findIndex(campaign => campaign.campaignId === props.campaign) > -1
         ))
 
         setCreaturesToDisplay(creaturesFiltered)
         setCreatures(creaturesFiltered)
+        setIsLoading(false);
     }
 
     const filterData = () => {
@@ -175,6 +185,14 @@ function CreatureList(props) {
             method: "DELETE"
         })
             .then(() => fetchCreaturesFromAPI());
+    }
+
+    if (isLoading) {
+        return (
+            <Paper variant="outlined" style={{ display: "flex", justifyContent: "center" }}>
+                <CircularProgress color="default" style={{ margin: "1rem" }} />
+            </Paper>
+        )
     }
 
     return (

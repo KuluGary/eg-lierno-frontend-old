@@ -12,10 +12,14 @@ import Options from "./components/Options/Options";
 import Spells from "./components/Spells/Spells";
 import Information from './components/Information/Information';
 
-import Grid from '@material-ui/core/Grid';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Slide from '@material-ui/core/Slide';
+import {
+    Grid,
+    Tabs,
+    Tab,
+    Slide,
+    Paper,
+    CircularProgress
+} from '@material-ui/core';
 
 import ShareComponent from 'components/ShareComponent/ShareComponent';
 import SEO from 'components/SEO/SEO';
@@ -54,13 +58,17 @@ function CharacterProfile(props) {
     const [edited, setEdited] = useState(false);
     const [proficiencyBonus, setProficiencyBonus] = useState(0);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        setIsLoading(true);
+
         Api.fetchInternal('/characters/' + props.match.params.id)
             .then(res => {
                 setCharacter(_.cloneDeep(res))
                 setEditedCharacter(_.cloneDeep(res))
                 setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", "Hechizos", "Opciones"].filter(el => el))
+                setIsLoading(false)
             })
     }, [])
 
@@ -193,21 +201,29 @@ function CharacterProfile(props) {
         setDialogOpen(!dialogOpen);
     }
 
+    if (isLoading) {
+        return (
+            <Paper variant="outlined" style={{ display: "flex", justifyContent: "center" }}>
+                <CircularProgress color="default" style={{ margin: "1rem" }} />
+            </Paper>
+        )
+    }
+
     return (
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             <div className={classes.root}>
                 {editedCharacter &&
-                    <Grid container spacing={1}>
+                    <Grid container spacing={2}>
                         <SEO>
                             <title>{`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`}</title>
                             <meta name="twitter:title" content={`${editedCharacter.flavor.traits["name"]} | Ficha de personaje`} data-react-helmet="true"/>                                                                                    
                             <meta name="twitter:description" content={editedCharacter.flavor.psychologicalDescription} data-react-helmet="true"/>
                             <meta name="twitter:image" content={editedCharacter.flavor.portrait} data-react-helmet="true"/>
                         </SEO>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} style={{ paddingLeft: 4 }}>
                             <CharacterInfo
                                 name={editedCharacter.flavor.traits["name"]}
-                                image={editedCharacter.flavor.portrait}
+                                image={editedCharacter.flavor.portrait?.avatar}
                                 race={editedCharacter.stats.race}
                                 subrace={editedCharacter.stats.subrace}
                                 alignment={editedCharacter.stats.alignment}
@@ -219,8 +235,7 @@ function CharacterProfile(props) {
                                 edited={edited}
                                 editable={editable}
                                 save={save}
-                                openDialog={openDialog} />
-                        </Grid>
+                                openDialog={openDialog}>
                         <Tabs
                             variant="scrollable"
                             scrollButtons="on"
@@ -231,6 +246,8 @@ function CharacterProfile(props) {
                                 return <Tab key={index} label={category} {...a11yProps(category)} />
                             })}
                         </Tabs>
+                                </CharacterInfo>
+                        </Grid>
                         {tabData()}
                     </Grid>
                 }
