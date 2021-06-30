@@ -1,32 +1,54 @@
-import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import Auth from "../../helpers/auth"
+import React from "react";
+import { Redirect, Route } from "react-router-dom";
+import { connect } from "react-redux";
+import { CircularProgress, Paper } from '@material-ui/core'
 
-function AuthRoute({ Component, path, exact = false, requiredRoles }) {
-    const isAuthed = Auth.loggedIn();
-    const userHasRequiredRole = requiredRoles.some(Auth.hasRole);
-    const message = userHasRequiredRole ? 'Por favor accede a tu cuenta para ver esta página.'
-        : "No estás autorizado para entrar en esta página.";
+function AuthRoute({
+    Component,
+    path,
+    exact = false,
+    isLoading,
+    isAuthenticated,
+}) {
+    if (isLoading) {
+        return (
+            <Paper
+                style={{
+                    width: "80vw",
+                    height: "80vh",
+                    position: "relative",
+                }}
+                variant="outlined"
+            >
+                <CircularProgress
+                    color="default"
+                    style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                    }}
+                />
+            </Paper>
+        );
+    }
+
+    if (!isLoading && !isAuthenticated) {
+        return (
+            <Redirect
+                to={{
+                    pathname: "/login", // TODO: add unauthorized
+                }}
+            />
+        );
+    }
 
     return (
         <Route
             exact={exact}
             path={path}
-            render={(props) => isAuthed && userHasRequiredRole ? (
-                <Component {...props} />
-            ) : (
-                    <Redirect
-                        to={{
-                            pathname: "/login", // TODO: add unauthorized
-                            state: {
-                                message,
-                                requestedPath: path
-                            }
-                        }}
-                    />
-                )}
+            render={(props) => <Component {...props} />}
         />
-    )
+    );
 }
 
 export default AuthRoute;

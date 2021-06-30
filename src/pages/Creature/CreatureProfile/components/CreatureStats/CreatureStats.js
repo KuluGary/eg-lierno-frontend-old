@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import useStyles from './CreatureStats.styles';
 import { StringUtil } from 'helpers/string-util';
 import Stats from '../Stats';

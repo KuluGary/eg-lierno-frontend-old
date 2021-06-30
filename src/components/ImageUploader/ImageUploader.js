@@ -1,56 +1,120 @@
-import React from 'react';
-import { DropzoneDialog } from 'material-ui-dropzone';
-import { toast } from 'react-toastify';
-import Api from 'helpers/api';
+import React, { useState, useCallback, useRef, useEffect } from "react";
+
+import { toast } from "react-toastify";
+
+import { Step1, Step2, Step3 } from "./steps";
+
+import {
+    Dialog,
+    DialogContent,
+    DialogActions,
+    Stepper,
+    Step,
+    StepLabel,
+    Button,
+    CircularProgress,
+} from "@material-ui/core";
+
+function getSteps() {
+    return ["Selecciona tu imagen", "Modifica tu imagen", "Resultado"];
+}
+
+function getStepContent(
+    stepIndex,
+    setUpImg,
+    upImg,
+    cropImg,
+    setCropImg,
+    setDone,
+    setImage,
+) {
+    switch (stepIndex) {
+        case 0:
+            return <Step1 setUpImg={setUpImg} />;
+        case 1:
+            return <Step2 upImg={upImg} setCropImg={setCropImg} />;
+        case 2:
+            return (
+                <Step3
+                    upImg={upImg}
+                    cropImg={cropImg}
+                    setImage={setImage}
+                    setDone={setDone}
+                />
+            );
+        default:
+            return "Unknown stepIndex";
+    }
+}
 
 export default function ImageUploader({ open, setOpen, setImage }) {
-    const handleSave = (files) => {
-        if (files.length) {
-            const apiUrl = `https://api.imgur.com/3/image`;
-            const headers = new Headers();
-            const formData = new FormData();
+    const [activeStep, setActiveStep] = useState(0);
+    const [upImg, setUpImg] = useState();
+    const [cropImg, setCropImg] = useState();
+    const [done, setDone] = useState(false);
+    const steps = getSteps();
 
-            headers.append("Authorization", `Client-ID ${Api.envVar("IMGUR_CLIENT_ID")}`);
-            headers.append("content-length", files[0]?.size)
-            formData.append('image', files[0]);
-            formData.append('type', "file");            
-            formData.append('name', files[0].name);
-
-            const requestOptions = {
-                method: "POST",
-                headers,
-                body: formData
-            };
-
-            fetch(apiUrl, requestOptions)
-                .then(res => res.json())
-                .then(({ data, success }) => {
-                    if (success) {     
-                        setImage(data?.link)
-                        toast.success("Imagen subida correctamente.")
-                    } else {
-                        toast.error(data?.error);
-                    }
-
-                    setOpen(false)
-                })
-                .catch(() => {
-                    setOpen(false)
-                })
+    const handleNext = () => {
+        if (activeStep === steps.length - 1) {
+            setOpen(false);
         }
-    }
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const validator = () => {
+        switch (activeStep) {
+            case 0:
+                return !upImg;
+            case 1:
+                return false;
+            case 2:
+                return !done;
+        }
+    };
 
     return (
-        <DropzoneDialog
+        <Dialog
+            fullWidth
             open={open}
-            dropzoneText={'Arrastra una imagen'}
-            dialogTitle={'Sube una imagen de tu personaje'}
-            cancelButtonText={'Cancelar'}
-            submitButtonText={'Guardar'}
-            onSave={handleSave}
-            acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-            maxFileSize={5000000}
+            maxWidth={"md"}
+            acceptedFiles={["image/*"]}
             onClose={() => setOpen(false)}
-        />
-    )
+        >
+            <Stepper activeStep={activeStep} alternativeLabel>
+                {steps.map((label) => (
+                    <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                    </Step>
+                ))}
+            </Stepper>
+            <DialogContent>
+                {getStepContent(
+                    activeStep,
+                    setUpImg,
+                    upImg,
+                    cropImg,
+                    setCropImg,
+                    setDone,
+                    setImage,
+                )}
+            </DialogContent>
+            <DialogActions>
+                <Button disabled={activeStep === 0} onClick={handleBack}>
+                    Atrás
+                </Button>
+                <Button
+                    disabled={validator()}
+                    variant="outlined"
+                    color="default"
+                    onClick={handleNext}
+                >
+                    {activeStep === steps.length - 1 ? "Acabar" : "Siguiente"}
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
 }

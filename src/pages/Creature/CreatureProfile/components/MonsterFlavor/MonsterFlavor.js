@@ -51,7 +51,6 @@ export default function MonsterFlavor({
           </Box>
         </Box>
         <Typography variant={'subtitle1'}>
-          {console.log(creature.flavor.gender)}
           {[creature.flavor.class, creature.flavor.gender, creature.stats.race, creature.stats.alignment]
             .filter(el => el && el.length > 0)
             .map((el, i) => i > 0 ? el.toLowerCase() : el)

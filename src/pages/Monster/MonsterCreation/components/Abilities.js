@@ -788,11 +788,11 @@ export default function Abilities(props) {
             hitStr = hitStr + " más " + bonusDamageStr;
         }
 
-        let description = "<i>" + type + "</i>" + toHit + " al golpe, " + rangeStr
-            + ", un objetivo. <i>Daño:</i> " + hitStr + ".";
+        let description = "<em>" + type + "</em>" + toHit + " al golpe, " + rangeStr
+            + ", un objetivo. <em>Daño:</em> " + hitStr + ".";
 
         if (attackProperties && attackProperties.length > 0) {
-            description = description + ' <small><i>Propiedades: ' + attackProperties + '</i></small>'
+            description = description + ' <small><em>Propiedades: ' + attackProperties + '</em></small>'
         }
         return (description);
     }
@@ -1114,7 +1114,7 @@ export default function Abilities(props) {
         let text = "<li>" + type + ": ";
         for (let i = 0; i < spells.length; i++) {
             let spell = spells[i];
-            text = text + "<i>" + spell + "</i>";
+            text = text + "<em>" + spell + "</em>";
             if (i < (spells.length - 1)) {
                 text = text + ", ";
             }

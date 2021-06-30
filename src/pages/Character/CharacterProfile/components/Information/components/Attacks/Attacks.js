@@ -35,7 +35,7 @@ import {
 } from "@material-ui/icons"
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useWidth } from 'hooks/media-query';
-import skill_json from 'assets/json/customizable_stats.json';
+import { stats } from 'assets/json/customizable_stats.json';
 import useStyles from './Attacks.style';
 
 const Row = (props) => {
@@ -548,9 +548,9 @@ export function Attacks(props) {
                                             defaultValue={'strength'}
                                             onChange={(e) => setMeleeAttackModifier(e.target.value)}
                                         >
-                                            {Object.keys(skill_json.stats).map(check => (
+                                            {Object.keys(stats).map(check => (
                                                 <MenuItem value={check}>
-                                                    {skill_json.stats[check].name}
+                                                    {stats[check].name}
                                                 </MenuItem>
                                             ))}
                                         </Select>
@@ -615,9 +615,9 @@ export function Attacks(props) {
                                             defaultValue={'strength'}
                                             onChange={(e) => setDistanceAttackModifier(e.target.value)}
                                         >
-                                            {Object.keys(skill_json.stats).map(check => (
+                                            {Object.keys(stats).map(check => (
                                                 <MenuItem value={check}>
-                                                    {skill_json.stats[check].name}
+                                                    {stats[check].name}
                                                 </MenuItem>
                                             ))}
                                         </Select>
@@ -672,9 +672,9 @@ export function Attacks(props) {
                                             defaultValue={'strength'}
                                             onChange={(e) => setTwoHandedAttackModifer(e.target.value)}
                                         >
-                                            {Object.keys(skill_json.stats).map(check => (
+                                            {Object.keys(stats).map(check => (
                                                 <MenuItem value={check}>
-                                                    {skill_json.stats[check].name}
+                                                    {stats[check].name}
                                                 </MenuItem>
                                             ))}
                                         </Select>
@@ -721,9 +721,9 @@ export function Attacks(props) {
                                             defaultValue={'strength'}
                                             onChange={(e) => setBonusAttackModifier(e.target.value)}
                                         >
-                                            {Object.keys(skill_json.stats).map(check => (
+                                            {Object.keys(stats).map(check => (
                                                 <MenuItem value={check}>
-                                                    {skill_json.stats[check].name}
+                                                    {stats[check].name}
                                                 </MenuItem>
                                             ))}
                                         </Select>

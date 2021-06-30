@@ -10,7 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import TableRow from '@material-ui/core/TableRow';
 import Tooltip from '@material-ui/core/Tooltip';
 import Radio from '@material-ui/core/Radio';
-import skill_json from 'assets/json/customizable_stats.json';
+import { stats } from 'assets/json/customizable_stats.json';
 import useStyles from "./SavingThrows.styles";
 
 const HtmlTooltip = withStyles((theme) => ({
@@ -58,7 +58,7 @@ export function SavingThrows(props) {
                         }
 
                         return (
-                            <HtmlTooltip title={skill_json.stats[check].description}>
+                            <HtmlTooltip title={stats[check].description}>
                                 <TableRow key={index} hover>
                                     <TableCell size="small" padding="none" className={classes.smallCell}>
                                         <Radio
@@ -74,7 +74,7 @@ export function SavingThrows(props) {
                                     </TableCell>
                                     <TableCell>
                                         <div style={{ fontSize: "12px" }}>
-                                            {skill_json.stats[check].name}
+                                            {stats[check].name}
                                         </div>
                                     </TableCell>
                                     <TableCell align="right">

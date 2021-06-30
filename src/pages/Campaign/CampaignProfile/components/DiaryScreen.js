@@ -1,217 +1,281 @@
-import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Editor, EditorState, RichUtils } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import FormatBoldIcon from '@material-ui/icons/FormatBold';
-import FormatItalicIcon from '@material-ui/icons/FormatItalic';
-import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
-import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
-import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import TitleIcon from '@material-ui/icons/Title';
-import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import HTMLEditor from 'components/HTMLEditor/HTMLEditor';
 
-const ExpansionPanel = withStyles({
-    root: {
-        border: 'none',
-        boxShadow: 'none',
-        '&:not(:last-child)': {
-            borderBottom: 0,
-        },
-        '&:before': {
-            display: 'none',
-        },
-        '&$expanded': {
-            margin: 'auto',
-        },
-    },
-    expanded: {},
-})(MuiExpansionPanel);
-
-const ExpansionPanelSummary = withStyles({
-    root: {
-        backgroundColor: 'none',
-        borderBottom: 'none',
-        marginBottom: -1,
-        minHeight: 56,
-        '&$expanded': {
-            minHeight: 56,
-        },
-    },
-    content: {
-        '&$expanded': {
-            margin: '12px 0',
-        },
-    },
-    expanded: {},
-})(MuiExpansionPanelSummary);
-
-const ExpansionPanelDetails = withStyles((theme) => ({
-    root: {
-        padding: theme.spacing(2),
-    },
-}))(MuiExpansionPanelDetails);
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        height: "100%",
-        minHeight: "100vh"
-    },
-    editorBox: {
-        maxWidth: "65vw",
-        margin: "10px auto",
-        padding: 10
-    },
-    divider: {
-        maxWidth: "50%",
-        margin: "0 auto"
-    },
-    titleInput: {
-        maxWidth: "65vw",
-        margin: "10px auto",
-    },
-    submitBox: {
-        maxWidth: "75vw",
-        // margin: "0 auto"
-    },
-    submitButton: {
-        float: "right",
-        margin: "0 1rem"
-    },
-    diaryEntry: {
-        maxWidth: "65vw",
-        margin: "10px auto",
-        padding: 10
-    }
-}));
+import {
+    Box,
+    Divider,
+    Paper,
+    Button,
+    IconButton,
+    Grid,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    TextField,
+    Select,
+    MenuItem,
+    ButtonBase
+} from '@material-ui/core'
+import { TreeView, TreeItem } from '@material-ui/lab';
+import {
+    ExpandMore as ExpandMoreIcon,
+    ChevronRight as ChevronRightIcon,
+    Add as AddIcon,
+    Edit as EditIcon
+} from '@material-ui/icons';
 
 function DiaryScreen(props) {
-    const classes = useStyles();
-    const [editorState, setEditorState] = React.useState(
-        EditorState.createEmpty(),
-    );
-    const [title, setTitle] = React.useState();
+    const [content, setContent] = useState({});
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [tree, setTree] = useState(props.diary || []);
 
-    const onChange = (editorState) => {
-        setEditorState(editorState)
+    useEffect(() => props.updateDiary(tree), [tree]);
+
+    const modifyTreeNode = (id, title, description) => {
+        let newTree = [...tree];
+        let foundValue;
+
+        const iterate = (node) => {
+            if (parseInt(node.id) === parseInt(id)) {
+                foundValue = node;
+                return;
+            } else {
+                if (node.children) {
+                    for (let child of node.children) {
+                        iterate(child);
+                    }
+                }
+            }
+        }
+
+        for (let node of newTree) {
+            iterate(node);
+        }
+
+        if (foundValue) {
+            foundValue.title = title;
+            foundValue.content = description;
+
+            setTree(newTree);
+            setContent({ id, title, description })
+            setDialogOpen(false);
+        }
     }
 
-    const toggleInlineStyle = (event) => {
-        event.preventDefault();
-        let style = event.currentTarget.getAttribute('data-style');
-        setEditorState(RichUtils.toggleInlineStyle(editorState, style))
+    const getNextId = () => {
+        let id = -1;
+
+        const iterate = (node) => {
+            if (node.id > id) {
+                id = node.id;
+            }
+
+            if (node.children) {
+                for (const n of node.children) {
+                    iterate(n);
+                }
+            }
+        }
+
+        for (const node of tree) {
+            iterate(node);
+        }
+
+        return id + 1;
     }
 
-    const toggleBlockType = (event) => {
-        event.preventDefault();
-
-        let block = event.currentTarget.getAttribute('data-block');
-        setEditorState(RichUtils.toggleBlockType(editorState, block))
-    }
-
-    const handleSubmit = () => {
-        let diary = [...props.diary, {
+    const addNewNode = (parentId, title, description) => {
+        let newTree = [...tree];
+        const newId = getNextId();
+        let foundValue;
+        const newNode = {
+            id: newId,
             title,
-            description: stateToHTML(editorState.getCurrentContent())
-        }]
+            content: description,
+            author: props.user
+        }
 
-        setEditorState(EditorState.createEmpty());
-        setTitle('');
+        const iterate = (node) => {
+            if (parseInt(node.id) === parseInt(parentId)) {
+                foundValue = node;
+                return;
+            } else {
+                if (node.children) {
+                    for (let child of node.children) {
+                        iterate(child);
+                    }
+                }
+            }
+        }
 
-        props.updateDiary(diary);
+        for (let node of newTree) {
+            iterate(node);
+        }
 
+        if (foundValue) {
+            if (foundValue.children) {
+                foundValue.children.push(newNode);
+            } else {
+                foundValue.children = [newNode];
+            }
+        } else {
+            newTree.push(newNode)
+        }
+
+        setTree(newTree);
+        setContent({ newId, title, description })
+        setDialogOpen(false);
     }
-    return (
-        <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-            <Paper variant="outlined" className={classes.root}>
-                {props.diary && props.diary.map((entry, index) => (
-                    <>
-                        <ExpansionPanel>
-                            {/* <Box component="div" className={classes.diaryEntry}> */}
-                            <ExpansionPanelSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header">
-                                <Typography variant="h5">{entry.title}</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <Box component="div">
-                                    <span dangerouslySetInnerHTML={{ __html: entry.description }} />
-                                </Box>
-                            </ExpansionPanelDetails>
-                            {/* </Box> */}
-                        </ExpansionPanel>
-                        <Divider className={classes.divider} />
-                    </>
-                ))}
-                {props.campaignId === props.user &&
-                    <>
-                        <Box className={classes.titleInput}>
+
+    const renderTree = (nodes) => {
+        const { id, title, content } = nodes;
+
+        return (
+            <TreeItem
+                key={title}
+                nodeId={title}
+                label={title}
+                onClick={() => setContent({ id, title, description: content })}
+            >
+                {Array.isArray(nodes.children) ? nodes.children.filter(node => node.author === props.user).map((node) => renderTree(node)) : null}
+            </TreeItem>
+        )
+    }
+
+    const handleNewEntry = () => {
+        setContent({});
+        setDialogOpen(true);
+    }
+
+    const RenderDialog = () => {
+        const [title, setTitle] = useState(content.title || "");
+        const [description, setDescription] = useState(content.description || "");
+        const [parentNode, setParentNode] = useState(-1);
+
+        const setParentNodes = () => {
+            let nodes = [];
+
+            const iterate = (node) => {
+                nodes.push({
+                    id: node.id,
+                    title: node.title
+                })
+
+                if (node.children) {
+                    for (const n of node.children) {
+                        iterate(n);
+                    }
+                }
+            }
+
+            for (const node of tree) {
+                iterate(node);
+            }
+
+            return nodes;
+        }
+
+        const parentNodes = setParentNodes();
+        const isNewNode = Object.keys(content).length === 0;
+
+        return (
+            <Dialog maxWidth={"md"} fullWidth open={dialogOpen} style={{ padding: 10, height:"100%" }}>
+                <DialogTitle>Editar entrada</DialogTitle>
+                <DialogContent style={{ overflow: "hidden", height: "60vh" }}>
+                    <Box style={{ margin: "1rem 0", display: "flex", justifyContent: "space-between", width: "100%" }}>
+                        <Box style={{ width: isNewNode ? "70%" : "100%" }}>
                             <TextField
                                 fullWidth
-                                id="outlined-search"
-                                label="Título"
-                                variant="outlined"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)} />
+                                onChange={e => setTitle(e.target.value)}
+                                value={title} />
                         </Box>
-                        <Paper variant="outlined" className={classes.editorBox}>
-                            <Box style={{ display: "flex", justifyContent: "center" }}>
-                                <IconButton
-                                    data-style="BOLD"
-                                    onMouseDown={toggleInlineStyle}>
-                                    <FormatBoldIcon />
-                                </IconButton>
-                                <IconButton
-                                    data-style="ITALIC"
-                                    onMouseDown={toggleInlineStyle}>
-                                    <FormatItalicIcon />
-                                </IconButton>
-                                <IconButton
-                                    data-style="STRIKETHROUGH"
-                                    onMouseDown={toggleInlineStyle}>
-                                    <StrikethroughSIcon />
-                                </IconButton>
-                                <IconButton
-                                    data-style="UNDERLINE"
-                                    onMouseDown={toggleInlineStyle}>
-                                    <FormatUnderlinedIcon />
-                                </IconButton>
-                                <IconButton
-                                    data-block="header-four"
-                                    onMouseDown={toggleBlockType}>
-                                    <TitleIcon />
-                                </IconButton>
+                        {isNewNode && <Box style={{ width: "28%" }}>
+                            <Select
+                                fullWidth
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={parentNode}
+                                onChange={(e) => setParentNode(e.target.value)}
+                            >
+                                <MenuItem value={-1}>Ninguno</MenuItem>
+                                {parentNodes.map(node => <MenuItem value={node.id}>{node.title}</MenuItem>)}
+                            </Select>
+                        </Box>}
+                    </Box>
+                    <Box style={{ margin: "1rem 0", height: "50vh" }}>
+                        <HTMLEditor
+                            value={description}
+                            setState={(value) => setDescription(value)} />
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDialogOpen(false)} color="default">Cerrar</Button>
+                    {Object.keys(content).length > 0 && <Button onClick={() => modifyTreeNode(content.id, title, description)}>Guardar</Button>}
+                    {Object.keys(content).length === 0 && <Button onClick={() => addNewNode(parentNode, title, description)}>Guardar</Button>}
+                </DialogActions>
+            </Dialog>
+        )
+    }
+
+    return (
+        <Grid item xs={12}>
+            <RenderDialog />
+            <Grid component={Paper} variant="outlined" container spacing={0} style={{ height: "75vh", width: "100%" }}>
+                <Grid item xs={2} style={{ display: "flex", height: "100%", width: "100%", justifyContent: "space-between" }}>
+                    <Box style={{ width: "100%" }}>
+                        <ButtonBase focusRipple onClick={handleNewEntry} style={{ padding: "1rem", display: "flex", alignItems: "center", fontSize: "1rem", width: "100%", height: 60 }}>
+                            <AddIcon fontSize="small" style={{ marginRight: "1rem" }} />
+                            Añadir página...
+                        </ButtonBase>
+                        <Divider style={{ width: "100%" }} />
+                        <Box style={{ padding: "1rem" }}>
+                            <TreeView
+                                defaultCollapseIcon={<ExpandMoreIcon />}
+                                defaultExpandIcon={<ChevronRightIcon />}
+                            >
+                                {tree?.filter(node => node.author === props.user).map(node => (
+                                    <TreeItem
+                                        key={node.title}
+                                        nodeId={node.title}
+                                        label={node.title}
+                                        onClick={() => setContent({
+                                            id: node.id,
+                                            title: node.title,
+                                            description: node.content
+                                        })}>
+                                        {Array.isArray(node.children) ? node.children.map((n) => renderTree(n)) : null}
+                                    </TreeItem>
+                                ))}
+                            </TreeView>
+                        </Box>
+                    </Box>
+                    <Divider orientation="vertical" flexItem />
+                </Grid>
+                <Grid item xs={10} style={{ height: "75vh" }}>
+                    {Object.keys(content).length > 0 && <>
+                        <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "0 1rem", height: 60 }}>
+                            <Box style={{ fontSize: "1rem", padding: "1rem" }}>
+                                {content.title}
                             </Box>
-                            <Divider className={classes.divider} />
-                            <Editor
-                                autoFocus
-                                className={classes.editor}
-                                editorState={editorState}
-                                onChange={onChange} />
-                        </Paper>
-                        <Box className={classes.submitBox}>
-                            <Button
-                                disabled={(!title || title.length < 0)}
-                                variant="outlined"
-                                color="default"
-                                disableElevation
-                                className={classes.submitButton}
-                                onClick={handleSubmit}
-                            >SUBMIT</Button>
+                            {props.dm === props.user &&
+                                <Box>
+                                    <IconButton
+                                        size="small"
+                                        onClick={() => setDialogOpen(true)}>
+                                        <EditIcon fontSize="small" />
+                                    </IconButton>
+                                </Box>
+                            }
+                        </Box>
+                        <Divider />
+                        <Box className={""} style={{ padding: "1rem", height: "90%", overflow: "auto" }}>
+                            <span style={{ padding: 0, margin: 0 }} className="sun-editor-editable" dangerouslySetInnerHTML={{ __html: content.description }} />
                         </Box>
                     </>}
-            </Paper>
-        </Slide>
+                </Grid>
+            </Grid>
+        </Grid>
     )
 }
 

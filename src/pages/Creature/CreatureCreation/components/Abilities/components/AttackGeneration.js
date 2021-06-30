@@ -55,13 +55,13 @@ export default function AttacksGeneration({
     }
 
     if (attackRange.includes('Melé') && attackRange.includes('Distancia')) {
-      type = "Ataque de arma melé o distancia:";
+      type = "Ataque de arma melé o distancia: ";
     } else if (attackRange.includes('Melé')) {
-      type = 'Ataque de arma melé:'
+      type = 'Ataque de arma melé: '
     } else if (attackRange.includes('Distancia')) {
-      type = 'Ataque de arma distancia:'
+      type = 'Ataque de arma distancia: '
     } else {
-      type = 'Ataque de arma:'
+      type = 'Ataque de arma: '
     }
 
     let toHit = parseInt(abilityScoreModifiers[ability]) + parseInt(proficiencyBonus);
@@ -107,7 +107,7 @@ export default function AttacksGeneration({
     }
 
     if (attackProperties.includes('Versátil')) {
-      hitStr = hitStr + " o " + twoHandedDamageStr + " si es usado con dos manos para hacer un ataque melé.";
+      hitStr = hitStr + " o " + twoHandedDamageStr + " si es usado con dos manos para hacer un ataque melé";
       needsCommaBeforeBonusDamage = true;
     }
 
@@ -119,19 +119,19 @@ export default function AttacksGeneration({
       hitStr = hitStr + " más " + bonusDamageStr;
     }
 
-    let description = "<i>" + type + "</i>" + toHit + " al golpe, " + rangeStr
-      + ", un objetivo. <i>Daño:</i> " + hitStr + ".";
+    let description = "<em>" + type + "</em>" + toHit + " al golpe, " + rangeStr
+      + ", un objetivo. <em>Daño:</em> " + hitStr + ".";
 
     if (attackProperties && attackProperties.length > 0) {
-      description = description + ' <small><i>Propiedades: ' + attackProperties + '</i></small>'
+      description = description + ' <small><em>Propiedades: ' + attackProperties + '</em></small>'
     }
-    return (description);
+    return ('<p>' + description + '</p>');
   }
 
   const createDamageStr = (damageType, diceSize, numDice, modifier) => {
     let diceAvg = (diceSize / 2.0) + 0.5;
     let avgDamage = Math.floor(numDice * diceAvg) + modifier;
-    let damageStr = avgDamage + "(" + numDice + "d" + diceSize;
+    let damageStr = avgDamage + " (" + numDice + "d" + diceSize;
     if (modifier !== 0) {
       damageStr = damageStr + (modifier >= 0 ? " + " : "") + modifier;
     }

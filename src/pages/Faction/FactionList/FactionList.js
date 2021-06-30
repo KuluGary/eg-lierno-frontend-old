@@ -21,6 +21,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Image from "components/Image/Image";
 
@@ -114,7 +115,7 @@ function FactionList(props) {
     }
 
     return (
-        <div className={classes.root}>
+        <Grid item xs={12} className={classes.root}>
             <Box component={props.campaign ? "span" : Paper} variant="outlined">
                 <Box className={classes.searchContainer}>
                     <FormControl style={{ marginLeft: "1rem" }}>
@@ -226,7 +227,7 @@ function FactionList(props) {
             >
                 <MenuItem onClick={() => props.history.push("/npc/add/" + selectedData)}>Editar</MenuItem>
             </Menu>
-        </div>
+        </Grid>
     )
 }
 

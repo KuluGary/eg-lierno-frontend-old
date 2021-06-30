@@ -27,8 +27,9 @@ export default function Portrait(props) {
                         errorStyle={{ width: "100%", height: "75%", margin: "1rem 0" }}
                         style={{ width: "100%", borderRadius: 4, border: `1px solid ${theme.palette.divider}` }}
                         mode="modal"
-                        src={props.image} />
+                        src={props.image?.original} />
                     <TextField
+                        disabled
                         className={classes.input}
                         InputProps={{
                             classes: {
@@ -42,8 +43,7 @@ export default function Portrait(props) {
                         }}
                         label="Retrato"
                         fullWidth
-                        value={props.image}
-                        disabled={!props.editable}
+                        value={props.image?.original}
                         onChange={(event) => props.changeFlavor("portrait", event.target.value)}
                         variant="outlined" />
                 </Box>

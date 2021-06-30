@@ -160,7 +160,7 @@ class MonsterCreation extends Component {
                     experiencePoints: 50,
                     actions: [{
                         name: "Espada corta",
-                        description: "<i>Ataque de arma a melé:</i> +0 a golpear, alcance 5 ft., un objetivo. <i>Daño:</i> 3 (1d6 + 0) daño perforante."
+                        description: "<em>Ataque de arma a melé:</em> +0 a golpear, alcance 5 ft., un objetivo. <em>Daño:</em> 3 (1d6 + 0) daño perforante."
                     }],
                     reactions: [],
                     legendaryActions: [],

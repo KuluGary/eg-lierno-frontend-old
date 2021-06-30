@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import Select from '@material-ui/core/Select';
 import character_template from 'assets/json/character_template';
-import customizable_stats from 'assets/json/customizable_stats';
+import { skills as JSONSkills, stats as JSONStats } from 'assets/json/customizable_stats';
 import { Checkbox, FormLabel, Table, TableCell, TableRow } from '@material-ui/core';
 import useStyles from './Core.styles';
 
@@ -128,6 +128,42 @@ function Core(props) {
     setSkills(newSkills)
   }
 
+  const getTotalPointsScoreArray = (arr) => {
+    let total = 0;
+
+    for (const item of Object.values(arr)) {
+      total += parseInt(item);
+    }
+
+    return total;
+  }
+
+  const getTypeOfScoreArray = (arr) => {
+    const types = {
+      "Terrible": 46,
+      "Mala": 58,
+      "Pobre": 63,
+      "Mediana": 66,
+      "Estándar": 72,
+      "Buena": 73,
+      "Heroica": 80,
+      "Épica": 86
+    }
+
+    const total = getTotalPointsScoreArray(arr);
+    let type;
+
+    for (const t of Object.keys(types)) {
+      const value = types[t];
+
+      if (value <= total) {
+        type = t;
+      }
+    }
+
+    return type;
+  }
+
   return (
     <>
       <Typography variant="h6" gutterBottom>
@@ -137,71 +173,87 @@ function Core(props) {
         Por favor detalla los datos estadísticos de tu personaje no jugable.
       </Typography>
       <Grid container spacing={2}>
-        <Grid item sm={2}>
-          <TextField
-            id="name"
-            name="name"
-            label="FUE"
-            type="number"
-            value={abilityScores['strength']}
-            onChange={(e) => setAbilityScores({ ...abilityScores, strength: e.target.value })}
-            fullWidth
-          />
+        <Grid item sm={9} container spacing={2}>
+          <Grid item sm={2}>
+            <TextField
+              id="name"
+              name="name"
+              label="FUE"
+              type="number"
+              value={abilityScores['strength']}
+              onChange={(e) => setAbilityScores({ ...abilityScores, strength: e.target.value })}
+              fullWidth
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              id="name"
+              name="name"
+              label="DES"
+              type="number"
+              value={abilityScores['dexterity']}
+              onChange={(e) => setAbilityScores({ ...abilityScores, dexterity: e.target.value })}
+              fullWidth
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              id="name"
+              name="name"
+              label="CON"
+              type="number"
+              value={abilityScores['constitution']}
+              onChange={(e) => setAbilityScores({ ...abilityScores, constitution: e.target.value })}
+              fullWidth
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              id="name"
+              name="name"
+              label="INT"
+              type="number"
+              value={abilityScores['intelligence']}
+              onChange={(e) => setAbilityScores({ ...abilityScores, intelligence: e.target.value })}
+              fullWidth
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              id="name"
+              name="name"
+              label="SAB"
+              type="number"
+              value={abilityScores['wisdom']}
+              onChange={(e) => setAbilityScores({ ...abilityScores, wisdom: e.target.value })}
+              fullWidth
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              id="name"
+              name="name"
+              label="CAR"
+              type="number"
+              value={abilityScores['charisma']}
+              onChange={(e) => setAbilityScores({ ...abilityScores, charisma: e.target.value })}
+              fullWidth
+            />
+          </Grid>
         </Grid>
-        <Grid item sm={2}>
-          <TextField
-            id="name"
-            name="name"
-            label="DES"
-            type="number"
-            value={abilityScores['dexterity']}
-            onChange={(e) => setAbilityScores({ ...abilityScores, dexterity: e.target.value })}
-            fullWidth
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            id="name"
-            name="name"
-            label="CON"
-            type="number"
-            value={abilityScores['constitution']}
-            onChange={(e) => setAbilityScores({ ...abilityScores, constitution: e.target.value })}
-            fullWidth
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            id="name"
-            name="name"
-            label="INT"
-            type="number"
-            value={abilityScores['intelligence']}
-            onChange={(e) => setAbilityScores({ ...abilityScores, intelligence: e.target.value })}
-            fullWidth
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            id="name"
-            name="name"
-            label="SAB"
-            type="number"
-            value={abilityScores['wisdom']}
-            onChange={(e) => setAbilityScores({ ...abilityScores, wisdom: e.target.value })}
-            fullWidth
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            id="name"
-            name="name"
-            label="CAR"
-            type="number"
-            value={abilityScores['charisma']}
-            onChange={(e) => setAbilityScores({ ...abilityScores, charisma: e.target.value })}
-            fullWidth
-          />
+        <Grid item sm={3} style={{ padding: "0 2rem" }}>
+          <TextField 
+            disabled
+            variant="outlined"
+            label={"Puntos usados"}
+            helperText={"Calidad " + getTypeOfScoreArray(abilityScores).toLowerCase()}
+            value={getTotalPointsScoreArray(abilityScores)} />
+          {/* <Paper variant="outlined">
+          <Box style={{ textTransform: "uppercase", opacity: .5 }}>Puntos usados</Box>
+          <Divider />
+          {getTotalPointsScoreArray(abilityScores)}
+          {getTypeOfScoreArray(abilityScores)}
+          </Paper> */}
         </Grid>
         <Grid item sm={4}>
           <TextField
@@ -272,7 +324,7 @@ function Core(props) {
                         <MenuItem
                           disabled={skills.some(o => o.id === item)}
                           value={item}>
-                          {customizable_stats.skills[item].name}
+                          {JSONSkills[item].name}
                         </MenuItem>
                       ))}
                     </Select>
@@ -285,10 +337,10 @@ function Core(props) {
                       fullWidth
                       onChange={(e) => handleSkillChange(e.target.value, skill, "modifier")}
                       value={skill.modifier}>
-                      {Object.keys(customizable_stats.stats).map(item => (
+                      {Object.keys(JSONStats).map(item => (
                         <MenuItem
                           value={item}>
-                          {customizable_stats.stats[item].name}
+                          {JSONStats[item].name}
                         </MenuItem>
                       ))}
                     </Select>

@@ -96,7 +96,7 @@ export default function CharacterTable(props) {
                                                 <Image
                                                     mode="background"
                                                     usage="avatar"
-                                                    src={char.flavor.portrait}
+                                                    src={char.flavor.portrait?.avatar}
                                                     containerStyle={{
                                                         border: `1px solid ${theme.palette.divider}`,
                                                         borderRadius: "100%",
@@ -104,7 +104,7 @@ export default function CharacterTable(props) {
                                                         height: "4vw",
                                                     }}
                                                     style={{
-                                                        backgroundImage: `url(${char.flavor.portrait})`,
+                                                        backgroundImage: `url(${char.flavor.portrait?.avatar})`,
                                                         width: "4vw",
                                                         height: "4vw",
                                                         backgroundSize: "cover",

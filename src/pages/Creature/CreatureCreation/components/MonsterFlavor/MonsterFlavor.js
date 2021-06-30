@@ -42,7 +42,7 @@ function MonsterFlavor(props) {
   const [gender, setGender] = useState(props.creature.flavor.gender || '');
   const [name, setName] = useState(props.creature.name);
   const [description, setDescription] = useState(props.creature.flavor.description || '');
-  const [image, setImage] = useState(props.creature.flavor.imageUrl);
+  const [image, setImage] = useState(props.creature.flavor.image);
   const [characterClass, setCharacterClass] = useState(props.creature.flavor.class || '');
   const [campaignAvailable, setCampaignAvailable] = useState([]);
   const [campaigns, setCampaigns] = useState(props.creature.flavor.campaign || []);
@@ -63,7 +63,7 @@ function MonsterFlavor(props) {
       changeName(name);
       addToCreatureFlavor(pronoun, "pronoun");
       addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
-      addToCreatureFlavor(image, "imageUrl");
+      addToCreatureFlavor(image, "image");
       addToCreatureFlavor(faction, "faction");
       addToCreatureStats(alignment, "alignment")
       addToCreatureFlavor(gender, "gender");
@@ -182,14 +182,14 @@ function MonsterFlavor(props) {
             />
           </FormControl>
         </Grid>
-        <Grid item xs={3} style={{ display: (image && image.length > 0) ? 'block' : 'none' }}>
+        <Grid item xs={3} style={{ display: (image?.original?.length > 0) ? 'block' : 'none' }}>
           <Image
             className={classes.image}
             errorStyle={{ width: "50%", height: "100%", margin: "0 auto" }}
-            src={image}
+            src={image?.original}
             mode="modal" />
         </Grid>
-        <Grid item xs={(image && image.length > 0) ? 9 : 12} container spacing={3}>
+        <Grid item xs={(image?.original?.length > 0) ? 9 : 12} container spacing={3}>
           <Grid item sm={12}>
             <FormControl className={classes.formControl}>
               <TextField
@@ -197,7 +197,7 @@ function MonsterFlavor(props) {
                 name="image"
                 label="URL de imagen"
                 onChange={(e) => setImage(e.target.value)}
-                value={image}
+                value={image?.original}
                 fullWidth
                 InputProps={{
                   endAdornment: (

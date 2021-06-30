@@ -26,7 +26,7 @@ function CritRolls(props) {
 
     }, [props.characters, props.players, props.logs])
     return (
-        <Paper variant="outlined" style={{ height: 420, width: (100 / 3) + "%", marginRight: ".2rem"}}>
+        <Paper variant="outlined" style={{ height: 420, width: "100%", marginRight: ".2rem"}}>
             <Typography style={{ textAlign: "center", fontSize: "1.1rem", paddingTop: ".2rem" }}>
                 Golpes críticos
                 </Typography>

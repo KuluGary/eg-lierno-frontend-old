@@ -1,18 +1,17 @@
 // @flow
 
 import React, { useState, useEffect } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server';
 import { connect } from "react-redux";
-import L, { divIcon } from "leaflet";
+import L from "leaflet";
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, ImageOverlay, Marker, useMapEvent, useMap, Polyline } from 'react-leaflet'
+import { MapContainer, useMapEvent, useMap } from 'react-leaflet'
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Paper, Typography } from '@material-ui/core';
+import { Box, Paper } from '@material-ui/core';
 import Api from "helpers/api";
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import CloseIcon from '@material-ui/icons/Close';
 import { addLocations } from "shared/actions/index";
+import { SideBar, Routes, Locations, Labels } from './components';
 
 const mapStateToProps = state => {
     return { locations: state.locations }
@@ -78,19 +77,8 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         zIndex: 1000,
         background: "linear-gradient(180deg, rgba(0,0,0,0.4) 80%, rgba(0,212,255,0) 100%)"
-    },
-    sideNav: {
-        height: "100%",
-        position: "absolute",
-        top: 0,
-        right: 0,
-        zIndex: 1000,
-        transition: "0.25s all ease-in-out",
-        textOverflow: "clip",
-        overflow: "hidden"
     }
 }));
-
 
 function MapScreen({ campaignId }) {
     const classes = useStyles();
@@ -104,112 +92,9 @@ function MapScreen({ campaignId }) {
 
     const retrieveLocations = (location) => {
         setLocation();
+        
         Api.fetchInternal('/location/' + location)
-            .then(res => {
-                setLocation(res)
-            })
-    }
-
-    const Locations = props => {
-        return (
-            <>
-                {props.data.map(item => {
-                    let image;
-
-                    if (item.image || item.imageLocked) {
-                        image = item.unlocked ? item.image : item.imageLocked;
-                    }
-
-                    return (
-                        <div key={item.name}>
-                            {image && item.bounds &&
-                                <ImageOverlay
-                                    url={image}
-                                    bounds={item.bounds} />
-                            }
-                            {item.children?.length && <Locations data={item.children} />}
-                        </div>
-                    )
-                })}
-            </>
-        )
-    }
-
-    const Labels = ({ data, map, setSideBarInfo }) => {
-        return (
-            <>
-                {data.map((item) => {
-                    const iconMarkup = renderToStaticMarkup(
-                        <div className={"lierno-map-tag"} >
-                            <div className={`${item.tag?.type} no-display no-visibility`}>
-                                {item.name}
-                            </div>
-                        </div>);
-
-                    const marker = divIcon({
-                        html: iconMarkup,
-                        className: "animated-marker"
-                    });
-
-                    return (
-                        <div key={item.name}>
-                            {item.unlocked && <>
-                                {item.tag &&
-                                    <Marker
-                                        position={item.tag?.pos}
-                                        icon={marker}
-                                        eventHandlers={{
-                                            click: () => {
-                                                if (item.id) {
-                                                    setParentLocation(locations._id);
-                                                    retrieveLocations(item.id, map);
-                                                }
-
-                                                if (item.flavor) {
-                                                    setSideBarInfo({
-                                                        name: item.name,
-                                                        flavor: item.flavor
-                                                    });
-                                                }
-                                            }
-                                        }} />
-                                }
-                                {item.children?.length && <Labels data={item.children} setSideBarInfo={setSideBarInfo} />}
-                            </>}
-                        </div>
-                    )
-                })}
-            </>
-        )
-    }
-
-    const Routes = ({ data }) => {
-        return (
-            <>
-                {data.map(item => {
-                    const marker = new L.Icon({
-                        iconUrl: item.marker,
-                        iconSize: [13.50, 14.50]
-                    });
-
-                    return (
-                        <>
-                            <Marker
-                                icon={marker}
-                                position={item.linePoints[0]} />
-                            <Marker
-                                icon={marker}
-                                position={item.linePoints[item.linePoints.length - 1]} />
-                            <Polyline
-                                color={'#2a2217'}
-                                positions={item.linePoints}
-                                dashArray={'10, 10'}
-                                weight={4} />
-                        </>
-                    )
-                })}
-            </>
-        )
+            .then(res => setLocation(res))
     }
 
     const MapContent = () => {
@@ -296,45 +181,20 @@ function MapScreen({ campaignId }) {
 
         return (
             <>
-                <SideBar sideBarInfo={sideBarInfo} setSideBarInfo={setSideBarInfo} />
-                <Locations data={locations.locales} />
-                <Routes data={locations.routes} />
-                <Labels data={locations.locales} setSideBarInfo={setSideBarInfo} />
+                <SideBar 
+                    sideBarInfo={sideBarInfo} 
+                    setSideBarInfo={setSideBarInfo} />
+                <Locations 
+                    data={locations.locales} />
+                <Routes 
+                    data={locations.routes} />
+                <Labels 
+                    data={locations.locales} 
+                    setSideBarInfo={setSideBarInfo}
+                    locations={locations}
+                    setParentLocation={setParentLocation}
+                    retrieveLocations={retrieveLocations} />
             </>
-        )
-    }
-
-    const SideBar = ({ sideBarInfo, setSideBarInfo }) => {
-        return (
-            <Box
-                className={classes.sideNav}
-                style={{ width: sideBarInfo ? "20%" : "0%", padding: sideBarInfo ? "1rem" : 0 }}
-                component={Paper}>
-                <Box component="div" style={{ display: "flex", justifyContent: "space-between" }}>
-                    <Typography variant="h6">
-                        {sideBarInfo?.name}
-                    </Typography>
-                    <IconButton
-                        onClick={() => setSideBarInfo()}
-                        size="small"
-                        style={{ float: "right" }}>
-                        <CloseIcon />
-                    </IconButton>
-                </Box>
-                {sideBarInfo?.flavor?.properties?.map(property => (
-                    <Box component="p">
-                        <Box component="b" display="inline">
-                            {property.name + " "}
-                        </Box>
-                        <Box display="inline">
-                            {property.value}
-                        </Box>
-                    </Box>
-                ))}
-                <Box component="div">
-                    {sideBarInfo?.flavor?.description}
-                </Box>
-            </Box>
         )
     }
 

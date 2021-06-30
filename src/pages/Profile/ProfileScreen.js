@@ -12,22 +12,18 @@ import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Api from '../../helpers/api'
-import Auth from '../../helpers/auth';
-import { StreamApp, NotificationFeed, Notification } from 'react-activity-feed';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import RoomIcon from '@material-ui/icons/Room';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 import { toast } from 'react-toastify';
-import { StringUtil } from '../../helpers/string-util'
 import equal from 'fast-deep-equal/react';
 import notificationIcon from "../../assets/images/notifications.svg";
+import { apolloClient } from "helpers/api";
+import { METADATA_QUERY, ME_QUERY } from "helpers/graphql/queries/user";
 
 const useStyles = makeStyles((theme) => ({
     profileBox: {
@@ -86,15 +82,25 @@ function ProfileScreen(props) {
     const [streamToken, setStreamToken] = useState();
 
     useEffect(() => {
-        setStreamToken(Auth.getStreamToken());
-
+        console.log(props.profile);
         if (!props.profile) {
-            Api.fetchInternal('/auth/me')
-                .then(res => {
-                    props.addProfile(res)
-                    setUser(res)
-                    setMetadata(res.metadata);
-                });
+            apolloClient.query({ query: ME_QUERY })
+                .then(({ data }) => {
+                    props.addProfile(data.me.user);
+                    setUser(data.me.user);
+                })
+
+            apolloClient.query({ query: METADATA_QUERY })
+                .then(({ data }) => {
+                    console.log(data.me)
+                    setMetadata(data.me.user.metadata);
+                })
+            // Api.fetchInternal('/auth/me')
+            //     .then(res => {
+            //         props.addProfile(res)
+            //         setUser(res)
+            //         setMetadata(res.metadata);
+            //     });
         } else {
             setUser(props.profile)
             setMetadata(props.profile.metadata)
@@ -156,6 +162,7 @@ function ProfileScreen(props) {
                                 </Box>
                                 <Box component="div" style={{ marginTop: "1rem" }}>
                                     <TextField
+                                        disabled
                                         id="outlined-helperText"
                                         label="Avatar"
                                         defaultValue={metadata.avatar}
@@ -172,20 +179,16 @@ function ProfileScreen(props) {
                                     <MailOutlineIcon style={{ marginRight: ".5rem" }} />
                                     <Box component="span">
                                         <TextField
+                                            disabled
                                             value={metadata.email}
                                             onChange={(e) => updateMetadata("email", e.target.value)} />
-                                    </Box>
-                                </Box>
-                                <Box style={{ display: "flex", alignItems: "center", marginBottom: ".4rem" }}>
-                                    <CalendarTodayIcon style={{ marginRight: ".5rem" }} />
-                                    <Box component="span">
-                                        {user && ('Se unió el ' + StringUtil.getDateFromISODate(user.createdAt))}
                                     </Box>
                                 </Box>
                                 <Box style={{ display: "flex", alignItems: "center", marginBottom: ".4rem" }}>
                                     <RoomIcon style={{ marginRight: ".5rem" }} />
                                     <Box component="span">
                                         <TextField
+                                            disabled
                                             value={metadata.location}
                                             onChange={(e) => updateMetadata("location", e.target.value)} />
                                     </Box>
@@ -194,20 +197,11 @@ function ProfileScreen(props) {
                                     <FontAwesomeIcon icon={faDiscord} size="lg" style={{ marginRight: ".8rem", marginLeft: ".2rem" }} />
                                     <Box component="span">
                                         <TextField
+                                            disabled
                                             value={metadata.discordName}
                                             onChange={(e) => updateMetadata("discordName", e.target.value)} />
                                     </Box>
-                                </Box>
-                                <Box style={{ display: "flex", alignItems: "center", marginBottom: ".4rem" }}>
-                                    <VpnKeyIcon style={{ marginRight: ".5rem" }} />
-                                    <Box component="span">
-                                        <TextField
-                                            type={'password'}
-                                            value={newPassword}
-                                            onChange={(e) => setNewPassword(e.target.value)}
-                                        />
-                                    </Box>
-                                </Box>
+                                </Box>                            
                                 <Box>
                                     <FormControlLabel
                                         labelPlacement="start"
@@ -217,7 +211,7 @@ function ProfileScreen(props) {
                                                 onChange={() => props.setDarkMode(!props.darkMode)} />}
                                         label={'Modo oscuro'} />
                                 </Box>
-                                <Box style={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: "1rem" }}>
+                                {/* <Box style={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: "1rem" }}>
                                     <Button
                                         variant="contained"
                                         color="primary"
@@ -226,13 +220,19 @@ function ProfileScreen(props) {
                                     >
                                         Guardar perfil
                                     </Button>
-                                </Box>
+                                </Box> */}
                             </Paper>
                         </Grid>
 
                         <Grid item md={9} style={{ position: "relative" }}>
                             <Paper variant="outlined" style={{ height: "100%" }}>
-                                {streamToken ?
+                                <Box className={classes.notificationBox}
+                                    style={{
+                                        backgroundBlendMode: props.darkMode && "soft-light"
+                                    }}>
+                                    <img alt="notifications" src={notificationIcon} style={{ display: "block", padding: "1rem" }} />
+                                </Box>
+                                {/* {streamToken ?
                                     <StreamApp
                                         apiKey={process.env.REACT_APP_STREAM_KEY}
                                         appId={process.env.REACT_APP_STREAM_ID}
@@ -262,7 +262,7 @@ function ProfileScreen(props) {
                                         }}>
                                         <img alt="notifications" src={notificationIcon} style={{ display: "block", padding: "1rem" }} />
                                     </Box>
-                                }
+                                } */}
                             </Paper>
                         </Grid>
                     </Grid>}
