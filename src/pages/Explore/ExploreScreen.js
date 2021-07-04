@@ -7,7 +7,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ErrorIcon from "@material-ui/icons/Error";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import ItemScreen from "./components/ItemScreen";
 import SpellScreen from "./components/SpellScreen";
 // import ClassScreen from './components/ClassScreen';

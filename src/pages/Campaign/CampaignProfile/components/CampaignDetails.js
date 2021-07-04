@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import Slide from "@material-ui/core/Slide";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Api from "helpers/api";

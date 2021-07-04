@@ -26,6 +26,12 @@ const useStyles = makeStyles({
         margin: "0 auto",
         maxHeight: "100vh",
         maxWidth: "100%"
+    },
+    section: {
+        padding: "0 1rem"
+    },
+    header: {
+        marginTop: "1rem"
     }
 });
 

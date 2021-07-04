@@ -250,7 +250,7 @@ function Features(props) {
     return (
         <>
             <Grid container className={classes.root} spacing={1}>
-                <Grid item xs={12} lg={5} container style={{ rowGap: 8 }}>
+                <Grid item xs={12} lg={5} container spacing={1}>
                     <Grid item lg={12} xs={12} >
                         <Paper variant="outlined" className={classes.paper}>
                             <Box className={classes.subtitleContainer}>

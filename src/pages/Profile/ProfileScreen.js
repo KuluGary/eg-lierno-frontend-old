@@ -14,13 +14,10 @@ import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Api from '../../helpers/api'
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import RoomIcon from '@material-ui/icons/Room';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDiscord } from '@fortawesome/free-brands-svg-icons'
-import { toast } from 'react-toastify';
-import equal from 'fast-deep-equal/react';
 import notificationIcon from "../../assets/images/notifications.svg";
 import { apolloClient } from "helpers/api";
 import { METADATA_QUERY, ME_QUERY } from "helpers/graphql/queries/user";
@@ -77,9 +74,7 @@ function ProfileScreen(props) {
     const classes = useStyles();
     const [user, setUser] = useState();
     const [avatar] = useState();
-    const [newPassword, setNewPassword] = useState();
     const [metadata, setMetadata] = useState();
-    const [streamToken, setStreamToken] = useState();
 
     useEffect(() => {
         console.log(props.profile);
@@ -95,12 +90,6 @@ function ProfileScreen(props) {
                     console.log(data.me)
                     setMetadata(data.me.user.metadata);
                 })
-            // Api.fetchInternal('/auth/me')
-            //     .then(res => {
-            //         props.addProfile(res)
-            //         setUser(res)
-            //         setMetadata(res.metadata);
-            //     });
         } else {
             setUser(props.profile)
             setMetadata(props.profile.metadata)
@@ -113,32 +102,7 @@ function ProfileScreen(props) {
         newMeta[key] = value;
 
         setMetadata(newMeta)
-    }
-
-    const updateProfile = () => {
-        if (newPassword && newPassword.length > 0) {
-            Api.fetchInternal('/auth/reset', {
-                method: "POST",
-                body: JSON.stringify({
-                    email: user['metadata']['email'],
-                    password: newPassword
-                })
-            })
-                .then(() => toast.success("Contraseña actualizada"))
-        }
-
-        if (!equal(user.metadata, metadata)) {
-            let body = {
-                profile: metadata
-            }
-
-            Api.fetchInternal('/auth/me/' + user._id, {
-                method: "POST",
-                body: JSON.stringify(body)
-            })
-                .then(() => toast.success("Perfil actualizado"))
-        }
-    }
+    }    
 
     return (
         <Slide direction="up" in={true} mountOnEnter unmountOnExit>

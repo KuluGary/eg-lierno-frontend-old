@@ -20,7 +20,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import Grow from "@material-ui/core/Grow";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import Alert from "@material-ui/lab/Alert";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Image from "components/Image/Image";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ErrorIcon from "@material-ui/icons/Error";

@@ -86,9 +86,9 @@ export function ReactionGeneration(props) {
 
     return (
         <>
-            <Dialog open={dialogOpen} style={{ padding: 10 }}>
+            <Dialog maxWidth={"lg"} fullWidth open={dialogOpen} style={{ padding: 10, height: "100%" }}>
                 <DialogTitle>Genera una reacción</DialogTitle>
-                <DialogContent >
+                <DialogContent>
                     <Grid container spacing={2}>
                         <Grid item sm={12}>
                             <TextField
@@ -96,16 +96,13 @@ export function ReactionGeneration(props) {
                                 fullWidth
                                 onChange={(e) => setReactionName(e.target.value)}
                                 value={reactionName}
-                                label={'Nombre'}
+                                label={"Nombre"}
                             />
                         </Grid>
                         <Grid item sm={12}>
-                            <HTMLEditor
-                                setState={setReactionDescription}
-                                multiline
-                            />
+                            <HTMLEditor setState={setReactionDescription} multiline />
                         </Grid>
-                        <Grid item sm={12}>
+                        <Grid item sm={12} style={{ margin: "1.1rem 0" }}>
                             <FormControlLabel
                                 control={
                                     <Checkbox
@@ -118,21 +115,22 @@ export function ReactionGeneration(props) {
                                 label="¿Añadir límite de usabilidad?"
                             />
                         </Grid>
-                        {allowUsage &&
+                        {allowUsage && (
                             <Grid container item sm={12}>
                                 <Grid item sm={3}>
                                     <TextField
                                         className={classes.numberInput}
                                         fullWidth
-                                        label={'# de veces'}
+                                        label={"# de veces"}
                                         type="number"
                                         onChange={(e) => setUsageNum(e.target.value)}
                                         InputProps={{
-                                            inputProps: { min: 0 }
+                                            inputProps: { min: 0 },
                                         }}
                                         value={usageNum}
                                         defaultValue={1}
-                                        required />
+                                        required
+                                    />
                                 </Grid>
                                 <Grid item sm={9}>
                                     <FormControl required>
@@ -140,27 +138,25 @@ export function ReactionGeneration(props) {
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            defaultValue={'long_rest'}
+                                            defaultValue={"long_rest"}
                                             fullWidth
                                             value={usageType}
                                             onChange={(e) => setUsageType(e.target.value)}
                                         >
-                                            <MenuItem value={'long_rest'}>{'veces por descanso largo'}</MenuItem>
-                                            <MenuItem value={'short_rest'}>{'veces por descanso corto'}</MenuItem>
+                                            <MenuItem value={"long_rest"}>{"veces por descanso largo"}</MenuItem>
+                                            <MenuItem value={"short_rest"}>{"veces por descanso corto"}</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>
                             </Grid>
-                        }
+                        )}
                     </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={openDialog} color="default">
                         Cerrar
-                     </Button>
-                    <Button color="default"
-                        onClick={generateReaction}
-                        autoFocus>
+                    </Button>
+                    <Button color="default" onClick={generateReaction} autoFocus>
                         Generar
                     </Button>
                 </DialogActions>
@@ -169,21 +165,27 @@ export function ReactionGeneration(props) {
                 <Box style={{ position: "relative" }}>
                     <Box className={classes.subtitleContainer}>
                         <Box />
-                        <Typography variant="subtitle2" className={classes.subtitle} >{'CLASES'}</Typography>
-                        {props.editable ?
+                        <Typography variant="subtitle2" className={classes.subtitle}>
+                            {"REACCIONES"}
+                        </Typography>
+                        {props.editable ? (
                             <IconButton size="small" onClick={openDialog}>
                                 <AddIcon />
-                            </IconButton> : <Box />
-                        }
+                            </IconButton>
+                        ) : (
+                            <Box />
+                        )}
                     </Box>
                     <Divider />
                     <Table size="small" style={{ width: "100%" }}>
                         <TableBody>
-                            {props.reactions.map((reaction, index) => props.generateRow(reaction, index, props.reactions, "reactions", editFunc))}
+                            {props.reactions.map((reaction, index) =>
+                                props.generateRow(reaction, index, props.reactions, "reactions", editFunc),
+                            )}
                         </TableBody>
                     </Table>
                 </Box>
             </Paper>
         </>
-    )
+    );
 }

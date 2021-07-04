@@ -9,11 +9,18 @@ function Step3({ upImg, cropImg, setImage, setDone }) {
     useEffect(() => {
         if (upImg && cropImg) {
             setLoading(true);
-            const headers = new Headers();
+            const headers = {
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*",
+                // "Content-Type": "multipart/form-data",
+            };
             const formData = new FormData();
 
             formData.append("original", upImg);
             formData.append("crop", cropImg);
+
+            // headers.append("Accept", "multipart/form-data");
+            // headers.append("Content-Type", "multipart/form-data")            
 
             const options = {
                 method: "POST",

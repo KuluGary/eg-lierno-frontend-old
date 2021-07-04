@@ -86,9 +86,9 @@ export function ActionGeneration(props) {
 
     return (
         <>
-            <Dialog open={dialogOpen} style={{ padding: 10 }}>
+            <Dialog maxWidth={"lg"} fullWidth open={dialogOpen} style={{ padding: 10, height: "100%" }}>
                 <DialogTitle>Genera una acción</DialogTitle>
-                <DialogContent >
+                <DialogContent>
                     <Grid container spacing={2}>
                         <Grid item sm={12}>
                             <TextField
@@ -96,16 +96,13 @@ export function ActionGeneration(props) {
                                 fullWidth
                                 onChange={(e) => setActionName(e.target.value)}
                                 value={actionName}
-                                label={'Nombre'}
+                                label={"Nombre"}
                             />
                         </Grid>
                         <Grid item sm={12}>
-                            <HTMLEditor
-                                setState={setActionDescription}
-                                value={actionDescription}
-                            />
+                            <HTMLEditor setState={setActionDescription} value={actionDescription} />
                         </Grid>
-                        <Grid item sm={12}>
+                        <Grid item sm={12} style={{ margin: "1.1rem 0" }}>
                             <FormControlLabel
                                 control={
                                     <Checkbox
@@ -118,21 +115,22 @@ export function ActionGeneration(props) {
                                 label="¿Añadir límite de usabilidad?"
                             />
                         </Grid>
-                        {allowUsage &&
+                        {allowUsage && (
                             <Grid container item sm={12}>
                                 <Grid item sm={3}>
                                     <TextField
                                         className={classes.numberInput}
                                         fullWidth
-                                        label={'# de veces'}
+                                        label={"# de veces"}
                                         type="number"
                                         onChange={(e) => setUsageNum(e.target.value)}
                                         InputProps={{
-                                            inputProps: { min: 0 }
+                                            inputProps: { min: 0 },
                                         }}
                                         value={usageNum}
                                         defaultValue={1}
-                                        required />
+                                        required
+                                    />
                                 </Grid>
                                 <Grid item sm={9}>
                                     <FormControl required>
@@ -140,29 +138,27 @@ export function ActionGeneration(props) {
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            defaultValue={'long_rest'}
+                                            defaultValue={"long_rest"}
                                             fullWidth
                                             value={usageType}
                                             onChange={(e) => setUsageType(e.target.value)}
-                                        // value={campaignData.game}
-                                        // onChange={(e) => setPronoun(e.target.value)}
+                                            // value={campaignData.game}
+                                            // onChange={(e) => setPronoun(e.target.value)}
                                         >
-                                            <MenuItem value={'long_rest'}>{'veces por descanso largo'}</MenuItem>
-                                            <MenuItem value={'short_rest'}>{'veces por descanso corto'}</MenuItem>
+                                            <MenuItem value={"long_rest"}>{"veces por descanso largo"}</MenuItem>
+                                            <MenuItem value={"short_rest"}>{"veces por descanso corto"}</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>
                             </Grid>
-                        }
+                        )}
                     </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={openDialog} color="default">
                         Cerrar
-                     </Button>
-                    <Button color="default"
-                        onClick={generateAction}
-                        autoFocus>
+                    </Button>
+                    <Button color="default" onClick={generateAction} autoFocus>
                         Generar
                     </Button>
                 </DialogActions>
@@ -170,20 +166,26 @@ export function ActionGeneration(props) {
             <Paper variant="outlined" className={classes.paper}>
                 <Box className={classes.subtitleContainer}>
                     <Box />
-                    <Typography variant="subtitle2" className={classes.subtitle} >{'ACCIONES'}</Typography>
-                    {props.editable ?
+                    <Typography variant="subtitle2" className={classes.subtitle}>
+                        {"ACCIONES"}
+                    </Typography>
+                    {props.editable ? (
                         <IconButton size="small" onClick={openDialog}>
                             <AddIcon />
-                        </IconButton> : <Box />
-                    }
+                        </IconButton>
+                    ) : (
+                        <Box />
+                    )}
                 </Box>
                 <Divider />
                 <Table size="small" style={{ width: "100%" }}>
                     <TableBody>
-                        {props.actions.map((action, index) => props.generateRow(action, index, props.actions, "actions", editFunc))}
+                        {props.actions.map((action, index) =>
+                            props.generateRow(action, index, props.actions, "actions", editFunc),
+                        )}
                     </TableBody>
                 </Table>
             </Paper>
         </>
-    )
+    );
 }

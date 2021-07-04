@@ -1,6 +1,8 @@
 
 import React from 'react';
-import SunEditor from 'suneditor-react'
+import SunEditor from "suneditor-react";
+import "./css/lightTheme.css";
+import "./css/darkTheme.css";
 
 const buttonList = {
     classic: [["font", "fontSize", "formatBlock"], ["bold", "underline", "italic", "strike", "removeFormat"], ["fontColor", "hiliteColor"], ["outdent", "indent"], ["align", "horizontalRule", "list", "table"], ["link", "image"], ["fullScreen", "codeView"]],
@@ -21,34 +23,30 @@ const HTMLEditor = ({
     value,
     unwrapHtml = false
 }) => {
-    const isDarkMode = (localStorage.getItem("theme") === 'true');
+    const theme = (localStorage.getItem("theme") === 'true') ? 'dark' : 'light';
 
-    if (isDarkMode) {
-        require('./css/darkTheme.css')
-    } else {
-        require('./css/lightTheme.css')
-    }
 
     const handleChange = (content) => {
         setState(content);
     }
-
+    
     return (
-        <SunEditor
-            lang="es"
-            defaultValue={unwrap(value, unwrapHtml)}
-            width="100%"
-            height="100%"
-
-            setDefaultStyle="font-family: sans-serif; font-size: 1rem;height: 100%"
-            onChange={handleChange}
-            setOptions={{
-                mode,
-                buttonList: buttonList[mode],
-                attributesWhitelist: {
-                    all: 'style'
-                }
-            }} />
+        <div className={`${theme}-editor`}>
+            <SunEditor
+                lang="es"
+                defaultValue={unwrap(value, unwrapHtml)}
+                width="100%"
+                setDefaultStyle="font-family: sans-serif; font-size: 1rem;"
+                onChange={handleChange}
+                setOptions={{
+                    mode,
+                    buttonList: buttonList[mode],
+                    attributesWhitelist: {
+                        all: "style",
+                    },
+                }}
+            />
+        </div>
     );
 };
 export default HTMLEditor;

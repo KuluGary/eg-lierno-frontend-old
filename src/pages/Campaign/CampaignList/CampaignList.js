@@ -20,11 +20,7 @@ import {
     IconButton,
     CircularProgress,
 } from "@material-ui/core";
-import {
-    Add as AddIcon,
-    MoreHoriz as MoreHorizIcon,
-    Error as ErrorIcon,
-} from "@material-ui/icons";
+import { Add as AddIcon, MoreHoriz as MoreHorizIcon, Error as ErrorIcon } from "@material-ui/icons";
 import SEO from "components/SEO/SEO";
 import { useQuery } from "@apollo/client";
 import { CAMPAIGN_LIST_QUERY } from "helpers/graphql/queries/campaign";
@@ -67,8 +63,8 @@ function CampaignList(props) {
     const classes = useStyles();
     const [campaigns, setCampaigns] = useState([]);
     const [selectedData, setSelectedData] = useState();
-    const [players, setPlayers] = useState([]);
-    const [dms, setDms] = useState([]);
+    // const [players, setPlayers] = useState([]);
+    // const [dms, setDms] = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -129,9 +125,7 @@ function CampaignList(props) {
                 >
                     <Box style={{ textAlign: "center" }}>
                         <ErrorIcon fontSize="large" />
-                        <Typography variant="h6">
-                            Error cargando los datos
-                        </Typography>
+                        <Typography variant="h6">Error cargando los datos</Typography>
                     </Box>
                 </Box>
             </Paper>
@@ -146,10 +140,7 @@ function CampaignList(props) {
                 </SEO>
                 <Paper variant="outlined" className={classes.profileBox}>
                     <Box className={classes.addButton}>
-                        <IconButton
-                            component="span"
-                            onClick={() => props.history.push("/campaigns/add")}
-                        >
+                        <IconButton component="span" onClick={() => props.history.push("/campaigns/add")}>
                             <AddIcon />
                         </IconButton>
                     </Box>
@@ -158,21 +149,14 @@ function CampaignList(props) {
                         <TableBody>
                             {campaigns.length > 0 &&
                                 campaigns
-                                    .slice(
-                                        page * rowsPerPage,
-                                        page * rowsPerPage + rowsPerPage,
-                                    )
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((campaign) => {
-                                        const dungeonMaster = dms.filter(
-                                            (dm) => campaign.dm === dm.id,
-                                        )[0];
+                                        // const dungeonMaster = dms.filter((dm) => campaign.dm === dm.id)[0];
                                         return (
                                             <TableRow
                                                 hover
                                                 component={Link}
-                                                to={
-                                                    "/campaigns/" + campaign._id
-                                                }
+                                                to={"/campaigns/" + campaign._id}
                                                 className={classes.link}
                                             >
                                                 <TableCell
@@ -183,8 +167,7 @@ function CampaignList(props) {
                                                     <Box
                                                         style={{
                                                             display: "flex",
-                                                            justifyContent:
-                                                                "space-between",
+                                                            justifyContent: "space-between",
                                                         }}
                                                     >
                                                         <Box
@@ -196,57 +179,37 @@ function CampaignList(props) {
                                                                 <Typography
                                                                     variant="body1"
                                                                     style={{
-                                                                        fontWeight:
-                                                                            "500",
-                                                                        fontSize:
-                                                                            "1rem",
+                                                                        fontWeight: "500",
+                                                                        fontSize: "1rem",
                                                                     }}
                                                                 >
-                                                                    {
-                                                                        campaign.name
-                                                                    }
+                                                                    {campaign.name}
                                                                 </Typography>
                                                             </Box>
                                                             <Box component="div">
                                                                 <Typography variant="caption">
-                                                                    {
-                                                                        campaign
-                                                                            .flavor
-                                                                            .game
-                                                                    }
+                                                                    {campaign.flavor.game}
                                                                 </Typography>
                                                             </Box>
                                                             <Box component="div">
                                                                 <Typography variant="caption">
-                                                                    {dungeonMaster &&
-                                                                        dungeonMaster[
-                                                                            "name"
-                                                                        ]}
+                                                                    {/* {dungeonMaster && dungeonMaster["name"]} */}
                                                                 </Typography>
                                                             </Box>
                                                         </Box>
                                                         <Box>
-                                                            {props.profile &&
-                                                                props.profile
-                                                                    ._id ===
-                                                                    campaign.dm && (
-                                                                    <Link>
-                                                                        <IconButton
-                                                                            onClick={(
-                                                                                e,
-                                                                            ) => {
-                                                                                setSelectedData(
-                                                                                    campaign._id,
-                                                                                );
-                                                                                return handleMenu(
-                                                                                    e,
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <MoreHorizIcon />
-                                                                        </IconButton>
-                                                                    </Link>
-                                                                )}
+                                                            {props.profile && props.profile._id === campaign.dm && (
+                                                                <Link>
+                                                                    <IconButton
+                                                                        onClick={(e) => {
+                                                                            setSelectedData(campaign._id);
+                                                                            return handleMenu(e);
+                                                                        }}
+                                                                    >
+                                                                        <MoreHorizIcon />
+                                                                    </IconButton>
+                                                                </Link>
+                                                            )}
                                                         </Box>
                                                     </Box>
                                                     <Box
@@ -255,10 +218,7 @@ function CampaignList(props) {
                                                         }}
                                                     >
                                                         <Typography variant="body2">
-                                                            {
-                                                                campaign.flavor
-                                                                    .synopsis
-                                                            }
+                                                            {campaign.flavor.synopsis}
                                                         </Typography>
                                                     </Box>
                                                 </TableCell>
@@ -272,27 +232,14 @@ function CampaignList(props) {
                                     rowsPerPageOptions={[5, 10, 15]}
                                     colSpan={12}
                                     labelRowsPerPage={"Filas por página: "}
-                                    labelDisplayedRows={({
-                                        from,
-                                        to,
-                                        count,
-                                    }) => {
-                                        return (
-                                            "" +
-                                            from +
-                                            "-" +
-                                            to +
-                                            " de " +
-                                            count
-                                        );
+                                    labelDisplayedRows={({ from, to, count }) => {
+                                        return "" + from + "-" + to + " de " + count;
                                     }}
                                     count={campaigns.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={
-                                        handleChangeRowsPerPage
-                                    }
+                                    onChangeRowsPerPage={handleChangeRowsPerPage}
                                 />
                             </TableRow>
                         </TableFooter>
@@ -313,13 +260,7 @@ function CampaignList(props) {
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem
-                        onClick={() =>
-                            props.history.push("/npc/add/" + selectedData)
-                        }
-                    >
-                        Editar
-                    </MenuItem>
+                    <MenuItem onClick={() => props.history.push("/npc/add/" + selectedData)}>Editar</MenuItem>
                 </Menu>
             </div>
         </Slide>

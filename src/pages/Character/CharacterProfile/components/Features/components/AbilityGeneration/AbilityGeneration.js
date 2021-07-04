@@ -87,9 +87,9 @@ export function AbilityGeneration(props) {
 
     const dialogue = () => {
         return (
-            <Dialog open={dialogOpen} style={{ padding: 10 }}>
+            <Dialog maxWidth={"lg"} fullWidth open={dialogOpen} style={{ padding: 10, height: "100%" }}>
                 <DialogTitle>Genera una habilidad o rasgo</DialogTitle>
-                <DialogContent >
+                <DialogContent>
                     <Grid container spacing={2}>
                         <Grid item sm={12}>
                             <TextField
@@ -97,7 +97,7 @@ export function AbilityGeneration(props) {
                                 fullWidth
                                 onChange={(e) => setAdditionalAbilitiesName(e.target.value)}
                                 value={additionalAbilitiesName}
-                                label={'Nombre'}
+                                label={"Nombre"}
                             />
                         </Grid>
                         <Grid item sm={12}>
@@ -106,7 +106,7 @@ export function AbilityGeneration(props) {
                                 value={additionalAbilitiesDescription}
                             />
                         </Grid>
-                        <Grid item sm={12}>
+                        <Grid item sm={12} style={{ margin: "1.1rem 0" }}>
                             <FormControlLabel
                                 control={
                                     <Checkbox
@@ -119,21 +119,22 @@ export function AbilityGeneration(props) {
                                 label="¿Añadir límite de usabilidad?"
                             />
                         </Grid>
-                        {allowUsage &&
+                        {allowUsage && (
                             <Grid container item sm={12}>
                                 <Grid item sm={3}>
                                     <TextField
                                         className={classes.numberInput}
                                         fullWidth
-                                        label={'# de veces'}
+                                        label={"# de veces"}
                                         type="number"
                                         onChange={(e) => setUsageNum(e.target.value)}
                                         InputProps={{
-                                            inputProps: { min: 0 }
+                                            inputProps: { min: 0 },
                                         }}
                                         value={usageNum}
                                         defaultValue={1}
-                                        required />
+                                        required
+                                    />
                                 </Grid>
                                 <Grid item sm={9}>
                                     <FormControl required>
@@ -141,32 +142,30 @@ export function AbilityGeneration(props) {
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            defaultValue={'long_rest'}
+                                            defaultValue={"long_rest"}
                                             fullWidth
                                             value={usageType}
                                             onChange={(e) => setUsageType(e.target.value)}
                                         >
-                                            <MenuItem value={'long_rest'}>{'veces por descanso largo'}</MenuItem>
-                                            <MenuItem value={'short_rest'}>{'veces por descanso corto'}</MenuItem>
+                                            <MenuItem value={"long_rest"}>{"veces por descanso largo"}</MenuItem>
+                                            <MenuItem value={"short_rest"}>{"veces por descanso corto"}</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>
                             </Grid>
-                        }
+                        )}
                     </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={openDialog} color="default">
                         Cerrar
-                     </Button>
-                    <Button color="default"
-                        onClick={generateAdditionalAbilities}
-                        autoFocus>
+                    </Button>
+                    <Button color="default" onClick={generateAdditionalAbilities} autoFocus>
                         Generar
                     </Button>
                 </DialogActions>
             </Dialog>
-        )
+        );
     }
 
     return (

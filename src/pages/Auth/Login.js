@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Api, { apolloClient } from "../../helpers/api";
+import Api from "../../helpers/api";
 import Auth from "../../helpers/auth";
 import { Link, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";

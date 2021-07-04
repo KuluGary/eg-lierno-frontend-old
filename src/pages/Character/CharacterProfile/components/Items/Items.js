@@ -323,196 +323,242 @@ export default function Items(props) {
 
     return (
         <Grid container spacing={1} className={classes.container}>
-            <Dialog open={dialogOpen} style={{ padding: 10 }} maxWidth={"sm"} fullWidth>
+            <Dialog open={dialogOpen} style={{ padding: 10 }} maxWidth={" lg"} fullWidth>
                 <ItemGeneration
                     categories={categories}
                     categoryNames={categoryNames}
                     items={allItems}
                     addItems={addItem}
                     addNewItem={addNewItem}
-                    setDialogOpen={setDialogOpen} />
-
+                    setDialogOpen={setDialogOpen}
+                />
             </Dialog>
-            <Grid item lg={8}>
-                <Paper variant="outlined" style={{ width: "100%", height: "100%" }}>
-                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
-                        <Tabs
-                            variant="scrollable"
-                            value={selectedCategory}
-                            onChange={handleChange}
-                            aria-label="simple tabs example">
-                            {categories.map((category, index) => (
-                                <Tab key={index} label={categoryNames[index]} {...a11yProps(category)} />
-                            ))}
-                        </Tabs>
-                        <Box>
-                            <IconButton
-                                disabled={!props.editable}
-                                onClick={() => setDialogOpen(true)}
-                                component="span">
-                                <AddIcon />
-                            </IconButton>
-                        </Box>
-                    </Box>
-                    <Divider />
-                    {categories.map((category, index) => (
-                        <TabPanel key={index} value={category} index={index}>
-                            {category}
-                        </TabPanel>
-                    ))}
-                    {tableItems.length > 0 &&
-                        <Table className={classes.table} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    {(width !== "xs" && width !== "sm") &&
-                                        <>
-                                            <TableCell align="left"></TableCell>
-                                            <TableCell align="left">Nombre</TableCell>
-                                            <TableCell align="left">Descripción</TableCell>
-                                            <TableCell align="left">Cantidad</TableCell>
-                                            <TableCell align="left"></TableCell>
-                                        </>
-                                    }
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {tableItems.map((row, index) => (
-                                    <>
-                                        <TableRow hover key={index}>
-                                            <TableCell align="left">
-                                                {(width !== "xs" &&
-                                                    <Checkbox
-                                                        color="default"
-                                                        checked={row.equipped}
-                                                        disabled={!props.editable}
-                                                        onClick={(e) => handleEquipped(index, e)}
-                                                    />
-                                                )}
-                                            </TableCell>
-                                            <TableCell align={width !== "xs" ? "left" : "right"} width={width !== "xs" ? "20%" : "100%"} onClick={() => setOpen(open === index ? -1 : index)}>{row.data.name}</TableCell>
-                                            {(width !== "xs" && <TableCell align="left" onClick={() => setOpen(open === index ? -1 : index)}>{row.data.description}</TableCell>)}
-                                            {(width !== "xs" && <TableCell>
-                                                <TextField
-                                                    type="number"
-                                                    defaultValue={0}
-                                                    disabled={!props.editable}
-                                                    value={row.quantity}
-                                                    className={classes.textField}
-                                                    onChange={(event) => handleQuantityChange(index, event)}
-                                                    InputProps={{
-                                                        classes: {
-                                                            input: classes.textField,
-                                                        },
-                                                        inputProps: { min: 0 }
-                                                    }} />
-                                            </TableCell>)}
-                                            {(width !== "xs" &&
-                                                <TableCell align="left">
-                                                    <IconButton size="small" disabled={!props.editable} onClick={() => removeItem(row.data._id)}>
-                                                        <CloseIcon fontSize="small" />
-                                                    </IconButton>
-                                                </TableCell>
-                                            )}
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                                                <Collapse in={open === index} timeout="auto" unmountOnExit>
-                                                    <Box margin={1}>
-                                                        <Typography >Propiedades</Typography>
-                                                        <Box style={{ display: "flex" }}>
-                                                            <Box marginLeft={3} marginRight={3}>
-                                                                {row.data.properties?.map(property => (
-                                                                    <Box>
-                                                                        <Box component={'span'}><b>{property.key + ': '}</b></Box>
-                                                                        <Box component={'span'}>{parseMetadata(property)}</Box>
-                                                                    </Box>
-                                                                ))}
-                                                            </Box>
-                                                            {row.data.properties.findIndex(i => i.key === "Tamaño") > -1 &&
-                                                                <Box>
-                                                                    {(props.settings && props.settings.generalOptions.durability) &&
-                                                                        (row.data.type !== "items") &&
-                                                                        <>
-                                                                            <Box component={'span'}><b>{'Durabilidad: '}</b></Box>
-                                                                            <Box style={{ display: "flex", alignItems: "center" }}>
-                                                                                {/* {generateDurability(row)} */}
-                                                                                <Durability
-                                                                                    length={row.data.properties.filter(i => i.key === "Tamaño")[0].value}
-                                                                                    durability={row.durability}
-                                                                                    tableItems={tableItems}
-                                                                                    changeStats={props.changeStats}
-                                                                                    item={row}
-                                                                                    items={props.items}
-                                                                                    index={index}
-                                                                                />
-                                                                                {handleDurabilityStatus(row)}
-                                                                            </Box>
-                                                                        </>
-                                                                    }
-                                                                </Box>
-                                                            }
-                                                        </Box>
-                                                    </Box>
-                                                </Collapse>
-                                            </TableCell>
-                                        </TableRow>
-                                    </>
+            <Grid item xl={12} container spacing={1}>
+                <Grid item lg={8}>
+                    <Paper variant="outlined" style={{ width: "100%", height: "100%" }}>
+                        <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                            <Tabs
+                                variant="scrollable"
+                                value={selectedCategory}
+                                onChange={handleChange}
+                                aria-label="simple tabs example"
+                            >
+                                {categories.map((category, index) => (
+                                    <Tab key={index} label={categoryNames[index]} {...a11yProps(category)} />
                                 ))}
-                            </TableBody>
-                        </Table>
-                    }
-                </Paper>
-            </Grid>
-            <Grid item lg={4} container style={{ rowGap: 8 }}>
-                <Grid item lg={12}>
-                    <Paper variant="outlined" style={{ padding: "1rem", height: "100%" }}>
-                        <Box>
-                            <Rations
-                                rations={props.rations}
-                                changeStats={props.changeStats}
-                                editable={props.editable} />
-                            <Water
-                                waterskin={props.waterskin}
-                                changeStats={props.changeStats}
-                                editable={props.editable} />
+                            </Tabs>
+                            <Box>
+                                <IconButton
+                                    disabled={!props.editable}
+                                    onClick={() => setDialogOpen(true)}
+                                    component="span"
+                                >
+                                    <AddIcon />
+                                </IconButton>
+                            </Box>
                         </Box>
+                        <Divider />
+                        {categories.map((category, index) => (
+                            <TabPanel key={index} value={category} index={index}>
+                                {category}
+                            </TabPanel>
+                        ))}
+                        {tableItems.length > 0 && (
+                            <Table className={classes.table} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        {width !== "xs" && width !== "sm" && (
+                                            <>
+                                                <TableCell align="left"></TableCell>
+                                                <TableCell align="left">Nombre</TableCell>
+                                                <TableCell align="left">Descripción</TableCell>
+                                                <TableCell align="left">Cantidad</TableCell>
+                                                <TableCell align="left"></TableCell>
+                                            </>
+                                        )}
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {tableItems.map((row, index) => (
+                                        <>
+                                            <TableRow hover key={index}>
+                                                <TableCell align="left">
+                                                    {width !== "xs" && (
+                                                        <Checkbox
+                                                            color="default"
+                                                            checked={row.equipped}
+                                                            disabled={!props.editable}
+                                                            onClick={(e) => handleEquipped(index, e)}
+                                                        />
+                                                    )}
+                                                </TableCell>
+                                                <TableCell
+                                                    align={width !== "xs" ? "left" : "right"}
+                                                    width={width !== "xs" ? "20%" : "100%"}
+                                                    onClick={() => setOpen(open === index ? -1 : index)}
+                                                >
+                                                    {row.data.name}
+                                                </TableCell>
+                                                {width !== "xs" && (
+                                                    <TableCell
+                                                        align="left"
+                                                        onClick={() => setOpen(open === index ? -1 : index)}
+                                                    >
+                                                        {row.data.description}
+                                                    </TableCell>
+                                                )}
+                                                {width !== "xs" && (
+                                                    <TableCell>
+                                                        <TextField
+                                                            type="number"
+                                                            defaultValue={0}
+                                                            disabled={!props.editable}
+                                                            value={row.quantity}
+                                                            className={classes.textField}
+                                                            onChange={(event) => handleQuantityChange(index, event)}
+                                                            InputProps={{
+                                                                classes: {
+                                                                    input: classes.textField,
+                                                                },
+                                                                inputProps: { min: 0 },
+                                                            }}
+                                                        />
+                                                    </TableCell>
+                                                )}
+                                                {width !== "xs" && (
+                                                    <TableCell align="left">
+                                                        <IconButton
+                                                            size="small"
+                                                            disabled={!props.editable}
+                                                            onClick={() => removeItem(row.data._id)}
+                                                        >
+                                                            <CloseIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                )}
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                                    <Collapse in={open === index} timeout="auto" unmountOnExit>
+                                                        <Box margin={1}>
+                                                            <Typography>Propiedades</Typography>
+                                                            <Box style={{ display: "flex" }}>
+                                                                <Box marginLeft={3} marginRight={3}>
+                                                                    {row.data.properties?.map((property) => (
+                                                                        <Box>
+                                                                            <Box component={"span"}>
+                                                                                <b>{property.key + ": "}</b>
+                                                                            </Box>
+                                                                            <Box component={"span"}>
+                                                                                {parseMetadata(property)}
+                                                                            </Box>
+                                                                        </Box>
+                                                                    ))}
+                                                                </Box>
+                                                                {row.data.properties.findIndex(
+                                                                    (i) => i.key === "Tamaño",
+                                                                ) > -1 && (
+                                                                    <Box>
+                                                                        {props.settings &&
+                                                                            props.settings.generalOptions.durability &&
+                                                                            row.data.type !== "items" && (
+                                                                                <>
+                                                                                    <Box component={"span"}>
+                                                                                        <b>{"Durabilidad: "}</b>
+                                                                                    </Box>
+                                                                                    <Box
+                                                                                        style={{
+                                                                                            display: "flex",
+                                                                                            alignItems: "center",
+                                                                                        }}
+                                                                                    >
+                                                                                        {/* {generateDurability(row)} */}
+                                                                                        <Durability
+                                                                                            length={
+                                                                                                row.data.properties.filter(
+                                                                                                    (i) =>
+                                                                                                        i.key ===
+                                                                                                        "Tamaño",
+                                                                                                )[0].value
+                                                                                            }
+                                                                                            durability={row.durability}
+                                                                                            tableItems={tableItems}
+                                                                                            changeStats={
+                                                                                                props.changeStats
+                                                                                            }
+                                                                                            item={row}
+                                                                                            items={props.items}
+                                                                                            index={index}
+                                                                                        />
+                                                                                        {handleDurabilityStatus(row)}
+                                                                                    </Box>
+                                                                                </>
+                                                                            )}
+                                                                    </Box>
+                                                                )}
+                                                            </Box>
+                                                        </Box>
+                                                    </Collapse>
+                                                </TableCell>
+                                            </TableRow>
+                                        </>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        )}
                     </Paper>
                 </Grid>
-                <Grid item lg={12}>
-                    <Paper variant="outlined" style={{ minWidth: "25%", padding: "1rem", height: "100%" }}>
-                        <Box>
-                            <Money
-                                changeStats={props.changeStats}
-                                money={props.money}
-                                editable={props.editable} />
-                        </Box>
-                    </Paper>
-                </Grid>
-                {(props.settings && props.settings.generalOptions.inventorySlots) &&
-                    <Paper variant="outlined" style={{ minWidth: "25%", padding: "1rem" }}>
-                        <Box>
-                            <Inventory
-                                changeStats={props.changeStats}
-                                inventory={props.inventory}
-                                strength={props.abilityScores["strength"]}
-                                race={props.race}
-                                currentSlots={currentSlots}
-                                maxSlotModifier={maxSlotModifier}
-                                editable={props.editable} />
-                        </Box>
-                    </Paper>}
-                <Grid item lg={12}>
-
-                    <Paper variant="outlined" style={{ minWidth: "25%", padding: "1rem", height: "100%" }}>
-                        <Box>
-                            <OtherItems
-                                changeStats={props.changeStats}
-                                // inventory={props.inventory}
-                                items={props.otheritems}
-                                editable={props.editable}
-                            />
-                        </Box>
-                    </Paper>
+                <Grid item lg={4} container style={{ rowGap: 8 }}>
+                    <Grid item lg={12}>
+                        <Paper variant="outlined" style={{ padding: "1rem", height: "100%" }}>
+                            <Box>
+                                <Rations
+                                    rations={props.rations}
+                                    changeStats={props.changeStats}
+                                    editable={props.editable}
+                                />
+                                <Water
+                                    waterskin={props.waterskin}
+                                    changeStats={props.changeStats}
+                                    editable={props.editable}
+                                />
+                            </Box>
+                        </Paper>
+                    </Grid>
+                    <Grid item lg={12}>
+                        <Paper variant="outlined" style={{ minWidth: "25%", padding: "1rem", height: "100%" }}>
+                            <Box>
+                                <Money changeStats={props.changeStats} money={props.money} editable={props.editable} />
+                            </Box>
+                        </Paper>
+                    </Grid>
+                    {props.settings && props.settings.generalOptions.inventorySlots && (
+                        <Paper variant="outlined" style={{ minWidth: "25%", padding: "1rem" }}>
+                            <Box>
+                                <Inventory
+                                    changeStats={props.changeStats}
+                                    inventory={props.inventory}
+                                    strength={props.abilityScores["strength"]}
+                                    race={props.race}
+                                    currentSlots={currentSlots}
+                                    maxSlotModifier={maxSlotModifier}
+                                    editable={props.editable}
+                                />
+                            </Box>
+                        </Paper>
+                    )}
+                    <Grid item lg={12}>
+                        <Paper variant="outlined" style={{ minWidth: "25%", padding: "1rem", height: "100%" }}>
+                            <Box>
+                                <OtherItems
+                                    changeStats={props.changeStats}
+                                    // inventory={props.inventory}
+                                    items={props.otheritems}
+                                    editable={props.editable}
+                                />
+                            </Box>
+                        </Paper>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

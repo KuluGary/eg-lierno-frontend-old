@@ -115,7 +115,7 @@ export function SpellGeneration(props) {
     };
 
     return (
-        <Dialog maxWidth={"sm"} fullWidth open={props.open} className={classes.container}>
+        <Dialog maxWidth={"lg"} fullWidth open={props.open} className={classes.container}>
             <DialogTitle>Añade un hechizo</DialogTitle>
             <DialogContent>
                 <Box style={{ width: "100%" }}>
@@ -165,7 +165,6 @@ export function SpellGeneration(props) {
                                     value={spellToAdd?.name}
                                     onChange={(event) => addNewSpell("name", event.target.value)}
                                     label={"Nombre del hechizo"}
-                                    fullWidth
                                 />
                             </Grid>
                             <Grid item xl={2}>

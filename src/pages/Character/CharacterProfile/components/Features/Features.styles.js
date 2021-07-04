@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
     root: {
         width: "100%",
-        // paddingLeft: "4px"
+        paddingLeft: "4px"
     },
     paper: {
         // padding: "1rem"
