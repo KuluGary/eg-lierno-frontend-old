@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { FormControl, Table, TableBody, Divider } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import HTMLEditor from 'components/HTMLEditor/HTMLEditor';
-import useStyles from './BonusActionGeneration.styles';
+import React, { useState } from "react";
+import AddIcon from "@material-ui/icons/Add";
+import HTMLEditor from "components/HTMLEditor/HTMLEditor";
+import useStyles from "./BonusActionGeneration.styles";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import {
+    Paper,
+    Button,
+    Typography,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Grid,
+    TextField,
+    Box,
+    MenuItem,
+    Select,
+    InputLabel,
+    FormControlLabel,
+    Checkbox,
+    FormControl,
+    Table,
+    TableBody,
+    Divider,
+    IconButton,
+} from "@material-ui/core";
 
 export function BonusActionGeneration(props) {
     const classes = useStyles();
@@ -29,49 +35,50 @@ export function BonusActionGeneration(props) {
     const [usageNum, setUsageNum] = useState(1);
     const [editMode, setEditMode] = useState(false);
     const [editModeIndex, setEditModeIndex] = useState(0);
-    const [usageType, setUsageType] = useState('long_rest');
+    const [usageType, setUsageType] = useState("long_rest");
+    const { DraggableRow } = props;
 
     const openDialog = () => {
         setDialogOpen(!dialogOpen);
-    }
+    };
 
     const resetState = () => {
         setAllowUsage(false);
         setBonusActionName();
         setBonusActionDescription();
         setUsageNum(1);
-        setUsageType('long_rest');
-    }
+        setUsageType("long_rest");
+    };
 
     const generateBonusAction = () => {
         const bonusAction = {
             name: bonusActionName,
-            description: bonusActionDescription
-        }
+            description: bonusActionDescription,
+        };
 
-        if (allowUsage && (usageNum && usageType)) {
+        if (allowUsage && usageNum && usageType) {
             bonusAction["usage_num"] = {
                 max: usageNum,
-                current: 0
+                current: 0,
             };
             bonusAction["usage_type"] = usageType;
         }
 
-        const newBonusActions = [...props.bonusActions]
+        const newBonusActions = [...props.bonusActions];
         if (!editMode) {
             newBonusActions.push(bonusAction);
-            props.addItem("bonusActions", newBonusActions)
+            props.addItem("bonusActions", newBonusActions);
         } else {
             props.modifyItem(newBonusActions, editModeIndex, bonusAction, "bonusActionss");
         }
 
-        setDialogOpen(!dialogOpen)
+        setDialogOpen(!dialogOpen);
         resetState();
-    }
+    };
 
     const editFunc = (item, index) => {
         setBonusActionName(item.name);
-        setBonusActionDescription(item.description)
+        setBonusActionDescription(item.description);
 
         if (item["usage_num"] && item["usage_type"]) {
             setAllowUsage(true);
@@ -80,9 +87,32 @@ export function BonusActionGeneration(props) {
         }
 
         setEditMode(true);
-        setEditModeIndex(index)
-        setDialogOpen(!dialogOpen)
-    }
+        setEditModeIndex(index);
+        setDialogOpen(!dialogOpen);
+    };
+
+    const onDragEnd = (result) => {
+        const { destination, source } = result;
+
+        if (!destination) {
+            return;
+        }
+
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
+            return;
+        }
+
+        const moveElement = (array, from, to) => {
+            const copy = [...array];
+            const valueToMove = copy.splice(from, 1)[0];
+            copy.splice(to, 0, valueToMove);
+            return copy;
+        };
+
+        const newBonusActions = moveElement(props.bonusActions, source.index, destination.index);
+
+        props.addItem(source.droppableId, newBonusActions);
+    };
 
     return (
         <>
@@ -177,13 +207,35 @@ export function BonusActionGeneration(props) {
                         )}
                     </Box>
                     <Divider />
-                    <Table size="small" style={{ width: "100%" }}>
-                        <TableBody>
-                            {props.bonusActions.map((bonusAction, index) =>
-                                props.generateRow(bonusAction, index, props.bonusActions, "bonusActions", editFunc),
-                            )}
-                        </TableBody>
-                    </Table>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Table size="small" style={{ width: "100%" }}>
+                            <Droppable droppableId={"bonusActions"}>
+                                {(provided) => (
+                                    <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+                                        {props.bonusActions.map((bonusAction, index) => (
+                                            // props.generateRow(
+                                            //     bonusAction,
+                                            //     index,
+                                            //     props.bonusActions,
+                                            //     "bonusActions",
+                                            //     editFunc,
+                                            // ),
+                                            <DraggableRow
+                                                key={index}
+                                                item={bonusAction}
+                                                index={index}
+                                                array={props.bonusActions}
+                                                type={"bonusActions"}
+                                                editFunc={editFunc}
+                                                {...props}
+                                            />
+                                        ))}
+                                        {provided.placeholder}
+                                    </TableBody>
+                                )}
+                            </Droppable>
+                        </Table>
+                    </DragDropContext>
                 </Box>
             </Paper>
         </>

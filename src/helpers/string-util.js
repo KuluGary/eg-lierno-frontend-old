@@ -166,26 +166,6 @@ export const StringUtil = {
             const name = skills[item.id].name;
 
             return `${name} (${modifierName}) ${(modifier >= 0 && '+') + modifier}`
-            
-
-            // if (item.modifierStr) {
-            //     return item
-            // } else {
-            //     const typeIndex = this.abilityMatrix.findIndex(el => el.name === item.name)
-            //     if (typeIndex >= 0) {
-            //         const type = this.abilityMatrix[typeIndex].modifier
-                    
-            //         const modifier = parseInt(creature.stats.abilityScoreModifiers[type]) + parseInt(creature.stats.proficiencyBonus);
-            //         return {
-            //             name: item.name,
-            //             profient: true,
-            //             modifier,
-            //             modifierStr: `${item.name} ${(modifier >= 0 && '+') + modifier}`
-            //         }
-            //     } else {
-            //         return item
-            //     }
-            // }
         })
 
         return newArray.join(", ");

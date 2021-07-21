@@ -36,6 +36,7 @@ export default function Image(props) {
                 <div style={{ ...props.containerStyle }}>
                     <img
                         src={props.src}
+                        aria-label={props.ariaLabel || "Imagen de fondo"}
                         className={props.className}
                         onError={onError}
                         style={{ display: "none" }} />
@@ -46,23 +47,26 @@ export default function Image(props) {
             )
         case 'modal':
             return (
-                <div style={{ ...props.containerStyle }}>
-                    <ModalImage
-                        style={{ ...props.style }}
-                        imgSrc={props.src}
-                        bigImg={props.bigImg}
-                        className={props.className}
-                        onError={onError}
-                    />
-                </div>
-            )
+              <div style={{ ...props.containerStyle }}>
+                <ModalImage
+                  style={{ ...props.style }}
+                  imgSrc={props.src}
+                  bigImg={props.bigImg}
+                  className={props.className}
+                  onError={onError}
+                  ariaLabel={props.ariaLabel || "Imagen de fondo"}
+                />
+              </div>
+            );
         default:
             return (
-                <img
-                    src={props.src}
-                    onError={onError}
-                    className={props.className}
-                    style={{ ...props.style }} />
-            )
+              <img
+                src={props.src}
+                onError={onError}
+                aria-label={props.ariaLabel || "Imagen"}
+                className={props.className}
+                style={{ ...props.style }}
+              />
+            );
     }
 }

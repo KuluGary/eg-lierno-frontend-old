@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { FormControl, Table, TableBody, Divider } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import HTMLEditor from 'components/HTMLEditor/HTMLEditor';
+import React, { useState } from "react";
+import AddIcon from "@material-ui/icons/Add";
+import HTMLEditor from "components/HTMLEditor/HTMLEditor";
 import useStyles from "./ActionGeneration.styles";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import {
+    Paper,
+    Button,
+    Typography,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Grid,
+    TextField,
+    Box,
+    MenuItem,
+    Select,
+    InputLabel,
+    FormControlLabel,
+    Checkbox,
+    FormControl,
+    Table,
+    TableBody,
+    Divider,
+    IconButton,
+} from "@material-ui/core";
 
 export function ActionGeneration(props) {
     const classes = useStyles();
@@ -29,49 +35,50 @@ export function ActionGeneration(props) {
     const [usageNum, setUsageNum] = useState(1);
     const [editMode, setEditMode] = useState(false);
     const [editModeIndex, setEditModeIndex] = useState(0);
-    const [usageType, setUsageType] = useState('long_rest');
+    const [usageType, setUsageType] = useState("long_rest");
+    const { DraggableRow } = props;
 
     const openDialog = () => {
         setDialogOpen(!dialogOpen);
-    }
+    };
 
     const resetState = () => {
         setAllowUsage(false);
         setActionName();
         setActionDescription();
         setUsageNum(1);
-        setUsageType('long_rest');
-    }
+        setUsageType("long_rest");
+    };
 
     const generateAction = () => {
         const action = {
             name: actionName,
-            description: actionDescription
-        }
+            description: actionDescription,
+        };
 
-        if (allowUsage && (usageNum && usageType)) {
+        if (allowUsage && usageNum && usageType) {
             action["usage_num"] = {
                 max: usageNum,
-                current: 0
+                current: 0,
             };
             action["usage_type"] = usageType;
         }
 
-        const newActions = [...props.actions]
+        const newActions = [...props.actions];
         if (!editMode) {
             newActions.push(action);
             props.addItem("actions", newActions);
         } else {
-            props.modifyItem(newActions, editModeIndex, action, "actions")
+            props.modifyItem(newActions, editModeIndex, action, "actions");
         }
 
-        setDialogOpen(!dialogOpen)
+        setDialogOpen(!dialogOpen);
         resetState();
-    }
+    };
 
     const editFunc = (item, index) => {
         setActionName(item.name);
-        setActionDescription(item.description)
+        setActionDescription(item.description);
 
         if (item["usage_num"] && item["usage_type"]) {
             setAllowUsage(true);
@@ -80,9 +87,32 @@ export function ActionGeneration(props) {
         }
 
         setEditMode(true);
-        setEditModeIndex(index)
-        setDialogOpen(!dialogOpen)
-    }
+        setEditModeIndex(index);
+        setDialogOpen(!dialogOpen);
+    };
+
+    const onDragEnd = (result) => {
+        const { destination, source } = result;
+
+        if (!destination) {
+            return;
+        }
+
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
+            return;
+        }
+
+        const moveElement = (array, from, to) => {
+            const copy = [...array];
+            const valueToMove = copy.splice(from, 1)[0];
+            copy.splice(to, 0, valueToMove);
+            return copy;
+        };
+
+        const newActions = moveElement(props.actions, source.index, destination.index);
+
+        props.addItem(source.droppableId, newActions);
+    };
 
     return (
         <>
@@ -178,13 +208,29 @@ export function ActionGeneration(props) {
                     )}
                 </Box>
                 <Divider />
-                <Table size="small" style={{ width: "100%" }}>
-                    <TableBody>
-                        {props.actions.map((action, index) =>
-                            props.generateRow(action, index, props.actions, "actions", editFunc),
-                        )}
-                    </TableBody>
-                </Table>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Table size="small" style={{ width: "100%" }}>
+                        <Droppable droppableId={"actions"}>
+                            {(provided) => (
+                                <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+                                    {props.actions.map((actions, index) => (
+                                        // props.generateRow(action, index, props.actions, "actions", editFunc),
+                                        <DraggableRow
+                                            key={index}
+                                            item={actions}
+                                            index={index}
+                                            array={props.actions}
+                                            type={"actions"}
+                                            editFunc={editFunc}
+                                            {...props}
+                                        />
+                                    ))}
+                                    {provided.placeholder}
+                                </TableBody>
+                            )}
+                        </Droppable>
+                    </Table>
+                </DragDropContext>
             </Paper>
         </>
     );

@@ -7,7 +7,9 @@ export const MEMBER_LIST = gql`
                 _id
                 name
                 flavor {
-                    imageUrl
+                    portrait {
+                        avatar
+                    }
                     class
                     campaign {
                         campaignId
@@ -49,7 +51,9 @@ export const MEMBER_LIST = gql`
                 _id
                 name
                 flavor {
-                    imageUrl
+                    portrait {
+                        avatar
+                    }
                     class
                     campaign {
                         campaignId

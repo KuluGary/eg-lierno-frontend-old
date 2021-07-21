@@ -1,8 +1,8 @@
 {
     "player": null,
+    "name": "Nuevo personaje",
     "flavor": {
         "traits": {
-            "name": "Nuevo personaje",
             "gender": null,
             "pronoun": "El",
             "age": null,
@@ -72,7 +72,7 @@
                 "proficient": false,
                 "expertise": false
             },
-            "deception": {                
+            "deception": {
                 "modifier": "charisma",
                 "proficient": false,
                 "expertise": false

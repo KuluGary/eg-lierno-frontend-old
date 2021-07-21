@@ -75,7 +75,8 @@ export default function MonsterFlavor({
         containerStyle={{
           maxWidth: "80vw"
         }}
-        src={creature.flavor.imageUrl}
+        ariaLabel={`Retrato de ${creature.name}`}
+        src={creature.flavor.portrait?.original}
       />
       <Box component="p" style={{
         textAlign: "justify",

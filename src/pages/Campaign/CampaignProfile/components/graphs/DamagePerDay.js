@@ -27,9 +27,9 @@ function DamagePerDay(props) {
                 const userId = user.id;
                 const char = props.characters.filter(character => character.player === userId)[0];
 
-                if (char.flavor.traits.name === props.character) {
+                if (char.name === props.character) {
                     const collection = {
-                        "id": char.flavor.traits.name,
+                        "id": char.name,
                         "color": "hsl(63, 70%, 50%)",
                         "data": []
                     }

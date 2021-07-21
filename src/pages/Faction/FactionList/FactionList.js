@@ -157,6 +157,7 @@ function FactionList(props) {
                                                 mode="background"
                                                 usage="avatar"
                                                 src={faction.image}
+                                                ariaLabel={`Avatar de ${faction.name}`}
                                                 containerStyle={{
                                                     border: `1px solid ${theme.palette.divider}`,
                                                     borderRadius: "100%",

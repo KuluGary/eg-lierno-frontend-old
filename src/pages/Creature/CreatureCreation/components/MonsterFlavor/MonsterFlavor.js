@@ -42,7 +42,7 @@ function MonsterFlavor(props) {
   const [gender, setGender] = useState(props.creature.flavor.gender || '');
   const [name, setName] = useState(props.creature.name);
   const [description, setDescription] = useState(props.creature.flavor.description || '');
-  const [image, setImage] = useState(props.creature.flavor.image);
+  const [image, setImage] = useState(props.creature.flavor.portrait);
   const [characterClass, setCharacterClass] = useState(props.creature.flavor.class || '');
   const [campaignAvailable, setCampaignAvailable] = useState([]);
   const [campaigns, setCampaigns] = useState(props.creature.flavor.campaign || []);
@@ -63,7 +63,7 @@ function MonsterFlavor(props) {
       changeName(name);
       addToCreatureFlavor(pronoun, "pronoun");
       addToCreatureFlavor(description.replace(/\n/g, "<br />"), "description");
-      addToCreatureFlavor(image, "image");
+      addToCreatureFlavor(image, "portrait");
       addToCreatureFlavor(faction, "faction");
       addToCreatureStats(alignment, "alignment")
       addToCreatureFlavor(gender, "gender");
@@ -186,6 +186,7 @@ function MonsterFlavor(props) {
           <Image
             className={classes.image}
             errorStyle={{ width: "50%", height: "100%", margin: "0 auto" }}
+            ariaLabel={`Retrato de ${name}`}
             src={image?.original}
             mode="modal" />
         </Grid>

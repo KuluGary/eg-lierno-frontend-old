@@ -124,5 +124,19 @@
             "name": "Carisma",
             "description": "La puntuación de Carisma mide la fuerza de personalidad y presencia."
         }
+    },
+    "hitDie": {
+        "Bárbaro": 12,
+        "Paladín": 10,
+        "Guerrero": 10,
+        "Montaraz": 10,
+        "Monje": 8,
+        "Druida": 8,
+        "Rogue": 8,
+        "Bardo": 8,
+        "Clérigo": 8,
+        "Brujo": 8,
+        "Mago": 6,
+        "Hechicero": 6
     }
 }

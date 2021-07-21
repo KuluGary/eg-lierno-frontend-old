@@ -6,37 +6,36 @@ export default function ModalImage(props) {
     const { imgSrc, style, onError, className } = props;
 
     return (
-        <>
-            <Dialog
-                open={open}
-                onClose={() => setOpen(false)}
-                PaperComponent={'span'}
-                scroll="body"
-                maxWidth={false}>
-                <div
-                    onClick={() => setOpen(false)}
-                    style={{
-                        height: "90vh",
-                        width: "90vw",
-                        display: "flex",
-                        justifyContent: "center"
-                    }}>
-
-                    <img
-                        src={imgSrc || imgSrc}
-                        style={{
-                            maxHeight: "100%",
-                            maxWidth: "100%",
-                            objectFit: "contain"
-                        }} />
-                </div>
-            </Dialog>
+      <>
+        <Dialog open={open} onClose={() => setOpen(false)} PaperComponent={"span"} scroll="body" maxWidth={false}>
+          <div
+            onClick={() => setOpen(false)}
+            style={{
+              height: "90vh",
+              width: "90vw",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <img
-                src={imgSrc}
-                onClick={setOpen}
-                style={{ ...style, cursor: "pointer" }}
-                onError={onError}
-                className={className} />
-        </>
-    )
+              src={imgSrc || imgSrc}
+              aria-label={props.ariaLabel || "Imagen modal"}
+              style={{
+                maxHeight: "100%",
+                maxWidth: "100%",
+                objectFit: "contain",
+              }}
+            />
+          </div>
+        </Dialog>
+        <img
+          src={imgSrc}
+          onClick={setOpen}
+          aria-label={props.ariaLabel || "Imagen"}
+          style={{ ...style, cursor: "pointer" }}
+          onError={onError}
+          className={className}
+        />
+      </>
+    );
 }

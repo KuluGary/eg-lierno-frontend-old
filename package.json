@@ -5,7 +5,7 @@
   "author": "Gabriel Cuétara",
   "main": "public/electron.js",
   "homepage": "./",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "private": true,
   "repository": {
     "type": "git",
@@ -40,7 +40,8 @@
     "build": "react-scripts build",
     "dev": "concurrently \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "npm run build && electron-builder --publish=never",
-    "deploy": "npm run build && electron-builder --publish=always"
+    "deploy": "npm run build && electron-builder --publish=always",
+    "dist": "electron-builder"
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
@@ -71,6 +72,7 @@
     "material-ui-dropzone": "^3.5.0",
     "react": "^16.13.1",
     "react-activity-feed": "^1.2.0",
+    "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^16.13.1",
     "react-facebook-login": "^4.1.1",
     "react-google-login": "^5.1.25",

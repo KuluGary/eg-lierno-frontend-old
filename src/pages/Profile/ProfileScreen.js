@@ -77,7 +77,6 @@ function ProfileScreen(props) {
     const [metadata, setMetadata] = useState();
 
     useEffect(() => {
-        console.log(props.profile);
         if (!props.profile) {
             apolloClient.query({ query: ME_QUERY })
                 .then(({ data }) => {

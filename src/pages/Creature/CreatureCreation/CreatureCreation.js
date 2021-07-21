@@ -137,6 +137,7 @@ class CreatureCreation extends Component {
                 createdBy: this.props.profile?._id 
             }
         }
+        console.log("CREATURE CREATION");
     }
 
     componentDidMount() {
@@ -307,6 +308,7 @@ class CreatureCreation extends Component {
 
     render() {
         const { classes } = this.props;
+        console.log(classes);
         return (
             <main className={classes.layout}>
                 <Snackbar

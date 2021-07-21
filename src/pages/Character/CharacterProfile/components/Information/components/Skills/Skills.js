@@ -1,10 +1,9 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from 'components/Tooltip/Tooltip';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -14,13 +13,6 @@ import { MenuItem, Select } from '@material-ui/core';
 import { useWidth } from 'hooks/media-query';
 import { stats, skills } from 'assets/json/customizable_stats.json';
 import useStyles from './Skills.styles';
-
-const HtmlTooltip = withStyles((theme) => ({
-    tooltip: {
-        maxWidth: 220,
-        fontSize: theme.typography.pxToRem(12)
-    },
-}))(Tooltip);
 
 export function Skills(props) {
     const classes = useStyles();
@@ -106,7 +98,7 @@ export function Skills(props) {
 
                             return (
                                 <TableRow key={index} hover>
-                                    <HtmlTooltip className={classes.tooltip} title={proficiencyDescription(props.skills[check])}>
+                                    <Tooltip className={classes.tooltip} title={proficiencyDescription(props.skills[check])}>
                                         <TableCell size="small" padding="none" className={classes.smallCell}>
                                             <Radio
                                                 checked={props.skills[check].proficient}
@@ -116,14 +108,14 @@ export function Skills(props) {
                                                 color={props.skills[check].expertise ? 'secondary' : 'default'}
                                             />
                                         </TableCell>
-                                    </HtmlTooltip>
-                                    <HtmlTooltip className={classes.tooltip} title={replaceInDescription(check, props.skills[check].modifier)}>
+                                    </Tooltip>
+                                    <Tooltip className={classes.tooltip} title={replaceInDescription(check, props.skills[check].modifier)}>
                                         <TableCell>
                                             <div style={{ fontSize: "12px" }}>
                                                 {skills[check].name}
                                             </div>
                                         </TableCell>
-                                    </HtmlTooltip>
+                                    </Tooltip>
                                     {(props.settings && props.settings.generalOptions.openSkills) &&
                                         <TableCell>
                                             <Select

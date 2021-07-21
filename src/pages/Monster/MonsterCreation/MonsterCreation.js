@@ -126,7 +126,7 @@ class MonsterCreation extends Component {
                     environment: "",
                     description: "",
                     nameIsProper: false,
-                    imageUrl: "",
+                    portrait: {},
                     class: "",
                     campaign: []
                 },

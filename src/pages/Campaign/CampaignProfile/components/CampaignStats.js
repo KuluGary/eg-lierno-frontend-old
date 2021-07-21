@@ -103,7 +103,7 @@ function CampaignStats(props) {
                 const char = characters.filter(character => character.player === userId)[0];
 
                 const collection = {
-                    "id": char.flavor.traits.name,
+                    "id": char.name,
                     "color": "hsl(63, 70%, 50%)",
                     "data": []
                 }
@@ -177,7 +177,7 @@ function CampaignStats(props) {
                                 let currentCharacterDamage = 0;
                                 if (damageDone.length > 0) {
                                     let maxDamage = 0;
-                                    const currentCharacter = damageDone.filter(item => item.id === character.flavor.traits.name)[0];
+                                    const currentCharacter = damageDone.filter(item => item.id === character.name)[0];
 
                                     if (currentCharacter) {
 
@@ -198,7 +198,7 @@ function CampaignStats(props) {
                                         <TableCell size="small" style={{ width: "180px" }}>
                                             <Box component="div" className={classes.name}>
                                                 <Typography variant="subtitle1">
-                                                    {character.flavor.traits.name}
+                                                    {character.name}
                                                 </Typography>
                                             </Box>
                                         </TableCell>
@@ -216,7 +216,7 @@ function CampaignStats(props) {
                                                 dm={dm}
                                                 logs={logs}
                                                 theme={theme}
-                                                character={character.flavor.traits.name} />
+                                                character={character.name} />
                                         </TableCell>
                                     </TableRow>)
                             })}

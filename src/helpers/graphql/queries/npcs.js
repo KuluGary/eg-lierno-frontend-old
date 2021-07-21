@@ -5,7 +5,9 @@ export const NPC_LIST_ID = gql`
         _id
         name
         flavor {
-            imageUrl
+            portrait {
+                avatar
+            }
             class
             campaign {
                 campaignId

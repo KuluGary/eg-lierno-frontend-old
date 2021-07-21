@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { FormControl, Table, TableBody, Divider } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import HTMLEditor from 'components/HTMLEditor/HTMLEditor';
-import useStyles from './ReactionGeneration.styles';
+import React, { useState } from "react";
+import AddIcon from "@material-ui/icons/Add";
+import HTMLEditor from "components/HTMLEditor/HTMLEditor";
+import useStyles from "./ReactionGeneration.styles";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import {
+    Paper,
+    Button,
+    Typography,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Grid,
+    TextField,
+    Box,
+    MenuItem,
+    Select,
+    InputLabel,
+    FormControlLabel,
+    Checkbox,
+    FormControl,
+    Table,
+    TableBody,
+    Divider,
+    IconButton,
+} from "@material-ui/core";
 
 export function ReactionGeneration(props) {
     const classes = useStyles();
@@ -29,35 +35,36 @@ export function ReactionGeneration(props) {
     const [usageNum, setUsageNum] = useState(1);
     const [editMode, setEditMode] = useState(false);
     const [editModeIndex, setEditModeIndex] = useState(0);
-    const [usageType, setUsageType] = useState('long_rest');
+    const [usageType, setUsageType] = useState("long_rest");
+    const { DraggableRow } = props;
 
     const openDialog = () => {
         setDialogOpen(!dialogOpen);
-    }
+    };
 
     const resetState = () => {
         setAllowUsage(false);
         setReactionName();
         setReactionDescription();
         setUsageNum(1);
-        setUsageType('long_rest');
-    }
+        setUsageType("long_rest");
+    };
 
     const generateReaction = () => {
         const reaction = {
             name: reactionName,
-            description: reactionDescription
-        }
+            description: reactionDescription,
+        };
 
-        if (allowUsage && (usageNum && usageType)) {
+        if (allowUsage && usageNum && usageType) {
             reaction["usage_num"] = {
                 max: usageNum,
-                current: 0
+                current: 0,
             };
             reaction["usage_type"] = usageType;
         }
 
-        const newReactions = [...props.reactions]
+        const newReactions = [...props.reactions];
         if (!editMode) {
             newReactions.push(reaction);
             props.addItem("reactions", newReactions);
@@ -65,13 +72,13 @@ export function ReactionGeneration(props) {
             props.modifyItem(newReactions, editModeIndex, reaction, "reactions");
         }
 
-        setDialogOpen(!dialogOpen)
+        setDialogOpen(!dialogOpen);
         resetState();
-    }
+    };
 
     const editFunc = (item, index) => {
         setReactionName(item.name);
-        setReactionDescription(item.description)
+        setReactionDescription(item.description);
 
         if (item["usage_num"] && item["usage_type"]) {
             setAllowUsage(true);
@@ -80,9 +87,34 @@ export function ReactionGeneration(props) {
         }
 
         setEditMode(true);
-        setEditModeIndex(index)
-        setDialogOpen(!dialogOpen)
-    }
+        setEditModeIndex(index);
+        setDialogOpen(!dialogOpen);
+    };
+
+    const onDragEnd = (result) => {
+        const { destination, source } = result;
+
+        if (!destination) {
+            return;
+        }
+
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
+            return;
+        }
+
+        const moveElement = (array, from, to) => {
+            const copy = [...array];
+            const valueToMove = copy.splice(from, 1)[0];
+            copy.splice(to, 0, valueToMove);
+            return copy;
+        };
+
+        const newReactions = moveElement(props.reactions, source.index, destination.index);
+
+        console.log(props.reactions, newReactions)
+
+        props.addItem(source.droppableId, newReactions);
+    };
 
     return (
         <>
@@ -177,13 +209,28 @@ export function ReactionGeneration(props) {
                         )}
                     </Box>
                     <Divider />
-                    <Table size="small" style={{ width: "100%" }}>
-                        <TableBody>
-                            {props.reactions.map((reaction, index) =>
-                                props.generateRow(reaction, index, props.reactions, "reactions", editFunc),
-                            )}
-                        </TableBody>
-                    </Table>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Table size="small" style={{ width: "100%" }}>
+                            <Droppable droppableId={"reactions"}>
+                                {(provided) => (
+                                    <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+                                        {props.reactions.map((reactions, index) => (
+                                            <DraggableRow
+                                                key={index}
+                                                item={reactions}
+                                                index={index}
+                                                array={props.reactions}
+                                                type={"reactions"}
+                                                editFunc={editFunc}
+                                                {...props}
+                                            />
+                                        ))}
+                                        {provided.placeholder}
+                                    </TableBody>
+                                )}
+                            </Droppable>
+                        </Table>
+                    </DragDropContext>
                 </Box>
             </Paper>
         </>

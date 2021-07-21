@@ -10,6 +10,9 @@ export const ME_QUERY = gql`
         metadata {
           avatar
         }
+        favorites {
+          npcs
+        }
       }
       errors {
         error
@@ -17,7 +20,7 @@ export const ME_QUERY = gql`
       }
     }
   }
-`
+`;
 
 export const METADATA_QUERY = gql`
   query Metadata {
@@ -37,4 +40,4 @@ export const METADATA_QUERY = gql`
       }
     }
   }
-`
+`;

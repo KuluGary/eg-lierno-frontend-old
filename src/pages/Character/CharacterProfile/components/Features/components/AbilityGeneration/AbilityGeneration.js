@@ -1,78 +1,84 @@
-import React, { useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { FormControl, Table, TableBody, Divider } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import HTMLEditor from 'components/HTMLEditor/HTMLEditor';
-import useStyles from './AbilityGeneration.styles';
+import React, { useState } from "react";
+import AddIcon from "@material-ui/icons/Add";
+import HTMLEditor from "components/HTMLEditor/HTMLEditor";
+import useStyles from "./AbilityGeneration.styles";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import {
+    Paper,
+    Button,
+    Typography,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Grid,
+    TextField,
+    Box,
+    MenuItem,
+    Select,
+    InputLabel,
+    FormControlLabel,
+    Checkbox,
+    FormControl,
+    Table,
+    TableBody,
+    Divider,
+    IconButton,
+} from "@material-ui/core";
 
 export function AbilityGeneration(props) {
     const classes = useStyles();
     const [dialogOpen, setDialogOpen] = useState(false);
     const [allowUsage, setAllowUsage] = useState(false);
-    const [additionalAbilitiesName, setAdditionalAbilitiesName] = useState();
-    const [additionalAbilitiesDescription, setAdditionalAbilitiesDescription] = useState();
+    const [additionalAbilitiesName, setAdditionalAbilitiesName] = useState("");
+    const [additionalAbilitiesDescription, setAdditionalAbilitiesDescription] = useState("");
     const [usageNum, setUsageNum] = useState(1);
     const [editMode, setEditMode] = useState(false);
     const [editModeIndex, setEditModeIndex] = useState(0);
-    const [usageType, setUsageType] = useState('long_rest');
+    const [usageType, setUsageType] = useState("long_rest");
+    const { DraggableRow } = props;
 
     const openDialog = () => {
         setDialogOpen(!dialogOpen);
-    }
+    };
 
     const resetState = () => {
         setAllowUsage(false);
         setAdditionalAbilitiesName();
         setAdditionalAbilitiesDescription();
         setUsageNum(1);
-        setUsageType('long_rest');
-    }
+        setUsageType("long_rest");
+    };
 
     const generateAdditionalAbilities = () => {
         const additionalAbility = {
             name: additionalAbilitiesName,
-            description: additionalAbilitiesDescription
-        }
+            description: additionalAbilitiesDescription,
+        };
 
-        if (allowUsage && (usageNum && usageType)) {
+        if (allowUsage && usageNum && usageType) {
             additionalAbility["usage_num"] = {
                 max: usageNum,
-                current: 0
+                current: 0,
             };
             additionalAbility["usage_type"] = usageType;
         }
 
-        const newAdditionalAbilities = [...props.additionalAbilities]
+        const newAdditionalAbilities = [...props.additionalAbilities];
         if (!editMode) {
             newAdditionalAbilities.push(additionalAbility);
             props.addItem("additionalAbilities", newAdditionalAbilities);
         } else {
-            // newAdditionalAbilities[editModeIndex] = newAdditionalAbilities;
             props.modifyItem(newAdditionalAbilities, editModeIndex, additionalAbility, "additionalAbilities");
         }
 
-        setDialogOpen(!dialogOpen)
+        setDialogOpen(!dialogOpen);
         resetState();
-    }
+    };
 
     const editFunc = (item, index) => {
         setAdditionalAbilitiesName(item.name);
-        setAdditionalAbilitiesDescription(item.description)
+        setAdditionalAbilitiesDescription(item.description);
 
         if (item["usage_num"] && item["usage_type"]) {
             setAllowUsage(true);
@@ -81,9 +87,9 @@ export function AbilityGeneration(props) {
         }
 
         setEditMode(true);
-        setEditModeIndex(index)
-        setDialogOpen(!dialogOpen)
-    }
+        setEditModeIndex(index);
+        setDialogOpen(!dialogOpen);
+    };
 
     const dialogue = () => {
         return (
@@ -166,7 +172,30 @@ export function AbilityGeneration(props) {
                 </DialogActions>
             </Dialog>
         );
-    }
+    };
+
+    const onDragEnd = (result) => {
+        const { destination, source } = result;
+
+        if (!destination) {
+            return;
+        }
+
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
+            return;
+        }
+
+        const moveElement = (array, from, to) => {
+            const copy = [...array];
+            const valueToMove = copy.splice(from, 1)[0];
+            copy.splice(to, 0, valueToMove);
+            return copy;
+        };
+
+        const newAdditionalAbilities = moveElement(props.additionalAbilities, source.index, destination.index);
+
+        props.addItem(source.droppableId, newAdditionalAbilities);
+    };
 
     return (
         <>
@@ -175,21 +204,42 @@ export function AbilityGeneration(props) {
                 <Box style={{ position: "relative" }}>
                     <Box className={classes.subtitleContainer}>
                         <Box />
-                        <Typography variant="subtitle2" className={classes.subtitle} >{'HABILIDADES Y RASGOS'}</Typography>
-                        {props.editable ?
+                        <Typography variant="subtitle2" className={classes.subtitle}>
+                            {"HABILIDADES Y RASGOS"}
+                        </Typography>
+                        {props.editable ? (
                             <IconButton size="small" onClick={openDialog}>
                                 <AddIcon />
-                            </IconButton> : <Box />
-                        }
+                            </IconButton>
+                        ) : (
+                            <Box />
+                        )}
                     </Box>
                     <Divider />
-                    <Table size="small" style={{ width: "100%" }}>
-                        <TableBody>
-                            {props.additionalAbilities.map((additionalAbilities, index) => props.generateRow(additionalAbilities, index, props.additionalAbilities, "additionalAbilities", editFunc))}
-                        </TableBody>
-                    </Table>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Table size="small" style={{ width: "100%" }}>
+                            <Droppable droppableId={"additionalAbilities"}>
+                                {(provided) => (
+                                    <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+                                        {props.additionalAbilities.map((additionalAbilities, index) => (
+                                            <DraggableRow
+                                                key={index}
+                                                item={additionalAbilities}
+                                                index={index}
+                                                array={props.additionalAbilities}
+                                                type={"additionalAbilities"}
+                                                editFunc={editFunc}
+                                                {...props}
+                                            />
+                                        ))}
+                                        {provided.placeholder}
+                                    </TableBody>
+                                )}
+                            </Droppable>
+                        </Table>
+                    </DragDropContext>
                 </Box>
             </Paper>
         </>
-    )
+    );
 }

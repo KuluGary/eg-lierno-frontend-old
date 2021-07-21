@@ -86,7 +86,7 @@ export default function CreatureTable({
             <TableRow key={creature._id} hover              
               className={classes.link}
               style={{
-                opacity: creature.flavor.campaign[creature.flavor.campaign.findIndex(c => campaign === c.campaignId)].unlocked ? 1 : .5
+                opacity: (!campaign || creature.flavor.campaign[creature.flavor.campaign.findIndex(c => campaign === c.campaignId)]?.unlocked) ? 1 : .5
               }}>
               {(width !== "xs") &&
                 <>
@@ -95,7 +95,8 @@ export default function CreatureTable({
                       <Image
                         mode="background"
                         usage="avatar"
-                        src={creature.flavor.image?.avatar}
+                        src={creature.flavor.portrait?.avatar}
+                        ariaLabel={`Retrato de ${creature.name}`}
                         containerStyle={{
                           border: `1px solid ${theme.palette.divider}`,
                           borderRadius: "100%",
@@ -103,7 +104,7 @@ export default function CreatureTable({
                           height: "4vw",
                         }}
                         style={{
-                          backgroundImage: `url(${creature.flavor.image?.avatar})`,
+                          backgroundImage: `url(${creature.flavor.portrait?.avatar})`,
                           width: "4vw",
                           height: "4vw",
                           backgroundSize: "cover",

@@ -33,8 +33,8 @@ function CritFails(props) {
                 const char = props.characters.filter(character => character.player === userId)[0];
 
                 const collection = {
-                    "id": char.flavor.traits.name,
-                    "label": char.flavor.traits.name,
+                    "id": char.name,
+                    "label": char.name,
                     "color": "hsl(4, 70%, 50%)",
                     "value": userData[key]
                 }

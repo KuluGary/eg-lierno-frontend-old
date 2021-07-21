@@ -1,15 +1,9 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Grid, TextField, Paper, Tooltip } from '@material-ui/core';
+import { Grid, TextField, Paper } from '@material-ui/core';
 import useStyles from './Stats.styles';
 import { stats } from 'assets/json/customizable_stats';
-
-const HtmlTooltip = withStyles((theme) => ({
-    tooltip: {
-        fontSize: theme.typography.pxToRem(14)
-    }
-}))(Tooltip)
+import Tooltip from "components/Tooltip/Tooltip"
 
 export default function Stats(props) {
     const classes = useStyles();
@@ -17,7 +11,7 @@ export default function Stats(props) {
     return (
         props.stats && (
             Object.keys(props.stats).map((stat, index) => (
-                <HtmlTooltip disableFocusListener title={stats[stat].description}>
+                <Tooltip disableFocusListener title={stats[stat].description}>
                     <Grid item lg={props.mode === "npc" ? 2 : 1} xs={5}>
                         <Paper elevation={1} variant="outlined" className={classes.stat}>
                             <Typography variant="body2" style={{ fontSize: 10 }}>{stats[stat].name}</Typography>
@@ -39,7 +33,7 @@ export default function Stats(props) {
                             </Paper>
                         </Paper>
                     </Grid>
-                </HtmlTooltip>
+                </Tooltip>
             ))
         )
     );
