@@ -5,7 +5,7 @@ import "./css/lightTheme.css";
 import "./css/darkTheme.css";
 
 const buttonList = {
-    classic: [["font", "fontSize", "formatBlock"], ["bold", "underline", "italic", "strike", "removeFormat"], ["fontColor", "hiliteColor"], ["outdent", "indent"], ["align", "horizontalRule", "list", "table"], ["link", "image"], ["fullScreen", "codeView"]],
+    classic: [["font", "fontSize", "formatBlock"], ["bold", "underline", "italic", "strike", "removeFormat"], ["fontColor", "hiliteColor"], ["outdent", "indent"], ["align", "horizontalRule", "list", "table"], ["link", "image", "video"], ["fullScreen", "codeView"]],
     balloon: [["bold", "underline", "italic", "strike", "removeFormat"], ["align"], ["link",]]
 }
 

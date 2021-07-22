@@ -74,7 +74,7 @@ function CampaignProfile(props) {
     });
   };
 
-  const TabComponent = () => {
+  const tabData = () => {
     switch (selectedCategory) {
       case 0:
         return (
@@ -167,7 +167,7 @@ function CampaignProfile(props) {
             </Tabs>
           </CampaignInfo>
         </Grid>
-        <TabComponent />
+        {tabData()}
       </Grid>
     );
   }
