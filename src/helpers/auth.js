@@ -9,11 +9,13 @@ export default class Auth {
 
     static setToken = (token) => {
         return new Promise((resolve, reject) => {
+            console.log(this.isValidUser(token))
             if (this.isValidUser(token)) {
                 try {
                     localStorage.setItem("token", token);
                     resolve();
                 } catch (e) {
+                    console.log(e)
                     reject(e);
                 }
             } else {

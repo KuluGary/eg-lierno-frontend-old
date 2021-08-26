@@ -22,6 +22,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import AuthRoute from "./components/AuthRoute/AuthRoute";
 import ExploreScreen from "./pages/Explore/ExploreScreen";
 
+import Auth from "./helpers/auth";
+import Api from "./helpers/api";
+
 // pages
 import ProfileScreen from "./pages/Profile/ProfileScreen";
 import Login from "./pages/Auth/Login";
@@ -128,15 +131,19 @@ class App extends Component {
       });
     }
 
-    this.checkUserAuthentication().then((data) => {
-      if (data.me.user) {
-        this.props.addProfile(data.me.user);
-      }
+    if (Auth.loggedIn()) {
+      Api.fetchInternal("/auth/me")
+        .then((profile) => {
+          if (!!profile) {
+            this.props.addProfile(profile);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
 
-      this.setState({
-        isAuthenticated: !!data.me.user,
-        isLoading: false,
-      });
+    this.setState({
+      isAuthenticated: Auth.loggedIn(),
+      isLoading: false,
     });
 
     this.updateDimensions();

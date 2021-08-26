@@ -61,6 +61,7 @@ function CharacterProfile(props) {
     setIsLoading(true);
 
     Api.fetchInternal("/characters/" + props.match.params.id).then((res) => {
+      console.log(res);
       setCharacter(_.cloneDeep(res));
       setEditedCharacter(_.cloneDeep(res));
       setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", "Hechizos", "Opciones"].filter((el) => el));
@@ -286,12 +287,7 @@ function CharacterProfile(props) {
               <meta name="twitter:image" content={editedCharacter.flavor.portrait} data-react-helmet="true" />
             </SEO>
             <Grid item xs={12} sm={12} md={6}>
-              <NpcFlavor
-                history={props.history}
-                creature={editedCharacter}
-                type={"character"}
-                editable={editable}
-              />
+              <NpcFlavor history={props.history} creature={editedCharacter} type={"character"} editable={editable} />
             </Grid>
             <Grid item xs={12} sm={12} md={6}>
               <CreatureStats creature={editedCharacter} />

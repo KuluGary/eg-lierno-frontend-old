@@ -113,6 +113,7 @@ export default function CharacterTable(props) {
                 to={`/characters/${char.type}/${char._id}`}
                 className={classes.link}
               >
+                {console.log(char.type, char._id)}
                 {width !== "xs" && (
                   <TableCell style={{ padding: "1.5rem" }}>
                     <Box style={{ display: "flex", justifyContent: "space-between" }}>

@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { addCharacters, addProfile } from "shared/actions/index";
 import { Slide, Paper, Typography, Box, Tabs, Tab, IconButton, Divider, CircularProgress } from "@material-ui/core";
-import { Add as AddIcon, Backup as BackupIcon, Error as ErrorIcon } from "@material-ui/icons";
+import { Add as AddIcon, Backup as BackupIcon } from "@material-ui/icons";
 import Api from "helpers/api";
 import CharacterTable from "./components/CharacterTable";
 import CreatureTable from "pages/Creature/CreatureList/components/CreatureTable";
-import character_template from "../../../assets/json/character_template.json";
+import character_template from "assets/json/character_template.json";
 import { DropzoneDialog } from "material-ui-dropzone";
 import SEO from "components/SEO/SEO";
 import { useHistoryState } from "hooks/useHistoryState";
-import { CHAR_LIST_QUERY } from "helpers/graphql/queries/characters";
-import { useQuery } from "@apollo/client";
 
 const mapStateToProps = (state) => {
   return {
@@ -58,43 +56,41 @@ function CharacterList(props) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [value, setValue] = useHistoryState("value", 0);
   const [open, setOpen] = useState(false);
-  const { data, isLoading, error, refetch } = useQuery(CHAR_LIST_QUERY);
 
   useEffect(() => {
-    const apiChars = {};
+    const fetchItems = async () => {
+      const apiChars = {};
+      await Api.fetchInternal("/characters").then((res) => {
+        if (!!res) {
+          apiChars["userCharacters"] = res;
+        }
+      });
 
-    if (!props.characters) {
-      if (data?.get_user_characters.characters && !data?.get_user_characters.errors) {
-        apiChars["userCharacters"] = data?.get_user_characters.characters;
-      }
+      await Api.fetchInternal("/dm-characters").then((res) => {
+        if (!!res) {
+          apiChars["dmCharacters"] = res;
+        }
+      });
 
-      if (data?.get_dm_characters.characters && !data?.get_dm_characters.errors) {
-        apiChars["dmCharacters"] = data?.get_dm_characters.characters;
-      }
-
-      if (data?.get_favorite_npcs.npcs && !data?.get_favorite_npcs.errors) {
-        apiChars["favNpcs"] = data?.get_favorite_npcs.npcs;
-      }
+      await Api.fetchInternal("/fav-npc").then((res) => {
+        if (!!res) {
+          apiChars["favNpcs"] = res;
+        }
+      });
 
       if (Object.keys(apiChars) > 0) {
         props.addCharacters(apiChars);
       }
-    } else {
-      apiChars["userCharacters"] = props.userCharacters;
-      apiChars["dmCharacters"] = props.dmCharacters;
-      apiChars["favNpcs"] = props.favNpcs;
-    }
 
-    setCharacters(apiChars);
-  }, [data, setCharacters]);
+      setCharacters(apiChars);
+    };
+
+    fetchItems();
+  }, []);
 
   useEffect(() => {
     setProfile(props.profile);
   }, [props.profile]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -162,7 +158,7 @@ function CharacterList(props) {
     setOpen(!open);
   };
 
-  if (isLoading) {
+  if (Object.keys(characters).length <= 0) {
     return (
       <Paper variant="outlined" style={{ height: "80vh" }}>
         <Box
@@ -174,26 +170,6 @@ function CharacterList(props) {
           }}
         >
           <CircularProgress color="inherit" />
-        </Box>
-      </Paper>
-    );
-  }
-
-  if (error || Api.hasApolloErrors(data)) {
-    return (
-      <Paper variant="outlined" style={{ height: "80vh" }}>
-        <Box
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
-          <Box style={{ textAlign: "center" }}>
-            <ErrorIcon fontSize="large" />
-            <Typography variant="h6">Error cargando los datos</Typography>
-          </Box>
         </Box>
       </Paper>
     );
