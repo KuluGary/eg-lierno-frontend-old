@@ -111,8 +111,6 @@ export function ReactionGeneration(props) {
 
         const newReactions = moveElement(props.reactions, source.index, destination.index);
 
-        console.log(props.reactions, newReactions)
-
         props.addItem(source.droppableId, newReactions);
     };
 

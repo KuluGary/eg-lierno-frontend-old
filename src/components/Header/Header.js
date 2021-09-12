@@ -139,7 +139,6 @@ function Header(props) {
             </Typography>
             <div>
               <ThemeToggle setDarkMode={props.setDarkMode} darkMode={props.darkMode} />
-              {console.log(isLoggedIn)}
               {isLoggedIn ? (
                 <IconButton
                   aria-label="account of current user"

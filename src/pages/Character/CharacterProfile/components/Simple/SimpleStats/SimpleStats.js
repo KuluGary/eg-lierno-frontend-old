@@ -222,7 +222,7 @@ export default function SimpleStats(props) {
         };
 
         Object.keys(spellByLevel).forEach((key) => {
-          const spellStr = spellByLevel[key].map((i) => `<i>${i}</i>`).join(", ");
+          const spellStr = spellByLevel[key].map((i) => `<em>${i}</em>`).join(", ");
 
           spells.description += `<li>${
             parseInt(key) === 0 ? "Trucos (a voluntad)" : `Nivel ${key} (${getSpellSlots(parseInt(key) - 1)} huecos)`
@@ -308,7 +308,6 @@ export default function SimpleStats(props) {
   };
 
   const getDataDescription = (ability, category, i) => {
-    console.log(ability, category, i);
     switch (category) {
       case "attacks":
         return (

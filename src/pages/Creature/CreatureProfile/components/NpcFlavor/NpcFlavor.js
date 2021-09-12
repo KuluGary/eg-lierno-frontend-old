@@ -26,11 +26,8 @@ export default function NpcFlavor({ creature, history, editable, type, openDialo
     if (interacted) {
       let newProfile = _.cloneDeep(profile);
 
-      console.log(isFavorited);
-
       if (!isFavorited) {
         newProfile.favorites.npcs = newProfile.favorites.npcs.filter((id) => id !== creature._id);
-        console.log(newProfile);
       } else {
         newProfile.favorites.npcs.push(creature._id);
       }

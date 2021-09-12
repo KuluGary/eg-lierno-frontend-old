@@ -62,9 +62,8 @@ const CharacterTable = ({ faction, dense, history, profile }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const location = useLocation();
-
-  console.log(faction.members);
   const theme = useTheme();
+  
   const { data, loading, error } = useQuery(MEMBER_LIST, {
     variables: {
       npcIds: faction.members?.npcs?.map((member) => member.id),

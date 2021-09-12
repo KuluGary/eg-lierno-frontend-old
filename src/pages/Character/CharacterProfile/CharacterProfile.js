@@ -61,7 +61,6 @@ function CharacterProfile(props) {
     setIsLoading(true);
 
     Api.fetchInternal("/characters/" + props.match.params.id).then((res) => {
-      console.log(res);
       setCharacter(_.cloneDeep(res));
       setEditedCharacter(_.cloneDeep(res));
       setCategories(["Información", "Trasfondo", "Rasgos", "Objetos", "Hechizos", "Opciones"].filter((el) => el));
