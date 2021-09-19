@@ -125,7 +125,7 @@ function CharacterList(props) {
         setCharacters(res);
 
         if (!character) {
-          props.history.push("/characters/" + id);
+          props.history.push("/characters/advanced/" + id);
         }
       });
     });
@@ -144,12 +144,17 @@ function CharacterList(props) {
   };
 
   const deleteCharacter = (characterData) => {
+    console.log(characterData);
+
     Api.fetchInternal("/characters/" + characterData, {
       method: "DELETE",
     }).then(() => {
       Api.fetchInternal("/characters").then((res) => {
-        props.addCharacters(res);
-        setCharacters(res);
+        const apiChars = {...characters};
+        apiChars["userCharacters"] = res;
+        
+        props.addCharacters(apiChars);
+        setCharacters(apiChars);
       });
     });
   };

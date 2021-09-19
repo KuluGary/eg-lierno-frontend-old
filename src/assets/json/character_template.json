@@ -1,6 +1,7 @@
 {
     "player": null,
     "name": "Nuevo personaje",
+    "type": "advanced",
     "flavor": {
         "traits": {
             "gender": null,
